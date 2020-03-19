@@ -22,24 +22,24 @@ get slightly different results, here's three of them:
 
 TODO: add long description of package here.
 
-.. |travis| image:: https://travis-ci.org/Justin Reese/kg-emerging-viruses.png
-   :target: https://travis-ci.org/Justin Reese/kg-emerging-viruses
+.. |travis| image:: https://travis-ci.org/justaddcoffee/kg-emerging-viruses.png
+   :target: https://travis-ci.org/justaddcoffee/kg-emerging-viruses
    :alt: Travis CI build
 
-.. |sonar_quality| image:: https://sonarcloud.io/api/project_badges/measure?project=Justin Reese_kg-emerging-viruses&metric=alert_status
-    :target: https://sonarcloud.io/dashboard/index/Justin Reese_kg-emerging-viruses
+.. |sonar_quality| image:: https://sonarcloud.io/api/project_badges/measure?project=justaddcoffee_kg-emerging-viruses&metric=alert_status
+    :target: https://sonarcloud.io/dashboard/index/justaddcoffee_kg-emerging-viruses
     :alt: SonarCloud Quality
 
-.. |sonar_maintainability| image:: https://sonarcloud.io/api/project_badges/measure?project=Justin Reese_kg-emerging-viruses&metric=sqale_rating
-    :target: https://sonarcloud.io/dashboard/index/Justin Reese_kg-emerging-viruses
+.. |sonar_maintainability| image:: https://sonarcloud.io/api/project_badges/measure?project=justaddcoffee_kg-emerging-viruses&metric=sqale_rating
+    :target: https://sonarcloud.io/dashboard/index/justaddcoffee_kg-emerging-viruses
     :alt: SonarCloud Maintainability
 
-.. |sonar_coverage| image:: https://sonarcloud.io/api/project_badges/measure?project=Justin Reese_kg-emerging-viruses&metric=coverage
-    :target: https://sonarcloud.io/dashboard/index/Justin Reese_kg-emerging-viruses
+.. |sonar_coverage| image:: https://sonarcloud.io/api/project_badges/measure?project=justaddcoffee_kg-emerging-viruses&metric=coverage
+    :target: https://sonarcloud.io/dashboard/index/justaddcoffee_kg-emerging-viruses
     :alt: SonarCloud Coverage
 
-.. |coveralls| image:: https://coveralls.io/repos/github/Justin Reese/kg-emerging-viruses/badge.svg?branch=master
-    :target: https://coveralls.io/github/Justin Reese/kg-emerging-viruses?branch=master
+.. |coveralls| image:: https://coveralls.io/repos/github/justaddcoffee/kg-emerging-viruses/badge.svg?branch=master
+    :target: https://coveralls.io/github/justaddcoffee/kg-emerging-viruses?branch=master
     :alt: Coveralls Coverage
 
 .. |pip| image:: https://badge.fury.io/py/kg-emerging-viruses.svg
@@ -55,9 +55,9 @@ TODO: add long description of package here.
     :alt: Codacy Maintainability
 
 .. |code_climate_maintainability| image:: https://api.codeclimate.com/v1/badges/8916605867309f74c4b5/maintainability
-    :target: https://codeclimate.com/github/Justin Reese/kg-emerging-viruses/maintainability
+    :target: https://codeclimate.com/github/justaddcoffee/kg-emerging-viruses/maintainability
     :alt: Maintainability
 
 .. |code_climate_coverage| image:: https://api.codeclimate.com/v1/badges/8916605867309f74c4b5/test_coverage
-    :target: https://codeclimate.com/github/Justin Reese/kg-emerging-viruses/test_coverage
+    :target: https://codeclimate.com/github/justaddcoffee/kg-emerging-viruses/test_coverage
     :alt: Code Climate Coverate
