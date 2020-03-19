@@ -2,4 +2,6 @@
 # https://docs.google.com/spreadsheets/d/1eMhot7MjusyM7_2IBnzqi7RlzWWoYnfheWhMgDlPToQ/edit?ts=5e6fe5fb#gid=0
 
 # For proof of concept, let's just use one:
-https://github.com/CSSEGISandData/COVID-19/blob/master/archived_data/archived_daily_case_updates/02-14-2020_1123.csv
+https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/archived_data/archived_daily_case_updates/02-14-2020_1123.csv
+
+
