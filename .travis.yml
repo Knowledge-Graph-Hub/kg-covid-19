@@ -6,48 +6,7 @@ addons:
   sonarcloud:
     organization: "justin reese-github"
     token:
-      secure: Usage: travis COMMAND ...
-
-Available commands:
-
-	accounts               displays accounts and their subscription status
-	branches               displays the most recent build for each branch
-	cache                  lists or deletes repository caches
-	cancel                 cancels a job or build
-	console                interactive shell
-	disable                disables a project
-	enable                 enables a project
-	encrypt                encrypts values for the .travis.yml
-	encrypt-file           encrypts a file and adds decryption steps to .travis.yml
-	endpoint               displays or changes the API endpoint
-	env                    show or modify build environment variables
-	help                   helps you out when in dire need of information
-	history                displays a projects build history
-	init                   generates a .travis.yml and enables the project
-	lint                   display warnings for a .travis.yml
-	login                  authenticates against the API and stores the token
-	logout                 deletes the stored API token
-	logs                   streams test logs
-	monitor                live monitor for what's going on
-	open                   opens a build or job in the browser
-	pubkey                 prints out a repository's public key
-	raw                    makes an (authenticated) API call and prints out the result
-	report                 generates a report useful for filing issues
-	repos                  lists repositories the user has certain permissions on
-	requests               lists recent requests
-	restart                restarts a build or job
-	settings               access repository settings
-	setup                  sets up an addon or deploy target
-	show                   displays a build or job
-	sshkey                 checks, updates or deletes an SSH key
-	status                 checks status of the latest build
-	sync                   triggers a new sync with GitHub
-	token                  outputs the secret API token
-	version                outputs the client version
-	whatsup                lists most recent builds
-	whoami                 outputs the current user
-
-run `/usr/local/bin/travis help COMMAND` for more infos
+      secure: "Uw/F4E7ZsnAni7KxX4kFw+Xq0iZ7pveGAEAzb+BRfBk80Hv94Ptq1fztTjAEG9mcNU9+5MJS7YMEc2YDS3dftWHfMHhu7/eg12dMHDwmlmWxMNC/nOgQASSQdJTxU6VdCmjds1pW97nkwlJl8hKy4TPR+Ll7ll4Ha4Yx+02JrzCzQA5syG8agY4zT0ybuBjF+a3ZnTdOrJIhi4PNf6+KbmLmUZqj+PbFpOUQnxHIP2r9XcmlVZR/okVz3eTTat0LIIzVArxcepA+veewxyg4Io/qJBqtAfwQTN/18GlyHfjE5CgfZua7BV/CH7picN3tAOp2Mwt/xnzO+ZJe1Plt/vApZfUhv7J7YkSxwWYtHOqEgcS5mlfvaQ1mnFgyzXZPdWc6gQbw1EQRmNBCpSpbJJo59Fy3kCmyRMre7cyAmHYMloFXlWIKrBk7/eE7hGDaivu6knMBwZ4eCFCZrmYayZeF8l+KXkDRXDrCEMp92AhU+TQTkSyAXnl4xpJwxOimU0Yy0X414cHx/3w7X7i6bHdIMrIvy9qSPIwNtsdcmNPg8/VlPzpbVC6G5qhs9HFRjVexuoXYogfU7sVqxhOK3kpJ1TVMylgUp2Xdqy+uR8g7n+teUq1Rgb8WnoQ0YSbbhrC61FDeY1/bykiz9DcN0A9wHjvaDRnxujTbC1h28Gk="
 language: python
 python:
 - '3.6'
@@ -73,3 +32,7 @@ script:
 after_success:
   - coveralls
   - python-codacy-coverage -r coverage.xml
+env:
+  global:
+  	- secure: "a6MXb99FoMZCJCw0H6Kc8PLey+hBURvql9jm8TDmSlVBL8YxNmdOOZXclKJLqz4drrbESHuwVHCrQNNjWx2iEPAMRSkAevyWOvnOebBEz1Pil0rj8X0BifghKoGRznw9UN35YdTP24uANz0irL3Jl6upZs7sVCK7wrnQFhUwX8rHzZ+5hoP/UxI+pLgHzgiJtqzCfb5TIXNlkYMhvWDCFIpNq51uwsJrvjI8qDXO5zhuWXI7DVcaINUg4efei2MVQyz6e77e6vGNxR6o07Z5FB7rikiKgfa60myZzGbW27OM89iyMjOGwLp8mjxxo9ZRNqxeW6mPrrt6HxE1OFK/p7BSxKMarKYaHDK8TBQGc1/H+GjDGW/MQzjxL59FANBWhoDOoSxnrwTDzRVH1uNiodgnk7XGVAWxFhjWJ1atEsN5p8PKmDaRiUJgeVJ5+yHUvnkyS25jW9oyWK0aWjYEWJImZ+kUCTO7eozbHVqPMK7/VKDyaMKX9e7UiZRtLvJ4KCkf0c08vOmCC6Z0oeQdcz7rmzKL9qPEjEOejgVGTjc5o8/cKFSQwxVgzyZCBR9TLf33jc/CbQlh5umyj0OEIY23I11nLyHxUFtamYCZOAygVhUp2TZnbKEsOTrGpB9D0CI///S7S2fgIsRSs29y9R6etmJwc9tTcxCdM9Q6Cxw="
+	- secure: "R1sKwcgHKmif8AtGrhGRN2bbb/o5PZ0zx4SRzNAkmUdpmazn0Cki6abfFuM+/1oPmlm+siaWP0qHtWBZb5KJ0xFKdlsZP4K9poePwszkr8CrGy9RxYtyuEGg0MkHwx9x53XeIT6PFV1JHyF82R8HXPp+BGiNwNp1KT3Apvkjs8tmeDLvnZ+yWFqKKwP0Vc5L+b6LmfZEgJjmYPkEPX2Tu/8KcvfXuUZ8wFiPYYrSU1J59IGfiiRBigQFHfgEt8pBvcRStQqN8Ii9m/tUCI/BLat8yt2zpDv2eQeIBXaV597ZNpSTCaFAGyirDq9psoBaEkU5srTTIF452WeeIki7/ugdWZeyw9fTpro3CS6z+Fj9o6EotJEx4gXkHFy75QT887bxY+FPqeN5vYnFKx3/zKtuHiFJvIPK/z63GMWXaSfxozA2Au5LzAZ2q247Wvwf6Bv3jOCA3rkE19hlhIt9meCUU6w+SABLSeG8Pqfh/cmn6MCRp9gJvHLpwpPodTGqmpvXplooHM9mXsn2J/jsnP2m80/25nw8Fq5fCs11lCuYRHhOxWxqXZlkpie0q3h1JB1eftwWWTAwDvo33iqr7e0YQmR8CACtj6m/cMJgSuVuDMj/j400TYlnqob8p7M60ofovoX0xfWAMNX9FoLGuIB1lHWTHGPI8ZpcY5RHWBw="
