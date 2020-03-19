@@ -37,17 +37,7 @@ def transform(input_dir, output_dir):
     ingest files in data/raw, transform them into networkx graphs, output them in
     data/transformed
     """
-    with open(input_dir) as f:
-        for line in f:
-            line = line.strip()
-            if line and not line.startswith("#"):
-                urls.append(line)
-
-    os.makedirs(output_dir)
-
-    for url in urls:
-        wget.download(url, out=os.path.join(output_dir,
-                                            url.split("/")[-1]))
+    pass
 
 
 if __name__ == "__main__":
