@@ -1,8 +1,9 @@
 import os
+from os import path
 
 import click
-import wget
-
+import urllib.request
+from tabula import io
 
 @click.group()
 def cli():
@@ -10,14 +11,19 @@ def cli():
 
 
 @cli.command()
-@click.option("input_file", "-i", default="incoming.txt", type=click.Path(exists=True))
-@click.option("output_dir", "-o", default="data", type=click.Path(exists=True))
-def download(input_file, output_dir):
+@click.option("input_file", "-i", required=True, default="incoming.txt",
+              type=click.Path(exists=True))
+@click.option("output_dir", "-o", required=True, default="data/raw")
+@click.option("overwrite", "-w", default=True)
+def download(input_file, output_dir, overwrite):
     """
     download data files from list of URLs (default: incoming.txt) into data directory
     (default: data/)
     """
     urls = []
+
+    if not path.exists(output_dir):
+        os.mkdir(output_dir)
     with open(input_file) as f:
         for line in f:
             line = line.strip()
@@ -25,8 +31,10 @@ def download(input_file, output_dir):
                 urls.append(line)
 
     for url in urls:
-        wget.download(url, out=os.path.join(output_dir,
-                                            url.split("/")[-1]))
+        outfile = os.path.join(output_dir, url.split("/")[-1])
+        if path.exists(outfile):
+            os.remove(outfile)
+        urllib.request.urlretrieve(url, filename=os.path.join(outfile))
 
 
 @cli.command()
