@@ -1,0 +1,22 @@
+# This file is a list of things to be downloaded using the command:
+# run.py download
+
+# To add a new item to be download, add a block like this - must have 'url':
+
+#  {
+#    # brief comment about this source
+#    url: http://curefordisease.org/some_data.txt
+#  },
+
+# Here is a crowd-sourced list of data sources, which may be useful in selecting
+# more stuff to put in this file
+# https://docs.google.com/spreadsheets/d/1eMhot7MjusyM7_2IBnzqi7RlzWWoYnfheWhMgDlPToQ/edit?ts=5e6fe5fb#gid=0
+
+sources: [
+  {
+    # Supplementary data from "Network-based drug repurposing for novel coronavirus 2019-nCoV/SARS-CoV-2"
+    # https://doi.org/10.1038/s41421-020-0153-3
+    url: https://static-content.springer.com/esm/art%3A10.1038%2Fs41421-020-0153-3/MediaObjects/41421_2020_153_MOESM1_ESM.pdf
+  },
+]
+

@@ -1,10 +1,10 @@
 import os
-from os import path
 
+import yaml
+from os import path
 import click
-from encodeproject import download
+from encodeproject import download as encode_download
 from tqdm.auto import tqdm
-from tabula import io
 
 @click.group()
 def cli():
@@ -12,31 +12,30 @@ def cli():
 
 
 @cli.command()
-@click.option("input_file", "-i", required=True, default="incoming.txt",
+@click.option("incoming", "-i", required=True, default="incoming.yaml",
               type=click.Path(exists=True))
 @click.option("output_dir", "-o", required=True, default="data/raw")
 @click.option("overwrite", "-w", default=True)
-def download(input_file, output_dir, overwrite):
+def download(incoming, output_dir, overwrite):
     """
-    download data files from list of URLs (default: incoming.txt) into data directory
+    download data files from list of URLs (default: incoming.yaml) into data directory
     (default: data/)
     """
     urls = []
-
     os.makedirs(output_dir, exist_ok=True)
-    with open(input_file) as f:
-        urls = [
-            url
-            for url in f
-            if url and not url.startswith("#")
-        ]
+    with open(incoming) as f:
+        data = yaml.load(f, Loader=yaml.FullLoader)
+        for source in data['sources']:
+            if 'url' not in source:
+                raise Exception("Couldn't find url for source in {}", source)
+            urls.append(source['url'])
 
-    for url in tqdm(urls, desc="Downloading files"):
-        outfile = os.path.join(output_dir, url.split("/")[-1])
+    for this_url in tqdm(urls, desc="Downloading files"):
+        outfile = os.path.join(output_dir, this_url.split("/")[-1])
         if path.exists(outfile):
             os.remove(outfile)
-        download(
-            url=url,
+        encode_download(
+            url=this_url,
             path=outfile
         )
 
@@ -49,7 +48,8 @@ def transform(input_dir, output_dir):
     ingest files in data/raw, transform them into networkx graphs, output them in
     data/transformed
     """
-    pass
+
+    # call transform script for each source
 
 
 if __name__ == "__main__":
