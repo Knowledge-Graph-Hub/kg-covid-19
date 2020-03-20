@@ -21,8 +21,6 @@ def download(input_file, output_dir, overwrite):
     download data files from list of URLs (default: incoming.txt) into data directory
     (default: data/)
     """
-    urls = []
-
     os.makedirs(output_dir, exist_ok=True)
     with open(input_file) as f:
         urls = [
