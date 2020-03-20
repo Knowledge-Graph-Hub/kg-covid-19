@@ -13,6 +13,17 @@ As usual, just download it using pip:
 
     pip install kg_emerging_viruses
 
+How do I use this package?
+----------------------------------------------
+
+.. code:: shell
+
+    python run.py download
+    python run.py transform
+
+See wiki for more details:
+https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki
+
 Tests Coverage
 ----------------------------------------------
 Since some software handling coverages sometimes
