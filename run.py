@@ -3,7 +3,7 @@ from os import path
 
 import click
 import urllib.request
-from tabula import io
+
 
 @click.group()
 def cli():
@@ -45,7 +45,8 @@ def transform(input_dir, output_dir):
     ingest files in data/raw, transform them into networkx graphs, output them in
     data/transformed
     """
-    pass
+
+    # call transform script for each source
 
 
 if __name__ == "__main__":
