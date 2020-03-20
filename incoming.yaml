@@ -12,7 +12,7 @@
 # more stuff to put in this file
 # https://docs.google.com/spreadsheets/d/1eMhot7MjusyM7_2IBnzqi7RlzWWoYnfheWhMgDlPToQ/edit?ts=5e6fe5fb#gid=0
 
-source_data: [
+sources: [
   {
     # Supplementary data from "Network-based drug repurposing for novel coronavirus 2019-nCoV/SARS-CoV-2"
     # https://doi.org/10.1038/s41421-020-0153-3
