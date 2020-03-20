@@ -21,6 +21,7 @@ def download(incoming, output_dir, overwrite):
     download data files from list of URLs (default: incoming.yaml) into data directory
     (default: data/)
     """
+
     urls = []
     os.makedirs(output_dir, exist_ok=True)
     with open(incoming) as f:
