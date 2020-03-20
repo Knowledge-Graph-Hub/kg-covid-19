@@ -45,7 +45,7 @@
 *.sage.py
 *.so
 *.spec
-./data
+data
 .DS_Store
 .Python
 .cache
