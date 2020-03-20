@@ -46,8 +46,10 @@ def download(incoming, output_dir, overwrite):
 @click.option("output_dir", "-o", default="data/transformed")
 def transform(input_dir, output_dir):
     """
-    ingest files in data/raw, transform them into networkx graphs, output them in
-    data/transformed
+    Call scripts in kg_emerging_viruses/transform/[source name]/
+    to transform each source into a graph format that KGX can
+    ingest directly, in either TSV or JSON format:
+    https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md
     """
 
     # call transform script for each source
