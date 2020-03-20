@@ -2,7 +2,8 @@ import os
 from os import path
 
 import click
-import urllib.request
+from encodeproject import download
+from tqdm.auto import tqdm
 from tabula import io
 
 @click.group()
@@ -22,19 +23,22 @@ def download(input_file, output_dir, overwrite):
     """
     urls = []
 
-    if not path.exists(output_dir):
-        os.mkdir(output_dir)
+    os.makedirs(output_dir, exist_ok=True)
     with open(input_file) as f:
-        for line in f:
-            line = line.strip()
-            if line and not line.startswith("#"):
-                urls.append(line)
+        urls = [
+            url
+            for url in f
+            if url and not url.startswith("#")
+        ]
 
-    for url in urls:
+    for url in tqdm(urls, desc="Downloading files"):
         outfile = os.path.join(output_dir, url.split("/")[-1])
         if path.exists(outfile):
             os.remove(outfile)
-        urllib.request.urlretrieve(url, filename=os.path.join(outfile))
+        download(
+            url=url,
+            path=outfile
+        )
 
 
 @cli.command()
@@ -50,4 +54,3 @@ def transform(input_dir, output_dir):
 
 if __name__ == "__main__":
     cli()
-
