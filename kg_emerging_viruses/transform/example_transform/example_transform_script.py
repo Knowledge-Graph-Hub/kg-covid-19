@@ -11,11 +11,11 @@ and running `run.py download`
 Output: transformed data in data/raw/[source name]:
 
 Either TSV, output these two files:
-node.tsv
-edge.tsv
+nodes.tsv
+edges.tsv
 
 Or JSON, all in one file:
-node_edges.json
+nodes_edges.json
 """
 
 source_name = "example"
