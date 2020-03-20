@@ -60,4 +60,4 @@ TODO: add long description of package here.
 
 .. |code_climate_coverage| image:: https://api.codeclimate.com/v1/badges/8916605867309f74c4b5/test_coverage
     :target: https://codeclimate.com/github/justaddcoffee/kg-emerging-viruses/test_coverage
-    :alt: Code Climate Coverate
+    :alt: Code Climate Coverage

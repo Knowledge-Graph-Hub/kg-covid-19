@@ -1,9 +1,11 @@
 import os
+import urllib
+
 import yaml
 from os import path
 import click
-import urllib.request
-
+from encodeproject import download
+from tqdm.auto import tqdm
 
 @click.group()
 def cli():
@@ -21,9 +23,7 @@ def download(incoming, output_dir, overwrite):
     (default: data/)
     """
     urls = []
-
-    if not path.exists(output_dir):
-        os.mkdir(output_dir)
+    os.makedirs(output_dir, exist_ok=True)
     with open(incoming) as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
         for source in data['sources']:
@@ -31,11 +31,15 @@ def download(incoming, output_dir, overwrite):
                 raise Exception("Couldn't find url for source in {}", source)
             urls.append(source['url'])
 
-    for url in urls:
-        outfile = os.path.join(output_dir, url.split("/")[-1])
+    for this_url in tqdm(urls, desc="Downloading files"):
+        outfile = os.path.join(output_dir, this_url.split("/")[-1])
         if path.exists(outfile):
             os.remove(outfile)
-        urllib.request.urlretrieve(url, filename=os.path.join(outfile))
+        urllib.request.urlretrieve(this_url, filename=os.path.join(outfile))
+        # download(
+        #     url=this_url,
+        #     path=outfile
+        # )
 
 
 @cli.command()
@@ -52,4 +56,3 @@ def transform(input_dir, output_dir):
 
 if __name__ == "__main__":
     cli()
-
