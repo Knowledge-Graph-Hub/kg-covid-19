@@ -21,7 +21,8 @@ How do I use this package?
     python run.py download
     python run.py transform
 
-See here for
+See wiki for more details:
+https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki
 
 Tests Coverage
 ----------------------------------------------
