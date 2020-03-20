@@ -1,10 +1,9 @@
 import os
-import urllib
 
 import yaml
 from os import path
 import click
-from encodeproject import download
+from encodeproject import download as encode_download
 from tqdm.auto import tqdm
 
 @click.group()
@@ -35,11 +34,10 @@ def download(incoming, output_dir, overwrite):
         outfile = os.path.join(output_dir, this_url.split("/")[-1])
         if path.exists(outfile):
             os.remove(outfile)
-        urllib.request.urlretrieve(this_url, filename=os.path.join(outfile))
-        # download(
-        #     url=this_url,
-        #     path=outfile
-        # )
+        encode_download(
+            url=this_url,
+            path=outfile
+        )
 
 
 @cli.command()
