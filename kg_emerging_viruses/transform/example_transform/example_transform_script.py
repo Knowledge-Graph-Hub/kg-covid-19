@@ -18,29 +18,30 @@ Or JSON, all in one file:
 nodes_edges.json
 """
 
-source_name = "example"
-input_file = os.path.join("data", "raw", "example_data.csv")  # must exist already
-output_base_dir = os.path.join("data", "transformed")
+def run():
+    source_name = "example"
+    input_file = os.path.join("data", "raw", "example_data.csv")  # must exist already
+    output_base_dir = os.path.join("data", "transformed")
 
-# for tsv output:
-output_node_file = os.path.join(output_base_dir, "nodes.tsv")
-output_edge_file = os.path.join(output_base_dir, "edges.tsv")
+    # for tsv output:
+    output_node_file = os.path.join(output_base_dir, "nodes.tsv")
+    output_edge_file = os.path.join(output_base_dir, "edges.tsv")
 
-# for json output
-json_output_file = os.path.join(output_base_dir, "nodes_edges.json")
+    # for json output
+    json_output_file = os.path.join(output_base_dir, "nodes_edges.json")
 
-# make directory in data/transformed
-output_dir = os.path.join(output_base_dir, source_name)
-os.mkdir(output_dir)
+    # make directory in data/transformed
+    output_dir = os.path.join(output_base_dir, source_name)
+    os.makedirs(output_dir, exist_ok=True)
 
-# replace with downloaded data of for this source
+    # replace with downloaded data of for this source
 
-# transform data, something like:
-# with open(input_file, 'r') as f,\
-#     open(output_node_file, 'w') as node,\
-#     open(output_edge_file, 'w') as edge:
-#     for line in f:
-#        # transform
-#        output_node_file.write(this_node1)
-#        output_node_file.write(this_node2)
-#        output_edge_file.write(this_edge)
+    # transform data, something like:
+    # with open(input_file, 'r') as f,\
+    #     open(output_node_file, 'w') as node,\
+    #     open(output_edge_file, 'w') as edge:
+    #     for line in f:
+    #        # transform
+    #        output_node_file.write(this_node1)
+    #        output_node_file.write(this_node2)
+    #        output_edge_file.write(this_edge)

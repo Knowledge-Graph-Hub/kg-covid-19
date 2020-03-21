@@ -5,6 +5,8 @@ from os import path
 import click
 from encodeproject import download as encode_download
 from tqdm.auto import tqdm
+from kg_emerging_viruses.transform.zhou_host_proteins import zhou_transform
+
 
 @click.group()
 def cli():
@@ -53,6 +55,7 @@ def transform(input_dir, output_dir):
     """
 
     # call transform script for each source
+    zhou_transform.run()
 
 
 if __name__ == "__main__":
