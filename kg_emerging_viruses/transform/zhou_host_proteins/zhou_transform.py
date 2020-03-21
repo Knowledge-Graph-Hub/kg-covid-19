@@ -1,6 +1,6 @@
 import os
 from tabula import io
-from kg_emerging_viruses.transform.utils.utils import multi_page_table_to_list,\
+from kg_emerging_viruses.utils.transform_utils import multi_page_table_to_list,\
     write_node_edge_item
 
 """
