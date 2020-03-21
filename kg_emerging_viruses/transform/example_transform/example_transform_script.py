@@ -18,10 +18,11 @@ Or JSON, all in one file:
 nodes_edges.json
 """
 
+
 def run():
     source_name = "example"
     input_file = os.path.join("data", "raw", "example_data.csv")  # must exist already
-    output_base_dir = os.path.join("data", "transformed")
+    output_base_dir = os.path.join("data", "transformed", source_name)
 
     # for tsv output:
     output_node_file = os.path.join(output_base_dir, "nodes.tsv")
