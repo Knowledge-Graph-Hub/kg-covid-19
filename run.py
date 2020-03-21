@@ -1,11 +1,7 @@
-import os
-
-import yaml
-from os import path
 import click
-from encodeproject import download as encode_download
-from tqdm.auto import tqdm
+
 from kg_emerging_viruses.transform.zhou_host_proteins import zhou_transform
+from kg_emerging_viruses.utils.download_utils import download_from_yaml
 
 
 @click.group()
@@ -14,33 +10,16 @@ def cli():
 
 
 @cli.command()
-@click.option("incoming", "-i", required=True, default="incoming.yaml",
+@click.option("yaml_file", "-y", required=True, default="download.yaml",
               type=click.Path(exists=True))
 @click.option("output_dir", "-o", required=True, default="data/raw")
-@click.option("overwrite", "-w", default=True)
-def download(incoming, output_dir, overwrite):
+def download(yaml_file, output_dir):
     """
-    download data files from list of URLs (default: incoming.yaml) into data directory
+    download data files from list of URLs (default: download.yaml) into data directory
     (default: data/)
     """
 
-    urls = []
-    os.makedirs(output_dir, exist_ok=True)
-    with open(incoming) as f:
-        data = yaml.load(f, Loader=yaml.FullLoader)
-        for source in data['sources']:
-            if 'url' not in source:
-                raise Exception("Couldn't find url for source in {}", source)
-            urls.append(source['url'])
-
-    for this_url in tqdm(urls, desc="Downloading files"):
-        outfile = os.path.join(output_dir, this_url.split("/")[-1])
-        if path.exists(outfile):
-            os.remove(outfile)
-        encode_download(
-            url=this_url,
-            path=outfile
-        )
+    download_from_yaml(yaml_file=yaml_file, output_dir=output_dir)
 
 
 @cli.command()
