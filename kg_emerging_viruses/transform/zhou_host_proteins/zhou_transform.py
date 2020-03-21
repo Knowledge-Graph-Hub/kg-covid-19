@@ -41,6 +41,15 @@ def run():
     host_gene_vgene_edge_label = 'biotically interacts with'
     host_gene_vgene_relation = 'RO:0002437'
 
+    NCBITaxon_curie_prefix = 'NCBITaxon:'
+    corona_info = {
+        'IBV':        {'taxon_id': 11120},
+        'MHV':        {'taxon_id': 502104},
+        'HCoV-NL63':  {'taxon_id': 277944},
+        'HCoV-229E':  {'taxon_id': 11137},
+        'SARS':       {'taxon_id': 227859},
+        'MERS':       {'taxon_id': 1335626},
+    }
 
     # for tsv output:
     output_node_file = os.path.join(output_base_dir, "nodes.tsv")
@@ -67,6 +76,12 @@ def run():
         edge.write("\t".join(edge_header) + "\n")
 
         for row in fig_3_table:
+
+            if row['Coronavirus'] not in corona_info:
+                raise Exception("Can't find info for coronavirus {}", row['Coronavirus'])
+            this_corona_info = corona_info[row['Coronavirus']]
+            corona_curie = NCBITaxon_curie_prefix + str(this_corona_info['taxon_id'])
+
             #
             # write nodes
             #
@@ -78,7 +93,7 @@ def run():
 
             # host gene
             write_node_edge_item(fh=node, header=node_header,
-                                 data=[row['Coronavirus'],
+                                 data=[corona_curie,
                                        row['Coronavirus'],
                                        virus_node_type])
 
@@ -87,10 +102,9 @@ def run():
             #
             write_node_edge_item(fh=edge, header=edge_header,
                                  data=[
-                                       #['subject', 'edge_label', 'object', 'relation', 'publications']
                                        gene_curie_prefix + row['Host Gene ID'],
                                        host_gene_vgene_edge_label,
-                                       row['Coronavirus'],
+                                       corona_curie,
                                        host_gene_vgene_relation,
                                        pubmed_curie_prefix + row['PubMed ID']
             ])
