@@ -1,5 +1,7 @@
 import os
 from tabula import io
+
+from kg_emerging_viruses.transform.transform import Transform
 from kg_emerging_viruses.utils.transform_utils import multi_page_table_to_list,\
     write_node_edge_item
 
@@ -22,92 +24,84 @@ gene:1234  contributes_to_condition    MONDO:0005002   RO:0003304
 """
 
 
-def run():
-    node_header = ['id', 'name', 'category']
-    edge_header = ['subject', 'edge_label', 'object', 'relation', 'publications']
+class ZhouTransform(Transform):
+    def __init__(self):
+        super().__init__(source_name="zhou_host_protein")  # set some variables
 
-    source_name = "zhou_host_proteins"
-    input_file = os.path.join("data", "raw", "41421_2020_153_MOESM1_ESM.pdf")
-    output_base_dir = os.path.join("data", "transformed", source_name)
+    def run(self):
+        input_file = os.path.join(self.input_base_dir, "41421_2020_153_MOESM1_ESM.pdf")
 
-    pubmed_curie_prefix = "PMID:"
-    gene_curie_prefix = "NCBI:"
-    publication_node_type = "Biolink:Publication"
-    gene_node_type = 'Biolink:Gene'
-    virus_node_type = 'Biolink:OrganismalEntity'
+        pubmed_curie_prefix = "PMID:"
+        gene_curie_prefix = "NCBI:"
+        publication_node_type = "Biolink:Publication"
+        gene_node_type = 'Biolink:Gene'
+        virus_node_type = 'Biolink:OrganismalEntity'
 
-    # list of RO interactions:
-    # https://raw.githubusercontent.com/oborel/obo-relations/master/subsets/ro-interaction.owl
-    host_gene_vgene_edge_label = 'biotically interacts with'
-    host_gene_vgene_relation = 'RO:0002437'
+        # list of RO interactions:
+        # https://raw.githubusercontent.com/oborel/obo-relations/master/subsets/ro-interaction.owl
+        host_gene_vgene_edge_label = 'biotically interacts with'
+        host_gene_vgene_relation = 'RO:0002437'
 
-    NCBITaxon_curie_prefix = 'NCBITaxon:'
-    corona_info = {
-        'IBV':        {'taxon_id': 11120},
-        'MHV':        {'taxon_id': 502104},
-        'HCoV-NL63':  {'taxon_id': 277944},
-        'HCoV-229E':  {'taxon_id': 11137},
-        'SARS':       {'taxon_id': 227859},
-        'MERS':       {'taxon_id': 1335626},
-    }
+        NCBITaxon_curie_prefix = 'NCBITaxon:'
+        corona_info = {
+            'IBV':        {'taxon_id': 11120},
+            'MHV':        {'taxon_id': 502104},
+            'HCoV-NL63':  {'taxon_id': 277944},
+            'HCoV-229E':  {'taxon_id': 11137},
+            'SARS':       {'taxon_id': 227859},
+            'MERS':       {'taxon_id': 1335626},
+        }
 
-    # for tsv output:
-    output_node_file = os.path.join(output_base_dir, "nodes.tsv")
-    output_edge_file = os.path.join(output_base_dir, "edges.tsv")
+        # make directory in data/transformed
+        os.makedirs(self.output_dir, exist_ok=True)
 
-    # for json output
-    json_output_file = os.path.join(output_base_dir, "nodes_edges.json")
+        fig_3_table_unformatted = io.read_pdf(input_file,
+                                              output_format='json',
+                                              pages=[5, 6, 7],
+                                              multiple_tables=True)
 
-    # make directory in data/transformed
-    output_dir = os.path.join(output_base_dir)
-    os.makedirs(output_dir, exist_ok=True)
+        fig_3_table = multi_page_table_to_list(fig_3_table_unformatted)
 
-    fig_3_table_unformatted = io.read_pdf(input_file,
-                                          output_format='json',
-                                          pages=[5, 6, 7],
-                                          multiple_tables=True)
+        with open(self.output_node_file, 'w') as node,\
+                open(self.output_edge_file, 'w') as edge:
 
-    fig_3_table = multi_page_table_to_list(fig_3_table_unformatted)
+            # write node.tsv header
+            node.write("\t".join(self.node_header) + "\n")
+            edge.write("\t".join(self.edge_header) + "\n")
 
-    with open(output_node_file, 'w') as node, open(output_edge_file, 'w') as edge:
+            for row in fig_3_table:
 
-        # write node.tsv header
-        node.write("\t".join(node_header) + "\n")
-        edge.write("\t".join(edge_header) + "\n")
+                if row['Coronavirus'] not in corona_info:
+                    raise Exception("Can't find info for coronavirus {}", row['Coronavirus'])
+                this_corona_info = corona_info[row['Coronavirus']]
+                corona_curie = NCBITaxon_curie_prefix + str(this_corona_info['taxon_id'])
 
-        for row in fig_3_table:
+                #
+                # write nodes
+                #
+                # virus
+                write_node_edge_item(fh=node, header=self.node_header,
+                                     data=[gene_curie_prefix + row['Host Gene ID'],
+                                           row['Host Protein'],
+                                           gene_node_type])
 
-            if row['Coronavirus'] not in corona_info:
-                raise Exception("Can't find info for coronavirus {}", row['Coronavirus'])
-            this_corona_info = corona_info[row['Coronavirus']]
-            corona_curie = NCBITaxon_curie_prefix + str(this_corona_info['taxon_id'])
+                # host gene
+                write_node_edge_item(fh=node, header=self.node_header,
+                                     data=[corona_curie,
+                                           row['Coronavirus'],
+                                           virus_node_type])
 
-            #
-            # write nodes
-            #
-            # virus
-            write_node_edge_item(fh=node, header=node_header,
-                                 data=[gene_curie_prefix + row['Host Gene ID'],
-                                       row['Host Protein'],
-                                       gene_node_type])
-
-            # host gene
-            write_node_edge_item(fh=node, header=node_header,
-                                 data=[corona_curie,
-                                       row['Coronavirus'],
-                                       virus_node_type])
-
-            #
-            # write edge
-            #
-            write_node_edge_item(fh=edge, header=edge_header,
-                                 data=[
-                                       gene_curie_prefix + row['Host Gene ID'],
-                                       host_gene_vgene_edge_label,
-                                       corona_curie,
-                                       host_gene_vgene_relation,
-                                       pubmed_curie_prefix + row['PubMed ID']
-            ])
+                #
+                # write edge
+                #
+                write_node_edge_item(fh=edge, header=self.edge_header,
+                                     data=[
+                                           gene_curie_prefix + row['Host Gene ID'],
+                                           host_gene_vgene_edge_label,
+                                           corona_curie,
+                                           host_gene_vgene_relation,
+                                           pubmed_curie_prefix + row['PubMed ID']
+                ])
 
 
 

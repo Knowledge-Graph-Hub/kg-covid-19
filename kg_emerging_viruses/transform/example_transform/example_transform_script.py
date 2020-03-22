@@ -1,5 +1,7 @@
 import os
 
+from kg_emerging_viruses.transform.transform import Transform
+
 """
 Example script to transform downloaded data into a graph format that KGX can
 ingest directly, in either TSV or JSON format:
@@ -19,30 +21,27 @@ nodes_edges.json
 """
 
 
-def run():
-    source_name = "example"
-    input_file = os.path.join("data", "raw", "example_data.csv")  # must exist already
-    output_base_dir = os.path.join("data", "transformed", source_name)
+class YourTransform(Transform):
 
-    # for tsv output:
-    output_node_file = os.path.join(output_base_dir, "nodes.tsv")
-    output_edge_file = os.path.join(output_base_dir, "edges.tsv")
+    def __init__(self):
+        super().__init__(source_name="some_unique_name")
 
-    # for json output
-    json_output_file = os.path.join(output_base_dir, "nodes_edges.json")
+    def run(self):
+        # replace with downloaded data of for this source
+        input_file = os.path.join(self.input, "example_data.csv")  # must exist already
 
-    # make directory in data/transformed
-    output_dir = os.path.join(output_base_dir, source_name)
-    os.makedirs(output_dir, exist_ok=True)
+        # make directory in data/transformed
+        os.makedirs(self.output_dir, exist_ok=True)
 
-    # replace with downloaded data of for this source
+        # transform data, something like:
+        with open(input_file, 'r') as f, \
+                open(self.output_node_file, 'w') as node, \
+                open(self.output_edge_file, 'w') as edge:
 
-    # transform data, something like:
-    # with open(input_file, 'r') as f,\
-    #     open(output_node_file, 'w') as node,\
-    #     open(output_edge_file, 'w') as edge:
-    #     for line in f:
-    #        # transform
-    #        output_node_file.write(this_node1)
-    #        output_node_file.write(this_node2)
-    #        output_edge_file.write(this_edge)
+            # transform data, something like:
+            for line in f:
+                pass
+                # transform line into nodes and edges
+                # node.write(this_node1)
+                # node.write(this_node2)
+                # edge.write(this_edge)
