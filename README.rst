@@ -1,4 +1,4 @@
-kg_emerging_viruses
+kg_covid-19
 =========================================================================================
 |travis| |sonar_quality| |sonar_maintainability| |codacy|
 |code_climate_maintainability| |pip| |downloads|
