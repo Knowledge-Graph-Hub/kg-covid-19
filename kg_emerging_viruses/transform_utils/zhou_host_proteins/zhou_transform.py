@@ -1,5 +1,5 @@
 import os
-import tabula
+from tabula import io
 from kg_emerging_viruses.utils.transform_utils import multi_page_table_to_list,\
     write_node_edge_item
 
@@ -62,7 +62,7 @@ def zhou_transform():
     output_dir = os.path.join(output_base_dir)
     os.makedirs(output_dir, exist_ok=True)
 
-    fig_3_table_unformatted = tabula.io.read_pdf(input_file,
+    fig_3_table_unformatted = io.read_pdf(input_file,
                                           output_format='json',
                                           pages=[5, 6, 7],
                                           multiple_tables=True)
