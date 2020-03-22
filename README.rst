@@ -21,8 +21,7 @@ How do I use this package?
     python run.py download
     python run.py transform
 
-See wiki for more details:
-https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki
+See the `repository's wiki for more details <https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki>`_.
 
 Tests Coverage
 ----------------------------------------------
@@ -31,7 +30,6 @@ get slightly different results, here's three of them:
 
 |coveralls| |sonar_coverage| |code_climate_coverage|
 
-TODO: add long description of package here.
 
 .. |travis| image:: https://travis-ci.org/justaddcoffee/kg-emerging-viruses.png
    :target: https://travis-ci.org/justaddcoffee/kg-emerging-viruses

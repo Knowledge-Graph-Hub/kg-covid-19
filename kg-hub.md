@@ -3,7 +3,7 @@
 This repository aims to be a first pass at building a KG Hub.
 
 The motivation of a KG Hub is to have a central location to store configurations for building knowledge graphs (KGs) 
-from different combination of data sources, all driven by a YAML.
+from different combinations of data sources, all driven by a YAML.
 
 
 ## KG Hub instance
@@ -24,6 +24,6 @@ The YAML defines the following,
 The overall goal is to have [KGX](https://github.com/NCATS-Tangerine/kgx/) read from this YAML, 
 load all data sources (as defined in the YAML) and build a KG.
 
-Ideally each data source should be preprocessed ahead of time to a format as prescribed [here](https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md).
+Ideally, each data source should be preprocessed ahead of time to a format as prescribed [here](https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md).
 
  

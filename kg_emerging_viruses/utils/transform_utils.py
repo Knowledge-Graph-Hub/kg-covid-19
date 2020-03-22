@@ -19,7 +19,7 @@ def multi_page_table_to_list(multi_page_table) -> List[dict]:
     for this_page in multi_page_table:
         for row in this_page['data']:
             if len(row) != 4:
-                logging.warning("Unexpected number of rows in {}", row)
+                logging.warning("Unexpected number of rows in {}".format(row))
             items = [d['text'] for d in row]
             this_dict = dict(zip(header_items, items))
             table_data.append(this_dict)

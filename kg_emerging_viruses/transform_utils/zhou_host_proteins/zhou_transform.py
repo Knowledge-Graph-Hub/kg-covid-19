@@ -21,8 +21,8 @@ subject edge_label  object   relation
 gene:1234  contributes_to_condition    MONDO:0005002   RO:0003304
 """
 
-
-def run():
+# TODO: refactor zhou_transform so that it accepts input.
+def zhou_transform():
     node_header = ['id', 'name', 'category']
     edge_header = ['subject', 'edge_label', 'object', 'relation', 'publications']
 
