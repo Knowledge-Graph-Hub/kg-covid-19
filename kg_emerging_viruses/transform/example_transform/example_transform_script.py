@@ -38,6 +38,10 @@ class YourTransform(Transform):
                 open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge:
 
+            # write headers (change default node/edge headers if necessary
+            node.write("\t".join(self.node_header) + "\n")
+            edge.write("\t".join(self.edge_header) + "\n")
+
             # transform data, something like:
             for line in f:
                 pass
