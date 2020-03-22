@@ -3,6 +3,9 @@ sudo: false
 git:
   depth: false
 addons:
+  apt:
+    packages:
+      - oracle-java8-set-default
   sonarcloud:
     organization: "justaddcoffee"
     token:

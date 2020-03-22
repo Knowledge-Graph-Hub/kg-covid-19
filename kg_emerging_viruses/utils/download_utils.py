@@ -20,15 +20,16 @@ def download_from_yaml(yaml_file: str, output_dir: str) -> None:
         data = yaml.load(f, Loader=yaml.FullLoader)
         for item in tqdm(data, desc="Downloading files"):
             if 'url' not in item:
-                logging.warnings("Couldn't find url for source in {}", item)
+                logging.warning("Couldn't find url for source in {}".format(item))
                 continue
-            if 'local_name' in item:
-                outfile = os.path.join(output_dir, item['local_name'])
-            else:
-                outfile = os.path.join(output_dir, item['url'].split("/")[-1])
+            outfile = os.path.join(
+                output_dir,
+                item['local_name']
+                if 'local_name' in item
+                else item['url'].split("/")[-1]
+            )
 
             if path.exists(outfile):
                 os.remove(outfile)
 
             encode_download(url=item['url'], path=outfile)
-

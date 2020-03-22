@@ -1,5 +1,5 @@
 import os
-from tabula import io
+import tabula
 from kg_emerging_viruses.utils.transform_utils import multi_page_table_to_list,\
     write_node_edge_item
 
@@ -21,8 +21,8 @@ subject edge_label  object   relation
 gene:1234  contributes_to_condition    MONDO:0005002   RO:0003304
 """
 
-
-def run():
+# TODO: refactor zhou_transform so that it accepts input.
+def zhou_transform():
     node_header = ['id', 'name', 'category']
     edge_header = ['subject', 'edge_label', 'object', 'relation', 'publications']
 
@@ -62,7 +62,7 @@ def run():
     output_dir = os.path.join(output_base_dir)
     os.makedirs(output_dir, exist_ok=True)
 
-    fig_3_table_unformatted = io.read_pdf(input_file,
+    fig_3_table_unformatted = tabula.io.read_pdf(input_file,
                                           output_format='json',
                                           pages=[5, 6, 7],
                                           multiple_tables=True)
