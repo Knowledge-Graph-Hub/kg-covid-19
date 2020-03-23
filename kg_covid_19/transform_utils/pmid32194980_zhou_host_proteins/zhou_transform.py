@@ -35,7 +35,7 @@ def zhou_transform() -> None:
     node_header = ['id', 'name', 'category']
     edge_header = ['subject', 'edge_label', 'object', 'relation', 'publications']
 
-    source_name = 'zhou_host_proteins'
+    source_name = 'pmid32194980_zhou_host_proteins'
     input_file = os.path.join('data', 'raw', '41421_2020_153_MOESM1_ESM.pdf')
     output_base_dir = os.path.join('data', 'transformed', source_name)
 
