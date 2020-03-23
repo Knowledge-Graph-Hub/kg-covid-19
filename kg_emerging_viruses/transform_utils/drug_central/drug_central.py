@@ -1,7 +1,7 @@
 import gzip
 import os
 
-from kg_emerging_viruses.transform.transform import Transform
+from kg_emerging_viruses.transform_utils.transform import Transform
 from kg_emerging_viruses.utils.transform_utils import write_node_edge_item, \
     get_item_by_priority
 
