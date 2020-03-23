@@ -1,5 +1,4 @@
 import click
-
 from kg_emerging_viruses import transform as kg_transform, download as kg_download
 
 

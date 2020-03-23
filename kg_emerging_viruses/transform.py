@@ -1,4 +1,6 @@
-from .transform_utils import zhou_transform
+from kg_emerging_viruses.transform_utils import zhou_transform
+from kg_emerging_viruses.transform_utils.drug_central.drug_central import \
+    DrugCentralTransform
 
 
 def transform(input_dir, output_dir):
@@ -12,3 +14,6 @@ def transform(input_dir, output_dir):
     # call transform script for each source
     # TODO: refactor zhou_transform so that it accepts input.
     zhou_transform()
+
+    dct = DrugCentralTransform()
+    dct.run()
