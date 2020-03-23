@@ -50,10 +50,7 @@ def write_node_edge_item(fh,
     """
     if len(header) != len(data):
         raise Exception("header and data are not the same length")
-    try:
-        fh.write(sep.join(data) + "\n")
-    except:
-        foo = 1
+    fh.write(sep.join(data) + "\n")
 
 
 def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> Union[str, None]:
