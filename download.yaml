@@ -20,5 +20,8 @@
   url: https://static-content.springer.com/esm/art%3A10.1038%2Fs41421-020-0153-3/MediaObjects/41421_2020_153_MOESM1_ESM.pdf
   local_name: 41421_2020_153_MOESM1_ESM.pdf
 
+-
+  # drug - target interactions from Drug Central
+  url: http://unmtid-shinyapps.net/download/drug.target.interaction.tsv.gz
 
 

@@ -3,8 +3,7 @@
 
 
 import logging
-
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 
 # TODO: option to further refine typing of method arguments below.
@@ -54,13 +53,34 @@ def get_header_items(table_data: Any) -> List:
 
 
 def write_node_edge_item(fh: Any, header: List, data: List, sep: str = '\t') -> None:
-    """Method
-
+    """Write out a single line for a node or an edge in *.tsv
+    :param fh: file handle of node or edge file
+    :param header: list of header items
+    :param data: data for line to write out
+    :param sep: separator [\t]
+    :return:
     """
-
     if len(header) != len(data):
         raise Exception('Header and data are not the same length.')
     else:
         fh.write(sep.join(data) + "\n")
 
     return None
+
+
+def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> Union[str, None]:
+    """Retrieve item from a dict using a list of keys, in descending order of priority
+
+    :param items_dict:
+    :param keys_by_priority: list of keys to use to find values
+    :return: str: first value in dict for first item in keys_by_priority
+    that isn't blank, or None
+    """
+    value = None
+    for key in keys_by_priority:
+        if key in items_dict and items_dict[key] != '':
+            value = items_dict[key]
+            break
+    if value is None:
+        foo = 1
+    return value

@@ -3,7 +3,6 @@
 
 
 import click
-
 from kg_emerging_viruses import download as kg_download
 from kg_emerging_viruses import transform as kg_transform
 
