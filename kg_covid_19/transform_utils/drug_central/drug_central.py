@@ -7,8 +7,8 @@ import os
 
 from typing import Dict, List
 
-from kg_emerging_viruses.transform_utils.transform import Transform
-from kg_emerging_viruses.utils.transform_utils import write_node_edge_item, get_item_by_priority
+from kg_covid_19.transform_utils.transform import Transform
+from kg_covid_19.utils.transform_utils import write_node_edge_item, get_item_by_priority
 
 """
 Ingest drug - drug target interactions from Drug Central

@@ -1,4 +1,4 @@
-from kg_emerging_viruses import download, transform
+from kg_covid_19 import download, transform
 
 
 def test_run():
