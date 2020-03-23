@@ -1,18 +1,26 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
 import logging
 import os
-from encodeproject import download as encode_download
-from tqdm.auto import tqdm
-
 import yaml
+
 from os import path
+from tqdm.auto import tqdm  # type: ignore
+
+from encodeproject import download as encode_download  # type: ignore
 
 
 def download_from_yaml(yaml_file: str, output_dir: str) -> None:
     """Given an download info from an download.yaml file, download all files
 
-    :param yaml_file: download.yaml file, to be parsed for things to download
-    :param output_dir: where to write out downloaded files
-    :return:
+    Args:
+        yaml_file: A string pointing to the download.yaml file, to be parsed for things to download.
+        output_dir: A string pointing to where to write out downloaded files.
+
+    Returns:
+        None.
     """
 
     os.makedirs(output_dir, exist_ok=True)
@@ -33,3 +41,5 @@ def download_from_yaml(yaml_file: str, output_dir: str) -> None:
                 os.remove(outfile)
 
             encode_download(url=item['url'], path=outfile)
+
+    return None
