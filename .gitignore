@@ -113,3 +113,10 @@ venv.bak/
 venv/
 wheels/
 .idea/*
+
+# ignore data directory
+/data/*
+!/data/.gitkeep
+!/data/transformed/.gitkeep
+!/data/raw/.gitkeep
+
