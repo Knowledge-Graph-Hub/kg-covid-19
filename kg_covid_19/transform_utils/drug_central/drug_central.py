@@ -3,6 +3,7 @@
 
 
 import gzip
+import logging
 import os
 
 from typing import Dict, List
@@ -60,6 +61,13 @@ class DrugCentralTransform(Transform):
                 # get gene ID
                 gene_id = get_item_by_priority(items_dict, ['ACCESSION'])
 
+                if gene_id is None:
+                    # lines with no ACCESSION entry only contain drug info, no target
+                    # info - not ingesting these
+                    logging.info(
+                        "No gene information for this line:\n{}\nskipping".format(line))
+                    continue
+
                 # get drug ID
                 drug_id = get_item_by_priority(items_dict,
                                                ['ACT_SOURCE_URL',
@@ -74,7 +82,6 @@ class DrugCentralTransform(Transform):
                                            items_dict['DRUG_NAME'],
                                            drug_node_type])
 
-                # gene - ['id', 'name', 'category']
                 write_node_edge_item(fh=node,
                                      header=self.node_header,
                                      data=[gene_id,
