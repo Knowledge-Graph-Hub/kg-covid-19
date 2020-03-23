@@ -1,21 +1,21 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
 import os
 
 """
-Example script to transform downloaded data into a graph format that KGX can
-ingest directly, in either TSV or JSON format:
-https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md
+Example script to transform downloaded data into a graph format that KGX can ingest directly, in either TSV or JSON 
+format: https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md
 
-Input: any file in data/raw/ (that was downloaded by placing a URL in incoming.txt/yaml
-and running `run.py download`
-
+Input: any file in data/raw/ (that was downloaded by placing a URL in incoming.txt/yaml and running `run.py download`
 Output: transformed data in data/raw/[source name]:
 
 Either TSV, output these two files:
-nodes.tsv
-edges.tsv
+- nodes.tsv
+- edges.tsv
 
-Or JSON, all in one file:
-nodes_edges.json
+Or JSON, all in one file: nodes_edges.json
 """
 
 
