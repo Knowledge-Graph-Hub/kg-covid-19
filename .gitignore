@@ -112,3 +112,4 @@ var/
 venv.bak/
 venv/
 wheels/
+.idea/*
