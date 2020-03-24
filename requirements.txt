@@ -1,1 +1,1 @@
-git+git://github.com/NCATS-Tangerine/kgx.git
+git+git://github.com/LucaCappelletti94/kgx.git
