@@ -60,7 +60,7 @@ setup(
 
     # add package dependencies
     install_requires=[
-        'kgx',
+        'git+git://github.com/NCATS-Tangerine/kgx.git',
         'tqdm',
         'encodeproject',
         'tabula-py'
