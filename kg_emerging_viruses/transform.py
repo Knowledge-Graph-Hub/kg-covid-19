@@ -25,8 +25,8 @@ def transform(input_dir: str, output_dir: str) -> None:
 
     zhou_transform()
 
-    # dct = DrugCentralTransform()
-    # dct.run()
+    dct = DrugCentralTransform()
+    dct.run()
 
     string_ppi = StringTransform()
     string_ppi.run()
