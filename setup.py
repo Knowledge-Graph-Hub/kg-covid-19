@@ -57,13 +57,12 @@ setup(
     ],
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     tests_require=test_deps,
-
     # add package dependencies
     install_requires=[
-        'kgx',
         'tqdm',
         'encodeproject',
-        'tabula-py'
+        'tabula-py',
+        'parameterized'
     ],
     extras_require=extras,
 )

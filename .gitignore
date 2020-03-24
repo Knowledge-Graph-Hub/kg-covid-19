@@ -45,7 +45,6 @@
 *.sage.py
 *.so
 *.spec
-data
 .DS_Store
 .Python
 .cache
@@ -115,6 +114,7 @@ wheels/
 .idea/*
 
 # ignore data directory
+/tests/data
 /data/*
 !/data/.gitkeep
 !/data/transformed/.gitkeep

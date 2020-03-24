@@ -2,7 +2,7 @@ import os
 from unittest import TestCase
 
 from parameterized import parameterized
-from kg_emerging_viruses.transform.transform import Transform
+from kg_emerging_viruses.transform_utils.transform import Transform
 
 
 class TestTransform(TestCase):

@@ -71,7 +71,7 @@ def write_node_edge_item(fh: Any, header: List, data: List, sep: str = '\t') -> 
     return None
 
 
-def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> Union[str, None]:
+def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
     """Retrieve item from a dict using a list of keys, in descending order of priority
 
     :param items_dict:
@@ -85,5 +85,6 @@ def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> Union[str,
             value = items_dict[key]
             break
     if value is None:
-        foo = 1
+        logging.warning("Can't find item in items_dict {}".format(items_dict))
+        raise Exception("Can't find item in items_dict {}".format(items_dict))
     return value

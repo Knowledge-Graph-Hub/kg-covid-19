@@ -31,8 +31,8 @@ get slightly different results, here's three of them:
 |coveralls| |sonar_coverage| |code_climate_coverage|
 
 
-.. |travis| image:: https://travis-ci.org/justaddcoffee/kg-emerging-viruses.png
-   :target: https://travis-ci.org/justaddcoffee/kg-emerging-viruses
+.. |travis| image:: https://travis-ci.org/Knowledge-Graph-Hub/kg-covid-19.svg
+   :target: https://travis-ci.org/github/Knowledge-Graph-Hub/kg-covid-19
    :alt: Travis CI build
 
 .. |sonar_quality| image:: https://sonarcloud.io/api/project_badges/measure?project=justaddcoffee_kg-emerging-viruses&metric=alert_status
