@@ -1,1 +1,4 @@
 git+git://github.com/NCATS-Tangerine/kgx.git
+tqdm
+encodeproject
+tabula-py

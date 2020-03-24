@@ -60,6 +60,7 @@ setup(
 
     # add package dependencies
     install_requires=[
+        'kgx',
         'tqdm',
         'encodeproject',
         'tabula-py'
