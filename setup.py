@@ -61,7 +61,8 @@ setup(
     install_requires=[
         'tqdm',
         'encodeproject',
-        'tabula-py'
+        'tabula-py',
+        'parameterized'
     ],
     extras_require=extras,
 )
