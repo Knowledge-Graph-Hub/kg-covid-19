@@ -5,7 +5,7 @@ git:
 addons:
   apt:
     packages:
-      - oracle-java8-set-default
+      - oracle-java9-set-default
   sonarcloud:
     organization: "justaddcoffee"
     token:
