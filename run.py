@@ -13,7 +13,7 @@ def cli():
 
 
 @cli.command()
-@click.option("yaml_file", "-f", required=True, default="download.yaml", type=click.Path(exists=True))
+@click.option("yaml_file", "-y", required=True, default="download.yaml", type=click.Path(exists=True))
 @click.option("output_dir", "-o", required=True, default="data/raw")
 def download(*args, **kwargs) -> None:
     """Downloads data files from list of URLs (default: download.yaml) into data directory (default: data/).
