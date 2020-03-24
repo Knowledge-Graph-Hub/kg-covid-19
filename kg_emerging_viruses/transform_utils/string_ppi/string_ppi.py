@@ -5,8 +5,6 @@ from typing import Dict, List
 from kg_emerging_viruses.transform_utils.transform import Transform
 from kg_emerging_viruses.utils.transform_utils import write_node_edge_item, get_item_by_priority
 
-from encodeproject import download as encode_download
-
 
 """
 Ingest protein-protein interactions from STRING DB.
@@ -61,7 +59,6 @@ class StringTransform(Transform):
         self.edge_header = edge_core_header + edge_additional_headers
         relation = 'RO:0002434'
         seen = []
-        protein_to_gene_map = {}
 
         with open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge, \
