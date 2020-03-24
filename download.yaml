@@ -23,5 +23,10 @@
 -
   # drug - target interactions from Drug Central
   url: http://unmtid-shinyapps.net/download/drug.target.interaction.tsv.gz
+  local_name: drug.target.interaction.tsv.gz
 
-
+  # PPI from STRING DB
+  # This is protein network data (incl. distinction: direct vs. interologs)
+  # constrained to just human interactions.
+  url: https://stringdb-static.org/download/protein.links.full.v11.0/9606.protein.links.full.v11.0.txt.gz
+  local_name: 9606.protein.links.full.v11.0.txt.gz

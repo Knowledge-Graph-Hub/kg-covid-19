@@ -4,6 +4,7 @@
 
 from kg_emerging_viruses.transform_utils import zhou_transform
 from kg_emerging_viruses.transform_utils.drug_central.drug_central import DrugCentralTransform
+from kg_emerging_viruses.transform_utils.string_ppi import StringTransform
 
 
 def transform(input_dir: str, output_dir: str) -> None:
@@ -24,7 +25,8 @@ def transform(input_dir: str, output_dir: str) -> None:
 
     zhou_transform()
 
-    dct = DrugCentralTransform()
-    dct.run()
-    
-    return None
+    # dct = DrugCentralTransform()
+    # dct.run()
+
+    string_ppi = StringTransform()
+    string_ppi.run()
