@@ -17,6 +17,7 @@ before_install:
 - pip install --upgrade pytest
 - pip install --upgrade mypy
 - pip install --upgrade pylint
+- pip install bmt
 - pip install -r requirements.txt
 install:
 - pip install .[test]
