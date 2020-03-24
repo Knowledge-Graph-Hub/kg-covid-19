@@ -57,10 +57,8 @@ setup(
     ],
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     tests_require=test_deps,
-
     # add package dependencies
     install_requires=[
-        'git+git://github.com/NCATS-Tangerine/kgx.git@master#egg=kgx',
         'tqdm',
         'encodeproject',
         'tabula-py'
