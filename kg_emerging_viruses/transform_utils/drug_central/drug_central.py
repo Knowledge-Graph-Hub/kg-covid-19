@@ -41,9 +41,10 @@ class DrugCentralTransform(Transform):
 
         interactions_file = os.path.join(self.input_base_dir, "drug.target.interaction.tsv.gz")
         os.makedirs(self.output_dir, exist_ok=True)
-        drug_node_type = "Drug"
-        gene_node_type = "Gene"
-        drug_gene_edge_label = "affects"
+        drug_node_type = "biolink:Drug"
+        gene_node_type = "biolink:Gene"
+        drug_gene_edge_label = "biolink:interacts_with"
+        drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'comment']
 
         with open(self.output_node_file, 'w') as node, \
@@ -95,7 +96,7 @@ class DrugCentralTransform(Transform):
                                      data=[drug_id,
                                            drug_gene_edge_label,
                                            gene_id,
-                                           drug_gene_edge_label,
+                                           drug_gene_edge_relation,
                                            items_dict['ACT_COMMENT']])
 
         return None
