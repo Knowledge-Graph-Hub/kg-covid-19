@@ -31,7 +31,7 @@ get slightly different results, here's three of them:
 |coveralls| |sonar_coverage| |code_climate_coverage|
 
 
-.. |travis| image:: https://travis-ci.org/github/Knowledge-Graph-Hub/kg-covid-19.png
+.. |travis| image:: https://travis-ci.org/Knowledge-Graph-Hub/kg-covid-19.svg
    :target: https://travis-ci.org/github/Knowledge-Graph-Hub/kg-covid-19
    :alt: Travis CI build
 
