@@ -37,9 +37,9 @@ class StringTransform(Transform):
         super().__init__(source_name="STRING")
         self.input_dir = input_dir
         self.output_dir = output_dir
-        self.protein_gene_map = {}
-        self.gene_info_map = {}
-        self.ensembl2ncbi_map = {}
+        self.protein_gene_map: Dict[str, str] = {}
+        self.gene_info_map: Dict[str, str] = {}
+        self.ensembl2ncbi_map: Dict[str, str] = {}
         self.load_mapping(input_dir, output_dir, ['9606'])
         self.load_gene_info(input_dir, output_dir, ['9606'])
 
