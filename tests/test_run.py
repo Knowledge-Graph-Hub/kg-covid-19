@@ -1,6 +1,3 @@
-import requests
-import kg_emerging_viruses
-
 from unittest import TestCase, skip
 from click.testing import CliRunner
 from unittest import mock
@@ -8,7 +5,6 @@ from kg_emerging_viruses import download
 
 from run import transform
 from run import download
-from tests.resources.mock_download import mocked_requests_get
 
 
 class TestRun(TestCase):
@@ -16,7 +12,7 @@ class TestRun(TestCase):
     def setUp(self) -> None:
         self.runner = CliRunner()
 
-    @mock.patch('requests.get', side_effect=mocked_requests_get)
+    @mock.patch('requests.get')
     def test_download(self, mock_get):
         result = self.runner.invoke(cli=download,
                                     args=['-y', 'resources/download.yaml'])
