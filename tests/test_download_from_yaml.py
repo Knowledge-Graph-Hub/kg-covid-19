@@ -27,4 +27,8 @@ class TestRun(TestCase):
         self.assertTrue(os.path.exists(self.tempdir))
         self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'test_1234.pdf')))
 
-
+    @mock.patch('requests.get')
+    def test_different_local_name(self, mock_get) -> None:
+        download_from_yaml(yaml_file='resources/download_diff_local_name.yaml',
+                           output_dir=self.tempdir)
+        self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'different.pdf')))
