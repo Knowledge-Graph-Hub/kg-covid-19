@@ -1,11 +1,10 @@
 from unittest import TestCase, skip
 from click.testing import CliRunner
 from unittest import mock
-from kg_emerging_viruses import download
 
 from run import transform
 from run import download
-
+import tempfile
 
 class TestRun(TestCase):
     """Tests the run.py script."""
