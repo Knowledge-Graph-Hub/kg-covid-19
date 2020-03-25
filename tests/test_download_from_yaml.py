@@ -4,7 +4,7 @@ from unittest import TestCase, mock
 from kg_emerging_viruses.utils import download_from_yaml
 
 
-class TestRun(TestCase):
+class TestDownloadFromYaml(TestCase):
     """Tests kg_emerging_viruses.download
     """
 

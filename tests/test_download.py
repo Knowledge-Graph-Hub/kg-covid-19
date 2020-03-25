@@ -2,7 +2,7 @@ from unittest import TestCase, mock
 from kg_emerging_viruses import download
 
 
-class TestRun(TestCase):
+class TestDownload(TestCase):
     """Tests kg_emerging_viruses.download
     """
     def setUp(self) -> None:

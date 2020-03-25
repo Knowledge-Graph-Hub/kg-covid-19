@@ -4,7 +4,7 @@ from unittest import mock
 
 from run import transform
 from run import download
-import tempfile
+
 
 class TestRun(TestCase):
     """Tests the run.py script."""
