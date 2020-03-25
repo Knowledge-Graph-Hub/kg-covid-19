@@ -10,7 +10,7 @@ class TestDownload(TestCase):
 
     @mock.patch('requests.get')
     def test_download(self, mock_get):
-        download(yaml_file='resources/download.yaml', output_dir="fakedir")
+        download(yaml_file='tests/resources/download.yaml', output_dir="fakedir")
         self.assertTrue(mock_get.called)
 
 

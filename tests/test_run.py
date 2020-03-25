@@ -14,13 +14,13 @@ class TestRun(TestCase):
     @mock.patch('requests.get')
     def test_download(self, mock_get):
         result = self.runner.invoke(cli=download,
-                                    args=['-y', 'resources/download.yaml'])
+                                    args=['-y', 'tests/resources/download.yaml'])
         # this really just makes sure request.get get called somewhere downstream
         self.assertTrue(mock_get.called)
 
     @skip
     def test_transform(self):
         result = self.runner.invoke(cli=transform,
-                                    args=['-i', 'data/raw'])
+                                    args=['-i', 'tests/data/raw'])
         self.assertEqual(result.exit_code, 0)
 
