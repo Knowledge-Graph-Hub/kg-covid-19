@@ -4,7 +4,7 @@
 
 import os
 
-from kg_emerging_viruses.transform_utils.transform import Transform
+from kg_covid_19.transform_utils.transform import Transform
 
 """
 Example script to transform downloaded data into a graph format that KGX can ingest directly, in either TSV or JSON 

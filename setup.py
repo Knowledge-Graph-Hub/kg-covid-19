@@ -24,7 +24,7 @@ def find_version(*file_paths):
     raise RuntimeError('Unable to find version string.')
 
 
-__version__ = find_version('kg_emerging_viruses', '__version__.py')
+__version__ = find_version('kg_covid_19', '__version__.py')
 
 test_deps = [
     'pytest',
@@ -39,7 +39,7 @@ extras = {
 }
 
 setup(
-    name='kg_emerging_viruses',
+    name='kg_covid_19',
     version=__version__,
     description='KG hub for emerging viruses',
     long_description=long_description,

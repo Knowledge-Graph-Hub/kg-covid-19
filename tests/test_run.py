@@ -2,7 +2,7 @@ from unittest import TestCase, skip
 from click.testing import CliRunner
 from mock import patch
 
-import kg_emerging_viruses
+import kg_covid_19
 
 from run import transform
 from run import download
@@ -19,7 +19,7 @@ class TestRun(TestCase):
         # to kg_download() in run.download()
         result = self.runner.invoke(cli=download,
                                     args=['-y', 'tests/resources/download.yaml'])
-        self.assertTrue(kg_emerging_viruses.download.called, True)
+        self.assertTrue(kg_covid_19.download.called, True)
         self.assertEqual(result.exit_code, 0)
 
     @skip
@@ -27,6 +27,6 @@ class TestRun(TestCase):
         # TODO: Likewise, need to mock/path kg_transform() in run.transform()
         result = self.runner.invoke(cli=transform,
                                     args=['-i', 'tests/data/raw'])
-        self.assertTrue(kg_emerging_viruses.transform.called, True)
+        self.assertTrue(kg_covid_19.transform.called, True)
         self.assertEqual(result.exit_code, 0)
 

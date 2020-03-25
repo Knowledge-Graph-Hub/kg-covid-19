@@ -30,12 +30,12 @@ after_script:
 script:
 - rm -rf .coverage
 - coverage erase
-- pytest --cov=kg_emerging_viruses --cov-report xml:coverage.xml 
+- pytest --cov=kg_covid_19 --cov-report xml:coverage.xml
 - coverage combine --append || true
 - coverage report
 - coverage xml
-- python -m pylint --errors-only --exit-zero kg_emerging_viruses
-- mypy --strict-optional kg_emerging_viruses
+- python -m pylint --errors-only --exit-zero kg_covid_19
+- mypy --strict-optional kg_covid_19
 - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner; fi' # sonar only on non-PRs
 
 after_success:

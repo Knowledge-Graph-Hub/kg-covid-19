@@ -1,4 +1,4 @@
-from kg_emerging_viruses.__version__ import __version__
+from kg_covid_19.__version__ import __version__
 from validate_version_code import validate_version_code
 
 
