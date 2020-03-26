@@ -5,13 +5,9 @@
 # 'local_name' is optional, use to avoid name collisions
 #
 #  -
-#    # brief comment about file
+#    # brief comment about file, and optionally a local_name:
 #    url: http://curefordisease.org/some_data.txt
-
-
-# Here is a crowd-sourced list of data sources, which may be useful in selecting
-# more stuff to put in this file
-# https://docs.google.com/spreadsheets/d/1eMhot7MjusyM7_2IBnzqi7RlzWWoYnfheWhMgDlPToQ/edit?ts=5e6fe5fb#gid=0
+#    local_name: some_data_more_chars_prevent_name_collision.pdf
 
 ---
 -
@@ -25,6 +21,7 @@
   url: http://unmtid-shinyapps.net/download/drug.target.interaction.tsv.gz
   local_name: drug.target.interaction.tsv.gz
 
+-
   # PPI from STRING DB
   # This is protein network data (incl. distinction: direct vs. interologs)
   # constrained to just human interactions.
