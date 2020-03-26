@@ -14,6 +14,7 @@ class TestTransform(TestCase):
         self.assertEqual(1,1)
 
     @parameterized.expand([
+        ('source_name', 'test_transform'),
         ('node_header', ['id', 'name', 'category']),
         ('edge_header',
          ['subject', 'edge_label', 'object', 'relation', 'publications']),
