@@ -40,8 +40,10 @@ def download_from_yaml(yaml_file: str, output_dir: str,
             )
             if path.exists(outfile):
                 if ignore_cache:
+                    logging.info("Deleting cached version of {}".format(outfile))
                     os.remove(outfile)
                 else:
+                    logging.info("Using cached version of {}".format(outfile))
                     continue
 
             encode_download(url=item['url'], path=outfile)
