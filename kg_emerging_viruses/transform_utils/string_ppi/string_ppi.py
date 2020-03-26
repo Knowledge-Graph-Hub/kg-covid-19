@@ -1,6 +1,6 @@
 import gzip
 import os
-from typing import Dict, List
+from typing import Dict, List, Any
 
 from kg_emerging_viruses.transform_utils.transform import Transform
 from kg_emerging_viruses.utils.transform_utils import write_node_edge_item, get_item_by_priority
@@ -37,9 +37,9 @@ class StringTransform(Transform):
         super().__init__(source_name="STRING")
         self.input_dir = input_dir
         self.output_dir = output_dir
-        self.protein_gene_map: Dict[str, str] = {}
-        self.gene_info_map: Dict[str, str] = {}
-        self.ensembl2ncbi_map: Dict[str, str] = {}
+        self.protein_gene_map: Dict[str, Any] = {}
+        self.gene_info_map: Dict[str, Any] = {}
+        self.ensembl2ncbi_map: Dict[str, Any] = {}
         self.load_mapping(input_dir, output_dir, ['9606'])
         self.load_gene_info(input_dir, output_dir, ['9606'])
 
