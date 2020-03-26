@@ -5,6 +5,7 @@
 from kg_covid_19.transform_utils import zhou_transform
 from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTransform
 from kg_covid_19.transform_utils.string_ppi import StringTransform
+from kg_covid_19.transform_utils.zhou_host_proteins.zhou_transform import ZhouTransform
 
 
 def transform(input_dir: str, output_dir: str) -> None:
@@ -21,9 +22,8 @@ def transform(input_dir: str, output_dir: str) -> None:
     """
 
     # call transform script for each source
-    # TODO: refactor zhou_transform so that it accepts input.
-
-    zhou_transform()
+    zt = ZhouTransform()
+    zt.run()
 
     dct = DrugCentralTransform()
     dct.run()
