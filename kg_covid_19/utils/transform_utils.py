@@ -6,6 +6,16 @@ import logging
 from typing import Any, Dict, List, Union
 
 
+class TransformError(Exception):
+    """Base class for other exceptions"""
+    pass
+
+
+class ItemInDictNotFound(TransformError):
+    """Raised when the input value is too small"""
+    pass
+
+
 # TODO: option to further refine typing of method arguments below.
 
 def multi_page_table_to_list(multi_page_table: Any) -> List[Dict]:
@@ -86,5 +96,5 @@ def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
             break
     if value is None:
         logging.warning("Can't find item in items_dict {}".format(items_dict))
-        raise Exception("Can't find item in items_dict {}".format(items_dict))
+        raise ItemInDictNotFound("Can't find item in items_dict {}".format(items_dict))
     return value

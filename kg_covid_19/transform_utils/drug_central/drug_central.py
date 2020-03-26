@@ -9,24 +9,16 @@ import os
 from typing import Dict, List
 
 from kg_covid_19.transform_utils.transform import Transform
-from kg_covid_19.utils.transform_utils import write_node_edge_item, get_item_by_priority
+from kg_covid_19.utils.transform_utils import write_node_edge_item, \
+    get_item_by_priority, ItemInDictNotFound
 
 """
 Ingest drug - drug target interactions from Drug Central
-https://www.nature.com/articles/s41421-020-0153-3
 
-GitHub Issue: https://github.com/kg-emerging-viruses/kg-emerging-viruses/issues/5
+Essentially just ingests and transforms this file:
+http://unmtid-shinyapps.net/download/drug.target.interaction.tsv.gz
 
-
-Write node and edge headers that look something like:
-
-Node: 
-id  name    category
-gene:1234   TBX4    Gene 
-
-Edge: 
-subject edge_label  object   relation
-gene:1234  contributes_to_condition    MONDO:0005002   RO:0003304
+And extracts Drug -> Gene interactions
 """
 
 
@@ -60,9 +52,9 @@ class DrugCentralTransform(Transform):
                 items_dict = parse_drug_central_line(line, header_items)
 
                 # get gene ID
-                gene_id = get_item_by_priority(items_dict, ['ACCESSION'])
-
-                if gene_id is None:
+                try:
+                    gene_id = get_item_by_priority(items_dict, ['ACCESSION'])
+                except ItemInDictNotFound:
                     # lines with no ACCESSION entry only contain drug info, no target
                     # info - not ingesting these
                     logging.info(
