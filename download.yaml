@@ -3,27 +3,49 @@
 
 # To add a new item to be download, add a block like this - must have 'url',
 # 'local_name' is optional, use to avoid name collisions
-#
+
+#  #
+#  # Description of source
+#  #
 #  -
 #    # brief comment about file, and optionally a local_name:
 #    url: http://curefordisease.org/some_data.txt
 #    local_name: some_data_more_chars_prevent_name_collision.pdf
 
 ---
+#
+#  Zhou host proteins - viral protein interactions
+#  Data from "Network-based drug repurposing for novel coronavirus 2019-nCoV/SARS-CoV-2"
+#  https://doi.org/10.1038/s41421-020-0153-3
 -
-  # Supplementary data from "Network-based drug repurposing for novel coronavirus 2019-nCoV/SARS-CoV-2"
+  # Supplementary data containing viral protein -> host protein interactions
   # https://doi.org/10.1038/s41421-020-0153-3
   url: https://static-content.springer.com/esm/art%3A10.1038%2Fs41421-020-0153-3/MediaObjects/41421_2020_153_MOESM1_ESM.pdf
   local_name: 41421_2020_153_MOESM1_ESM.pdf
 
+#
+# Drug Central
+#
 -
   # drug - target interactions from Drug Central
   url: http://unmtid-shinyapps.net/download/drug.target.interaction.tsv.gz
   local_name: drug.target.interaction.tsv.gz
 
+#
+# PPI from STRING DB
+#
 -
-  # PPI from STRING DB
   # This is protein network data (incl. distinction: direct vs. interologs)
   # constrained to just human interactions.
   url: https://stringdb-static.org/download/protein.links.full.v11.0/9606.protein.links.full.v11.0.txt.gz
   local_name: 9606.protein.links.full.v11.0.txt.gz
+
+-
+  # gene to ensembl IDs
+  url: https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2ensembl.gz
+  local_name: gene2ensembl.gz
+
+-
+  # gene info
+  urL: https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz
+  local_name: gene_info.gz
