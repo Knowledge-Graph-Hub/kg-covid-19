@@ -12,7 +12,8 @@ class TestDownloadFromYaml(TestCase):
     def setUp(self, mock_get) -> None:
         self.mock_get = mock_get
         self.tempdir = tempfile.mkdtemp()
-        download_from_yaml(yaml_file='tests/resources/download.yaml', output_dir=self.tempdir)
+        self.test_yaml_file = 'tests/resources/download.yaml'
+        download_from_yaml(yaml_file=self.test_yaml_file, output_dir=self.tempdir)
 
     def test_request_call_args(self) -> None:
         # should call URL we specified in yaml
@@ -36,12 +37,7 @@ class TestDownloadFromYaml(TestCase):
     @mock.patch('requests.get')
     def test_ignore_cache_false(self, mock_get) -> None:
         self.mock_get = mock_get
-        # first make sure the file exists
-        self.assertTrue(os.path.isfile(os.path.join(self.tempdir, 'test_1234.pdf')),
-                                       msg="file to be downloaded doesn't already exist"
-                                           "while testing ignore_cache, this test isn't"
-                                           "going to work ")
-        download_from_yaml(yaml_file='tests/resources/download.yaml',
+        download_from_yaml(yaml_file=self.test_yaml_file,
                            output_dir=self.tempdir,
                            ignore_cache=True)
         self.assertTrue(self.mock_get.called)
@@ -49,12 +45,7 @@ class TestDownloadFromYaml(TestCase):
     @mock.patch('requests.get')
     def test_ignore_cache_true(self, mock_get) -> None:
         self.mock_get = mock_get
-        # first make sure the file exists
-        self.assertTrue(os.path.isfile(os.path.join(self.tempdir, 'test_1234.pdf')),
-                                       msg="file to be downloaded doesn't already exist"
-                                           "while testing ignore_cache, this test isn't"
-                                           "going to work ")
-        download_from_yaml(yaml_file='tests/resources/download.yaml',
+        download_from_yaml(yaml_file=self.test_yaml_file,
                            output_dir=self.tempdir,
                            ignore_cache=False)
         self.assertTrue(not self.mock_get.called)
