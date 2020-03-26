@@ -28,5 +28,5 @@ def transform(input_dir: str, output_dir: str) -> None:
     dct = DrugCentralTransform()
     dct.run()
 
-    string_ppi = StringTransform()
+    string_ppi = StringTransform(input_dir, output_dir)
     string_ppi.run()
