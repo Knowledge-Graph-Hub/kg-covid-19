@@ -1,4 +1,4 @@
-dist: trusty
+dist: xenial
 git:
   depth: false
 addons:
@@ -11,7 +11,7 @@ addons:
       secure: Uw/F4E7ZsnAni7KxX4kFw+Xq0iZ7pveGAEAzb+BRfBk80Hv94Ptq1fztTjAEG9mcNU9+5MJS7YMEc2YDS3dftWHfMHhu7/eg12dMHDwmlmWxMNC/nOgQASSQdJTxU6VdCmjds1pW97nkwlJl8hKy4TPR+Ll7ll4Ha4Yx+02JrzCzQA5syG8agY4zT0ybuBjF+a3ZnTdOrJIhi4PNf6+KbmLmUZqj+PbFpOUQnxHIP2r9XcmlVZR/okVz3eTTat0LIIzVArxcepA+veewxyg4Io/qJBqtAfwQTN/18GlyHfjE5CgfZua7BV/CH7picN3tAOp2Mwt/xnzO+ZJe1Plt/vApZfUhv7J7YkSxwWYtHOqEgcS5mlfvaQ1mnFgyzXZPdWc6gQbw1EQRmNBCpSpbJJo59Fy3kCmyRMre7cyAmHYMloFXlWIKrBk7/eE7hGDaivu6knMBwZ4eCFCZrmYayZeF8l+KXkDRXDrCEMp92AhU+TQTkSyAXnl4xpJwxOimU0Yy0X414cHx/3w7X7i6bHdIMrIvy9qSPIwNtsdcmNPg8/VlPzpbVC6G5qhs9HFRjVexuoXYogfU7sVqxhOK3kpJ1TVMylgUp2Xdqy+uR8g7n+teUq1Rgb8WnoQ0YSbbhrC61FDeY1/bykiz9DcN0A9wHjvaDRnxujTbC1h28Gk=
 language: python
 python:
-- '3.6'
+- '3.7'
 before_install:
 - pip install --upgrade pytest
 - pip install --upgrade mypy
