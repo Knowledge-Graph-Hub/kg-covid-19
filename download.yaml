@@ -47,5 +47,5 @@
 
 -
   # gene info
-  urL: https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz
+  url: https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz
   local_name: gene_info.gz

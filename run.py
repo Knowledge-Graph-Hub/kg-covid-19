@@ -15,8 +15,11 @@ def cli():
 @cli.command()
 @click.option("yaml_file", "-y", required=True, default="download.yaml", type=click.Path(exists=True))
 @click.option("output_dir", "-o", required=True, default="data/raw")
+@click.option("ignore_cache", "-i", is_flag=True, default=False,
+              help='ignore cache and download files even if they exist [false]')
 def download(*args, **kwargs) -> None:
-    """Downloads data files from list of URLs (default: download.yaml) into data directory (default: data/).
+    """Downloads data files from list of URLs (default: download.yaml) into data
+    directory (default: data/raw).
 
     Returns:
         None.
@@ -31,9 +34,8 @@ def download(*args, **kwargs) -> None:
 @click.option("input_dir", "-i", default="data/raw", type=click.Path(exists=True))
 @click.option("output_dir", "-o", default="data/transformed")
 def transform(*args, **kwargs) -> None:
-    """Calls scripts in kg_covid_19/transform/[source name]/ to transform each source into a graph format that
-    KGX can ingest directly, in either TSV or JSON format:
-    https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md
+    """Calls scripts in kg_covid_19/transform/[source name]/ to transform each source
+    into nodes and edges
 
     Returns:
         None.

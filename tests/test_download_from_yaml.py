@@ -32,3 +32,29 @@ class TestDownloadFromYaml(TestCase):
         download_from_yaml(yaml_file='tests/resources/download_diff_local_name.yaml',
                            output_dir=self.tempdir)
         self.assertTrue(os.path.exists(os.path.join(self.tempdir, 'different.pdf')))
+
+    @mock.patch('requests.get')
+    def test_ignore_cache_false(self, mock_get) -> None:
+        self.mock_get = mock_get
+        # first make sure the file exists
+        self.assertTrue(os.path.isfile(os.path.join(self.tempdir, 'test_1234.pdf')),
+                                       msg="file to be downloaded doesn't already exist"
+                                           "while testing ignore_cache, this test isn't"
+                                           "going to work ")
+        download_from_yaml(yaml_file='tests/resources/download.yaml',
+                           output_dir=self.tempdir,
+                           ignore_cache=True)
+        self.assertTrue(self.mock_get.called)
+
+    @mock.patch('requests.get')
+    def test_ignore_cache_true(self, mock_get) -> None:
+        self.mock_get = mock_get
+        # first make sure the file exists
+        self.assertTrue(os.path.isfile(os.path.join(self.tempdir, 'test_1234.pdf')),
+                                       msg="file to be downloaded doesn't already exist"
+                                           "while testing ignore_cache, this test isn't"
+                                           "going to work ")
+        download_from_yaml(yaml_file='tests/resources/download.yaml',
+                           output_dir=self.tempdir,
+                           ignore_cache=False)
+        self.assertTrue(not self.mock_get.called)
