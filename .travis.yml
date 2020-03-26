@@ -10,7 +10,7 @@ language: python
 python:
 - '3.7'
 before_install:
-- sudo apt-get install openjdk-9-jdk
+- sudo apt-get install openjdk-9-jdk-headless
 - pip install --upgrade pytest
 - pip install --upgrade mypy
 - pip install --upgrade pylint
