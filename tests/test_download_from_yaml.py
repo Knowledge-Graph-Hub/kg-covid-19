@@ -1,7 +1,7 @@
 import os
 import tempfile
 from unittest import TestCase, mock
-from kg_emerging_viruses.utils import download_from_yaml
+from kg_covid_19.utils import download_from_yaml
 
 
 class TestDownloadFromYaml(TestCase):

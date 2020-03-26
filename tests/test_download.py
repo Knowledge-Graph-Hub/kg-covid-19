@@ -1,5 +1,5 @@
 from unittest import TestCase, mock
-from kg_emerging_viruses import download
+from kg_covid_19 import download
 
 
 class TestDownload(TestCase):
