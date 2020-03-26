@@ -3,8 +3,8 @@
 
 
 import click
-from kg_emerging_viruses import download as kg_download
-from kg_emerging_viruses import transform as kg_transform
+from kg_covid_19 import download as kg_download
+from kg_covid_19 import transform as kg_transform
 
 
 @click.group()
@@ -31,7 +31,7 @@ def download(*args, **kwargs) -> None:
 @click.option("input_dir", "-i", default="data/raw", type=click.Path(exists=True))
 @click.option("output_dir", "-o", default="data/transformed")
 def transform(*args, **kwargs) -> None:
-    """Calls scripts in kg_emerging_viruses/transform/[source name]/ to transform each source into a graph format that
+    """Calls scripts in kg_covid_19/transform/[source name]/ to transform each source into a graph format that
     KGX can ingest directly, in either TSV or JSON format:
     https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md
 
