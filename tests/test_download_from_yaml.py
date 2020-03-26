@@ -5,7 +5,7 @@ from kg_covid_19.utils import download_from_yaml
 
 
 class TestDownloadFromYaml(TestCase):
-    """Tests kg_emerging_viruses.download
+    """Tests download_yaml()
     """
 
     @mock.patch('requests.get')
