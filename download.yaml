@@ -35,6 +35,7 @@
 # PPI from STRING DB
 #
 -
+
   # This is protein network data (incl. distinction: direct vs. interologs)
   # constrained to just human interactions.
   url: https://stringdb-static.org/download/protein.links.full.v11.0/9606.protein.links.full.v11.0.txt.gz
