@@ -35,10 +35,11 @@ for key in cfg['target']:
 
 merged_transformer = Transformer()
 merged_transformer.merge_graphs([x.graph for x in transformers])
+merged_transformer.report()
 
 destination = cfg['destination']
 if destination['type'] in ['csv', 'tsv', 'ttl', 'json', 'tar']:
-    destination_transformer = get_transformer(destination['type'])()
+    destination_transformer = get_transformer(destination['type'])(merged_transformer.graph)
     destination_transformer.save(destination['filename'], extension=destination['type'])
 elif destination['type'] == 'neo4j':
     destination_transformer = NeoTransformer(merged_transformer.graph, uri=destination['uri'], username=destination['username'], password=destination['password'])
