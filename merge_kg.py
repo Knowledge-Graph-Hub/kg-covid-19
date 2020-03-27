@@ -3,7 +3,7 @@ import logging
 import argparse
 import yaml
 
-from kgx import Transformer
+from kgx import Transformer, NeoTransformer
 from kgx.cli.utils import get_file_types, get_transformer
 
 parser = argparse.ArgumentParser(description='A script that uses KGX to merge one or more sources to create a KG, driven by a config YAML.')
@@ -27,7 +27,7 @@ for key in cfg['target']:
             transformer.parse(f, input_format='tsv')
         transformers.append(transformer)
     elif target['type'] == 'neo4j':
-        transformer = kgx.NeoTransformer(None, target['uri'], target['username'],  target['password'])
+        transformer = NeoTransformer(None, target['uri'], target['username'],  target['password'])
         transformer.load()
         transformers.append(transformer)
     else:
@@ -43,7 +43,7 @@ if destination['type'] in ['csv', 'tsv', 'ttl', 'json', 'tar']:
     destination_transformer = get_transformer(destination['type'])()
     destination_transformer.save(destination['filename'], extension=destination['type'])
 elif destination['type'] == 'neo4j':
-    destination_transformer = kgx.NeoTransformer(merged_transformer.graph, uri=destination['uri'], username=destination['username'], password=destination['password'])
+    destination_transformer = NeoTransformer(merged_transformer.graph, uri=destination['uri'], username=destination['username'], password=destination['password'])
     destination_transformer.save_with_unwind()
 else:
     logging.error("type {} not yet supported for KGX load-and-merge operation.".format(destination['type']))
