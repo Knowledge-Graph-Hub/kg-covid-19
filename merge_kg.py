@@ -35,8 +35,6 @@ for key in cfg['target']:
 
 merged_transformer = Transformer()
 merged_transformer.merge_graphs([x.graph for x in transformers])
-print(merged_transformer.graph.nodes(data=True))
-print(merged_transformer.graph.edges(data=True))
 
 destination = cfg['destination']
 if destination['type'] in ['csv', 'tsv', 'ttl', 'json', 'tar']:
