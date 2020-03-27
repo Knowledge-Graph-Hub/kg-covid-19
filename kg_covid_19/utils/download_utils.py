@@ -12,12 +12,14 @@ from tqdm.auto import tqdm  # type: ignore
 from encodeproject import download as encode_download  # type: ignore
 
 
-def download_from_yaml(yaml_file: str, output_dir: str) -> None:
+def download_from_yaml(yaml_file: str, output_dir: str,
+                       ignore_cache: bool = False) -> None:
     """Given an download info from an download.yaml file, download all files
 
     Args:
         yaml_file: A string pointing to the download.yaml file, to be parsed for things to download.
         output_dir: A string pointing to where to write out downloaded files.
+        ignore_cache: Ignore cache and download files even if they exist [false]
 
     Returns:
         None.
@@ -36,9 +38,13 @@ def download_from_yaml(yaml_file: str, output_dir: str) -> None:
                 if 'local_name' in item
                 else item['url'].split("/")[-1]
             )
-
             if path.exists(outfile):
-                os.remove(outfile)
+                if ignore_cache:
+                    logging.info("Deleting cached version of {}".format(outfile))
+                    os.remove(outfile)
+                else:
+                    logging.info("Using cached version of {}".format(outfile))
+                    continue
 
             encode_download(url=item['url'], path=outfile)
 

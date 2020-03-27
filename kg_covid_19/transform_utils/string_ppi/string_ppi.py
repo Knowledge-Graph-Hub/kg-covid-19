@@ -59,9 +59,8 @@ class StringTransform(Transform):
         if not species_id:
             # default to just human
             species_id = ['9606']
-        file_path = os.path.join(input_dir, PROTEIN_MAPPING_FILE)
-        if not os.path.exists(file_path):
-            self.download_file(f"{NCBI_FTP_URL}/{PROTEIN_MAPPING_FILE}", file_path)
+        file_path = os.path.join(self.input_base_dir, PROTEIN_MAPPING_FILE)
+
         with gzip.open(file_path, 'rt') as FH:
             for line in FH:
                 records = line.split('\t')
@@ -92,9 +91,8 @@ class StringTransform(Transform):
         if not species_id:
             # default to just human
             species_id = ['9606']
-        file_path = os.path.join(input_dir, GENE_INFO_FILE)
-        if not os.path.exists(file_path):
-            self.download_file(f"{NCBI_FTP_URL}/{GENE_INFO_FILE}", file_path)
+        file_path = os.path.join(self.input_base_dir, GENE_INFO_FILE)
+
         with gzip.open(file_path, 'rt') as FH:
             for line in FH:
                 records = line.split('\t')
@@ -108,19 +106,6 @@ class StringTransform(Transform):
                 else:
                     self.gene_info_map[ncbi_gene_identifier]['symbol'] = symbol
                     self.gene_info_map[ncbi_gene_identifier]['description'] = description
-
-    def download_file(self, url: str, output_file_path: str) -> None:
-        """Download file from a given URL.
-
-        Args:
-            url: URL for the file to be downloaded.
-            output_file_path: A string that represents the full path where the file should be written to.
-
-        Returns:
-            None.
-
-        """
-        encode_download(url=url, path=output_file_path)
 
     def run(self, data_file: str = None) -> None:
         """Method is called and performs needed transformations to process
