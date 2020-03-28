@@ -1,12 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import logging
 import os
 
-import networkx
 import obonet
-import ontobio as ontobio
-from owlready2 import onto_path, get_ontology
 from typing.io import TextIO
 
 from kg_covid_19.transform_utils.transform import Transform
@@ -33,20 +29,19 @@ class HpoTransform(Transform):
         hpo_node_type = "biolink:OntologyClass"
         hpo_edge_label = "rdfs:subClassOf"
         hpo_ro_relation = "RO:0002351"
+        hpo_obo_file = os.path.join(self.input_base_dir, "hp.obo")
 
         # make directory in data/transformed
         os.makedirs(self.output_dir, exist_ok=True)
 
         # transform data, something like:
-        with open(input_file, 'r') as f, \
-                open(self.output_node_file, 'w') as node, \
-                open(self.output_edge_file, 'w') as edge:
+        with open(self.output_node_file, 'w') as node, \
+             open(self.output_edge_file, 'w') as edge:
 
             # write headers (change default node/edge headers if necessary
             node.write("\t".join(self.node_header) + "\n")
             edge.write("\t".join(self.edge_header) + "\n")
 
-            hpo_obo_file = os.path.join(self.input_base_dir, "hp.obo")
             graph = obonet.read_obo(hpo_obo_file)
 
             for id_, data in graph.nodes(data=True):
