@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import os
 
-import obonet
-from typing.io import TextIO
+import obonet  # type: ignore
+from typing.io import TextIO  # type: ignore
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
