@@ -12,7 +12,7 @@ from kg_covid_19.utils.transform_utils import get_item_by_priority, data_to_dict
 
 """Ingest Human Phenotype Ontology (no annotations for now, just the ontology)
 
-Dataset location: https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.owl
+Dataset location: https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.obo
 GitHub Issue: https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/48
 
 """
