@@ -24,7 +24,6 @@ class HpoTransform(Transform):
         super().__init__(source_name="hpo")
 
     def run(self):
-        input_file = os.path.join(self.input_base_dir, "hp.owl")
         self.node_header.append("comment_or_def")
         hpo_node_type = "biolink:OntologyClass"
         hpo_edge_label = "rdfs:subClassOf"
