@@ -98,3 +98,13 @@ def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
         logging.warning("Can't find item in items_dict {}".format(items_dict))
         raise ItemInDictNotFound("Can't find item in items_dict {}".format(items_dict))
     return value
+
+
+def data_to_dict(these_keys, these_values) -> dict:
+    """Zip up two lists to make a dict
+
+    :param these_keys: keys for new dict
+    :param these_values: values for new dict
+    :return: dictionary
+    """
+    return dict(zip(these_keys, these_values))
