@@ -62,7 +62,8 @@ setup(
         'tqdm',
         'encodeproject',
         'tabula-py',
-        'parameterized'
+        'parameterized',
+        'obonet'
     ],
     extras_require=extras,
 )
