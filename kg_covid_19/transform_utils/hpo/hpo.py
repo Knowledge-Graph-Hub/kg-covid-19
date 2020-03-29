@@ -20,8 +20,10 @@ GitHub Issue: https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/48
 
 class HpoTransform(Transform):
 
-    def __init__(self):
+    def __init__(self, input_dir: str, output_dir: str):
         super().__init__(source_name="hpo")
+        self.input_dir = input_dir
+        self.output_dir = output_dir
 
     def run(self):
         self.node_header.append("comment_or_def")
@@ -65,9 +67,14 @@ class HpoTransform(Transform):
         except ItemInDictNotFound:
             comment_field = "NA"
 
+        try:
+            name_field = get_item_by_priority(data, ['name'])
+        except ItemInDictNotFound:
+            name_field = "NA"
+
         write_node_edge_item(fh=fh, header=self.node_header,
                              data=[id,
-                                   data['name'],
+                                   name_field,
                                    node_type,
                                    comment_field
                                    ])

@@ -95,7 +95,6 @@ def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
             value = items_dict[key]
             break
     if value is None:
-        logging.warning("Can't find item in items_dict {}".format(items_dict))
         raise ItemInDictNotFound("Can't find item in items_dict {}".format(items_dict))
     return value
 
