@@ -51,6 +51,9 @@
   url: https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz
   local_name: gene_info.gz
 
+#
+# Human phenotype ontology (HPO) - no annotations for now
+#
 -
   # HPO obo file
   url: https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.obo
