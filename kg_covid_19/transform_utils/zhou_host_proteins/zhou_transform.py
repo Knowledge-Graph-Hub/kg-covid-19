@@ -30,8 +30,10 @@ gene:1234  contributes_to_condition    MONDO:0005002   RO:0003304
 
 class ZhouTransform(Transform):
 
-    def __init__(self) -> None:
+    def __init__(self, input_dir: str, output_dir: str):
         super().__init__(source_name="zhou_host_proteins")
+        self.input_dir = input_dir
+        self.output_dir = output_dir
 
     def run(self) -> None:
         """Method is called and performs needed transformations to process the zhou host protein data, additional

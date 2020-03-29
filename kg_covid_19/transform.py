@@ -22,10 +22,10 @@ def transform(input_dir: str, output_dir: str) -> None:
     """
 
     # call transform script for each source
-    zt = ZhouTransform()
+    zt = ZhouTransform(input_dir, output_dir)
     zt.run()
 
-    dct = DrugCentralTransform()
+    dct = DrugCentralTransform(input_dir, output_dir)
     dct.run()
 
     string_ppi = StringTransform(input_dir, output_dir)
