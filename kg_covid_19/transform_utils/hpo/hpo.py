@@ -20,10 +20,8 @@ GitHub Issue: https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/48
 
 class HpoTransform(Transform):
 
-    def __init__(self, input_dir: str, output_dir: str):
+    def __init__(self):
         super().__init__(source_name="hpo")
-        self.input_dir = input_dir
-        self.output_dir = output_dir
 
     def run(self):
         self.node_header.append("comment_or_def")

@@ -23,7 +23,7 @@ def transform(input_dir: str, output_dir: str) -> None:
     """
 
     # call transform script for each source
-    hpo = HpoTransform(input_dir, output_dir)
+    hpo = HpoTransform()
     hpo.run()
 
     zt = ZhouTransform()
