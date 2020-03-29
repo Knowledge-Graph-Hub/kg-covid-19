@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-from kg_covid_19.transform_utils import zhou_transform
+from kg_covid_19.transform_utils.zhou_host_proteins import zhou_transform
 from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTransform
 from kg_covid_19.transform_utils.hpo.hpo import HpoTransform
 from kg_covid_19.transform_utils.string_ppi import StringTransform
