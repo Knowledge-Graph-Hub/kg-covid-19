@@ -23,9 +23,6 @@ def transform(input_dir: str, output_dir: str) -> None:
     """
 
     # call transform script for each source
-    ttd = TTDTransform()
-    ttd.run()
-
     zt = ZhouTransform()
     zt.run()
 
@@ -35,3 +32,5 @@ def transform(input_dir: str, output_dir: str) -> None:
     string_ppi = StringTransform(input_dir, output_dir)
     string_ppi.run()
 
+    ttd = TTDTransform()
+    ttd.run()

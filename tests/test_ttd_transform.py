@@ -25,10 +25,10 @@ class TestTTD(TestCase):
         self.assertTrue(set(parsed_result["T47101"].keys()) <= set(self.abbreviations))
 
     @parameterized.expand([
-        ['T47101', 'TARGETID', [['T47101']]],
-        ['T47101', 'GENENAME', [['FGFR1']]],
+        ['T47101', 'TARGETID', ['T47101']],
+        ['T47101', 'GENENAME', ['FGFR1']],
         ['T47101', 'DRUGINFO', [['D09HNV', 'Intedanib', 'Approved'],
-                                ['D01PZD', 'Romiplostim', 'Approved']]]
+                                 ['D01PZD', 'Romiplostim', 'Approved']]]
         ])
     def test_parse_ttd_file_values(self, target_id, abbrev, value):
         parsed_result = self.ttd.parse_ttd_file(self.ttd_dl_snippet)
