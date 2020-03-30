@@ -5,6 +5,7 @@ import re
 from collections import defaultdict
 
 from kg_covid_19.transform_utils.transform import Transform
+from kg_covid_19.utils import write_node_edge_item
 
 """Ingest TTD - Therapeutic Targets Database
 # drug targets, and associated data for each (drugs, ids, etc)
@@ -31,6 +32,8 @@ class TTDTransform(Transform):
                                      "P1-01-TTD_target_download.txt")
         ttd_data = self.parse_ttd_file(ttd_file_name)
 
+        gene_node_type = "biolink:Gene"
+
         # transform data, something like:
         with open(self.output_node_file, 'w') as node,\
                 open(self.output_edge_file, 'w') as edge:
@@ -39,9 +42,19 @@ class TTDTransform(Transform):
             node.write("\t".join(self.node_header) + "\n")
             edge.write("\t".join(self.edge_header) + "\n")
 
-            for key, value in ttd_data.items():
-                foo = 1
+            for target_id, data in ttd_data.items():
+                # WRITE NODES
 
+                #
+                # make node for gene
+                #
+                # drug - ['id', 'name', 'category']
+                write_node_edge_item(fh=node,
+                                     header=self.node_header,
+                                     data=[target_id,
+                                           items_dict['DRUG_NAME'],
+                                           gene_node_type
+                                           ])
 
     def parse_ttd_file(self, file: str) -> dict:
         """Parse entire TTD download file (a few megs, not very mem efficient, but
@@ -82,7 +95,7 @@ class TTDTransform(Transform):
                 if abbrev not in parsed_data[target_id]:
                     parsed_data[target_id][abbrev] = []
 
-                parsed_data[target_id][abbrev].extend(data_list)
+                parsed_data[target_id][abbrev].append(data_list)
 
         return parsed_data
 
