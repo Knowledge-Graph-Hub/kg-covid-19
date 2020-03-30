@@ -21,11 +21,12 @@ class TTDTransform(Transform):
         # make directory in data/transformed
         os.makedirs(self.output_dir, exist_ok=True)
 
-        ttd_file_name = os.path.join(self.input_base_dir, "P1-01-TTD_target_download.txt")
+        ttd_file_name = os.path.join(self.input_base_dir,
+                                     "P1-01-TTD_target_download.txt")
+        ttd_data = self.parse_ttd_file(ttd_file_name)
 
         # transform data, something like:
-        with open(ttd_file_name, 'r') as ttd_file, \
-                open(self.output_node_file, 'w') as node, \
+        with open(self.output_node_file, 'w') as node,\
                 open(self.output_edge_file, 'w') as edge:
 
             # write headers (change default node/edge headers if necessary
@@ -65,5 +66,8 @@ class TTDTransform(Transform):
         :param file
         :return: dict of dicts of lists
         """
-        return dict()
+        return_value = dict()
+        return_value["T47101"] = 'TARGETID'
+        return_value["T59328"] = 'UNIPROID'
+        return return_value
 
