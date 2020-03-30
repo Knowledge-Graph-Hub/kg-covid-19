@@ -39,7 +39,9 @@ class TTDTransform(Transform):
             node.write("\t".join(self.node_header) + "\n")
             edge.write("\t".join(self.edge_header) + "\n")
 
-            foo = 1
+            for key, value in ttd_data.items():
+                foo = 1
+
 
     def parse_ttd_file(self, file: str) -> dict:
         """Parse entire TTD download file (a few megs, not very mem efficient, but
@@ -72,15 +74,15 @@ class TTDTransform(Transform):
                 if seen_dashed_lines < 2 or blank_line_re.match(line):
                     continue
 
-                (field1, field2, field3) = self.parse_line(line)
+                (target_id, abbrev, data_list) = self.parse_line(line)
 
-                if field1 not in parsed_data:
-                    parsed_data[field1] = dict()
+                if target_id not in parsed_data:
+                    parsed_data[target_id] = dict()
 
-                if field2 not in parsed_data[field1]:
-                    parsed_data[field1][field2] = []
+                if abbrev not in parsed_data[target_id]:
+                    parsed_data[target_id][abbrev] = []
 
-                parsed_data[field1][field2].append(field3)
+                parsed_data[target_id][abbrev].extend(data_list)
 
         return parsed_data
 
