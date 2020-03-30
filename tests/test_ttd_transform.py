@@ -22,16 +22,21 @@ class TestTTD(TestCase):
         parsed_result = self.ttd.parse_ttd_file(self.ttd_dl_snippet)
         self.assertTrue(isinstance(parsed_result, dict))
         self.assertCountEqual(parsed_result.keys(), ["T47101", "T59328"])
-        self.assertTrue(set(parsed_result.values()) <= set(self.abbreviations))
+        self.assertTrue(set(parsed_result["T47101"].keys()) <= set(self.abbreviations))
 
     @parameterized.expand([
-        ['T47101', 'TARGETID', 'T47101'],
-        ['T47101', 'GENENAME', 'FGFR1'],
-        ['T47101', 'DRUGINFO', ['D09HNV', 'Intedanib', 'Approved']]
+        ['T47101', 'TARGETID', [['T47101']]],
+        ['T47101', 'GENENAME', [['FGFR1']]],
+        ['T47101', 'DRUGINFO', [
+            ['D09HNV', 'Intedanib', 'Approved'],
+            ['D01PZD', 'Romiplostim', 'Approved']
+        ]]
     ])
     def test_parse_ttd_file_values(self, target_id, abbrev, value):
         parsed_result = self.ttd.parse_ttd_file(self.ttd_dl_snippet)
-        self.assertEqual(parsed_result.get(target_id).get(abbrev), value)
+        self.assertCountEqual(parsed_result.get(target_id).get(abbrev), value,
+                              "Problem in parse_ttd_file for {} {} {}".
+                              format(target_id, abbrev, value))
 
     def test_run(self) -> None:
         self.assertTrue(isinstance(getattr(self.ttd, "run"), types.MethodType))
