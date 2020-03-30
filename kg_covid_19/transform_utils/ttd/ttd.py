@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import collections
 import logging
 import os
 import re
+from typing import Union, List, Dict, Any
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
@@ -132,7 +134,7 @@ class TTDTransform(Transform):
         :param file
         :return: dict of dicts of lists
         """
-        parsed_data = dict()
+        parsed_data = collections.defaultdict(dict) # type: ignore
 
         # wish they'd make this file easier to parse
         seen_dashed_lines = 0
@@ -180,6 +182,7 @@ class TTDTransform(Transform):
         target_id = fields[0]
         abbrev = fields[1]
 
+        data: Union[List, str]
         if len(fields[2:]) == 1:
             data = fields[2]
         else:
