@@ -39,6 +39,8 @@ class TTDTransform(Transform):
             node.write("\t".join(self.node_header) + "\n")
             edge.write("\t".join(self.edge_header) + "\n")
 
+            foo = 1
+
     def parse_ttd_file(self, file: str) -> dict:
         """Parse entire TTD download file (a few megs, not very mem efficient, but
         should be okay), and return a dict of dicts of lists
@@ -58,8 +60,8 @@ class TTDTransform(Transform):
 
         # wish they'd make this file easier to parse
         seen_dashed_lines = 0
-        dashed_line_re = re.compile('^-+\n')
-        blank_line_re = re.compile('^\s*$')
+        dashed_line_re = re.compile(r'^-+\n')
+        blank_line_re = re.compile(r'^\s*$')
 
         with open(file, 'r') as fh:
             for line in fh:
