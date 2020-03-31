@@ -13,7 +13,9 @@ from kg_covid_19.transform_utils.zhou_host_proteins.zhou_transform import ZhouTr
 DATA_SOURCES = {
     'ZhouTransform': ZhouTransform,
     'DrugCentralTransform': DrugCentralTransform,
-    'StringTransform': StringTransform
+    'HpoTransform': HpoTransform,
+    'TTDTransform': TTDTransform,
+    'StringTransform': StringTransform,
 }
 
 def transform(input_dir: str, output_dir: str, sources: List = None) -> None:
