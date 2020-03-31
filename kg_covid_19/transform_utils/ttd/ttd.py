@@ -25,13 +25,11 @@ class TTDNotEnoughFields(Exception):
 
 class TTDTransform(Transform):
 
-    def __init__(self):
-        super().__init__(source_name="ttd")
+    def __init__(self, input_dir: str = None, output_dir: str = None):
+        source_name = "ttd"
+        super().__init__(source_name, input_dir, output_dir)
 
     def run(self) -> None:
-        # make directory in data/transformed
-        os.makedirs(self.output_dir, exist_ok=True)
-
         self.node_header.append("TTD_ID") # append ttd id for drug targets and drugs
         ttd_file_name = os.path.join(self.input_base_dir,
                                      "P1-01-TTD_target_download.txt")

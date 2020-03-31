@@ -20,8 +20,9 @@ GitHub Issue: https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/48
 
 class HpoTransform(Transform):
 
-    def __init__(self):
-        super().__init__(source_name="hpo")
+    def __init__(self, input_dir: str = None, output_dir: str = None):
+        source_name = "hpo"
+        super().__init__(source_name, input_dir, output_dir)
 
     def run(self):
         self.node_header.extend(["comments", "description"])
@@ -29,9 +30,6 @@ class HpoTransform(Transform):
         hpo_edge_label = "rdfs:subClassOf"
         hpo_ro_relation = "RO:0002351"
         hpo_obo_file = os.path.join(self.input_base_dir, "hp.obo")
-
-        # make directory in data/transformed
-        os.makedirs(self.output_dir, exist_ok=True)
 
         # transform data, something like:
         with open(self.output_node_file, 'w') as node, \

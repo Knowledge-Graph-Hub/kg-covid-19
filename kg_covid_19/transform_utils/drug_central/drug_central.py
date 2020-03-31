@@ -24,8 +24,9 @@ And extracts Drug -> Gene interactions
 
 class DrugCentralTransform(Transform):
 
-    def __init__(self) -> None:
-        super().__init__(source_name="drug_central")  # set some variables
+    def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
+        source_name = "drug_central"
+        super().__init__(source_name, input_dir, output_dir)  # set some variables
 
     def run(self) -> None:
         """Method is called and performs needed transformations to process the Drug Central data, additional information

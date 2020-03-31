@@ -30,14 +30,15 @@ gene:1234  contributes_to_condition    MONDO:0005002   RO:0003304
 
 class ZhouTransform(Transform):
 
-    def __init__(self) -> None:
-        super().__init__(source_name="zhou_host_proteins")
+    def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
+        source_name = "zhou_host_proteins"
+        super().__init__(source_name, input_dir, output_dir)
 
     def run(self) -> None:
         """Method is called and performs needed transformations to process the zhou host protein data, additional
         information on this data can be found in the comment at the top of this script."""
 
-        input_file = os.path.join('data', 'raw', '41421_2020_153_MOESM1_ESM.pdf')
+        input_file = os.path.join(self.input_base_dir, '41421_2020_153_MOESM1_ESM.pdf')
 
         pubmed_curie_prefix = 'PMID:'
         gene_curie_prefix = 'NCBI:'
