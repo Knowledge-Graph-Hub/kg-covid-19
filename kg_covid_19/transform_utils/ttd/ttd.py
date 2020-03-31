@@ -72,21 +72,8 @@ class TTDTransform(Transform):
                 #
                 # make node for gene
                 #
-                try:
-                    uniproids = get_item_by_priority(data, ['UNIPROID'])
-                    uniproid = uniproids[0]
-                    # use uniprotkb accession if we can find it
-                    if uniproid in name_2_id_map:
-                        uniproid = uniprot_curie_prefix + name_2_id_map[uniproid]
-
-                except ItemInDictNotFound:
-                    logging.warning("Problem with UNIPROID for this target id {}".format(data))
-
-                try:
-                    gene_names = get_item_by_priority(data, ['GENENAME'])
-                    gene_name = gene_names[0]
-                except ItemInDictNotFound:
-                    logging.warning("Problem with UNIPROID for this target id  {}".format(data))
+                uniproid = self.get_uniproid(data, name_2_id_map, uniprot_curie_prefix)
+                gene_name = self.get_gene_name(data)
 
                 # gene - ['id', 'name', 'category', 'ttd id for this target']
                 write_node_edge_item(fh=node,
@@ -113,13 +100,7 @@ class TTDTransform(Transform):
                     #
                     # make edge for target <-> drug
                     #
-
-                    targ_type = ""
-                    try:
-                        targ_types = get_item_by_priority(data, ['TARGTYPE'])
-                        targ_type = targ_types[0]
-                    except ItemInDictNotFound:
-                        pass
+                    targ_type = self.get_targ_type(data)
 
                     # ['subject', 'edge_label', 'object', 'relation', 'comment']
                     write_node_edge_item(fh=edge,
@@ -129,6 +110,37 @@ class TTDTransform(Transform):
                                                uniproid,
                                                drug_gene_edge_relation,
                                                targ_type])
+
+    def get_uniproid(self, data: dict, name_2_id_map: dict,
+                     uniprot_curie_prefix: str) -> str:
+        uniproid = ""
+        try:
+            uniproids = get_item_by_priority(data, ['UNIPROID'])
+            uniproid = uniproids[0]
+            # use uniprotkb accession if we can find it
+            if uniproid in name_2_id_map:
+                uniproid = uniprot_curie_prefix + name_2_id_map[uniproid]
+        except ItemInDictNotFound:
+            logging.warning("Problem with UNIPROID for this target id {}".format(data))
+        return uniproid
+
+    def get_gene_name(self, data: dict) -> str:
+        gene_name = ""
+        try:
+            gene_names = get_item_by_priority(data, ['GENENAME'])
+            gene_name = gene_names[0]
+        except ItemInDictNotFound:
+            logging.warning("Problem with UNIPROID for this target id  {}".format(data))
+        return gene_name
+
+    def get_targ_type(self, data: dict) -> str:
+        targ_type = ""
+        try:
+            targ_types = get_item_by_priority(data, ['TARGTYPE'])
+            targ_type = targ_types[0]
+        except ItemInDictNotFound:
+            pass
+        return targ_type
 
     def parse_ttd_file(self, file: str) -> dict:
         """Parse entire TTD download file (a few megs, not very mem efficient, but
@@ -200,4 +212,3 @@ class TTDTransform(Transform):
             data = fields[2:]
 
         return [target_id, abbrev, data]
-
