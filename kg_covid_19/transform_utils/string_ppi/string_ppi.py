@@ -40,8 +40,8 @@ class StringTransform(Transform):
         self.protein_gene_map: Dict[str, Any] = {}
         self.gene_info_map: Dict[str, Any] = {}
         self.ensembl2ncbi_map: Dict[str, Any] = {}
-        self.load_mapping(self.input_base_dir, output_dir, ['9606'])
-        self.load_gene_info(self.input_base_dir, output_dir, ['9606'])
+        self.load_mapping(self.input_base_dir, self.output_dir, ['9606'])
+        self.load_gene_info(self.input_base_dir, self.output_dir, ['9606'])
 
 
     def load_mapping(self, input_dir: str, output_dir: str, species_id: List = None) -> None:
@@ -132,7 +132,7 @@ class StringTransform(Transform):
         ]
         self.edge_header = edge_core_header + edge_additional_headers
         relation = 'RO:0002434'
-        seen = []
+        seen: List = []
 
         with open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge, \

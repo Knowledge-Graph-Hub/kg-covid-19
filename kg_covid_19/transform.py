@@ -18,7 +18,7 @@ DATA_SOURCES = {
     'StringTransform': StringTransform,
 }
 
-def transform(input_dir: str, output_dir: str, sources: List = None) -> None:
+def transform(input_dir: str, output_dir: str, sources: List[str] = None) -> None:
     """Call scripts in kg_covid_19/transform/[source name]/ to transform each source into a graph format that
     KGX can ingest directly, in either TSV or JSON format:
     https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md
@@ -34,7 +34,7 @@ def transform(input_dir: str, output_dir: str, sources: List = None) -> None:
     """
     if not sources:
         # run all sources
-        sources = DATA_SOURCES.keys()
+        sources = list(DATA_SOURCES.keys())
 
     for source in sources:
         if source in DATA_SOURCES:
