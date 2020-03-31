@@ -33,15 +33,15 @@ class StringTransform(Transform):
     """
     StringTransform parses interactions from STRING DB into nodes and edges.
     """
-    def __init__(self, input_dir: str, output_dir: str):
-        super().__init__(source_name="STRING")
-        self.input_dir = input_dir
-        self.output_dir = output_dir
+    def __init__(self, input_dir: str = None, output_dir: str = None):
+        source_name = "STRING"
+        super().__init__(source_name, input_dir, output_dir)
+
         self.protein_gene_map: Dict[str, Any] = {}
         self.gene_info_map: Dict[str, Any] = {}
         self.ensembl2ncbi_map: Dict[str, Any] = {}
-        self.load_mapping(input_dir, output_dir, ['9606'])
-        self.load_gene_info(input_dir, output_dir, ['9606'])
+        self.load_mapping(self.input_base_dir, output_dir, ['9606'])
+        self.load_gene_info(self.input_base_dir, output_dir, ['9606'])
 
 
     def load_mapping(self, input_dir: str, output_dir: str, species_id: List = None) -> None:
@@ -59,8 +59,7 @@ class StringTransform(Transform):
         if not species_id:
             # default to just human
             species_id = ['9606']
-        file_path = os.path.join(self.input_base_dir, PROTEIN_MAPPING_FILE)
-
+        file_path = os.path.join(input_dir, PROTEIN_MAPPING_FILE)
         with gzip.open(file_path, 'rt') as FH:
             for line in FH:
                 records = line.split('\t')
@@ -119,7 +118,7 @@ class StringTransform(Transform):
 
         """
         if not data_file:
-            data_file = os.path.join(self.input_dir, "9606.protein.links.full.v11.0.txt.gz")
+            data_file = os.path.join(self.input_base_dir, "9606.protein.links.full.v11.0.txt.gz")
         os.makedirs(self.output_dir, exist_ok=True)
         protein_node_type = "biolink:Protein"
         edge_label = "biolink:interacts_with"

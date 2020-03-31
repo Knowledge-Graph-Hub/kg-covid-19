@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import logging
 from typing import List
 
 from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTransform
@@ -25,16 +26,14 @@ def transform(input_dir: str, output_dir: str, sources: List = None) -> None:
 
     Returns:
         None.
+
     """
     if not sources:
         # run all sources
         sources = DATA_SOURCES.keys()
 
     for source in sources:
-        print(source)
         if source in DATA_SOURCES:
-            if source == 'StringTransform':
-                t = DATA_SOURCES[source](input_dir, output_dir)
-            else:
-                t = DATA_SOURCES[source]()
+            logging.info(f"Parsing {source}")
+            t = DATA_SOURCES[source](input_dir, output_dir)
             t.run()

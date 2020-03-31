@@ -23,8 +23,8 @@ def download(*args, **kwargs) -> None:
     directory (default: data/raw).
 
     Args:
-        input_dir: A string pointing to the directory to import data from.
-        output_dir: A string pointing to the directory to output data to.
+        yaml_file: Specify the YAML file containing a list of datasets to download.
+        output_dir: A string pointing to the directory to download data to.
         ignore_cache: If specified, will ignore existing files and download again.
 
     Returns:
