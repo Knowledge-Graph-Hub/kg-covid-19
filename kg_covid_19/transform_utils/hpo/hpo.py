@@ -24,7 +24,7 @@ class HpoTransform(Transform):
         super().__init__(source_name="hpo")
 
     def run(self):
-        self.node_header.append("comment_or_def")
+        self.node_header.extend(["comments", "description"])
         hpo_node_type = "biolink:PhenotypicFeature"
         hpo_edge_label = "rdfs:subClassOf"
         hpo_ro_relation = "RO:0002351"
@@ -61,9 +61,14 @@ class HpoTransform(Transform):
     def write_hpo_node(self, fh: TextIO, id: str, data: dict, node_type: str) -> None:
         # Try to get comments/def in case this is useful for ML
         try:
-            comment_field = get_item_by_priority(data, ['comment', 'def'])
+            comment_field = get_item_by_priority(data, ['comment'])
         except ItemInDictNotFound:
             comment_field = ""
+
+        try:
+            description = get_item_by_priority(data, ['def'])
+        except ItemInDictNotFound:
+            description = ""
 
         try:
             name_field = get_item_by_priority(data, ['name'])
@@ -74,7 +79,8 @@ class HpoTransform(Transform):
                              data=[id,
                                    name_field,
                                    node_type,
-                                   comment_field
+                                   comment_field,
+                                   description
                                    ])
 
     def write_hpo_edge(self,
