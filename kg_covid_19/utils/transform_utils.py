@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-
+import gzip
 import logging
 from typing import Any, Dict, List, Union
+from tqdm import tqdm  # type: ignore
 
 
 class TransformError(Exception):
@@ -95,6 +95,43 @@ def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
             value = items_dict[key]
             break
     if value is None:
-        logging.warning("Can't find item in items_dict {}".format(items_dict))
         raise ItemInDictNotFound("Can't find item in items_dict {}".format(items_dict))
     return value
+
+def data_to_dict(these_keys, these_values) -> dict:
+    """Zip up two lists to make a dict
+
+    :param these_keys: keys for new dict
+    :param these_values: values for new dict
+    :return: dictionary
+    """
+    return dict(zip(these_keys, these_values))
+
+def uniprot_make_name_to_id_mapping(dat_gz_file: str) -> dict:
+    """Given a Uniprot dat.gz file, like this:
+    ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/by_organism/HUMAN_9606_idmapping.dat.gz
+     makes dict with name to id mapping
+    
+    :param dat_gz_file: 
+    :return: dict with mapping
+    """""
+    name_to_id_map = dict()
+    logging.info("Making uniprot name to id map")
+    with gzip.open(dat_gz_file, mode='rb') as file:
+        for line in tqdm(file):
+            items = line.decode().strip().split('\t')
+            name_to_id_map[items[2]] = items[0]
+    return name_to_id_map
+
+
+def uniprot_name_to_id(name_to_id_map: dict, name: str) -> Union[str, None]:
+    """Uniprot name to ID mapping
+
+    :param name_to_id_map: mapping dict[name] -> id
+    :param name: name
+    :return: id string, or None
+    """
+    if name in name_to_id_map:
+        return name_to_id_map[name]
+    else:
+        return None

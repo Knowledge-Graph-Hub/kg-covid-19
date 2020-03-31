@@ -28,7 +28,8 @@ class YourTransform(Transform):
 
     def run(self):
         # replace with downloaded data of for this source
-        input_file = os.path.join(self.input, "example_data.csv")  # must exist already
+        input_file = os.path.join(
+            self.input_base_dir, "example_data.csv")  # must exist already
 
         # make directory in data/transformed
         os.makedirs(self.output_dir, exist_ok=True)
