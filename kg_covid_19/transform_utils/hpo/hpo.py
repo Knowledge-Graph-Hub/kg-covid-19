@@ -25,7 +25,7 @@ class HpoTransform(Transform):
 
     def run(self):
         self.node_header.append("comment_or_def")
-        hpo_node_type = "biolink:OntologyClass"
+        hpo_node_type = "biolink:PhenotypicFeature"
         hpo_edge_label = "rdfs:subClassOf"
         hpo_ro_relation = "RO:0002351"
         hpo_obo_file = os.path.join(self.input_base_dir, "hp.obo")
