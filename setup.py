@@ -63,6 +63,7 @@ setup(
         'encodeproject',
         'tabula-py',
         'parameterized',
+        'obonet',
         'wget'
     ],
     extras_require=extras,
