@@ -63,12 +63,12 @@ class HpoTransform(Transform):
         try:
             comment_field = get_item_by_priority(data, ['comment', 'def'])
         except ItemInDictNotFound:
-            comment_field = "NA"
+            comment_field = ""
 
         try:
             name_field = get_item_by_priority(data, ['name'])
         except ItemInDictNotFound:
-            name_field = "NA"
+            name_field = ""
 
         write_node_edge_item(fh=fh, header=self.node_header,
                              data=[id,
@@ -90,4 +90,4 @@ class HpoTransform(Transform):
                                    edge_label,
                                    object,
                                    relation,
-                                   "NA"])
+                                   ""])
