@@ -4,9 +4,13 @@
 
 import logging
 import os
+
+import wget
 import yaml
 
 from os import path
+
+from urllib.parse import urlparse
 from tqdm.auto import tqdm  # type: ignore
 
 from encodeproject import download as encode_download  # type: ignore
@@ -46,6 +50,12 @@ def download_from_yaml(yaml_file: str, output_dir: str,
                     logging.info("Using cached version of {}".format(outfile))
                     continue
 
-            encode_download(url=item['url'], path=outfile)
+            p = urlparse(item['url'], 'http')
+            if p.scheme == 'ftp':
+                logging.warning(
+                    "Using wget for downloading FTP resource {}".format(item['url']))
+                wget.download(url=item['url'], out=outfile)
+            else:
+                encode_download(url=item['url'], path=outfile)
 
     return None

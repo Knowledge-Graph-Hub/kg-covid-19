@@ -8,7 +8,8 @@ from typing import Union, List, Dict, Any
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
-from kg_covid_19.utils.transform_utils import get_item_by_priority, ItemInDictNotFound
+from kg_covid_19.utils.transform_utils import get_item_by_priority, \
+    ItemInDictNotFound, uniprot_make_name_to_id_mapping
 
 """Ingest TTD - Therapeutic Targets Database
 # drug targets, and associated data for each (drugs, ids, etc)
@@ -39,8 +40,14 @@ class TTDTransform(Transform):
         drug_node_type = "biolink:Drug"
         drug_gene_edge_label = "biolink:interacts_with"
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
+        uniprot_curie_prefix = "UniProtKB:"
 
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'target_type']
+
+        # make name to id map for uniprot names of human proteins
+        dat_gz_id_file = os.path.join(self.input_base_dir,
+                                      "HUMAN_9606_idmapping.dat.gz")
+        name_2_id_map = uniprot_make_name_to_id_mapping(dat_gz_id_file)
 
         # transform data, something like:
         with open(self.output_node_file, 'w') as node,\
@@ -68,6 +75,10 @@ class TTDTransform(Transform):
                 try:
                     uniproids = get_item_by_priority(data, ['UNIPROID'])
                     uniproid = uniproids[0]
+                    # use uniprotkb accession if we can find it
+                    if uniproid in name_2_id_map:
+                        uniproid = uniprot_curie_prefix + name_2_id_map[uniproid]
+
                 except ItemInDictNotFound:
                     logging.warning("Problem with UNIPROID for this target id {}".format(data))
 
@@ -189,3 +200,4 @@ class TTDTransform(Transform):
             data = fields[2:]
 
         return [target_id, abbrev, data]
+
