@@ -3,8 +3,7 @@
 import gzip
 import logging
 from typing import Any, Dict, List, Union
-
-from tqdm import tqdm
+from tqdm import tqdm  # type: ignore
 
 
 class TransformError(Exception):

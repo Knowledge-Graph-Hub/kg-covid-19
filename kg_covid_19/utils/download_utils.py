@@ -5,7 +5,7 @@
 import logging
 import os
 
-import wget
+import wget # type: ignore
 import yaml
 
 from os import path
