@@ -19,6 +19,11 @@ target:
       filename:
          - data/transformed/hpo/nodes.tsv
          - data/transformed/hpo/edges.tsv
+   ttd:
+      type: tsv
+      filename:
+         - data/transformed/ttd/nodes.tsv
+         - data/transformed/ttd/edges.tsv
 
 destination:
    type: tsv

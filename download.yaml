@@ -58,3 +58,15 @@
   # HPO obo file
   url: https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.obo
   local_name: hp.obo
+
+# TTD - Therapeutic Targets Database
+# drug targets, and associated data for each (drugs, ids, etc)
+#
+-
+  # full data download file
+  url: http://db.idrblab.net/ttd/sites/default/files/ttd_database/P1-01-TTD_target_download.txt
+  local_name: P1-01-TTD_target_download.txt
+
+-
+  url: ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/by_organism/HUMAN_9606_idmapping.dat.gz
+  local_name: HUMAN_9606_idmapping.dat.gz

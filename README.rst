@@ -3,7 +3,7 @@ kg_covid-19
 |travis| |sonar_quality| |sonar_maintainability| |codacy|
 |code_climate_maintainability| |pip| |downloads|
 
-KG hub for emerging viruses
+KG hub to produce a knowledge graph for COVID-19 and SARS-COV-2
 
 How do I install this package?
 ----------------------------------------------
@@ -20,6 +20,7 @@ How do I use this package?
 
     python run.py download
     python run.py transform
+    python run.py load
 
 See the `repository's wiki for more details <https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki>`_.
 
