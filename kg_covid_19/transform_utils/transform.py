@@ -27,3 +27,5 @@ class Transform:
         self.output_json_file = os.path.join(self.output_dir, "nodes_edges.json")
 
 
+    def run(self):
+        pass
