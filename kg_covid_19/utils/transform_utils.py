@@ -135,3 +135,18 @@ def uniprot_name_to_id(name_to_id_map: dict, name: str) -> Union[str, None]:
         return name_to_id_map[name]
     else:
         return None
+
+
+def parse_header(header_string: str, sep: str = '\t') -> List:
+    """Parses header data.
+
+    Args:
+        header_string: A string containing header items.
+        sep: A string containing a delimiter.
+
+    Returns:
+        A list of header items.
+    """
+
+    header = header_string.strip().split(sep)
+    return [i.replace('"', '') for i in header]
