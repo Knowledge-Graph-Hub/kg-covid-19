@@ -60,8 +60,9 @@ def transform(*args, **kwargs) -> None:
 
     return None
 
+
 @cli.command()
-@click.argument('yaml', type=click.Path(exists=True))
+@click.option('yaml', '-y', default="merge.yaml", type=click.Path(exists=True))
 def load(yaml: str) -> None:
     """Use KGX to load subgraphs to create a merged graph.
 
