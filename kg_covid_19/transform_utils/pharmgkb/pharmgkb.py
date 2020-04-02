@@ -211,7 +211,7 @@ class PharmGKB(Transform):
         :param id_key_val_sep: separator between key:val pair [:]
         :return:
         """
-        map = defaultdict()
+        map: dict = defaultdict()
         with open(map_file) as f:
             header_items = f.readline().split(sep)
             if pharmgkb_id_col not in header_items:
@@ -232,17 +232,17 @@ class PharmGKB(Transform):
         return map
 
 
-class CantFindPharmGKBKey(object):
+class CantFindPharmGKBKey(BaseException):
     pass
 
 
-class PharmKGBInvalidNodeType(object):
+class PharmKGBInvalidNodeType(BaseException):
     pass
 
 
-class PharmGKBFileError(Exception):
+class PharmGKBFileError(BaseException):
     pass
 
 
-class PharmGKBInvalidEdge(object):
+class PharmGKBInvalidEdge(BaseException):
     pass
