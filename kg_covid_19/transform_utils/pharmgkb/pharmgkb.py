@@ -232,17 +232,17 @@ class PharmGKB(Transform):
         return map
 
 
-class CantFindPharmGKBKey(BaseException):
+class CantFindPharmGKBKey(Exception):
     pass
 
 
-class PharmKGBInvalidNodeType(BaseException):
+class PharmKGBInvalidNodeType(Exception):
     pass
 
 
-class PharmGKBFileError(BaseException):
+class PharmGKBFileError(Exception):
     pass
 
 
-class PharmGKBInvalidEdge(BaseException):
+class PharmGKBInvalidEdge(Exception):
     pass
