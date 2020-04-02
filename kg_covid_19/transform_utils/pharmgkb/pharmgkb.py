@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 import tempfile
+from collections import defaultdict
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import data_to_dict, parse_header, \
@@ -52,6 +53,8 @@ class PharmGKB(Transform):
         if not os.path.exists(gene_mapping_file_path):
             raise PharmGKBFileError("Can't find gene map file needed for ingest")
 
+        gene_id_map = self.make_gene_id_mapping_file(gene_mapping_file_path)
+
         self.edge_header = ['subject', 'edge_label', 'object', 'relation']
 
         # transform relationship.tsv file
@@ -66,9 +69,50 @@ class PharmGKB(Transform):
             for line in relationships:
                 dat = self.parse_pharmgkb_line(line, rel_header)
 
-
     def parse_pharmgkb_line(self, this_line: str, header_items) -> dict:
         items = this_line.strip().split('\t')
         return data_to_dict(header_items, items)
 
+    def make_gene_id_mapping_file(self,
+                                  map_file: str,
+                                  sep: str = '\t',
+                                  pharmgkb_id_col: str = 'PharmGKB Accession Id',
+                                  id_key: str = 'Cross-references',
+                                  key_parsed_ids: str = 'parsed_ids',
+                                  id_sep: str = ',',
+                                  id_key_val_sep: str = ':'
+                                  ) -> dict:
+        """Fxn to parse gene mappings for PharmGKB ids
+        What I need is PharmGKB -> uniprot ids, but this parses everything
+        They don't make this easy...
 
+        :param map_file: genes.tsv file, containing mappings
+        :param pharmgkb_id_col: column containing pharmgkb, to be used as key for map
+        :param key_parsed_ids: name of new key to put parsed ids in
+        :param sep: separator between columns [\t]
+        :param id_key: column name that contains ids [Cross-references]
+        :param id_sep: separator between each id key:val pair [,]
+        :param id_key_val_sep: separator between key:val pair [:]
+        :return:
+        """
+        map = defaultdict()
+        with open(map_file) as f:
+            header_items = f.readline().split(sep)
+            if pharmgkb_id_col not in header_items:
+                raise CantFindPharmGKBKey("Can't find PharmGKB id in map file!")
+            for line in f:
+                items = line.strip().split(sep)
+                dat = data_to_dict(header_items, items)
+                if id_key in dat:
+                    for item in dat[id_key].split(id_sep):
+                        item = item.strip('\"')  # remove quotes around each item
+                        key, value = item.split(id_key_val_sep, 1) # split on first :
+                        if key_parsed_ids not in dat:
+                            dat[key_parsed_ids] = dict()
+                        dat[key_parsed_ids][key] = value
+                map[dat[pharmgkb_id_col]] = dat
+        return map
+
+
+class CantFindPharmGKBKey(object):
+    pass
