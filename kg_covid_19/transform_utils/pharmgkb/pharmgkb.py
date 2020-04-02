@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import logging
 import os
 import tempfile
 from collections import defaultdict
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import data_to_dict, parse_header, \
-    unzip_to_tempdir
+    unzip_to_tempdir, write_node_edge_item, get_item_by_priority
 
 """Ingest PharmGKB drug -> drug target info
 
@@ -16,8 +17,6 @@ GitHub Issue: https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/7
 """
 
 
-class PharmGKBFileError(Exception):
-    pass
 
 
 class PharmGKB(Transform):
@@ -36,7 +35,12 @@ class PharmGKB(Transform):
         drug_gene_edge_label = "biolink:interacts_with"
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
         uniprot_curie_prefix = "UniProtKB:"
-
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation']
+        self.node_header = ['id', 'name', 'category']
+        edge_of_interest = ['Gene', 'Chemical']  # logic also matches 'Chemical'-'Gene'
+        #
+        # file stuff
+        #
         # get relationship file (what we are ingest here)
         relationship_tempdir = tempfile.mkdtemp()
         relationship_file_path = os.path.join(relationship_tempdir,
@@ -55,9 +59,9 @@ class PharmGKB(Transform):
 
         gene_id_map = self.make_gene_id_mapping_file(gene_mapping_file_path)
 
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation']
-
-        # transform relationship.tsv file
+        #
+        # read in and transform relationship.tsv
+        #
         with open(relationship_file_path) as relationships, \
                 open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge:
@@ -67,9 +71,58 @@ class PharmGKB(Transform):
 
             rel_header = parse_header(relationships.readline())
             for line in relationships:
-                dat = self.parse_pharmgkb_line(line, rel_header)
+                line_data = self.parse_pharmgkb_line(line, rel_header)
+
+                if line_data['Entity1_type'] == 'Chemical' and \
+                    line_data['Entity2_type'] == 'Gene':
+                    logging.warning("Need to parse this!")
+
+                if line_data['Entity1_type'] == 'Gene' and \
+                    line_data['Entity2_type'] == 'Chemical':
+                    #
+                    # make node for Entity 1 (gene)
+                    #
+                    gene_id = gene_id_map[line_data['Entity1_id']]
+                    try:
+                        gene_id = \
+                            uniprot_curie_prefix + gene_id_map[line_data['Entity1_id']]['parsed_ids']['UniProtKB']
+                    except KeyError:
+                        logging.warning("Can't find Uniprot ID for gene")
+
+                    write_node_edge_item(fh=node,
+                                         header=self.node_header,
+                                         data=[gene_id,
+                                               line_data['Entity1_name'],
+                                               gene_node_type])
+                    #
+                    # make node for Entity 2 (chemical)
+                    #
+                    # write_node_edge_item(fh=node,
+                    #                      header=self.node_header,
+                    #                      data=[drug_id,
+                    #                            items_dict['DRUG_NAME'],
+                    #                            drug_node_type])
+
+                    #
+                    # edge
+                    #
+                    # ['subject', 'edge_label', 'object', 'relation', 'comment']
+                    # write_node_edge_item(fh=edge,
+                    #                      header=self.edge_header,
+                    #                      data=[drug_id,
+                    #                            drug_gene_edge_label,
+                    #                            gene_id,
+                    #                            drug_gene_edge_relation,
+                    #                            items_dict['ACT_COMMENT']])
+                    pass
 
     def parse_pharmgkb_line(self, this_line: str, header_items) -> dict:
+        """Parse a single line from relationships.tsv and return a dict with data
+
+        :param this_line: line from relationship.tsv to parse
+        :param header_items: header from relationships.tsv
+        :return: dict with key value containing data
+        """
         items = this_line.strip().split('\t')
         return data_to_dict(header_items, items)
 
@@ -105,6 +158,8 @@ class PharmGKB(Transform):
                 dat = data_to_dict(header_items, items)
                 if id_key in dat:
                     for item in dat[id_key].split(id_sep):
+                        if not item:
+                            continue  # not xrefs, skip
                         item = item.strip('\"')  # remove quotes around each item
                         key, value = item.split(id_key_val_sep, 1) # split on first :
                         if key_parsed_ids not in dat:
@@ -116,3 +171,10 @@ class PharmGKB(Transform):
 
 class CantFindPharmGKBKey(object):
     pass
+
+class PharmKGBUnsupportedTypeError(object):
+    pass
+
+class PharmGKBFileError(Exception):
+    pass
+
