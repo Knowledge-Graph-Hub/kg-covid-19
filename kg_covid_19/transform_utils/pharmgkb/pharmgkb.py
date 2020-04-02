@@ -1,18 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import logging
 import os
 import tempfile
-import zipfile
-from typing import List
-
-import obonet  # type: ignore
-from typing.io import TextIO  # type: ignore
 
 from kg_covid_19.transform_utils.transform import Transform
-from kg_covid_19.utils import write_node_edge_item
-from kg_covid_19.utils.transform_utils import get_item_by_priority, data_to_dict, \
-    ItemInDictNotFound, parse_header
+from kg_covid_19.utils.transform_utils import data_to_dict, parse_header, \
+    unzip_to_tempdir
 
 """Ingest PharmGKB drug -> drug target info
 
@@ -41,9 +34,10 @@ class PharmGKB(Transform):
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
         uniprot_curie_prefix = "UniProtKB:"
 
+        # get relationship file (what we are ingest here)
         tempdir = tempfile.mkdtemp()
         relationship_file_path = os.path.join(tempdir, relationship_file_name)
-        self.unzip_to_tempdir(zip_file_name, tempdir)
+        unzip_to_tempdir(zip_file_name, tempdir)
 
         if not os.path.exists(relationship_file_path):
             raise PharmGKBFileError("Can't find relationship file needed for ingest")
@@ -62,9 +56,6 @@ class PharmGKB(Transform):
             for line in relationships:
                 dat = self.parse_pharmgkb_line(line, rel_header)
 
-    def unzip_to_tempdir(self, zip_file_name: str, tempdir: str):
-        with zipfile.ZipFile(zip_file_name, 'r') as z:
-            z.extractall(tempdir)
 
     def parse_pharmgkb_line(self, this_line: str, header_items) -> dict:
         items = this_line.strip().split('\t')

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import gzip
 import logging
+import zipfile
 from typing import Any, Dict, List, Union
 from tqdm import tqdm  # type: ignore
 
@@ -150,3 +151,8 @@ def parse_header(header_string: str, sep: str = '\t') -> List:
 
     header = header_string.strip().split(sep)
     return [i.replace('"', '') for i in header]
+
+
+def unzip_to_tempdir(zip_file_name: str, tempdir: str):
+    with zipfile.ZipFile(zip_file_name, 'r') as z:
+        z.extractall(tempdir)
