@@ -14,6 +14,8 @@ Download using git:
 .. code:: shell
 
     git clone https://github.com/Knowledge-Graph-Hub/kg-covid-19
+    cd kg-covid-19
+    python setup.py install --user
 
 How do I use this package?
 ----------------------------------------------
