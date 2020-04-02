@@ -26,8 +26,10 @@ class PharmGKB(Transform):
         super().__init__(source_name, input_dir, output_dir)
 
     def run(self):
-        zip_file_name = os.path.join(self.input_base_dir, "relationships.zip")
+        rel_zip_file_name = os.path.join(self.input_base_dir, "relationships.zip")
         relationship_file_name = "relationships.tsv"
+        gene_mapping_zip_file = os.path.join(self.input_base_dir, "pharmgkb_genes.zip")
+        gene_mapping_file_name = "genes.tsv"
         gene_node_type = "biolink:Protein"
         drug_node_type = "biolink:Drug"
         drug_gene_edge_label = "biolink:interacts_with"
@@ -35,12 +37,20 @@ class PharmGKB(Transform):
         uniprot_curie_prefix = "UniProtKB:"
 
         # get relationship file (what we are ingest here)
-        tempdir = tempfile.mkdtemp()
-        relationship_file_path = os.path.join(tempdir, relationship_file_name)
-        unzip_to_tempdir(zip_file_name, tempdir)
-
+        relationship_tempdir = tempfile.mkdtemp()
+        relationship_file_path = os.path.join(relationship_tempdir,
+                                              relationship_file_name)
+        unzip_to_tempdir(rel_zip_file_name, relationship_tempdir)
         if not os.path.exists(relationship_file_path):
             raise PharmGKBFileError("Can't find relationship file needed for ingest")
+
+        # get mapping file for gene ids
+        gene_id_tempdir = tempfile.mkdtemp()
+        gene_mapping_file_path = os.path.join(gene_id_tempdir,
+                                              gene_mapping_file_name)
+        unzip_to_tempdir(gene_mapping_zip_file, gene_id_tempdir)
+        if not os.path.exists(gene_mapping_file_path):
+            raise PharmGKBFileError("Can't find gene map file needed for ingest")
 
         self.edge_header = ['subject', 'edge_label', 'object', 'relation']
 

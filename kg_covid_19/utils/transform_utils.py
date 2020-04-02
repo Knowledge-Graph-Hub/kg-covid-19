@@ -153,6 +153,6 @@ def parse_header(header_string: str, sep: str = '\t') -> List:
     return [i.replace('"', '') for i in header]
 
 
-def unzip_to_tempdir(zip_file_name: str, tempdir: str):
+def unzip_to_tempdir(zip_file_name: str, tempdir: str) -> None:
     with zipfile.ZipFile(zip_file_name, 'r') as z:
         z.extractall(tempdir)
