@@ -60,12 +60,14 @@ class PharmGKB(Transform):
 
             rel_header = parse_header(relationships.readline())
             for line in relationships:
-                pass
+                dat = self.parse_pharmgkb_line(line, rel_header)
 
     def unzip_to_tempdir(self, zip_file_name: str, tempdir: str):
         with zipfile.ZipFile(zip_file_name, 'r') as z:
             z.extractall(tempdir)
 
-    def parse_pharmgkb_line(self, this_line: str) -> dict:
-        pass
+    def parse_pharmgkb_line(self, this_line: str, header_items) -> dict:
+        items = this_line.strip().split('\t')
+        return data_to_dict(header_items, items)
+
 
