@@ -18,27 +18,30 @@ GitHub Issue: https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/7
 """
 
 
-
-
 class PharmGKB(Transform):
 
     def __init__(self, input_dir: str = None, output_dir: str = None):
         source_name = "pharmgkb"
         super().__init__(source_name, input_dir, output_dir)
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'evidence']
+        self.node_header = ['id', 'name', 'category']
+        self.edge_of_interest = ['Gene',
+                                 'Chemical']  # logic also matches 'Chemical'-'Gene'
+        self.gene_node_type = "biolink:Gene"
+        self.drug_node_type = "biolink:Drug"
+        self.drug_gene_edge_label = "biolink:interacts_with"
+        self.drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
+        self.uniprot_curie_prefix = "UniProtKB:"
+
+        self.uniprot_id_key = 'UniProtKB'  # id in genes.tsv where UniProt id is located
+        self.key_parsed_ids = 'parsed_ids'  # key to put ids in after parsing
 
     def run(self):
         rel_zip_file_name = os.path.join(self.input_base_dir, "relationships.zip")
         relationship_file_name = "relationships.tsv"
         gene_mapping_zip_file = os.path.join(self.input_base_dir, "pharmgkb_genes.zip")
         gene_mapping_file_name = "genes.tsv"
-        gene_node_type = "biolink:Gene"
-        drug_node_type = "biolink:Drug"
-        drug_gene_edge_label = "biolink:interacts_with"
-        drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
-        uniprot_curie_prefix = "UniProtKB:"
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation']
-        self.node_header = ['id', 'name', 'category']
-        edge_of_interest = ['Gene', 'Chemical']  # logic also matches 'Chemical'-'Gene'
+
         #
         # file stuff
         #
@@ -58,7 +61,7 @@ class PharmGKB(Transform):
         if not os.path.exists(gene_mapping_file_path):
             raise PharmGKBFileError("Can't find gene map file needed for ingest")
 
-        gene_id_map = self.make_gene_id_mapping_file(gene_mapping_file_path)
+        self.gene_id_map = self.make_gene_id_mapping_file(gene_mapping_file_path)
 
         #
         # read in and transform relationship.tsv
@@ -74,69 +77,93 @@ class PharmGKB(Transform):
             for line in relationships:
                 line_data = self.parse_pharmgkb_line(line, rel_header)
 
-                if set(edge_of_interest) == \
+                if set(self.edge_of_interest) == \
                         set([line_data['Entity1_type'], line_data['Entity2_type']]):
 
                     #
-                    # make nodes for drug and chemical (in either order)
+                    # Make nodes for drug and chemical
                     #
                     for entity_id, entity_name, entity_type in [
-                        [line_data['Entity1_id'], line_data['Entity1_name'], line_data['Entity1_type']],
-                        [line_data['Entity2_id'], line_data['Entity2_name'], line_data['Entity2_type']]
+                        [line_data['Entity1_id'], line_data['Entity1_name'],
+                         line_data['Entity1_type']],
+                        [line_data['Entity2_id'], line_data['Entity2_name'],
+                         line_data['Entity2_type']]
                     ]:
                         if entity_type == 'Gene':
-                            self.make_pharmgkb_gene_node(fh=node,
-                                                         id=entity_id,
-                                                         name=entity_name,
-                                                         biolink_type=gene_node_type,
-                                                         id_map=gene_id_map,
-                                                         gene_curie_prefix=uniprot_curie_prefix)
+                            self.make_pharmgkb_gene_node(
+                                                        fh=node,
+                                                        this_id=entity_id,
+                                                        name=entity_name,
+                                                        biolink_type=self.gene_node_type)
                         elif entity_type == 'Chemical':
-                            self.make_pharmgkb_gene_node(fh=node,
-                                                         id=entity_id,
-                                                         name=entity_name,
-                                                         biolink_type=drug_node_type)
+                            self.make_pharmgkb_chemical_node(
+                                                        fh=node,
+                                                        chem_id=entity_id,
+                                                        name=entity_name,
+                                                        biolink_type=self.drug_node_type)
                         else:
-                            raise PharmKGBInvalidNodeType("Node type isn't gene or chemical!")
+                            raise PharmKGBInvalidNodeType(
+                                "Node type isn't gene or chemical!")
 
                     #
-                    # edge
+                    # Make edge
                     #
-                    # ['subject', 'edge_label', 'object', 'relation', 'comment']
-                    # write_node_edge_item(fh=edge,
-                    #                      header=self.edge_header,
-                    #                      data=[drug_id,
-                    #                            drug_gene_edge_label,
-                    #                            gene_id,
-                    #                            drug_gene_edge_relation,
-                    #                            items_dict['ACT_COMMENT']])
+                    self.make_pharmgkb_edge(fh=edge,
+                                            line_data=line_data)
+
+    def make_pharmgkb_edge(self,
+                           fh: TextIOBase,
+                           line_data: dict
+                           ) -> None:
+
+        if set(self.edge_of_interest) != \
+                set([line_data['Entity1_type'], line_data['Entity2_type']]):
+            raise PharmGKBInvalidEdge(
+                "Trying to make edge that's not an edge of interest")
+
+        if line_data['Entity1_type'] == 'Gene':
+            gene_id = line_data['Entity1_id']
+            drug_id = line_data['Entity2_id']
+        else:
+            gene_id = line_data['Entity2_id']
+            drug_id = line_data['Entity1_id']
+
+        gene_id = self.get_uniprot_id(this_id=gene_id)
+
+        evidence = line_data['Evidence']
+        write_node_edge_item(fh=fh,
+                             header=self.edge_header,
+                             data=[drug_id,
+                                   self.drug_gene_edge_label,
+                                   gene_id,
+                                   self.drug_gene_edge_relation,
+                                   evidence])
 
     def make_pharmgkb_gene_node(self,
                                 fh: TextIOBase,
-                                id: str,
+                                this_id: str,
                                 name: str,
-                                biolink_type: str,
-                                id_map: dict,
-                                gene_curie_prefix: str,
-                                preferred_id: str = 'UniProtKB'
-                                ) -> None:
+                                biolink_type: str) -> None:
         """Write out node for gene
         :param fh: file handle to write out gene
-        :param id: pharmgkb gene id
+        :param this_id: pharmgkb gene id
         :param name: gene name
         :param biolink_type: biolink type for Gene
-        :param id_map: dict with mapping from pharmgkb ids to uniprot id
         (from make_gene_id_mapping_file())
-        :param preferred_id: key containing ID we'd prefer to write out
-        :param gene_curie_prefix: curie prefix for gene
         :return: None
         """
-        try:
-            gene_id = gene_curie_prefix + id_map[id]['parsed_ids'][preferred_id]
-        except KeyError:
-            gene_id = id
+        gene_id = self.get_uniprot_id(this_id=this_id)
         data = [gene_id, name, biolink_type]
-        write_node_edge_item(fh=fh, header=[id, name, biolink_type], data=data)
+        write_node_edge_item(fh=fh, header=self.node_header, data=data)
+
+    def get_uniprot_id(self,
+                       this_id: str):
+        try:
+            gene_id = self.uniprot_curie_prefix + \
+                      self.gene_id_map[this_id][self.key_parsed_ids][self.uniprot_id_key]
+        except KeyError:
+            gene_id = this_id
+        return gene_id
 
     def make_pharmgkb_chemical_node(self,
                                     fh: TextIOBase,
@@ -152,14 +179,7 @@ class PharmGKB(Transform):
         :return: None
         """
         data = [chem_id, name, biolink_type]
-        write_node_edge_item(fh=fh, header=[id, name, biolink_type], data=data)
-
-    def make_pharmgkb_edge(self,
-                           ) -> None:
-        pass
-        # data = [chem_id, name, biolink_type]
-        # write_node_edge_item(fh=fh, header=[id, name, biolink_type], data=data)
-
+        write_node_edge_item(fh=fh, header=self.node_header, data=data)
 
     def parse_pharmgkb_line(self, this_line: str, header_items) -> dict:
         """Parse a single line from relationships.tsv and return a dict with data
@@ -176,7 +196,6 @@ class PharmGKB(Transform):
                                   sep: str = '\t',
                                   pharmgkb_id_col: str = 'PharmGKB Accession Id',
                                   id_key: str = 'Cross-references',
-                                  key_parsed_ids: str = 'parsed_ids',
                                   id_sep: str = ',',
                                   id_key_val_sep: str = ':'
                                   ) -> dict:
@@ -186,7 +205,6 @@ class PharmGKB(Transform):
 
         :param map_file: genes.tsv file, containing mappings
         :param pharmgkb_id_col: column containing pharmgkb, to be used as key for map
-        :param key_parsed_ids: name of new key to put parsed ids in
         :param sep: separator between columns [\t]
         :param id_key: column name that contains ids [Cross-references]
         :param id_sep: separator between each id key:val pair [,]
@@ -206,10 +224,10 @@ class PharmGKB(Transform):
                         if not item:
                             continue  # not xrefs, skip
                         item = item.strip('\"')  # remove quotes around each item
-                        key, value = item.split(id_key_val_sep, 1) # split on first :
-                        if key_parsed_ids not in dat:
-                            dat[key_parsed_ids] = dict()
-                        dat[key_parsed_ids][key] = value
+                        key, value = item.split(id_key_val_sep, 1)  # split on first :
+                        if self.key_parsed_ids not in dat:
+                            dat[self.key_parsed_ids] = dict()
+                        dat[self.key_parsed_ids][key] = value
                 map[dat[pharmgkb_id_col]] = dat
         return map
 
@@ -217,9 +235,14 @@ class PharmGKB(Transform):
 class CantFindPharmGKBKey(object):
     pass
 
+
 class PharmKGBInvalidNodeType(object):
     pass
+
 
 class PharmGKBFileError(Exception):
     pass
 
+
+class PharmGKBInvalidEdge(object):
+    pass
