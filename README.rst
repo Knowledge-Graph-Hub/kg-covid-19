@@ -9,13 +9,13 @@ See the `repository's wiki for more details <https://github.com/kg-emerging-viru
 
 How do I install this package?
 ----------------------------------------------
-Download using git:
 
 .. code:: shell
 
     git clone https://github.com/Knowledge-Graph-Hub/kg-covid-19
     cd kg-covid-19
     python setup.py install --user
+    pip install -r requirements.txt
 
 How do I use this package?
 ----------------------------------------------
