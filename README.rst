@@ -1,7 +1,7 @@
 kg_covid-19
 =========================================================================================
 |travis| |sonar_quality| |sonar_maintainability| |codacy|
-|code_climate_maintainability| |pip| |downloads|
+|code_climate_maintainability|
 
 KG hub to produce a knowledge graph for COVID-19 and SARS-COV-2
 
