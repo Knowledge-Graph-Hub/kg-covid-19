@@ -3,14 +3,8 @@ pipeline {
     // In additional to manual runs, trigger somewhere at midnight to
     // give us the max time in a day to get things right.
     triggers {
-	// Master never runs--Feb 31st.
-	//cron('0 0 31 2 *')
-	// Nightly @12am, for "snapshot", skip "release" night.
-	//cron('0 0 2-31 * *')
-	// First of the month @12am, for "release" (also "current").
-	//cron('0 0 1 * *')
-	// Every week on Friday, noon.
-	cron('0 12 * * 5')
+	// Every two days at 11 pm
+	cron('0      23     */2       *       *')
     }
     environment {
 	// Pin dates and day to beginning of run.
@@ -23,12 +17,12 @@ pipeline {
 	    script: 'date +%A',
 	    returnStdout: true
 	).trim()
-	// The branch of geneontology/go-site to use.
-	TARGET_GO_SITE_BRANCH = 'master'
+	// The branch of to use.
+	TARGET_GO_SITE_BRANCH = 'jenkins'
 	// The people to call when things go bad. It is a comma-space
 	// "separated" string.
-	TARGET_ADMIN_EMAILS = 'sjcarbon@lbl.gov'
-	TARGET_SUCCESS_EMAILS = 'sjcarbon@lbl.gov'
+	TARGET_ADMIN_EMAILS = 'justaddcoffee@gmail.com'
+	TARGET_SUCCESS_EMAILS = 'justaddcoffee@gmail.com'
 	// The file bucket(/folder) combination to use.
 	TARGET_BUCKET = 'no'
 	// The URL prefix to use when creating site indices.
@@ -47,26 +41,6 @@ pipeline {
 	// wok has 48 "processors" over 12 "cores", so I have no idea;
 	// let's go with conservative and see if we get an
 	// improvement.
-	//MAKECMD = 'make --jobs 3 --max-load 10.0'
-	MAKECMD = 'make'
-	// GOlr load profile.
-	GOLR_SOLR_MEMORY = "128G"
-	GOLR_LOADER_MEMORY = "192G"
-	GOLR_INPUT_ONTOLOGIES = [
-	    //"http://purl.obolibrary.org/obo/go/snapshot/extensions/go-lego.owl",
-	    //"http://purl.obolibrary.org/obo/eco.owl",
-	    //"http://purl.obolibrary.org/obo/ncbitaxon/subsets/taxslim.owl",
-	    //"http://purl.obolibrary.org/obo/cl/cl-basic.owl",
-	    //"http://purl.obolibrary.org/obo/go/extensions/gorel.owl",
-	    //"http://purl.obolibrary.org/obo/pato.owl",
-	    //"http://purl.obolibrary.org/obo/po.owl",
-	    //"http://purl.obolibrary.org/obo/chebi.owl",
-	    //"http://purl.obolibrary.org/obo/uberon/basic.owl",
-	    //"http://purl.obolibrary.org/obo/wbbt.owl",
-	    //"http://purl.obolibrary.org/obo/go/extensions/go-modules-annotations.owl",
-	    //"http://purl.obolibrary.org/obo/go/extensions/go-taxon-subsets.owl"
-            //"http://skyhook.berkeleybop.org/issue-35-neo-test/ontology/neo.owl"
-            "http://skyhook.berkeleybop.org/issue-35-neo-test/ontology/extensions/go-lego.owl"
 	].join(" ")
     }
     options{
