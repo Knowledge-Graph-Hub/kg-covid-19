@@ -47,7 +47,7 @@ pipeline {
         }
         stage('Download') {
             steps {
-                  python run.py download
+                  echo "python run.py download"
             }
         }
         stage('Transform') {
