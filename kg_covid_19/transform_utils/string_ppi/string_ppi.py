@@ -1,5 +1,6 @@
 import gzip
 import os
+import compress_json
 from typing import Dict, List, Any
 
 from kg_covid_19.transform_utils.transform import Transform
@@ -29,10 +30,12 @@ NCBI_FTP_URL = 'https://ftp.ncbi.nlm.nih.gov/gene/DATA/'
 PROTEIN_MAPPING_FILE = 'gene2ensembl.gz'
 GENE_INFO_FILE = 'gene_info.gz'
 
+
 class StringTransform(Transform):
     """
     StringTransform parses interactions from STRING DB into nodes and edges.
     """
+
     def __init__(self, input_dir: str = None, output_dir: str = None):
         source_name = "STRING"
         super().__init__(source_name, input_dir, output_dir)
@@ -42,7 +45,6 @@ class StringTransform(Transform):
         self.ensembl2ncbi_map: Dict[str, Any] = {}
         self.load_mapping(self.input_base_dir, self.output_dir, ['9606'])
         self.load_gene_info(self.input_base_dir, self.output_dir, ['9606'])
-
 
     def load_mapping(self, input_dir: str, output_dir: str, species_id: List = None) -> None:
         """Load Ensembl Gene to Protein mapping from NCBI gene2ensembl (gene2ensembl.gz).
@@ -71,7 +73,8 @@ class StringTransform(Transform):
                 if ensembl_protein_identifier not in self.protein_gene_map:
                     self.protein_gene_map[ensembl_protein_identifier] = ensembl_gene_identifier
                 if ncbi_gene_identifier not in self.gene_info_map:
-                    self.gene_info_map[ncbi_gene_identifier] = {'ENSEMBL': ensembl_gene_identifier}
+                    self.gene_info_map[ncbi_gene_identifier] = {
+                        'ENSEMBL': ensembl_gene_identifier}
                 if ensembl_gene_identifier not in self.ensembl2ncbi_map:
                     self.ensembl2ncbi_map[ensembl_gene_identifier] = ncbi_gene_identifier
 
@@ -101,7 +104,8 @@ class StringTransform(Transform):
                 symbol = records[2]
                 description = records[8]
                 if ncbi_gene_identifier not in self.gene_info_map:
-                    self.gene_info_map[ncbi_gene_identifier] = {'symbol': symbol, 'description': description}
+                    self.gene_info_map[ncbi_gene_identifier] = {
+                        'symbol': symbol, 'description': description}
                 else:
                     self.gene_info_map[ncbi_gene_identifier]['symbol'] = symbol
                     self.gene_info_map[ncbi_gene_identifier]['description'] = description
@@ -118,18 +122,14 @@ class StringTransform(Transform):
 
         """
         if not data_file:
-            data_file = os.path.join(self.input_base_dir, "9606.protein.links.full.v11.0.txt.gz")
+            data_file = os.path.join(
+                self.input_base_dir, "9606.protein.links.full.v11.0.txt.gz")
         os.makedirs(self.output_dir, exist_ok=True)
         protein_node_type = "biolink:Protein"
         edge_label = "biolink:interacts_with"
-        self.node_header = ['id', 'name', 'category', 'description', 'alias']
-        edge_core_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by', 'combined_score']
-        edge_additional_headers = [
-            'neighborhood', 'neighborhood_transferred', 'fusion', 'cooccurence',
-            'homology', 'coexpression', 'coexpression_transferred', 'experiments',
-            'experiments_transferred', 'database', 'database_transferred', 'textmining',
-            'textmining_transferred'
-        ]
+        self.node_header = compress_json.local_load("node_header.json")
+        edge_core_header = compress_json.local_load("edge_core_header.json")
+        edge_additional_headers = compress_json.local_load("edge_additional_headers.json")
         self.edge_header = edge_core_header + edge_additional_headers
         relation = 'RO:0002434'
         seen: List = []
@@ -165,7 +165,8 @@ class StringTransform(Transform):
                             f"ENSEMBL:{gene1}",
                             self.gene_info_map[self.ensembl2ncbi_map[gene1]]['symbol'],
                             'biolink:Gene',
-                            self.gene_info_map[self.ensembl2ncbi_map[gene1]]['description'],
+                            self.gene_info_map[self.ensembl2ncbi_map[gene1]
+                                               ]['description'],
                             f"NCBIGene:{self.ensembl2ncbi_map[gene1]}"
                         ]
                     )
@@ -191,7 +192,8 @@ class StringTransform(Transform):
                             f"ENSEMBL:{gene2}",
                             self.gene_info_map[self.ensembl2ncbi_map[gene2]]['symbol'],
                             'biolink:Gene',
-                            self.gene_info_map[self.ensembl2ncbi_map[gene2]]['description'],
+                            self.gene_info_map[self.ensembl2ncbi_map[gene2]
+                                               ]['description'],
                             f"NCBIGene:{self.ensembl2ncbi_map[gene2]}"
                         ]
                     )
@@ -214,20 +216,23 @@ class StringTransform(Transform):
                     write_node_edge_item(
                         fh=node,
                         header=self.node_header,
-                        data=[f"ENSEMBL:{protein1}", "", protein_node_type, "", ""]
+                        data=[f"ENSEMBL:{protein1}", "",
+                              protein_node_type, "", ""]
                     )
 
                 if protein2 not in seen:
                     write_node_edge_item(
                         fh=node,
                         header=self.node_header,
-                        data=[f"ENSEMBL:{protein2}", "", protein_node_type, "", ""]
+                        data=[f"ENSEMBL:{protein2}", "",
+                              protein_node_type, "", ""]
                     )
                 seen.append(protein1)
                 seen.append(protein2)
 
                 # write edge data
-                edge_data = [protein1, edge_label, protein2, relation, "STRING", items_dict['combined_score']]
+                edge_data = [protein1, edge_label, protein2,
+                             relation, "STRING", items_dict['combined_score']]
                 for x in edge_additional_headers:
                     edge_data.append(items_dict[x] if x in items_dict else "")
 

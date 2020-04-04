@@ -1,0 +1,15 @@
+[
+    "neighborhood",
+    "neighborhood_transferred",
+    "fusion",
+    "cooccurence",
+    "homology",
+    "coexpression",
+    "coexpression_transferred",
+    "experiments",
+    "experiments_transferred",
+    "database",
+    "database_transferred",
+    "textmining",
+    "textmining_transferred"
+]

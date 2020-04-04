@@ -64,7 +64,8 @@ setup(
         'tabula-py',
         'parameterized',
         'obonet',
-        'wget'
+        'wget',
+        'compress_json'
     ],
     extras_require=extras,
 )
