@@ -1,6 +1,6 @@
 import gzip
 import os
-import compress_json
+import compress_json # type: ignore
 from typing import Dict, List, Any
 
 from kg_covid_19.transform_utils.transform import Transform
@@ -123,7 +123,9 @@ class StringTransform(Transform):
         """
         if not data_file:
             data_file = os.path.join(
-                self.input_base_dir, "9606.protein.links.full.v11.0.txt.gz")
+                self.input_base_dir,
+                "9606.protein.links.full.v11.0.txt.gz"
+            )
         os.makedirs(self.output_dir, exist_ok=True)
         protein_node_type = "biolink:Protein"
         edge_label = "biolink:interacts_with"
