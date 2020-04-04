@@ -9,6 +9,7 @@ from kg_covid_19.transform_utils.pharmgkb import PharmGKB
 from kg_covid_19.transform_utils.string_ppi import StringTransform
 from kg_covid_19.transform_utils.ttd.ttd import TTDTransform
 from kg_covid_19.transform_utils.zhou_host_proteins.zhou_transform import ZhouTransform
+from kg_covid_19.transform_utils.chembl import ChEMBLTargetTransform
 
 
 DATA_SOURCES = {
@@ -17,7 +18,8 @@ DATA_SOURCES = {
     'HpoTransform': HpoTransform,
     'TTDTransform': TTDTransform,
     'StringTransform': StringTransform,
-    'PharmGKB': PharmGKB
+    'PharmGKB': PharmGKB,
+    'ChEMBLTargetTransform': ChEMBLTargetTransform,
 }
 
 
