@@ -99,7 +99,7 @@ class ChEMBLTargetTransform(Transform):
                 compound_id_list = self._create_compound_nodes(items_dict)
 
                 if 'Activities' in items_dict:
-                    activity_list = self._get_activity_list(items_dict)
+                    activity_list = self._get_activity_list(items_dict['Activities'])
                 else:
                     logging.info("No Activities for this record")
                     activity_list = ['N/A']
