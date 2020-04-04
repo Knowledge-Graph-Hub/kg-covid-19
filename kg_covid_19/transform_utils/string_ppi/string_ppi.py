@@ -133,7 +133,7 @@ class StringTransform(Transform):
         edge_core_header = compress_json.local_load("edge_core_header.json")
         edge_additional_headers = compress_json.local_load(
             "edge_additional_headers.json")
-            
+
         self.edge_header = edge_core_header + edge_additional_headers
         relation = 'RO:0002434'
         seen: List = []
@@ -161,15 +161,15 @@ class StringTransform(Transform):
                         gene = self.protein_gene_map[protein]
                         if gene not in seen:
                             seen.append(gene)
+                            gene_informations=self.gene_info_map[self.ensembl2ncbi_map[gene]]
                             write_node_edge_item(
                                 fh=node,
                                 header=self.node_header,
                                 data=[
                                     f"ENSEMBL:{gene}",
-                                    self.gene_info_map[self.ensembl2ncbi_map[gene]]['symbol'],
+                                    gene_informations['symbol'],
                                     'biolink:Gene',
-                                    self.gene_info_map[self.ensembl2ncbi_map[gene]
-                                                       ]['description'],
+                                    gene_informations['description'],
                                     f"NCBIGene:{self.ensembl2ncbi_map[gene]}"
                                 ]
                             )
@@ -196,13 +196,11 @@ class StringTransform(Transform):
                             )
 
                 # write edge data
-                edge_data = [proteins[0], edge_label, proteins[1],
-                             relation, "STRING", items_dict['combined_score']]
-                
                 write_node_edge_item(
                     fh=edge,
                     header=self.edge_header,
-                    data=edge_data + [
+                    data=[proteins[0], edge_label, proteins[1],
+                          relation, "STRING", items_dict['combined_score']] + [
                         items_dict.get(header, "")
                         for header in edge_additional_headers
                     ]
