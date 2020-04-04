@@ -1,7 +1,7 @@
 import gzip
 import os
 import compress_json  # type: ignore
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Set
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, get_item_by_priority
@@ -136,7 +136,8 @@ class StringTransform(Transform):
 
         self.edge_header = edge_core_header + edge_additional_headers
         relation = 'RO:0002434'
-        seen: List = []
+        seen_proteins: Set = set()
+        seen_genes: Set = set()
 
         # Required to align the node edge header of the gene
         # with the default header
@@ -157,16 +158,17 @@ class StringTransform(Transform):
                     protein = get_item_by_priority(items_dict, [protein_name])
                     protein = '.'.join(protein.split('.')[1:])
                     proteins.append(protein)
-                    if protein not in self.protein_gene_map:
+                    if protein in self.protein_gene_map:
                         gene = self.protein_gene_map[protein]
-                        if gene not in seen:
-                            seen.append(gene)
+                        if gene not in seen_genes:
+                            seen_genes.add(gene)
+                            ensemble_gene = f"ENSEMBL:{gene}"
                             gene_informations=self.gene_info_map[self.ensembl2ncbi_map[gene]]
                             write_node_edge_item(
                                 fh=node,
                                 header=self.node_header,
                                 data=[
-                                    f"ENSEMBL:{gene}",
+                                    ensemble_gene,
                                     gene_informations['symbol'],
                                     'biolink:Gene',
                                     gene_informations['description'],
@@ -177,7 +179,7 @@ class StringTransform(Transform):
                                 fh=edge,
                                 header=self.edge_header,
                                 data=[
-                                    f"ENSEMBL:{gene}",
+                                    ensemble_gene,
                                     "biolink:has_gene_product",
                                     protein,
                                     "RO:0002205",
@@ -186,8 +188,8 @@ class StringTransform(Transform):
                             )
 
                         # write node data
-                        if protein not in seen:
-                            seen.append(protein)
+                        if protein not in seen_proteins:
+                            seen_proteins.add(protein)
                             write_node_edge_item(
                                 fh=node,
                                 header=self.node_header,
