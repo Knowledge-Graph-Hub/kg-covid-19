@@ -5,6 +5,7 @@ from typing import List
 
 from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTransform
 from kg_covid_19.transform_utils.hpo.hpo import HpoTransform
+from kg_covid_19.transform_utils.scibite_cord import ScibiteCordTransform
 from kg_covid_19.transform_utils.pharmgkb import PharmGKB
 from kg_covid_19.transform_utils.string_ppi import StringTransform
 from kg_covid_19.transform_utils.ttd.ttd import TTDTransform
@@ -17,6 +18,7 @@ DATA_SOURCES = {
     'HpoTransform': HpoTransform,
     'TTDTransform': TTDTransform,
     'StringTransform': StringTransform,
+    'ScibiteCordTransform': ScibiteCordTransform,
     'PharmGKB': PharmGKB
 }
 
