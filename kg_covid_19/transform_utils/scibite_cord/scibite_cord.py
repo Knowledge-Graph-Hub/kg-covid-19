@@ -19,7 +19,7 @@ class ScibiteCordTransform(Transform):
         source_name = "SciBite-CORD-19"
         super().__init__(source_name, input_dir, output_dir)
         self.concept_name_map = {}
-        self.seen = []
+        self.seen: Set = set()
 
     def run(self, data_files: List = None) -> None:
         """Method is called and performs needed transformations to process
@@ -39,7 +39,6 @@ class ScibiteCordTransform(Transform):
 
         self.node_header = ['id', 'name', 'category', 'description']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by']
-        seen: List = []
         node_handle = open(self.output_node_file, 'w')
         edge_handle = open(self.output_edge_file, 'w')
         node_handle.write("\t".join(self.node_header) + "\n")
@@ -111,7 +110,7 @@ class ScibiteCordTransform(Transform):
                 ""
             ]
         )
-        self.seen.append(paper_id)
+        self.seen.add(paper_id)
 
         # TODO: use CURIE for terms
         for t in terms:
@@ -127,7 +126,7 @@ class ScibiteCordTransform(Transform):
                         ""
                     ]
                 )
-                self.seen.append(t)
+                self.seen.add(t)
 
             # add has_annotation edge between OntologyClass and Publication
             write_node_edge_item(
@@ -189,7 +188,7 @@ class ScibiteCordTransform(Transform):
                         ""
                     ]
                 )
-                self.seen.append(paper_id)
+                self.seen.add(paper_id)
 
             for t in terms:
                 if t not in self.seen:
@@ -204,7 +203,7 @@ class ScibiteCordTransform(Transform):
                             ""
                         ]
                     )
-                    self.seen.append(t)
+                    self.seen.add(t)
 
             information_entity = uuid.uuid1()
             write_node_edge_item(
