@@ -3,7 +3,7 @@ import os
 import uuid
 from typing import List, Dict, Any, Set
 from zipfile import ZipFile
-import pandas as pd
+import pandas as pd # type: ignore
 from prefixcommons import contract_uri
 
 from kg_covid_19.transform_utils.transform import Transform
@@ -18,7 +18,7 @@ class ScibiteCordTransform(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None):
         source_name = "SciBite-CORD-19"
         super().__init__(source_name, input_dir, output_dir)
-        self.concept_name_map = {}
+        self.concept_name_map: Dict = {}
         self.seen: Set = set()
 
     def run(self, data_files: List = None) -> None:
