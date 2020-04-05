@@ -4,7 +4,7 @@ import uuid
 from typing import List, Dict, Any, Set
 from zipfile import ZipFile
 import pandas as pd # type: ignore
-from prefixcommons import contract_uri
+from prefixcommons import contract_uri # type: ignore
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
