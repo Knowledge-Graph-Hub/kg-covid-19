@@ -65,6 +65,7 @@ setup(
         'tabula-py',
         'obonet',
         'wget',
+        'compress_json',
         'click',
         'pyyaml',
         'bmt'
