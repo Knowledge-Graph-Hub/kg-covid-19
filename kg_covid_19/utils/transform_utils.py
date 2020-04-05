@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import gzip
 import logging
+import zipfile
 from typing import Any, Dict, List, Union
 from tqdm import tqdm  # type: ignore
 
@@ -131,3 +132,23 @@ def uniprot_name_to_id(name_to_id_map: dict, name: str) -> Union[str, None]:
         return name_to_id_map[name]
     else:
         return None
+
+
+def parse_header(header_string: str, sep: str = '\t') -> List:
+    """Parses header data.
+
+    Args:
+        header_string: A string containing header items.
+        sep: A string containing a delimiter.
+
+    Returns:
+        A list of header items.
+    """
+
+    header = header_string.strip().split(sep)
+    return [i.replace('"', '') for i in header]
+
+
+def unzip_to_tempdir(zip_file_name: str, tempdir: str) -> None:
+    with zipfile.ZipFile(zip_file_name, 'r') as z:
+        z.extractall(tempdir)
