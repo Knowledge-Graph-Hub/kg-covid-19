@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import gzip
 import logging
+import zipfile
 from typing import Any, Dict, List, Union
 from tqdm import tqdm  # type: ignore
 
@@ -62,23 +63,19 @@ def get_header_items(table_data: Any) -> List:
     return header_items
 
 
-def write_node_edge_item(fh: Any, header: List, data: List, sep: str = '\t') -> None:
+def write_node_edge_item(fh: Any, header: List, data: List, sep: str = '\t'):
     """Write out a single line for a node or an edge in *.tsv
     :param fh: file handle of node or edge file
     :param header: list of header items
     :param data: data for line to write out
     :param sep: separator [\t]
-    :return:
     """
     if len(header) != len(data):
         raise Exception('Header and data are not the same length.')
-    else:
-        try:
-            fh.write(sep.join(data) + "\n")
-        except:
-            logging.warning("Can't write data for {}".format(data))
-
-    return None
+    try:
+        fh.write(sep.join(data) + "\n")
+    except:
+        logging.warning("Can't write data for {}".format(data))
 
 
 def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
@@ -135,3 +132,23 @@ def uniprot_name_to_id(name_to_id_map: dict, name: str) -> Union[str, None]:
         return name_to_id_map[name]
     else:
         return None
+
+
+def parse_header(header_string: str, sep: str = '\t') -> List:
+    """Parses header data.
+
+    Args:
+        header_string: A string containing header items.
+        sep: A string containing a delimiter.
+
+    Returns:
+        A list of header items.
+    """
+
+    header = header_string.strip().split(sep)
+    return [i.replace('"', '') for i in header]
+
+
+def unzip_to_tempdir(zip_file_name: str, tempdir: str) -> None:
+    with zipfile.ZipFile(zip_file_name, 'r') as z:
+        z.extractall(tempdir)

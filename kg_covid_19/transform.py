@@ -6,6 +6,7 @@ from typing import List
 from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTransform
 from kg_covid_19.transform_utils.hpo.hpo import HpoTransform
 from kg_covid_19.transform_utils.scibite_cord import ScibiteCordTransform
+from kg_covid_19.transform_utils.pharmgkb import PharmGKB
 from kg_covid_19.transform_utils.string_ppi import StringTransform
 from kg_covid_19.transform_utils.ttd.ttd import TTDTransform
 from kg_covid_19.transform_utils.zhou_host_proteins.zhou_transform import ZhouTransform
@@ -17,8 +18,10 @@ DATA_SOURCES = {
     'HpoTransform': HpoTransform,
     'TTDTransform': TTDTransform,
     'StringTransform': StringTransform,
-    'ScibiteCordTransform': ScibiteCordTransform
+    'ScibiteCordTransform': ScibiteCordTransform,
+    'PharmGKB': PharmGKB
 }
+
 
 def transform(input_dir: str, output_dir: str, sources: List[str] = None) -> None:
     """Call scripts in kg_covid_19/transform/[source name]/ to transform each source into a graph format that

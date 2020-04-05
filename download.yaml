@@ -58,7 +58,7 @@
   # HPO obo file
   url: https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.obo
   local_name: hp.obo
-
+#
 # TTD - Therapeutic Targets Database
 # drug targets, and associated data for each (drugs, ids, etc)
 #
@@ -70,8 +70,9 @@
 -
   url: ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/by_organism/HUMAN_9606_idmapping.dat.gz
   local_name: HUMAN_9606_idmapping.dat.gz
-
+#
 # SciBite CORD-19 annotations v1.2
+#
 -
   url: https://github.com/SciBiteLabs/CORD19/raw/d2fb4998a504bcb06f5d0fd407f58feda2f140b1/annotated-CORD-19/1.2/CORD-19_1_2.zip
   local_name: CORD-19_1_2.zip
@@ -80,3 +81,14 @@
 -
   url: https://github.com/SciBiteLabs/CORD19/raw/master/sentence-co-occurrence-CORD-19/1.0/cv19_scc.zip
   local_name: cv19_scc.zip
+
+#
+# PharmGKB - drug -> drug target info, and gene id mappings
+#
+-
+  url: https://api.pharmgkb.org/v1/download/file/data/relationships.zip
+  local_name: relationships.zip
+
+-
+  url: https://s3.pgkb.org/data/genes.zip
+  local_name: pharmgkb_genes.zip
