@@ -100,10 +100,10 @@
 -
   # Gene Product Association Data for SARS-CoV-2 genes in GPAD format
   # http://geneontology.org/docs/gene-product-association-data-gpad-format/
-  url: ftp://ftp.ebi.ac.uk/pub/contrib/goa/uniprot_sars-cov-2.gpi
-  local_name: uniprot_sars-cov-2.gpi
+  url: ftp://ftp.ebi.ac.uk/pub/contrib/goa/uniprot_sars-cov-2.gpa
+  local_name: uniprot_sars-cov-2.gpa
 -
   # Gene Product information for SARS-CoV-2 genes in GPI format
   # http://geneontology.org/docs/gene-product-information-gpi-format/
-  url: ftp://ftp.ebi.ac.uk/pub/contrib/goa/uniprot_sars-cov-2.gpa
-  local_name: uniprot_sars-cov-2.gpa
+  url: ftp://ftp.ebi.ac.uk/pub/contrib/goa/uniprot_sars-cov-2.gpi
+  local_name: uniprot_sars-cov-2.gpi
