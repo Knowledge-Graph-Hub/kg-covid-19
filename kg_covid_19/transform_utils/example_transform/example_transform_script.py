@@ -13,18 +13,17 @@ format: https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md
 Input: any file in data/raw/ (that was downloaded by placing a URL in incoming.txt/yaml and running `run.py download`
 Output: transformed data in data/raw/[source name]:
 
-Either TSV, output these two files:
+Output these two files:
 - nodes.tsv
 - edges.tsv
-
-Or JSON, all in one file: nodes_edges.json
 """
 
 
 class YourTransform(Transform):
 
-    def __init__(self):
-        super().__init__(source_name="some_unique_name")
+    def __init__(self, input_dir: str = None, output_dir: str = None):
+        source_name = "some_unique_name"
+        super().__init__(source_name, input_dir, output_dir)
 
     def run(self):
         # replace with downloaded data of for this source
