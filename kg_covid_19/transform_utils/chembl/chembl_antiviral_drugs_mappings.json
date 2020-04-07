@@ -1,0 +1,217 @@
+{
+    "target node list" : [
+        {
+            "node name" : "chembl antiviral node",
+            "ordered column name list" : [
+                "id",
+                "name",
+                "category",
+                "parent molecule",
+                "synonyms",
+                "research codes",
+                "phase",
+                "applicants",
+                "usan stem",
+                "usan year",
+                "usan stem definition",
+                "usan stem substem",
+                "first approval",
+                "atc codes",
+                "level 4 atc codes",
+                "level 3 atc codes",
+                "level 2 atc codes",
+                "level 1 atc codes",
+                "indication class",
+                "patent",
+                "drug type",
+                "passes rule of five",
+                "first in class",
+                "chirality",
+                "prodrug",
+                "oral",
+                "parenteral",
+                "topical",
+                "black box",
+                "availability type",
+                "withdrawn year",
+                "withdrawn reason",
+                "withdrawn country",
+                "withdrawn class",
+                "smiles"
+            ],
+            "ETL mapping" : {
+                "id" : {
+                    "source column" : "Parent Molecule",
+                    "prefix" : "CHEMBL:",
+                    "required" : true
+                },
+                "name" : {
+                    "source column" : "Synonyms",
+                    "required" : true
+                },
+                "category" : {
+                    "default value" : "biolink:Drug",
+                    "required": true
+                },
+                "parent molecule" : {
+                    "source column" : "Parent Molecule",
+                    "required" : true
+                },
+                "synonyms" : {
+                    "source column" : "Synonyms",
+                    "required" : true                    
+                },
+                "research codes" : {
+                    "source column" : "Research Codes",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "phase" : {
+                    "source column" : "Phase",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "applicants" : {
+                    "source column" : "Applicants",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "usan stem" : {
+                    "source column" : "USAN Stem",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "usan year" : {
+                    "source column" : "USAN Year",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "usan stem definition" : {
+                    "source column" : "USAN Stem Definition",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "usan stem substem" : {
+                    "source column" : "USAN Stem Substem",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "first approval" : {
+                    "source column" : "First Approval",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "atc codes" : {
+                    "source column" : "ATC Codes",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "level 4 atc codes" : {
+                    "source column" : "Level 4 ATC Codes",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "level 3 atc codes" : {
+                    "source column" : "Level 3 ATC Codes",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "level 2 atc codes" : {
+                    "source column" : "Level 2 ATC Codes",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "level 1 atc codes" : {
+                    "source column" : "Level 1 ATC Codes",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "indication class" : {
+                    "source column" : "Indication Class",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "patent" : {
+                    "source column" : "Patent",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "drug type" : {
+                    "source column" : "Drug Type",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "passes rule of five" : {
+                    "source column" : "Passes Rule of Five",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "first in class" : {
+                    "source column" : "First In Class",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "chirality" : {
+                    "source column" : "Chirality",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "prodrug" : {
+                    "source column" : "Prodrug",
+                    "required" : false,
+                    "default value" : "" 
+                },
+                "oral" : {
+                    "source column" : "Oral",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "parenteral" : {
+                    "source column" : "Parenteral",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "topical" : {
+                    "source column" : "Topical",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "black box" : {
+                    "source column" : "Black Box",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "availability type" : {
+                    "source column" : "Availability Type",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "withdrawn year" : {
+                    "source column" : "Withdrawn Year",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "withdrawn reason" : {
+                    "source column" : "Withdrawn Reason",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "withdrawn country" : {
+                    "source column" : "Withdrawn Country",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "withdrawn class" : {
+                    "source column" : "Withdrawn Class",
+                    "required" : false,
+                    "default value" : ""
+                },
+                "smiles" : {
+                    "source column" : "Smiles",
+                    "required" : false,
+                    "default value" : ""
+                }
+            }
+        }
+    ]
+}
