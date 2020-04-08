@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 import logging
 import os
+from typing import Generator, TextIO, List
 
-from Bio.UniProt.GOA import gpa_iterator
+from Bio.UniProt.GOA import gpa_iterator  # type: ignore
 from kg_covid_19.utils.transform_utils import get_item_by_priority, ItemInDictNotFound
-from typing.io import TextIO
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
@@ -93,7 +93,7 @@ class SARSCoV2GeneAnnot(Transform):
         return [id, name, category, synonym, taxon]
 
 
-def _gpi12iterator(handle: TextIO) -> dict:
+def _gpi12iterator(handle: TextIO) -> Generator:
     # cribbed from Biopython - no GPI 1.2 parser yet, so I made this
     """Read GPI 1.2 format files (PRIVATE).
 
@@ -117,17 +117,21 @@ def _gpi12iterator(handle: TextIO) -> dict:
     for inline in handle:
         if inline[0] == "!":
             continue
-        inrec = inline.rstrip("\n").split("\t")
+        inrec: List[str] = inline.rstrip("\n").split("\t")
         if len(inrec) == 1:
             continue
-        inrec[2] = inrec[2].split("|")  # DB_Object_Name
-        inrec[3] = inrec[3].split("|")  # DB_Object_Synonym(s)
+        # DB_Object_Name
+        inrec[2] = inrec[2].split("|")  # type: ignore
+        # DB_Object_Synonym(s)
+        inrec[3] = inrec[3].split("|")  # type: ignore
         try:
-            inrec[7] = inrec[7].split("|")  # DB_Xref(s)
+            # DB_Xref(s)
+            inrec[7] = inrec[7].split("|")  # type: ignore
         except IndexError:
             logging.debug("No index for DB_Xref for this record")
         try:
-            inrec[8] = inrec[8].split("|")  # Properties
+            # Properties
+            inrec[8] = inrec[8].split("|")  # type: ignore
         except IndexError:
             logging.debug("No index for Properties for this record")
 
