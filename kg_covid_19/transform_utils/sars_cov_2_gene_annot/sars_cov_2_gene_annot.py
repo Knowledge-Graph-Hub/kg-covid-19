@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 import logging
 import os
+from typing import List
+
 from Bio.UniProt.GOA import gpa_iterator
-from kg_covid_19.utils.transform_utils import get_item_by_priority
+from kg_covid_19.utils.transform_utils import get_item_by_priority, ItemInDictNotFound
 from typing.io import TextIO
 
 from kg_covid_19.transform_utils.transform import Transform
@@ -44,26 +46,43 @@ class SARSCoV2GeneAnnot(Transform):
 
             with open(gpi_file, 'r') as gpi_fh:
                 for rec in _gpi12iterator(gpi_fh):
-                    self.gpi_to_gene_node(rec, node)
+                    node_data = self.gpi_to_gene_node(rec, node)
+                    write_node_edge_item(node, self.node_header, node_data)
 
             with open(gpa_file, 'r') as gpa_fh:
                 for rec in gpa_iterator(gpa_fh):
                     foo = 1
 
-    def gpi_to_gene_node(self, rec: dict, node: TextIO) -> None:
-        # ['id', 'name', 'category', 'synonym', 'taxon']
-        data: list = []
-        id = get_item_by_priority(rec, 'DB_Object_ID') + ":" + \
-             get_item_by_priority(rec['DB_Object_Symbol'])
-        try:
-            name = get_item_by_priority(rec, 'DB_Object_Name')[0]
-        except IndexError:
-            name = ""
-        category = self.protein_node_type
-        synonym = get_item_by_priority(rec, 'DB_Object_Synonym')
-        taxon = get_item_by_priority()
-        write_node_edge_item(node, self.node_header, data)
+    def gpi_to_gene_node(self, rec: dict) -> list:
+        """given a parsed gpi entry, return a node that can be passed to
+        write_node_edge_item()
 
+        :param rec: record from gpi iterator
+        :return: list of node items, one for each thing in self.node_header
+        """
+        # ['id', 'name', 'category', 'synonym', 'taxon']
+        try:
+            id = get_item_by_priority(rec, ['DB']) + ":" + \
+                get_item_by_priority(rec, ['DB_Object_ID'])
+        except ItemInDictNotFound:
+            logging.error("Can't make ID for record: %s", "\t".join(rec))
+            id = ''
+        try:
+            name_list = get_item_by_priority(rec, ['DB_Object_Name'])
+            if name_list is not None and len(name_list) > 0:
+                name = name_list[0]
+            else:
+                name = ''
+        except (IndexError, ItemInDictNotFound):
+            name = ''
+
+        category = self.protein_node_type
+        try:
+            synonym = get_item_by_priority(rec, ['DB_Object_Synonym'])[0]
+        except (IndexError, ItemInDictNotFound):
+            synonym = ''
+        taxon = get_item_by_priority(rec, ['Taxon'])
+        return [id, name, category, synonym, taxon]
 
 
 def _gpi12iterator(handle: TextIO) -> dict:

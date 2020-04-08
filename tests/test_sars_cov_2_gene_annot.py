@@ -1,4 +1,3 @@
-import os
 import types
 from typing import Iterable
 from unittest import TestCase
@@ -40,7 +39,12 @@ class TestPharmGKB(TestCase):
         self.assertEqual(item[key], value)
 
     def test_gpi_to_gene_node(self):
-        pass
+        gpi_iter = _gpi12iterator(self.gpi_fh)
+        item = next(gpi_iter)
+        node = self.sc2ga.gpi_to_gene_node(item)
+        self.assertEqual(len(self.sc2ga.node_header), len(node))
+        self.assertEqual(node,
+                         ['UniProtKB:P0DTD2', 'Protein 9b', 'biolink:Protein', '', 'taxon:2697049'])
 
     def test_run(self) -> None:
         self.assertTrue(isinstance(getattr(self.sc2ga, "run"), types.MethodType))
