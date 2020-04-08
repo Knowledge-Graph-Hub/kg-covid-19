@@ -92,3 +92,11 @@
 -
   url: https://s3.pgkb.org/data/genes.zip
   local_name: pharmgkb_genes.zip
+
+#
+# IntAct - CoV protein -> human protein interaction data
+#
+-
+  url: https://t.co/OUGKWbpQHG?amp=1
+  local_name: coronavirus.zip
+
