@@ -2,7 +2,6 @@ import types
 from typing import Iterable
 from unittest import TestCase
 
-from Bio.UniProt.GOA import gpa_iterator
 from parameterized import parameterized
 
 from kg_covid_19.transform_utils.sars_cov_2_gene_annot import SARSCoV2GeneAnnot
