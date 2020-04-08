@@ -22,6 +22,10 @@ class SARSCoV2GeneAnnot(Transform):
         super().__init__(source_name, input_dir, output_dir)
 
         self.node_header = ['id', 'name', 'category', 'synonym', 'taxon']
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+                            'DB_References', 'ECO_code', 'With', 'Interacting_taxon_ID',
+                            'Date', 'Assigned_by', 'Annotation_Extension',
+                            'Annotation_Properties']
 
         self.protein_node_type = "biolink:Protein"
         self.ncbi_taxon_prefix = "NCBITaxon:"
@@ -58,7 +62,9 @@ class SARSCoV2GeneAnnot(Transform):
         :param rec: record from gpa iterator
         :return:
         """
-        pass
+        return ['UniProtKB:P0DTC1', 'enables', 'GO:0003723', 'RO:0002327',
+                          'GO_REF:0000043', 'ECO:0000322', 'UniProtKB-KW:KW-0694', '',
+                          '20200321', 'UniProt', '', 'go_evidence=IEA']
 
     def gpi_to_gene_node(self, rec: dict) -> list:
         """given a parsed gpi entry, return a node that can be passed to
@@ -93,7 +99,8 @@ class SARSCoV2GeneAnnot(Transform):
 
 
 def _gpi12iterator(handle: TextIO) -> Generator:
-    # cribbed from Biopython - no GPI 1.2 parser yet, so I made this
+    # Partly cribbed from Biopython GPI 1.1 parser
+    # There is no GPI 1.2 parser yet, so I made this
     """Read GPI 1.2 format files (PRIVATE).
 
     This iterator is used to read a gp_information.goa_uniprot

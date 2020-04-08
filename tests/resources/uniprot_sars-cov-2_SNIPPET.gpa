@@ -19,4 +19,4 @@
 !GO-version: http://purl.obolibrary.org/obo/go/releases/2020-03-24/extensions/go-plus.owl
 !
 UniProtKB	P0DTC1	enables	GO:0003723	GO_REF:0000043	ECO:0000322	UniProtKB-KW:KW-0694		20200321	UniProt		go_evidence=IEA
-UniProtKB	P0DTC1	enables	GO:0004518	GO_REF:0000043	ECO:0000322	UniProtKB-KW:KW-0540		20200321	UniProt		go_evidence=IEA
+UniProtKB	P0DTC1	involved_in	GO:0090305	GO_REF:0000108	ECO:0000366	GO:0004519		20200322	GOC		go_evidence=IEA
