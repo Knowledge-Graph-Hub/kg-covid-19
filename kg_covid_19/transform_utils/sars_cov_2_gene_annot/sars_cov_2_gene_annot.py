@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 import logging
 import os
-from typing import List
 
 from Bio.UniProt.GOA import gpa_iterator
 from kg_covid_19.utils.transform_utils import get_item_by_priority, ItemInDictNotFound
@@ -46,7 +45,7 @@ class SARSCoV2GeneAnnot(Transform):
 
             with open(gpi_file, 'r') as gpi_fh:
                 for rec in _gpi12iterator(gpi_fh):
-                    node_data = self.gpi_to_gene_node(rec, node)
+                    node_data = self.gpi_to_gene_node(rec)
                     write_node_edge_item(node, self.node_header, node_data)
 
             with open(gpa_file, 'r') as gpa_fh:
