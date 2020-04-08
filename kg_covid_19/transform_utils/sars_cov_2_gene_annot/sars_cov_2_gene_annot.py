@@ -4,7 +4,6 @@ import logging
 import os
 from typing import Generator, TextIO, List
 
-from Bio.UniProt.GOA import gpa_iterator  # type: ignore
 from kg_covid_19.utils.transform_utils import get_item_by_priority, ItemInDictNotFound
 
 from kg_covid_19.transform_utils.transform import Transform
@@ -49,7 +48,7 @@ class SARSCoV2GeneAnnot(Transform):
                     write_node_edge_item(node, self.node_header, node_data)
 
             with open(gpa_file, 'r') as gpa_fh:
-                for rec in gpa_iterator(gpa_fh):
+                for rec in _gpa11iterator(gpa_fh):
                     edge_data = self.gpa_to_gene_node(rec)
                     write_node_edge_item(edge, self.edge_header, edge_data)
 
@@ -136,3 +135,24 @@ def _gpi12iterator(handle: TextIO) -> Generator:
             logging.debug("No index for Properties for this record")
 
         yield dict(zip(GPI11FIELDS, inrec))
+
+
+# from biopython, to avoid dependency
+def _gpa11iterator(handle):
+    """Read GPA 1.1 format files (PRIVATE).
+
+    This iterator is used to read a gp_association.goa_uniprot
+    file which is in the GPA 1.1 format. Do not call directly. Rather
+    use the gpa_iterator function
+    """
+    for inline in handle:
+        if inline[0] == "!":
+            continue
+        inrec = inline.rstrip("\n").split("\t")
+        if len(inrec) == 1:
+            continue
+        inrec[2] = inrec[2].split("|")  # Qualifier
+        inrec[4] = inrec[4].split("|")  # DB:Reference(s)
+        inrec[6] = inrec[6].split("|")  # With
+        inrec[10] = inrec[10].split("|")  # Annotation extension
+        yield dict(zip(GPA11FIELDS, inrec))
