@@ -50,7 +50,16 @@ class SARSCoV2GeneAnnot(Transform):
 
             with open(gpa_file, 'r') as gpa_fh:
                 for rec in gpa_iterator(gpa_fh):
-                    foo = 1
+                    edge_data = self.gpa_to_gene_node(rec)
+                    write_node_edge_item(edge, self.edge_header, edge_data)
+
+    def gpa_to_gene_node(self, rec: dict) -> list:
+        """given a parsed gpa entry, return an edge with the annotations
+
+        :param rec: record from gpa iterator
+        :return:
+        """
+        pass
 
     def gpi_to_gene_node(self, rec: dict) -> list:
         """given a parsed gpi entry, return a node that can be passed to
