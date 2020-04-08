@@ -93,12 +93,12 @@ class SARSCoV2GeneAnnot(Transform):
 
     def _rec_to_id(self, rec: dict) -> str:
         try:
-            id: str = get_item_by_priority(rec, ['DB']) + ":" + \
+            this_id: str = get_item_by_priority(rec, ['DB']) + ":" + \
                  get_item_by_priority(rec, ['DB_Object_ID'])
         except ItemInDictNotFound:
             logging.error("Can't make ID for record: %s", "\t".join(rec))
-            id: str = ''
-        return id
+            this_id = ''
+        return this_id
 
     def gpi_to_gene_node_data(self, rec: dict) -> list:
         """given a parsed gpi entry, return a node that can be passed to
