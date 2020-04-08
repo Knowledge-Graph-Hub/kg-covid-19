@@ -6,7 +6,7 @@ from parameterized import parameterized
 
 from kg_covid_19.transform_utils.sars_cov_2_gene_annot import SARSCoV2GeneAnnot
 from kg_covid_19.transform_utils.sars_cov_2_gene_annot.sars_cov_2_gene_annot import \
-    _gpi12iterator
+    _gpi12iterator, _gpa11iterator
 
 
 class TestPharmGKB(TestCase):
@@ -47,7 +47,7 @@ class TestPharmGKB(TestCase):
                          ['UniProtKB:P0DTD2', 'Protein 9b', 'biolink:Protein', '', 'taxon:2697049'])
 
     def test_gpa_to_gene_node(self):
-        gpa_iter = gpa_iterator(self.gpa_fh)
+        gpa_iter = _gpa11iterator(self.gpa_fh)
         item = next(gpa_iter)
         edge = self.sc2ga.gpa_to_gene_node(item)
         # self.assertEqual(len(self.sc2ga.edge_header), len(edge))
