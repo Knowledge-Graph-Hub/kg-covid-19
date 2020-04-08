@@ -48,25 +48,49 @@ class SARSCoV2GeneAnnot(Transform):
 
             with open(gpi_file, 'r') as gpi_fh:
                 for rec in _gpi12iterator(gpi_fh):
-                    node_data = self.gpi_to_gene_node(rec)
+                    node_data = self.gpi_to_gene_node_data(rec)
                     write_node_edge_item(node, self.node_header, node_data)
 
             with open(gpa_file, 'r') as gpa_fh:
                 for rec in _gpa11iterator(gpa_fh):
-                    edge_data = self.gpa_to_gene_node(rec)
+                    edge_data = self.gpa_to_edge_data(rec)
                     write_node_edge_item(edge, self.edge_header, edge_data)
 
-    def gpa_to_gene_node(self, rec: dict) -> list:
+    def gpa_to_edge_data(self, rec: dict) -> list:
         """given a parsed gpa entry, return an edge with the annotations
 
         :param rec: record from gpa iterator
         :return:
         """
-        return ['UniProtKB:P0DTC1', 'enables', 'GO:0003723', 'RO:0002327',
-                          'GO_REF:0000043', 'ECO:0000322', 'UniProtKB-KW:KW-0694', '',
-                          '20200321', 'UniProt', '', 'go_evidence=IEA']
+        subj: str = self._rec_to_id(rec)
+        edge_label: str = get_item_by_priority(rec, ['Qualifier'])[0]
+        obj: str = get_item_by_priority(rec, ['GO_ID'])
+        relation: str = 'RO:0002327'
 
-    def gpi_to_gene_node(self, rec: dict) -> list:
+        edge_data = [subj, edge_label, obj, relation]
+        # all the others
+        for key in ['DB:Reference', 'ECO_Evidence_code', 'With', 'Interacting_taxon_ID',
+                    'Date', 'Assigned_by', 'Annotation_Extension',
+                    'Annotation_Properties']:
+            try:
+                item = get_item_by_priority(rec, [key])
+                if type(item) is list:
+                    item = item[0]
+            except (ItemInDictNotFound, IndexError):
+                item = ''
+            edge_data.append(item)
+        return edge_data
+
+    def _rec_to_id(self, rec: dict) -> str:
+        try:
+            id: str = get_item_by_priority(rec, ['DB']) + ":" + \
+                 get_item_by_priority(rec, ['DB_Object_ID'])
+        except ItemInDictNotFound:
+            logging.error("Can't make ID for record: %s", "\t".join(rec))
+            id: str = ''
+        return id
+
+    def gpi_to_gene_node_data(self, rec: dict) -> list:
         """given a parsed gpi entry, return a node that can be passed to
         write_node_edge_item()
 
@@ -74,12 +98,8 @@ class SARSCoV2GeneAnnot(Transform):
         :return: list of node items, one for each thing in self.node_header
         """
         # ['id', 'name', 'category', 'synonym', 'taxon']
-        try:
-            id = get_item_by_priority(rec, ['DB']) + ":" + \
-                get_item_by_priority(rec, ['DB_Object_ID'])
-        except ItemInDictNotFound:
-            logging.error("Can't make ID for record: %s", "\t".join(rec))
-            id = ''
+        id: str = self._rec_to_id(rec)
+
         try:
             name_list = get_item_by_priority(rec, ['DB_Object_Name'])
             if name_list is not None and len(name_list) > 0:

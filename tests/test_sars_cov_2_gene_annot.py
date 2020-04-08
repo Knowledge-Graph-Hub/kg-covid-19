@@ -41,15 +41,15 @@ class TestPharmGKB(TestCase):
     def test_gpi_to_gene_node(self):
         gpi_iter = _gpi12iterator(self.gpi_fh)
         item = next(gpi_iter)
-        node = self.sc2ga.gpi_to_gene_node(item)
+        node = self.sc2ga.gpi_to_gene_node_data(item)
         self.assertEqual(len(self.sc2ga.node_header), len(node))
         self.assertEqual(node,
                          ['UniProtKB:P0DTD2', 'Protein 9b', 'biolink:Protein', '', 'taxon:2697049'])
 
-    def test_gpa_to_gene_node(self):
+    def test_gpa_to_edge_data(self):
         gpa_iter = _gpa11iterator(self.gpa_fh)
-        edge1 = self.sc2ga.gpa_to_gene_node(next(gpa_iter))
-        edge2 = self.sc2ga.gpa_to_gene_node(next(gpa_iter))
+        edge1 = self.sc2ga.gpa_to_edge_data(next(gpa_iter))
+        edge2 = self.sc2ga.gpa_to_edge_data(next(gpa_iter))
 
         self.assertEqual(len(self.sc2ga.edge_header), len(edge1))
         self.assertEqual(edge1,
@@ -57,7 +57,7 @@ class TestPharmGKB(TestCase):
                           'GO_REF:0000043', 'ECO:0000322', 'UniProtKB-KW:KW-0694', '',
                           '20200321', 'UniProt', '', 'go_evidence=IEA'])
 
-        # check another RO term too
+        # # check another RO term too
         # self.assertEqual(edge2[1], 'involved_in')
         # self.assertEqual(edge2[3], 'RO:0002331')
 
