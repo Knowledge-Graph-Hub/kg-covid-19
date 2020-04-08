@@ -145,6 +145,21 @@ def _gpa11iterator(handle):
     file which is in the GPA 1.1 format. Do not call directly. Rather
     use the gpa_iterator function
     """
+    # GPA version 1.1
+    GPA11FIELDS = [
+        "DB",
+        "DB_Object_ID",
+        "Qualifier",
+        "GO_ID",
+        "DB:Reference",
+        "ECO_Evidence_code",
+        "With",
+        "Interacting_taxon_ID",
+        "Date",
+        "Assigned_by",
+        "Annotation Extension",
+        "Annotation_Properties",
+    ]
     for inline in handle:
         if inline[0] == "!":
             continue
