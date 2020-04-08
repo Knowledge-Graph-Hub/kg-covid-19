@@ -91,6 +91,7 @@ def _gpi12iterator(handle: TextIO) -> dict:
     This iterator is used to read a gp_information.goa_uniprot
     file which is in the GPI 1.2 format.
     """
+    logging.getLogger().setLevel(logging.WARNING)
     # GPI version 1.2
     GPI11FIELDS = [
         "DB",
