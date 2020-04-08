@@ -58,8 +58,8 @@ class TestPharmGKB(TestCase):
                           '20200321', 'UniProt', '', 'go_evidence=IEA'])
 
         # # check another RO term too
-        # self.assertEqual(edge2[1], 'involved_in')
-        # self.assertEqual(edge2[3], 'RO:0002331')
+        self.assertEqual(edge2[1], 'involved_in')
+        self.assertEqual(edge2[3], 'RO:0002331')
 
     def test_run(self) -> None:
         self.assertTrue(isinstance(getattr(self.sc2ga, "run"), types.MethodType))

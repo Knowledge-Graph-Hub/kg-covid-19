@@ -30,6 +30,13 @@ class SARSCoV2GeneAnnot(Transform):
         self.protein_node_type = "biolink:Protein"
         self.ncbi_taxon_prefix = "NCBITaxon:"
 
+        # translate edge labels to RO term, for the 'relation' column in edge
+        self.edge_label_to_RO_term: dict = {
+                                        'enables': 'RO:0002327',
+                                        'involved_in': 'RO:0002331',
+                                        'part_of': 'BFO:0000050'
+        }
+
     def run(self):
 
         # file housekeeping
@@ -65,7 +72,10 @@ class SARSCoV2GeneAnnot(Transform):
         subj: str = self._rec_to_id(rec)
         edge_label: str = get_item_by_priority(rec, ['Qualifier'])[0]
         obj: str = get_item_by_priority(rec, ['GO_ID'])
-        relation: str = 'RO:0002327'
+        try:
+            relation: str = self.edge_label_to_RO_term[edge_label]
+        except KeyError:
+            relation = ''
 
         edge_data = [subj, edge_label, obj, relation]
         # all the others
