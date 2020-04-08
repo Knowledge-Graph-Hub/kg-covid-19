@@ -31,10 +31,11 @@ class SARSCoV2GeneAnnot(Transform):
         self.ncbi_taxon_prefix = "NCBITaxon:"
 
         # translate edge labels to RO term, for the 'relation' column in edge
+        self.edge_label_prefix = "biolink:"  # prepend to edge label
         self.edge_label_to_RO_term: dict = {
-                                        'enables': 'RO:0002327',
-                                        'involved_in': 'RO:0002331',
-                                        'part_of': 'BFO:0000050'
+            'enables': 'RO:0002327',
+            'involved_in': 'RO:0002331',
+            'part_of': 'BFO:0000050'
         }
 
     def run(self):
@@ -47,7 +48,6 @@ class SARSCoV2GeneAnnot(Transform):
 
         with open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge:
-
 
             # write headers
             node.write("\t".join(self.node_header) + "\n")
@@ -77,7 +77,7 @@ class SARSCoV2GeneAnnot(Transform):
         except KeyError:
             relation = ''
 
-        edge_data = [subj, edge_label, obj, relation]
+        edge_data = [subj, self.edge_label_prefix + edge_label, obj, relation]
         # all the others
         for key in ['DB:Reference', 'ECO_Evidence_code', 'With', 'Interacting_taxon_ID',
                     'Date', 'Assigned_by', 'Annotation_Extension',
@@ -94,7 +94,7 @@ class SARSCoV2GeneAnnot(Transform):
     def _rec_to_id(self, rec: dict) -> str:
         try:
             this_id: str = get_item_by_priority(rec, ['DB']) + ":" + \
-                 get_item_by_priority(rec, ['DB_Object_ID'])
+                           get_item_by_priority(rec, ['DB_Object_ID'])
         except ItemInDictNotFound:
             logging.error("Can't make ID for record: %s", "\t".join(rec))
             this_id = ''

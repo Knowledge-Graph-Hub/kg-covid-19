@@ -53,12 +53,12 @@ class TestPharmGKB(TestCase):
 
         self.assertEqual(len(self.sc2ga.edge_header), len(edge1))
         self.assertEqual(edge1,
-                         ['UniProtKB:P0DTC1', 'enables', 'GO:0003723', 'RO:0002327',
+                         ['UniProtKB:P0DTC1', 'biolink:enables', 'GO:0003723', 'RO:0002327',
                           'GO_REF:0000043', 'ECO:0000322', 'UniProtKB-KW:KW-0694', '',
                           '20200321', 'UniProt', '', 'go_evidence=IEA'])
 
         # # check another RO term too
-        self.assertEqual(edge2[1], 'involved_in')
+        self.assertEqual(edge2[1], 'biolink:involved_in')
         self.assertEqual(edge2[3], 'RO:0002331')
 
     def test_run(self) -> None:
