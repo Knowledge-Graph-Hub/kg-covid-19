@@ -40,8 +40,9 @@ pipeline {
                         url: 'https://github.com/Knowledge-Graph-Hub/kg-covid-19',
                         branch: 'master'
                     )
-		    // TODO: Also consider Docker image?
-                    echo "# venv and pip stuff"
+			sh 'pip install bmt'
+			sh 'pip install -r requirements.txt'
+			sh 'python setup.py install'
                 }
             }
         }
