@@ -43,25 +43,25 @@ pipeline {
 		    sh 'cd kg_covid_19'
 		    sh 'virtualenv venv --distribute'
 		    sh '. venv/bin/activate'
-		    sh 'pip install bmt'
-		    sh 'pip install -r requirements.txt'
-		    sh 'python setup.py install'
+		    sh './venv/bin/pip install bmt'
+		    sh './venv/bin/pip  install -r requirements.txt'
+		    sh './venv/bin/python setup.py install'
                 }
             }
         }
         stage('Download') {
             steps {
-                  echo "python run.py download"
+                  echo "./venv/bin/python run.py download"
             }
         }
         stage('Transform') {
             steps {
-                echo "python run.py transform"
+                echo "./venv/bin/python run.py transform"
             }
         }
         stage('Load') {
             steps {
-                echo "python run.py load"
+                echo "./venv/bin/python run.py load"
             }
         }
         stage('Push to s3 bucket') {
