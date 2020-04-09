@@ -52,7 +52,7 @@ pipeline {
             steps {
 		  sh '# echo "${env.WORKSPACE}"'
 		  sh 'pwd'
-		  sh 'ls'
+		  sh 'ls; find ../ -name "run.py"'
 		  sh 'cd config'
                   sh 'python run.py download'
             }
