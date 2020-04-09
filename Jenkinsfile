@@ -55,12 +55,12 @@ pipeline {
         }
         stage('Transform') {
             steps {
-                  sh 'cd config; python run.py transform'
+                  sh 'cd config;. venv/bin/activate; python3.7 run.py transform'
             }
         }
         stage('Load') {
             steps {
-		  sh 'cd config; python run.py load'
+		  sh 'cd config;. venv/bin/activate; python3.7 run.py load'
             }
         }
         stage('Push to s3 bucket') {
