@@ -50,21 +50,17 @@ pipeline {
         }
         stage('Download') {
             steps {
-		  sh 'pwd'
-		  sh 'ls; find ../ -name "run.py"'
-                  sh 'cd config; python run.py download'
+                  sh 'cd config; python3.7 run.py download'
             }
         }
         stage('Transform') {
             steps {
-		  sh 'cd kg-covid-19'		  
-                  sh 'python run.py transform'
+                  sh 'cd config; python run.py transform'
             }
         }
         stage('Load') {
             steps {
-		  sh 'cd kg-covid-19'
-		  sh 'python run.py load'
+		  sh 'cd config; python run.py load'
             }
         }
         stage('Push to s3 bucket') {
