@@ -41,6 +41,8 @@ pipeline {
                         branch: 'master'
                     )
 		    sh 'cd kg_covid_19'
+		    sh 'virtualenv venv --distribute'
+		    sh 'source venv/bin/activate'
 		    sh 'pip install bmt'
 		    sh 'pip install -r requirements.txt'
 		    sh 'python setup.py install'
