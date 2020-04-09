@@ -50,7 +50,7 @@ pipeline {
         }
         stage('Download') {
             steps {
-		  sh 'echo "${env.WORKSPACE}"'
+		  sh '# echo "${env.WORKSPACE}"'
 		  sh 'pwd'
 		  sh 'ls'
 		  sh 'cd config'
