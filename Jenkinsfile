@@ -50,6 +50,7 @@ pipeline {
         }
         stage('Download') {
             steps {
+		  sh 'pwd'
 		  sh 'cd kg-covid-19'
                   sh 'python run.py download'
             }
