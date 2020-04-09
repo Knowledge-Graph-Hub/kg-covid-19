@@ -38,7 +38,7 @@ pipeline {
                 dir('./config') {
                     git(
                         url: 'https://github.com/Knowledge-Graph-Hub/kg-covid-19',
-                        branch: 'master'
+                        branch: 'jenkins'
                     )
 		    sh '/usr/bin/python3.7 -m venv venv'
 		    sh '. venv/bin/activate'
@@ -50,9 +50,10 @@ pipeline {
         }
         stage('Download') {
             steps {
+		  sh 'echo "${env.WORKSPACE}"'
 		  sh 'pwd'
 		  sh 'ls'
-		  sh 'cd kg-covid-19'
+		  sh 'cd config'
                   sh 'python run.py download'
             }
         }
