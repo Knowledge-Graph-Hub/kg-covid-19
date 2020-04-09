@@ -41,7 +41,7 @@ pipeline {
                         branch: 'master'
                     )
                     sh '''
-		        cd kg_covid_19
+		        # cd kg_covid_19
 		        virtualenv -p python3 venv --distribute
 		        . venv/bin/activate
 		        # ./venv/bin/pip install bmt
