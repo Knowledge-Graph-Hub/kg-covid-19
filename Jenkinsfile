@@ -50,17 +50,17 @@ pipeline {
         }
         stage('Download') {
             steps {
-                  sh './venv/bin/python run.py download'
+                  sh 'python run.py download'
             }
         }
         stage('Transform') {
             steps {
-                sh './venv/bin/python run.py transform'
+                 sh 'python run.py transform'
             }
         }
         stage('Load') {
             steps {
-                sh './venv/bin/python run.py load'
+                 sh 'python run.py load'
             }
         }
         stage('Push to s3 bucket') {
