@@ -40,9 +40,10 @@ pipeline {
                         url: 'https://github.com/Knowledge-Graph-Hub/kg-covid-19',
                         branch: 'master'
                     )
-			sh 'pip install bmt'
-			sh 'pip install -r requirements.txt'
-			sh 'python setup.py install'
+		    sh 'cd kg_covid_19'
+		    sh 'pip install bmt'
+		    sh 'pip install -r requirements.txt'
+		    sh 'python setup.py install'
                 }
             }
         }
