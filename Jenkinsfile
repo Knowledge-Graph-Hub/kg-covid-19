@@ -50,11 +50,9 @@ pipeline {
         }
         stage('Download') {
             steps {
-		  sh '# echo "${env.WORKSPACE}"'
 		  sh 'pwd'
 		  sh 'ls; find ../ -name "run.py"'
-		  sh 'cd config'
-                  sh 'python run.py download'
+                  sh 'cd config; python run.py download'
             }
         }
         stage('Transform') {
