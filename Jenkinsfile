@@ -42,7 +42,7 @@ pipeline {
                     )
                     sh '''
 		        cd kg_covid_19
-		        virtualenv -p python3.7 venv --distribute
+		        virtualenv -p /usr/bin/python3.7 venv --distribute
 		        . venv/bin/activate
 		        ./venv/bin/pip install bmt
 		        ./venv/bin/pip install -r requirements.txt
