@@ -13,7 +13,7 @@ pipeline {
 	stage('Ready and clean') {
 	    steps {
 		// Give us a minute to cancel if we want.
-		sleep time: 1, unit: 'MINUTES'
+		// sleep time: 1, unit: 'MINUTES'
 		cleanWs()
 	    }
 	}
@@ -40,12 +40,14 @@ pipeline {
                         url: 'https://github.com/Knowledge-Graph-Hub/kg-covid-19',
                         branch: 'master'
                     )
-		    sh 'cd kg_covid_19'
-		    sh 'virtualenv venv --distribute'
-		    sh '. venv/bin/activate'
-		    sh './venv/bin/pip install bmt'
-		    sh './venv/bin/pip  install -r requirements.txt'
-		    sh './venv/bin/python setup.py install'
+                    sh '''
+		        cd kg_covid_19
+		        virtualenv -p python3.7 venv --distribute
+		        . venv/bin/activate
+		        ./venv/bin/pip install bmt
+		        ./venv/bin/pip install -r requirements.txt
+		        ./venv/bin/python setup.py install
+		    '''
                 }
             }
         }
