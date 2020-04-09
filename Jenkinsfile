@@ -50,17 +50,20 @@ pipeline {
         }
         stage('Download') {
             steps {
+		  sh 'cd kg-covid-19'
                   sh 'python run.py download'
             }
         }
         stage('Transform') {
             steps {
-                 sh 'python run.py transform'
+		  sh 'cd kg-covid-19'		  
+                  sh 'python run.py transform'
             }
         }
         stage('Load') {
             steps {
-                 sh 'python run.py load'
+		  sh 'cd kg-covid-19'
+		  sh 'python run.py load'
             }
         }
         stage('Push to s3 bucket') {
