@@ -50,7 +50,7 @@ pipeline {
         }
         stage('Download') {
             steps {
-                  sh '. venv/bin/activate; cd config; python3.7 run.py download'
+                  sh 'cd config;. venv/bin/activate; python3.7 run.py download'
             }
         }
         stage('Transform') {
