@@ -1,5 +1,7 @@
+import gzip
 import json
 import os
+import re
 import uuid
 from typing import List, Dict, Any, Set
 from zipfile import ZipFile
@@ -9,19 +11,24 @@ from prefixcommons import contract_uri # type: ignore
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
 
+CUSTOM_CMAP = {
+    'CHEMBL.COMPOUND': 'https://www.ebi.ac.uk/chembl/compound_report_card/',
+    'MESH': 'https://id.nlm.nih.gov/mesh/',
+    'UniProtKB': 'https://www.uniprot.org/uniprot/',
+}
 
 class ScibiteCordTransform(Transform):
     """
     ScibiteCordTransform parses the SciBite annotations on CORD-19 dataset
     to extract concept to publication annotations and co-occurrences.
-
-    # TODO: remap symbols to HGNC identifiers
     """
     def __init__(self, input_dir: str = None, output_dir: str = None):
         source_name = "SciBite-CORD-19"
         super().__init__(source_name, input_dir, output_dir)
         self.concept_name_map: Dict = {}
         self.seen: Set = set()
+        self.gene_info_map = {}
+        self.load_gene_info(self.input_base_dir, self.output_dir, ['9606'])
 
     def run(self, data_files: List = None) -> None:
         """Method is called and performs needed transformations to process
@@ -124,13 +131,8 @@ class ScibiteCordTransform(Transform):
         )
         self.seen.add(paper_id)
 
-        # TODO: use CURIE for terms
         for t in terms:
-            curie = contract_uri(t)
-            if curie:
-                curie = curie[0]
-            else:
-                curie = t
+            curie = self.contract_uri(t)
             if t not in self.seen:
                 # add a biolink:OntologyClass node for each term
                 write_node_edge_item(
@@ -208,6 +210,7 @@ class ScibiteCordTransform(Transform):
                 self.seen.add(paper_id)
 
             for t in terms:
+                curie = self.contract_uri(t)
                 if t not in self.seen:
                     # add a biolink:OntologyClass node for each term
                     write_node_edge_item(
@@ -246,6 +249,7 @@ class ScibiteCordTransform(Transform):
                 ]
             )
             for t in terms:
+                curie = self.contract_uri(t)
                 # add has_member edges between co-occurrence entity and each term
                 write_node_edge_item(
                     fh=edge_handle,
@@ -279,6 +283,125 @@ class ScibiteCordTransform(Transform):
                 if hit['id'] not in self.concept_name_map:
                     self.concept_name_map[hit['id']] = hit['name']
         return terms
+
+    def contract_uri(self, iri) -> str:
+        """Contract a given IRI.
+
+        Contract a given IRI, with special parsing and transformations
+        depending on the nature of the IRI.
+
+        Args:
+            iri: IRI as string
+
+        Returns:
+            str.
+
+        """
+        curie = None
+        if 'http://www.genenames.org/cgi-bin/gene_symbol_report?match=' in iri:
+            identifier = iri.split('=')[-1]
+            if identifier in self.gene_info_map:
+                curie = f"NCBIGene:{self.gene_info_map[identifier]['NCBI']}"
+        else:
+            if self.is_iri(iri):
+                curie = contract_uri(iri)
+                if curie:
+                    curie = curie[0]
+                else:
+                    curie = contract_uri(iri, cmaps=[CUSTOM_CMAP])
+                    print(f"Contracting URI {iri} to {curie} via custom map")
+                    if curie:
+                        curie = curie[0]
+                    else:
+                        curie = iri
+            elif self.is_curie(iri):
+                curie = iri
+            else:
+                curie = f":{iri}"
+        return curie
+
+    @staticmethod
+    def is_curie(s: str) -> bool:
+        """Check if a given string is a CURIE.
+
+        Args:
+            s: string
+
+        Returns:
+            bool.
+
+        """
+        m = re.match(r"^[^ :]+:[^/ :]+$", s)
+        return bool(m)
+
+    @staticmethod
+    def is_iri(s) -> bool:
+        """Check ig a given string is an IRI.
+
+        Args:
+            s: string
+
+        Returns:
+            bool.
+
+        """
+        m = re.match(r"^http[s]?://", s)
+        return bool(m)
+
+    def load_gene_info(self, input_dir: str, output_dir: str, species_id: List = None) -> None:
+        """Load mappings from NCBI gene_info (gene_info.gz).
+
+        Args:
+            input_dir: A string pointing to the directory to import data from.
+            output_dir: A string pointing to the directory to output data to.
+            species_id: A list with the species IDs.
+
+        Returns:
+            None.
+
+        """
+        if not species_id:
+            # default to just human
+            species_id = ['9606']
+        file_path = os.path.join(self.input_base_dir, 'gene_info.gz')
+
+        with gzip.open(file_path, 'rt') as FH:
+            for line in FH:
+                records = line.split('\t')
+                if records[0] not in species_id:
+                    continue
+                ncbi_gene_identifier = records[1]
+                symbol = records[2]
+                hgnc_identifier = self.get_identifier_by_prefix(records[5], 'HGNC:')
+                description = records[8]
+                if symbol not in self.gene_info_map:
+                    self.gene_info_map[symbol] = {
+                        'symbol': symbol,
+                        'description': description,
+                        'NCBI': ncbi_gene_identifier,
+                        'HGNC': hgnc_identifier
+                    }
+
+    @staticmethod
+    def get_identifier_by_prefix(record, prefix):
+        """Get identifier from a list based on prefix.
+
+        Args:
+            record: record from NCBI gene_info.
+            prefix: prefix of the identifier to extract.
+
+        Returns:
+            str
+
+        """
+        identifier = None
+        element = record.split('|')
+        identifier = [x for x in element if prefix in x]
+        if identifier:
+            identifier = identifier[0]
+            if 'HGNC:HGNC:' in identifier:
+                identifier = ':'.join(identifier.split(':')[1:])
+        return identifier
 
 
 
