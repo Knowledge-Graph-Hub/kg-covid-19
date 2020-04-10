@@ -27,7 +27,7 @@ class ScibiteCordTransform(Transform):
         super().__init__(source_name, input_dir, output_dir)
         self.concept_name_map: Dict = {}
         self.seen: Set = set()
-        self.gene_info_map = {}
+        self.gene_info_map: Dict = {}
         self.load_gene_info(self.input_base_dir, self.output_dir, ['9606'])
 
     def run(self, data_files: List = None) -> None:
@@ -297,7 +297,7 @@ class ScibiteCordTransform(Transform):
             str.
 
         """
-        curie = None
+        curie = ""
         if 'http://www.genenames.org/cgi-bin/gene_symbol_report?match=' in iri:
             identifier = iri.split('=')[-1]
             if identifier in self.gene_info_map:
