@@ -14,6 +14,8 @@ class ScibiteCordTransform(Transform):
     """
     ScibiteCordTransform parses the SciBite annotations on CORD-19 dataset
     to extract concept to publication annotations and co-occurrences.
+
+    # TODO: remap symbols to HGNC identifiers
     """
     def __init__(self, input_dir: str = None, output_dir: str = None):
         source_name = "SciBite-CORD-19"
@@ -63,11 +65,14 @@ class ScibiteCordTransform(Transform):
 
         subsets = ['biorxiv_medrxiv', 'comm_use_subset', 'noncomm_use_subset', 'custom_license']
         for subset in subsets:
-            data_dir = os.path.join(self.input_base_dir, 'data', subset, subset)
-            for filename in os.listdir(data_dir):
-                file = os.path.join(data_dir, filename)
-                doc = json.load(open(file))
-                self.parse_annotation_doc(node_handle, edge_handle, doc, subset)
+            subset_dir = os.path.join(self.input_base_dir, 'CORD19', subset, subset)
+            for data_dir in os.listdir(subset_dir):
+                if os.path.isdir(os.path.join(subset_dir, data_dir)):
+                    for filename in os.listdir(os.path.join(subset_dir, data_dir)):
+                        file = os.path.join(subset_dir, data_dir, filename)
+                        doc = json.load(open(file))
+                        self.parse_annotation_doc(node_handle, edge_handle, doc, subset)
+
 
     def parse_annotation_doc(self, node_handle, edge_handle, doc: Dict, subset: str = None) -> None:
         """Parse a JSON document corresponding to a publication.
@@ -82,22 +87,29 @@ class ScibiteCordTransform(Transform):
             None.
 
         """
-        paper_id = doc['paper_id']
-        metadata = doc['metadata']
-        abstract = doc['abstract']
-        body_text = doc['body_text']
         terms = set()
+        paper_id = doc['paper_id']
+
+        if 'metadata' in doc:
+            metadata = doc['metadata']
+            # extract hits from metadata
+            terms.update(self.extract_termite_hits(metadata))
+
+        if 'abstract' in doc:
+            abstract = doc['abstract']
+            # extract hits from abstract
+            for x in abstract:
+                terms.update(self.extract_termite_hits(x))
+
+        if 'body_text' in doc:
+            body_text = doc['body_text']
+            # extract hits from body text
+            for x in body_text:
+                terms.update(self.extract_termite_hits(x))
+
         provided_by = f"{self.source_name}"
         if subset:
             provided_by += f" {subset}"
-        # extract hits from metadata
-        terms.update(self.extract_termite_hits(metadata))
-        # extract hits from abstract
-        for x in abstract:
-            terms.update(self.extract_termite_hits(x))
-        # extract hits from body text
-        for x in body_text:
-            terms.update(self.extract_termite_hits(x))
 
         # add a biolink:Publication for each paper
         write_node_edge_item(
@@ -114,26 +126,31 @@ class ScibiteCordTransform(Transform):
 
         # TODO: use CURIE for terms
         for t in terms:
+            curie = contract_uri(t)
+            if curie:
+                curie = curie[0]
+            else:
+                curie = t
             if t not in self.seen:
                 # add a biolink:OntologyClass node for each term
                 write_node_edge_item(
                     fh=node_handle,
                     header=self.node_header,
                     data=[
-                        f"{t}",
+                        f"{curie}",
                         f"{self.concept_name_map[t]}",
                         "biolink:OntologyClass" if len(t) != 2 else "biolink:NamedThing",
                         ""
                     ]
                 )
-                self.seen.add(t)
+                self.seen.add(curie)
 
             # add has_annotation edge between OntologyClass and Publication
             write_node_edge_item(
                 fh=edge_handle,
                 header=self.edge_header,
                 data=[
-                    f"{t}",
+                    f"{curie}",
                     f"biolink:related_to",
                     f"CORD:{paper_id}",
                     "SIO:000255",
@@ -197,13 +214,13 @@ class ScibiteCordTransform(Transform):
                         fh=node_handle,
                         header=self.node_header,
                         data=[
-                            f"{t}",
+                            f"{curie}",
                             self.concept_name_map[t] if t in self.concept_name_map else "",
                             "biolink:OntologyClass" if len(t) != 2 else "biolink:NamedThing",
                             ""
                         ]
                     )
-                    self.seen.add(t)
+                    self.seen.add(curie)
 
             information_entity = uuid.uuid1()
             write_node_edge_item(
@@ -236,7 +253,7 @@ class ScibiteCordTransform(Transform):
                     data=[
                         f"{information_entity}",
                         "biolink:related_to",
-                        f"{t}",
+                        f"{curie}",
                         f"SIO:000059", # 'has member'
                         f"{self.source_name}"
                     ]
