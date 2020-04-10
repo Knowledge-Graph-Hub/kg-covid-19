@@ -36,6 +36,12 @@ target:
          - data/transformed/SciBite-CORD-19/nodes.tsv
          - data/transformed/SciBite-CORD-19/edges.tsv
 
+   sars-cov-2-gene-annot:
+      type: tsv
+      filename:
+         - data/transformed/sars_cov_2_gene_annot/nodes.tsv
+         - data/transformed/sars_cov_2_gene_annot/edges.tsv
+
 destination:
    type: tsv
    filename: merged-kg

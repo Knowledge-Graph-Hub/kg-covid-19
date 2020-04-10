@@ -74,8 +74,8 @@
 # SciBite CORD-19 annotations v1.2
 #
 -
-  url: http://idg.berkeleybop.io/CORD-19_1_2.zip
-  local_name: CORD-19_1_2.zip
+  url: https://s3.eu-west-2.amazonaws.com/scibite.covid19data/CORD19/annotated-cord19/CORD-19_1_3.zip
+  local_name: CORD-19_1_3.zip
 
 # SciBite CORD-19 entity co-occurrences v1.0
 -
@@ -92,3 +92,18 @@
 -
   url: https://s3.pgkb.org/data/genes.zip
   local_name: pharmgkb_genes.zip
+
+#
+# SARS-CoV-2 gene annotations from Uniprot
+#
+
+-
+  # Gene Product Association Data for SARS-CoV-2 genes in GPAD format
+  # http://geneontology.org/docs/gene-product-association-data-gpad-format/
+  url: ftp://ftp.ebi.ac.uk/pub/contrib/goa/uniprot_sars-cov-2.gpa
+  local_name: uniprot_sars-cov-2.gpa
+-
+  # Gene Product information for SARS-CoV-2 genes in GPI format
+  # http://geneontology.org/docs/gene-product-information-gpi-format/
+  url: ftp://ftp.ebi.ac.uk/pub/contrib/goa/uniprot_sars-cov-2.gpi
+  local_name: uniprot_sars-cov-2.gpi
