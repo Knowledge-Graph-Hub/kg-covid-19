@@ -29,23 +29,16 @@ class TestTTD(TestCase):
         ['T47101', 'TARGETID', ['T47101']],
         ['T47101', 'GENENAME', ['FGFR1']],
         ['T47101', 'DRUGINFO', [['D09HNV', 'Intedanib', 'Approved'],
-                                 ['D01PZD', 'Romiplostim', 'Approved']]]
-        ])
+                                ['D01PZD', 'Romiplostim', 'Approved']]],
+        ['T17514', 'UNIPROID', [
+            ['INHBA_HUMAN', 'INHBB_HUMAN', 'INHBC_HUMAN', 'INHBE_HUMAN']]]
+    ])
     def test_parse_ttd_file_values(self, target_id, abbrev, value):
         parsed_result = self.ttd.parse_ttd_file(self.ttd_dl_snippet)
         self.assertCountEqual(parsed_result.get(target_id).get(abbrev), value,
                               "Problem in parse_ttd_file for {} {} {}".
                               format(target_id, abbrev, value))
 
-    @parameterized.expand([
-        ['T17514', 'UNIPROID', [
-            ['INHBA_HUMAN','INHBB_HUMAN','INHBC_HUMAN','INHBE_HUMAN']]
-         ]])
-    def test_parse_ttd_file_multiple_ids(self, target_id, abbrev, value):
-        parsed_result = self.ttd.parse_ttd_file(self.ttd_dl_snippet)
-        self.assertCountEqual(parsed_result.get(target_id).get(abbrev), value,
-                              "Problem in parse_ttd_file for {} {} {}".
-                              format(target_id, abbrev, value))
 
     def test_run(self) -> None:
         self.assertTrue(isinstance(getattr(self.ttd, "run"), types.MethodType))
