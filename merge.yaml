@@ -24,17 +24,13 @@ target:
       filename:
          - data/transformed/ttd/nodes.tsv
          - data/transformed/ttd/edges.tsv
+
    zhou-host-proteins:
       type: tsv
       filename:
          - data/transformed/zhou_host_proteins/nodes.tsv
          - data/transformed/zhou_host_proteins/edges.tsv
 
-   SciBite-CORD-19:
-      type: tsv
-      filename:
-         - data/transformed/SciBite-CORD-19/nodes.tsv
-         - data/transformed/SciBite-CORD-19/edges.tsv
 
    sars-cov-2-gene-annot:
       type: tsv
