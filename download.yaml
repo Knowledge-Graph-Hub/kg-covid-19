@@ -74,7 +74,7 @@
 # SciBite CORD-19 annotations v1.2
 #
 -
-  url: https://github.com/SciBiteLabs/CORD19/raw/d2fb4998a504bcb06f5d0fd407f58feda2f140b1/annotated-CORD-19/1.2/CORD-19_1_2.zip
+  url: http://idg.berkeleybop.io/CORD-19_1_2.zip
   local_name: CORD-19_1_2.zip
 
 # SciBite CORD-19 entity co-occurrences v1.0
