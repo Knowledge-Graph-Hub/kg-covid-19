@@ -74,8 +74,8 @@
 # SciBite CORD-19 annotations v1.2
 #
 -
-  url: http://idg.berkeleybop.io/CORD-19_1_2.zip
-  local_name: CORD-19_1_2.zip
+  url: https://s3.eu-west-2.amazonaws.com/scibite.covid19data/CORD19/annotated-cord19/CORD-19_1_3.zip
+  local_name: CORD-19_1_3.zip
 
 # SciBite CORD-19 entity co-occurrences v1.0
 -

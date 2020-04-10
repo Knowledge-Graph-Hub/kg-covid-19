@@ -34,7 +34,7 @@ class ScibiteCordTransform(Transform):
         """
         if not data_files:
             data_files = list()
-            data_files.append(os.path.join(self.input_base_dir, "CORD-19_1_2.zip"))
+            data_files.append(os.path.join(self.input_base_dir, "CORD-19_1_3.zip"))
             data_files.append(os.path.join(self.input_base_dir, "cv19_scc.zip"))
 
         self.node_header = ['id', 'name', 'category', 'description']
