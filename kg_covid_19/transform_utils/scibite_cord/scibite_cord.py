@@ -63,7 +63,7 @@ class ScibiteCordTransform(Transform):
 
         subsets = ['biorxiv_medrxiv', 'comm_use_subset', 'noncomm_use_subset', 'custom_license']
         for subset in subsets:
-            data_dir = os.path.join(self.input_base_dir, 'data', subset, subset)
+            data_dir = os.path.join(self.input_base_dir, 'CORD19', subset, subset)
             for filename in os.listdir(data_dir):
                 file = os.path.join(data_dir, filename)
                 doc = json.load(open(file))
