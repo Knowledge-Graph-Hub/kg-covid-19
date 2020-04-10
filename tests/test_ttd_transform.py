@@ -9,6 +9,7 @@ class TestTTD(TestCase):
 
     def setUp(self) -> None:
         self.ttd_dl_snippet = "tests/resources/P1-01-TTD_target_download_SNIPPET.txt"
+        self.ttd_dl_mult_ids = "tests/resources/P1-01-TTD_target_download_MULTIPLE_IDS.txt"
         self.ttd = TTDTransform()
         self.abbreviations = \
         ['TARGETID', 'FORMERID', 'UNIPROID', 'TARGNAME', 'GENENAME', 'TARGTYPE',
@@ -21,7 +22,7 @@ class TestTTD(TestCase):
                                    types.MethodType))
         parsed_result = self.ttd.parse_ttd_file(self.ttd_dl_snippet)
         self.assertTrue(isinstance(parsed_result, dict))
-        self.assertCountEqual(parsed_result.keys(), ["T47101", "T59328"])
+        self.assertCountEqual(parsed_result.keys(), ["T47101", "T17514"])
         self.assertTrue(set(parsed_result["T47101"].keys()) <= set(self.abbreviations))
 
     @parameterized.expand([
@@ -31,6 +32,16 @@ class TestTTD(TestCase):
                                  ['D01PZD', 'Romiplostim', 'Approved']]]
         ])
     def test_parse_ttd_file_values(self, target_id, abbrev, value):
+        parsed_result = self.ttd.parse_ttd_file(self.ttd_dl_snippet)
+        self.assertCountEqual(parsed_result.get(target_id).get(abbrev), value,
+                              "Problem in parse_ttd_file for {} {} {}".
+                              format(target_id, abbrev, value))
+
+    @parameterized.expand([
+        ['T17514', 'UNIPROID', [
+            ['INHBA_HUMAN','INHBB_HUMAN','INHBC_HUMAN','INHBE_HUMAN']]
+         ]])
+    def test_parse_ttd_file_multiple_ids(self, target_id, abbrev, value):
         parsed_result = self.ttd.parse_ttd_file(self.ttd_dl_snippet)
         self.assertCountEqual(parsed_result.get(target_id).get(abbrev), value,
                               "Problem in parse_ttd_file for {} {} {}".
