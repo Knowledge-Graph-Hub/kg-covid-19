@@ -15,6 +15,7 @@ CUSTOM_CMAP = {
     'CHEMBL.COMPOUND': 'https://www.ebi.ac.uk/chembl/compound_report_card/',
     'MESH': 'https://id.nlm.nih.gov/mesh/',
     'UniProtKB': 'https://www.uniprot.org/uniprot/',
+    'HGNC': 'http://www.genenames.org/cgi-bin/gene_symbol_report?match='
 }
 
 class ScibiteCordTransform(Transform):
@@ -302,6 +303,8 @@ class ScibiteCordTransform(Transform):
             identifier = iri.split('=')[-1]
             if identifier in self.gene_info_map:
                 curie = f"NCBIGene:{self.gene_info_map[identifier]['NCBI']}"
+            else:
+                [curie] = contract_uri(iri, cmaps=[CUSTOM_CMAP])
         else:
             if self.is_iri(iri):
                 curie = contract_uri(iri)
@@ -309,7 +312,6 @@ class ScibiteCordTransform(Transform):
                     curie = curie[0]
                 else:
                     curie = contract_uri(iri, cmaps=[CUSTOM_CMAP])
-                    print(f"Contracting URI {iri} to {curie} via custom map")
                     if curie:
                         curie = curie[0]
                     else:
@@ -318,6 +320,7 @@ class ScibiteCordTransform(Transform):
                 curie = iri
             else:
                 curie = f":{iri}"
+
         return curie
 
     @staticmethod
