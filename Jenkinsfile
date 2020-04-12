@@ -2,7 +2,7 @@ pipeline {
     agent any
     triggers {
         // Every two days at 11 pm
-        cron('0 23 */2 * *')
+        // cron('0 23 */2 * *')
     }
     options {
         timestamps()
