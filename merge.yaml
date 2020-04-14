@@ -24,6 +24,7 @@ target:
       filename:
          - data/transformed/ttd/nodes.tsv
          - data/transformed/ttd/edges.tsv
+
    zhou-host-proteins:
       type: tsv
       filename:

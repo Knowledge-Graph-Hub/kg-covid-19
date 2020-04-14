@@ -7,8 +7,9 @@ from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTra
 from kg_covid_19.transform_utils.hpo.hpo import HpoTransform
 from kg_covid_19.transform_utils.\
     sars_cov_2_gene_annot.sars_cov_2_gene_annot import SARSCoV2GeneAnnot
-from kg_covid_19.transform_utils.scibite_cord import ScibiteCordTransform
+# from kg_covid_19.transform_utils.scibite_cord import ScibiteCordTransform
 from kg_covid_19.transform_utils.pharmgkb import PharmGKB
+from kg_covid_19.transform_utils.scibite_cord import ScibiteCordTransform
 from kg_covid_19.transform_utils.string_ppi import StringTransform
 from kg_covid_19.transform_utils.ttd.ttd import TTDTransform
 from kg_covid_19.transform_utils.zhou_host_proteins.zhou_transform import ZhouTransform
@@ -20,7 +21,7 @@ DATA_SOURCES = {
     'HpoTransform': HpoTransform,
     'TTDTransform': TTDTransform,
     'StringTransform': StringTransform,
-    'ScibiteCordTransform': ScibiteCordTransform,
+   'ScibiteCordTransform': ScibiteCordTransform,
     'PharmGKB': PharmGKB,
     'SARSCoV2GeneAnnot': SARSCoV2GeneAnnot
 }
