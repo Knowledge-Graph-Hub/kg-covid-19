@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    triggers {
-        // Every two days at 11 pm
-        // cron('0 23 */2 * *')
-    }
     options {
         timestamps()
     }
@@ -67,7 +63,7 @@ pipeline {
             steps {
                 sh 'cd config;. venv/bin/activate; kgx transform --input-type tsv --output-type ttl -o . merged-kg.tar'
             }
-        }        
+        }
         stage('Publish') {
             steps {
 
