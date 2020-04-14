@@ -63,6 +63,11 @@ pipeline {
                 sh 'cd config;. venv/bin/activate; python3.7 run.py load'
             }
         }
+        stage('Convert to RDF') {
+            steps {
+                sh 'cd config;. venv/bin/activate; kgx transform --input-type tsv --output-type ttl -o . merged-kg.tar'
+            }
+        }        
         stage('Publish') {
             steps {
 
@@ -70,18 +75,15 @@ pipeline {
                     if (env.BRANCH_NAME != 'master') {
                         echo "Will not push if not on correct branch."
                     } else {
-                        // Get trivial product back in hand.
-                        sh 'echo thing > dow.txt'
-
                         // Push out to your S3 bucket.  The given
                         // command is for small to medium files. If
                         // you need something appropriate for large
                         // files, let me know.
                         withCredentials([file(credentialsId: 's3cmd_idg_push_configuration', variable: 'S3CMD_JSON')]) {
-                            sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put dow.txt s3://idg-public-data/dow.txt'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar s3://idg-public-data/dow.txt'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.ttl s3://idg-public-data/dow.txt'
                             // Should now appear at:
-                            // https://idg.berkeleybop.io/dow.txt
-                            // http://idg.berkeleybop.io/dow.txt
+                            // https://idg.berkeleybop.io/[artifact name]
                         }
 
                     }
