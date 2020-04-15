@@ -4,7 +4,7 @@ import yaml
 
 from kgx import Transformer, NeoTransformer
 from kgx.cli.utils import get_file_types, get_transformer
-
+from kgx.operations.graph_merge import GraphMerge
 
 def parse_load_config(yaml_file: str) -> Dict:
     """Parse load config YAML.
@@ -31,6 +31,7 @@ def load_and_merge(yaml_file: str) -> Transformer:
         kgx.Transformer: The merged transformer that contains the merged graph.
 
     """
+    gm = GraphMerge()
     config = parse_load_config(yaml_file)
     transformers: List = []
 
@@ -52,15 +53,13 @@ def load_and_merge(yaml_file: str) -> Transformer:
             logging.error("type {} not yet supported".format(target['type']))
 
     # merge all subgraphs into a single graph
-    merged_transformer = Transformer()
-    merged_transformer.merge_graphs([x.graph for x in transformers])
-    merged_transformer.report()
+    merged_graph = gm.merge_all_graphs([x.graph for x in transformers])
 
     # write the merged graph
     if 'destination' in config:
         destination = config['destination']
         if destination['type'] in ['csv', 'tsv', 'ttl', 'json', 'tar']:
-            destination_transformer = get_transformer(destination['type'])(merged_transformer.graph)
+            destination_transformer = get_transformer(destination['type'])(merged_graph)
             destination_transformer.save(destination['filename'], extension=destination['type'])
         elif destination['type'] == 'neo4j':
             destination_transformer = NeoTransformer(
