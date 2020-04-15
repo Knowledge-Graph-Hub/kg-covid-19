@@ -61,7 +61,8 @@ class DrugCentralTransform(Transform):
 
                 # get gene ID
                 try:
-                    gene_id = get_item_by_priority(items_dict, ['ACCESSION'])
+                    gene_id_string = get_item_by_priority(items_dict, ['ACCESSION'])
+                    gene_ids = gene_id_string.split('|')
                 except ItemInDictNotFound:
                     # lines with no ACCESSION entry only contain drug info, no target
                     # info - not ingesting these
@@ -79,21 +80,22 @@ class DrugCentralTransform(Transform):
                                            items_dict['DRUG_NAME'],
                                            drug_node_type])
 
-                write_node_edge_item(fh=node,
-                                     header=self.node_header,
-                                     data=[gene_curie_prefix + gene_id,
-                                           items_dict['GENE'],
-                                           gene_node_type])
+                for gene_id in gene_ids:
+                    write_node_edge_item(fh=node,
+                                         header=self.node_header,
+                                         data=[gene_curie_prefix + gene_id,
+                                               items_dict['GENE'],
+                                               gene_node_type])
 
-                # WRITE EDGES
-                # ['subject', 'edge_label', 'object', 'relation', 'comment']
-                write_node_edge_item(fh=edge,
-                                     header=self.edge_header,
-                                     data=[drug_id,
-                                           drug_gene_edge_label,
-                                           gene_id,
-                                           drug_gene_edge_relation,
-                                           items_dict['ACT_COMMENT']])
+                    # WRITE EDGES
+                    # ['subject', 'edge_label', 'object', 'relation', 'comment']
+                    write_node_edge_item(fh=edge,
+                                         header=self.edge_header,
+                                         data=[drug_id,
+                                               drug_gene_edge_label,
+                                               gene_id,
+                                               drug_gene_edge_relation,
+                                               items_dict['ACT_COMMENT']])
 
         return None
 
