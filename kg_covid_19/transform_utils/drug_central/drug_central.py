@@ -29,10 +29,12 @@ class DrugCentralTransform(Transform):
         super().__init__(source_name, input_dir, output_dir)  # set some variables
 
     def run(self) -> None:
-        """Method is called and performs needed transformations to process the Drug Central data, additional information
-     on this data can be found in the comment at the top of this script"""
+        """Method is called and performs needed transformations to process the Drug
+        Central data, additional information
+        on this data can be found in the comment at the top of this script"""
 
-        interactions_file = os.path.join(self.input_base_dir, "drug.target.interaction.tsv.gz")
+        interactions_file = os.path.join(self.input_base_dir,
+                                         "drug.target.interaction.tsv.gz")
         os.makedirs(self.output_dir, exist_ok=True)
         drug_node_type = "biolink:Drug"
         gene_node_type = "biolink:Gene"
