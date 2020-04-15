@@ -58,8 +58,6 @@ class DrugCentralTransform(Transform):
                 except ItemInDictNotFound:
                     # lines with no ACCESSION entry only contain drug info, no target
                     # info - not ingesting these
-                    logging.info(
-                        "No gene information for this line:\n{}\nskipping".format(line))
                     continue
 
                 # get drug ID
@@ -107,6 +105,8 @@ def parse_drug_central_line(this_line: str, header_items: List) -> Dict:
     """
 
     items = this_line.strip().split("\t")
+    items = [i.replace('"', '') for i in items]
+
     item_dict = dict(zip(header_items, items))
 
     return item_dict
