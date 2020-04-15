@@ -10,7 +10,7 @@ from typing import Dict, List
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, \
-    get_item_by_priority, ItemInDictNotFound, parse_header
+    get_item_by_priority, ItemInDictNotFound, parse_header, data_to_dict
 
 """
 Ingest drug - drug target interactions from Drug Central
@@ -104,10 +104,9 @@ def parse_drug_central_line(this_line: str, header_items: List) -> Dict:
         item_dict: A dictionary of header items and a processed Drug Central string.
     """
 
-    items = this_line.strip().split("\t")
-    items = [i.replace('"', '') for i in items]
-
-    item_dict = dict(zip(header_items, items))
+    data = this_line.strip().split("\t")
+    data = [i.replace('"', '') for i in data]
+    item_dict = data_to_dict(header_items, data)
 
     return item_dict
 
