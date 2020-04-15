@@ -28,7 +28,7 @@ class DrugCentralTransform(Transform):
         source_name = "drug_central"
         super().__init__(source_name, input_dir, output_dir)  # set some variables
 
-    def run(self) -> None:
+    def run(self, species="Homo sapiens") -> None:
         """Method is called and performs needed transformations to process the Drug
         Central data, additional information
         on this data can be found in the comment at the top of this script"""
@@ -37,6 +37,8 @@ class DrugCentralTransform(Transform):
                                          "drug.target.interaction.tsv.gz")
         os.makedirs(self.output_dir, exist_ok=True)
         drug_node_type = "biolink:Drug"
+        gene_curie_prefix = "UniProtKB:"
+        drug_curie_prefix = "DrugCentral:"
         gene_node_type = "biolink:Gene"
         drug_gene_edge_label = "biolink:interacts_with"
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
@@ -54,6 +56,9 @@ class DrugCentralTransform(Transform):
             for line in interactions:
                 items_dict = parse_drug_central_line(line, header_items)
 
+                if 'ORGANISM' not in items_dict or items_dict['ORGANISM'] != species:
+                    continue
+
                 # get gene ID
                 try:
                     gene_id = get_item_by_priority(items_dict, ['ACCESSION'])
@@ -63,10 +68,8 @@ class DrugCentralTransform(Transform):
                     continue
 
                 # get drug ID
-                drug_id = get_item_by_priority(items_dict,
-                                               ['ACT_SOURCE_URL',
-                                                'MOA_SOURCE_URL',
-                                                'DRUG_NAME'])
+                drug_id = drug_curie_prefix + get_item_by_priority(items_dict,
+                                                                   ['DRUG_NAME'])
 
                 # WRITE NODES
                 # drug - ['id', 'name', 'category']
@@ -78,7 +81,7 @@ class DrugCentralTransform(Transform):
 
                 write_node_edge_item(fh=node,
                                      header=self.node_header,
-                                     data=[gene_id,
+                                     data=[gene_curie_prefix + gene_id,
                                            items_dict['GENE'],
                                            gene_node_type])
 
