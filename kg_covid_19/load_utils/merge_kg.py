@@ -1,7 +1,7 @@
 import logging
 from typing import Dict, List
 import yaml
-
+import networkx as nx
 from kgx import Transformer, NeoTransformer
 from kgx.cli.utils import get_file_types, get_transformer
 from kgx.operations.graph_merge import GraphMerge
@@ -21,14 +21,14 @@ def parse_load_config(yaml_file: str) -> Dict:
     return config
 
 
-def load_and_merge(yaml_file: str) -> Transformer:
+def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
     """Load and merge sources defined in the config YAML.
 
     Args:
         yaml_file: A string pointing to a KGX compatible config YAML.
 
     Returns:
-        kgx.Transformer: The merged transformer that contains the merged graph.
+        networkx.MultiDiGraph: The merged graph.
 
     """
     gm = GraphMerge()
@@ -63,7 +63,7 @@ def load_and_merge(yaml_file: str) -> Transformer:
             destination_transformer.save(destination['filename'], extension=destination['type'])
         elif destination['type'] == 'neo4j':
             destination_transformer = NeoTransformer(
-                merged_transformer.graph,
+                merged_graph,
                 uri=destination['uri'],
                 username=destination['username'],
                 password=destination['password']
@@ -72,4 +72,4 @@ def load_and_merge(yaml_file: str) -> Transformer:
         else:
             logging.error("type {} not yet supported for KGX load-and-merge operation.".format(destination['type']))
 
-    return merged_transformer
+    return merged_graph
