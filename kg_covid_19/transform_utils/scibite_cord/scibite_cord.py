@@ -97,9 +97,10 @@ class ScibiteCordTransform(Transform):
         """
         terms = set()
         paper_id = doc['paper_id']
-
+        title = None
         if 'metadata' in doc:
             metadata = doc['metadata']
+            title = metadata['title'].replace('\n', ' ')
             # extract hits from metadata
             terms.update(self.extract_termite_hits(metadata))
 
@@ -125,7 +126,7 @@ class ScibiteCordTransform(Transform):
             header=self.node_header,
             data=[
                 f"CORD:{paper_id}",
-                f"{metadata['title']}",
+                f"{title}",
                 "biolink:Publication",
                 ""
             ]
