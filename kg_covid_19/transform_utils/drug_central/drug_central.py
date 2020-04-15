@@ -81,9 +81,10 @@ class DrugCentralTransform(Transform):
                                            drug_node_type])
 
                 for gene_id in gene_ids:
+                    gene_id = gene_curie_prefix + gene_id
                     write_node_edge_item(fh=node,
                                          header=self.node_header,
-                                         data=[gene_curie_prefix + gene_id,
+                                         data=[gene_id,
                                                items_dict['GENE'],
                                                gene_node_type])
 
