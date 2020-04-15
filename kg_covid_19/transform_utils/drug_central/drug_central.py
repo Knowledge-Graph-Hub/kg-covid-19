@@ -70,7 +70,7 @@ class DrugCentralTransform(Transform):
 
                 # get drug ID
                 drug_id = drug_curie_prefix + get_item_by_priority(items_dict,
-                                                                   ['DRUG_NAME'])
+                                                                   ['STRUCT_ID'])
 
                 # WRITE NODES
                 # drug - ['id', 'name', 'category']
