@@ -41,14 +41,14 @@ class ZhouTransform(Transform):
         input_file = os.path.join(self.input_base_dir, '41421_2020_153_MOESM1_ESM.pdf')
 
         pubmed_curie_prefix = 'PMID:'
-        gene_curie_prefix = 'NCBI:'
-        publication_node_type = 'Biolink:Publication'
-        gene_node_type = 'Biolink:Gene'
-        virus_node_type = 'Biolink:OrganismalEntity'
+        gene_curie_prefix = 'NCBIGene:'
+        publication_node_type = 'biolink:Publication'
+        gene_node_type = 'biolink:Gene'
+        virus_node_type = 'biolink:OrganismalEntity'
 
         # list of RO interactions:
         # https://raw.githubusercontent.com/oborel/obo-relations/master/subsets/ro-interaction.owl
-        host_gene_vgene_edge_label = 'biotically interacts with'
+        host_gene_vgene_edge_label = 'biolink:interacts_with'
         host_gene_vgene_relation = 'RO:0002437'
 
         ncbitaxon_curie_prefix = 'NCBITaxon:'

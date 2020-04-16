@@ -1,0 +1,22 @@
+!gpa-version: 1.1
+!Columns:
+!
+!   name                  required? cardinality   GAF column #
+!   DB                    required  1             1
+!   DB_Object_ID          required  1             2 / 17
+!   Qualifier             required  1 or greater  4
+!   GO ID                 required  1             5
+!   DB:Reference(s)       required  1 or greater  6
+!   ECO evidence code     required  1             7 + 6 (GO evidence code + reference)
+!   With                  optional  0 or greater  8
+!   Interacting taxon ID  optional  0 or 1        13
+!   Date                  required  1             14
+!   Assigned_by           required  1             15
+!   Annotation Extension  optional  0 or greater  16
+!   Annotation Properties optional  0 or 1        n/a
+!
+!Generated: 2020-03-26 11:33
+!GO-version: http://purl.obolibrary.org/obo/go/releases/2020-03-24/extensions/go-plus.owl
+!
+UniProtKB	P0DTC1	enables	GO:0003723	GO_REF:0000043	ECO:0000322	UniProtKB-KW:KW-0694		20200321	UniProt		go_evidence=IEA
+UniProtKB	P0DTC1	involved_in	GO:0090305	GO_REF:0000108	ECO:0000366	GO:0004519		20200322	GOC		go_evidence=IEA
