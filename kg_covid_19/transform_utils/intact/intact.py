@@ -109,7 +109,7 @@ class IntAct(Transform):
 
     def parse_xml_to_nodes_edges(self, xml_file) -> dict:
         parsed = dict()
-        parsed['nodes'] = [1,2,3,4,5]
+        parsed['nodes'] = [[1,2,3],2,3,4,5]
         parsed['edges'] = []
 
         tree = et.parse(xml_file)

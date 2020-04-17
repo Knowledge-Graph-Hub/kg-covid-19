@@ -263,8 +263,8 @@
                 </xref>
                 <interactorType>
                     <names>
-                        <shortLabel>protein</shortLabel>
-                        <fullName>protein</fullName>
+                        <shortLabel>rna</shortLabel>
+                        <fullName>rna</fullName>
                     </names>
                     <xref>
                         <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
