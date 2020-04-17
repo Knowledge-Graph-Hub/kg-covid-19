@@ -43,6 +43,12 @@ target:
          - data/transformed/sars_cov_2_gene_annot/nodes.tsv
          - data/transformed/sars_cov_2_gene_annot/edges.tsv
 
+   intact:
+      type: tsv
+      filename:
+         - data/transformed/intact/nodes.tsv
+         - data/transformed/intact/edges.tsv
+         -
 destination:
    type: tsv
    filename: merged-kg
