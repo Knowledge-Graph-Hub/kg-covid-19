@@ -52,13 +52,6 @@
   local_name: gene_info.gz
 
 #
-# Human phenotype ontology (HPO) - no annotations for now
-#
--
-  # HPO obo file
-  url: http://purl.obolibrary.org/obo/hp.obo
-  local_name: hp.obo
-#
 # TTD - Therapeutic Targets Database
 # drug targets, and associated data for each (drugs, ids, etc)
 #

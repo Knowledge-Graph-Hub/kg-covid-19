@@ -4,11 +4,7 @@ target:
       filename:
          - data/transformed/drug_central/nodes.tsv
          - data/transformed/drug_central/edges.tsv
-#   hpo:
-#      type: tsv
-#      filename:
-#         - data/transformed/hpo/nodes.tsv
-#         - data/transformed/hpo/edges.tsv
+
    pharmgkb:
       type: tsv
       filename:
