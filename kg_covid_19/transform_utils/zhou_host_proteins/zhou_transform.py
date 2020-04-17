@@ -3,6 +3,7 @@
 
 
 import os
+from typing import Optional
 
 from tabula import io  # type: ignore
 
@@ -34,7 +35,7 @@ class ZhouTransform(Transform):
         source_name = "zhou_host_proteins"
         super().__init__(source_name, input_dir, output_dir)
 
-    def run(self) -> None:
+    def run(self, data_file: Optional[str] = None):
         """Method is called and performs needed transformations to process the zhou host protein data, additional
         information on this data can be found in the comment at the top of this script."""
 

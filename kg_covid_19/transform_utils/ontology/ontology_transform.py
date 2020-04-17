@@ -1,9 +1,9 @@
 import os
 import logging
+from typing import Optional
 
 from kg_covid_19.transform_utils.transform import Transform
-from kgx.transformers.json_transformer import ObographJsonTransformer
-from kgx import PandasTransformer
+from kgx import PandasTransformer, ObographJsonTransformer # type: ignore
 
 ONTOLOGIES = {
     'HpTransform': 'hp.json',
@@ -19,7 +19,7 @@ class OntologyTransform(Transform):
         source_name = "ontologies"
         super().__init__(source_name, input_dir, output_dir)
 
-    def run(self, data_file: str = None) -> None:
+    def run(self, data_file: Optional[str] = None) -> None:
         """Method is called and performs needed transformations to process
         an ontology.
 

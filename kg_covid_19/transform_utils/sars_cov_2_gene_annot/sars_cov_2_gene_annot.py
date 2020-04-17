@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import os
-from typing import Generator, TextIO, List
+from typing import Generator, TextIO, List, Optional
 
 from kg_covid_19.utils.transform_utils import get_item_by_priority, ItemInDictNotFound
 
@@ -17,7 +17,7 @@ each gene -> annotation described in GPA
 
 class SARSCoV2GeneAnnot(Transform):
 
-    def __init__(self, input_dir: str = None, output_dir: str = None):
+    def __init__(self, input_dir: Optional[str] = None, output_dir: str = None):
         source_name = "sars_cov_2_gene_annot"
         super().__init__(source_name, input_dir, output_dir)
 
@@ -38,7 +38,7 @@ class SARSCoV2GeneAnnot(Transform):
             'part_of': 'BFO:0000050'
         }
 
-    def run(self):
+    def run(self, data_file: str = None):
 
         # file housekeeping
         os.makedirs(self.output_dir, exist_ok=True)
