@@ -4,11 +4,11 @@ target:
       filename:
          - data/transformed/drug_central/nodes.tsv
          - data/transformed/drug_central/edges.tsv
-   hpo:
-      type: tsv
-      filename:
-         - data/transformed/hpo/nodes.tsv
-         - data/transformed/hpo/edges.tsv
+#   hpo:
+#      type: tsv
+#      filename:
+#         - data/transformed/hpo/nodes.tsv
+#         - data/transformed/hpo/edges.tsv
    pharmgkb:
       type: tsv
       filename:
@@ -42,6 +42,24 @@ target:
       filename:
          - data/transformed/sars_cov_2_gene_annot/nodes.tsv
          - data/transformed/sars_cov_2_gene_annot/edges.tsv
+
+   gene-ontology:
+      type: tsv
+      filename:
+         - data/transformed/ontologies/go-plus_nodes.tsv
+         - data/transformed/ontologies/go-plus_edges.tsv
+
+   mondo-ontology:
+      type: tsv
+      filename:
+         - data/transformed/ontologies/mondo_nodes.tsv
+         - data/transformed/ontologies/mondo_edges.tsv
+
+   hp-ontology:
+      type: tsv
+      filename:
+         - data/transformed/ontologies/hp_nodes.tsv
+         - data/transformed/ontologies/hp_edges.tsv
 
 destination:
    type: tsv
