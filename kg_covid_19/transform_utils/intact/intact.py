@@ -43,14 +43,13 @@ Each XML looks like this:
         <interaction>
             <primaryRef db="intact" dbAc="MI:0469" id="EBI-25487299" > <!-- db:id is a CURIE for interaction -->
             
-            <participantList>
-                <participant id="3674948">...</participant>
-                <participant id="3674949">...</participant>
-
             <interactionType>
                 <names>
                 <shortLabel>physical association</shortLabel>
                 <fullName>physical association</fullName>            
+                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/> <!-- type of association -->
+            <interactorRef>3674850</interactorRef>  <!-- reference to interactor id above -->
+            
     </interactionList>
 </entry>
 </entrySet>
@@ -108,9 +107,13 @@ class IntAct(Transform):
 
             unlink(xml_tempdir)
 
-    def parse_xml_to_nodes_edges(self, xml_file) -> [list, list]:
+    def parse_xml_to_nodes_edges(self, xml_file) -> dict:
+        parsed = dict()
+        parsed['nodes'] = [1,2,3,4,5]
+        parsed['edges'] = []
+
         tree = et.parse(xml_file)
         root = tree.getroot()
-        return [[], []]
+        return parsed
 
 
