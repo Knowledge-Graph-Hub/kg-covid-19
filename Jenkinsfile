@@ -59,11 +59,6 @@ pipeline {
                 sh 'cd config;. venv/bin/activate; python3.7 run.py load'
             }
         }
-        stage('Convert to RDF') {
-            steps {
-                sh 'cd config;. venv/bin/activate; kgx transform --input-type tsv --output-type ttl -o . merged-kg.tar'
-            }
-        }
         stage('Publish') {
             steps {
 
