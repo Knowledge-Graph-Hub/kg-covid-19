@@ -5,6 +5,8 @@ from typing import List
 
 from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTransform
 from kg_covid_19.transform_utils.hpo.hpo import HpoTransform
+from kg_covid_19.transform_utils.ontology import OntologyTransform
+from kg_covid_19.transform_utils.ontology.ontology_transform import ONTOLOGIES
 from kg_covid_19.transform_utils.\
     sars_cov_2_gene_annot.sars_cov_2_gene_annot import SARSCoV2GeneAnnot
 # from kg_covid_19.transform_utils.scibite_cord import ScibiteCordTransform
@@ -23,7 +25,10 @@ DATA_SOURCES = {
     'StringTransform': StringTransform,
    'ScibiteCordTransform': ScibiteCordTransform,
     'PharmGKB': PharmGKB,
-    'SARSCoV2GeneAnnot': SARSCoV2GeneAnnot
+    'SARSCoV2GeneAnnot': SARSCoV2GeneAnnot,
+    'GoTransform': OntologyTransform,
+    'HpTransform': OntologyTransform,
+    'MondoTransform': OntologyTransform
 }
 
 
@@ -49,4 +54,7 @@ def transform(input_dir: str, output_dir: str, sources: List[str] = None) -> Non
         if source in DATA_SOURCES:
             logging.info(f"Parsing {source}")
             t = DATA_SOURCES[source](input_dir, output_dir)
-            t.run()
+            if source in ONTOLOGIES.keys():
+                t.run(ONTOLOGIES[source])
+            else:
+                t.run()
