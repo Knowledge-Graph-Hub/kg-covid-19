@@ -107,3 +107,16 @@
   # http://geneontology.org/docs/gene-product-information-gpi-format/
   url: ftp://ftp.ebi.ac.uk/pub/contrib/goa/uniprot_sars-cov-2.gpi
   local_name: uniprot_sars-cov-2.gpi
+
+#
+# Ontologies
+#
+-
+  url: http://purl.obolibrary.org/obo/hp.json
+  local_name: hp.json
+-
+  url: http://purl.obolibrary.org/obo/mondo.json
+  local_name: mondo.json
+-
+  url: http://current.geneontology.org/ontology/extensions/go-plus.json
+  local_name: go-plus.json
