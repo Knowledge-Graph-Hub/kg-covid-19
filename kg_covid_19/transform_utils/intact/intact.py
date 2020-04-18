@@ -74,22 +74,14 @@ class IntAct(Transform):
             'ensembl': 'ENSEMBL',
             'ddbj/embl/genbank': 'NCBIProtein'
         }
+        self.pubmed_curie_prefix = 'PMID:'
+        self.ppi_edge_label = 'biolink:interacts_with'
+        self.ppi_ro_relation = 'RO:0002437'
 
     def run(self) -> None:
         """Method to run transform to ingest data from IntAct for viral/human PPIs"""
 
         zip_file = os.path.join(self.input_base_dir, 'intact_coronavirus.zip')
-
-        pubmed_curie_prefix = 'PMID:'
-        publication_node_type = 'biolink:Publication'
-        protein_node_type = 'biolink:Protein'
-
-        # list of RO interactions:
-        # https://raw.githubusercontent.com/oborel/obo-relations/master/subsets/ro-interaction.owl
-        host_gene_vgene_edge_label = 'biolink:interacts_with'
-        host_gene_vgene_relation = 'RO:0002437'
-
-        ncbitaxon_curie_prefix = 'NCBITaxon:'
 
         # for tsv output:
         output_node_file = os.path.join(self.output_dir, 'nodes.tsv')
@@ -149,12 +141,25 @@ class IntAct(Transform):
         #
         for interaction in xmldoc.getElementsByTagName('interaction'):
             edge_data = self.interaction_to_edge(interaction, nodes_dict)
-            parsed['edges'].append("foo")
+            parsed['edges'].append(edge_data)
 
         return parsed
 
     def interaction_to_edge(self, interaction: object, nodes_dict: dict) -> list:
-        return []
+        interactor1 = ""
+        interactor2 = ""
+        try:
+            interactors = interaction.getElementsByTagName("interactorRef")
+            if len(interactors) != 2:
+                logging.warning("Expected 2 interactors in interaction, got %" %
+                                len(interactors))
+            interactors[0].firstChild.data
+            interactor1 = nodes_dict[interactors[0].firstChild.data][0]
+            interactor2 = nodes_dict[interactors[1].firstChild.data][0]
+        except (KeyError, IndexError):
+            logging.warning("Problem getting interactors from interaction %" %
+                            interaction.toxml())
+        return [interactor1, self.ppi_edge_label, interactor2, self.ppi_ro_relation]
 
     def interactor_to_node(self, interactor) -> [int, list]:
         interactor_id = interactor.attributes['id'].value
