@@ -140,13 +140,15 @@ class IntAct(Transform):
             (int_id, node_data) = self.interactor_to_node(interactor)
             nodes_dict[int_id] = node_data
 
+        # write nodes
         for key, value in nodes_dict.items():
             parsed['nodes'].append(value)
 
         #
         # edges
         #
-        parsed['edges'] = [1, 2, 3, 4, 5, 6, 7, 8]
+        for interactions in xmldoc.getElementsByTagName('interaction'):
+            parsed['edges'].append("foo")
 
         return parsed
 
