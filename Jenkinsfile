@@ -71,7 +71,7 @@ pipeline {
                         // you need something appropriate for large
                         // files, let me know.
                         withCredentials([file(credentialsId: 's3cmd_idg_push_configuration', variable: 'S3CMD_JSON')]) {
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar s3://idg-public-data/kg_covid_19.txt'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar s3://idg-public-data/kg_covid_19.tar'
                             // Should now appear at:
                             // https://idg.berkeleybop.io/[artifact name]
                         }
