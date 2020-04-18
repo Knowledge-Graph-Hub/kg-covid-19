@@ -143,8 +143,9 @@ class IntAct(Transform):
         for key, value in nodes_dict.items():
             parsed['nodes'].append(value)
 
-
+        #
         # edges
+        #
 
         return parsed
 

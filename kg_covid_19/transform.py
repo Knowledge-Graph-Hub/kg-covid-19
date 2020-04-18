@@ -8,7 +8,6 @@ from kg_covid_19.transform_utils.hpo.hpo import HpoTransform
 from kg_covid_19.transform_utils.intact.intact import IntAct
 from kg_covid_19.transform_utils.\
     sars_cov_2_gene_annot.sars_cov_2_gene_annot import SARSCoV2GeneAnnot
-# from kg_covid_19.transform_utils.scibite_cord import ScibiteCordTransform
 from kg_covid_19.transform_utils.pharmgkb import PharmGKB
 from kg_covid_19.transform_utils.scibite_cord import ScibiteCordTransform
 from kg_covid_19.transform_utils.string_ppi import StringTransform
