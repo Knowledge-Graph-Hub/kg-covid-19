@@ -151,13 +151,13 @@ class IntAct(Transform):
         try:
             interactors = interaction.getElementsByTagName("interactorRef")
             if len(interactors) != 2:
-                logging.warning("Expected 2 interactors in interaction, got %" %
+                logging.warning("Expected 2 interactors in interaction, got %i" %
                                 len(interactors))
             interactors[0].firstChild.data
             interactor1 = nodes_dict[interactors[0].firstChild.data][0]
             interactor2 = nodes_dict[interactors[1].firstChild.data][0]
         except (KeyError, IndexError):
-            logging.warning("Problem getting interactors from interaction %" %
+            logging.warning("Problem getting interactors from interaction %s" %
                             interaction.toxml())
         return [interactor1, self.ppi_edge_label, interactor2, self.ppi_ro_relation]
 
