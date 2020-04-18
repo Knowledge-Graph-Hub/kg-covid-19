@@ -67,6 +67,13 @@ class IntAct(Transform):
             'protein': 'biolink:Protein',
             'rna': 'biolink:RNA'
         }
+        self.db_to_prefix = {
+            'uniprot': 'UniProtKB',
+            'uniprotkb': 'UniProtKB',
+            'chebi': 'CHEBI',
+            'ensembl': 'ENSEMBL',
+            'ddbj/embl/genbank': 'NCBIProtein'
+        }
 
     def run(self) -> None:
         """Method to run transform to ingest data from IntAct for viral/human PPIs"""
@@ -148,8 +155,14 @@ class IntAct(Transform):
         try:
             xrefs = interactor.getElementsByTagName('xref')
             pr = xrefs[0].getElementsByTagName('primaryRef')
-            this_id = ':'.join([pr[0].attributes['db'].value,
-                                pr[0].attributes['id'].value])
+            db = pr[0].attributes['db'].value
+
+            prefix = ''
+            if db in self.db_to_prefix:
+                prefix = self.db_to_prefix[db]
+            id_val = pr[0].attributes['id'].value
+            this_id = ':'.join([prefix, id_val])
+
         except (KeyError, IndexError) as e:
             logging.warning("Problem parsing id in xref interaction % " % interactor.toxml())
 
