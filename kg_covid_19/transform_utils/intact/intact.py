@@ -3,10 +3,8 @@
 import fnmatch
 import logging
 import os
+import re
 import tempfile
-from os import unlink
-from typing import IO
-
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, unzip_to_tempdir
 from xml.dom import minidom
@@ -163,7 +161,13 @@ class IntAct(Transform):
             if db in self.db_to_prefix:
                 prefix = self.db_to_prefix[db]
             id_val = pr[0].attributes['id'].value
-            this_id = ':'.join([prefix, id_val])
+
+            # chebi ids (and only these) are already prepended with
+            # prefix for some reason
+            if db == 'chebi' and re.match('^CHEBI:', id_val):
+                this_id = id_val
+            else:
+                this_id = ':'.join([prefix, id_val])
 
         except (KeyError, IndexError) as e:
             logging.warning("Problem parsing id in xref interaction % " % interactor.toxml())
