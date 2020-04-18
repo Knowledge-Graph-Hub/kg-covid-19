@@ -5,6 +5,8 @@ import logging
 import os
 import re
 import tempfile
+from typing import Union
+
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, unzip_to_tempdir
 from xml.dom import minidom
@@ -146,21 +148,21 @@ class IntAct(Transform):
         #
         for interaction in xmldoc.getElementsByTagName('interaction'):
             edge_data = self.interaction_to_edge(interaction, nodes_dict)
-            parsed['edges'].append(edge_data)
+            if edge_data is not None:
+                parsed['edges'].append(edge_data)
 
         return parsed
 
-    def interaction_to_edge(self, interaction: object, nodes_dict: dict) -> list:
+    def interaction_to_edge(self, interaction: object, nodes_dict: dict) -> Union[
+        list, None]:
         interactor1 = ""
         interactor2 = ""
         try:
             # TODO: add interaction type, experiment type
             # TODO: deal with cases where interactors != 2
             interactors = interaction.getElementsByTagName("interactorRef")
-            if len(interactors) != 2:
-                logging.warning("Expected 2 interactors in interaction, got %i" %
-                                len(interactors))
-            interactors[0].firstChild.data
+            if len(interactors) < 1: # this isn't interaction data
+                return None
             interactor1 = nodes_dict[interactors[0].firstChild.data][0]
             interactor2 = nodes_dict[interactors[1].firstChild.data][0]
         except (KeyError, IndexError):
