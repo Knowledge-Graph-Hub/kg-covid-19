@@ -161,8 +161,10 @@ class IntAct(Transform):
             # TODO: add interaction type, experiment type
             # TODO: deal with cases where interactors != 2
             interactors = interaction.getElementsByTagName("interactorRef")
-            if len(interactors) < 2: # this isn't interaction data
+            if len(interactors) < 2:  # this isn't interaction data
                 return None
+            if len(interactors) > 2:  # hmm
+                logging.warning("More than 2 interactors in interactions")
             interactor1 = nodes_dict[interactors[0].firstChild.data][0]
             interactor2 = nodes_dict[interactors[1].firstChild.data][0]
         except (KeyError, IndexError) as e:
