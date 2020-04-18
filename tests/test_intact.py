@@ -33,7 +33,7 @@ class TestIntAct(unittest.TestCase):
         self.assertTrue('edges' in parsed)
         self.assertEqual(len(parsed['edges']), 8,
                          "Didn't get the expected number of edges")
-        self.assertCountEqual(parsed['edges'][0],
+        self.assertCountEqual(parsed['edges'][0][:4],
                               ['UniProtKB:P20290',
                                'biolink:interacts_with',
                                'UniProtKB:P0C6X7-PRO_0000037317',
