@@ -5,10 +5,11 @@ import logging
 import os
 import tempfile
 from os import unlink
+from typing import IO
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, unzip_to_tempdir
-import xml.etree.ElementTree as et
+from xml.dom import minidom
 
 """
 Ingest IntAct protein/protein interaction data 
@@ -61,6 +62,11 @@ class IntAct(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
         source_name = "intact"
         super().__init__(source_name, input_dir, output_dir)
+        # interactor type to biolink category
+        self.type_to_biolink_category = {
+            'protein': 'biolink:Protein',
+            'rna': 'biolink:RNA'
+        }
 
     def run(self) -> None:
         """Method to run transform to ingest data from IntAct for viral/human PPIs"""
@@ -99,7 +105,7 @@ class IntAct(Transform):
                 if not fnmatch.fnmatch(file, '*.xml'):
                     logging.warning("Skipping non-xml file %s" % file)
 
-                (nodes, edges) = self.parse_xml_to_nodes_edges(file)
+                nodes_edges = self.parse_xml_to_nodes_edges(file)
                 # TODO: write out nodes and edges
                 # write_node_edge_item(fh=fh,
                 #                      header=self.edge_header,
@@ -107,13 +113,57 @@ class IntAct(Transform):
 
             unlink(xml_tempdir)
 
-    def parse_xml_to_nodes_edges(self, xml_file) -> dict:
+    def parse_xml_to_nodes_edges(self, xml_file: str) -> dict:
         parsed = dict()
-        parsed['nodes'] = [[1,2,3],2,3,4,5]
+        parsed['nodes'] = []
         parsed['edges'] = []
 
-        tree = et.parse(xml_file)
-        root = tree.getroot()
+        xmldoc = minidom.parse(xml_file)
+
+        #
+        # nodes
+        #
+
+        # store by interactor id, since this is what is referenced in edges
+        nodes_dict = dict()
+        for interactor in xmldoc.getElementsByTagName('interactor'):
+            (int_id, node_data) = self.interactor_to_node(interactor)
+            nodes_dict[int_id] = node_data
+
+        for key, value in nodes_dict.items():
+            parsed['nodes'].append(value)
+
+
+        # edges
+
         return parsed
 
+    def interactor_to_node(self, interactor) -> [int, list]:
+        interactor_id = interactor.attributes['id'].value
 
+        this_id = ''
+        try:
+            xrefs = interactor.getElementsByTagName('xref')
+            pr = xrefs[0].getElementsByTagName('primaryRef')
+            this_id = ':'.join([pr[0].attributes['db'].value,
+                                pr[0].attributes['id'].value])
+        except (KeyError, IndexError) as e:
+            logging.warning("Problem parsing id in xref interaction % " % interactor.toxml())
+
+        name = ''
+        try:
+            # xml parsing amirite
+            name = interactor.getElementsByTagName('names')[0].getElementsByTagName('shortLabel')[0].childNodes[0].data
+        except (KeyError, IndexError) as e:
+            logging.warning("Problem parsing name in xref interaction % " % interactor.toxml())
+
+        category = 'biolink:Protein'
+        try:
+            type = interactor.getElementsByTagName('interactorType')[0].getElementsByTagName('shortLabel')[0].childNodes[0].data
+            type = type.lower()
+            if type in self.type_to_biolink_category:
+                category = self.type_to_biolink_category[type]
+        except (KeyError, IndexError) as e:
+            logging.warning("Problem parsing name in xref interaction % " % interactor.toxml())
+
+        return [interactor_id, [this_id, name, category]]
