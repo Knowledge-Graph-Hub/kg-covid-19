@@ -5,6 +5,7 @@ from typing import List
 
 from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTransform
 from kg_covid_19.transform_utils.hpo.hpo import HpoTransform
+from kg_covid_19.transform_utils.intact.intact import IntAct
 from kg_covid_19.transform_utils.\
     sars_cov_2_gene_annot.sars_cov_2_gene_annot import SARSCoV2GeneAnnot
 # from kg_covid_19.transform_utils.scibite_cord import ScibiteCordTransform
@@ -23,7 +24,8 @@ DATA_SOURCES = {
     'StringTransform': StringTransform,
    'ScibiteCordTransform': ScibiteCordTransform,
     'PharmGKB': PharmGKB,
-    'SARSCoV2GeneAnnot': SARSCoV2GeneAnnot
+    'SARSCoV2GeneAnnot': SARSCoV2GeneAnnot,
+    'IntAct': IntAct
 }
 
 

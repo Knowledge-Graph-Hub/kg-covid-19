@@ -101,17 +101,20 @@ class IntAct(Transform):
             xml_tempdir = tempfile.mkdtemp()
             unzip_to_tempdir(zip_file, xml_tempdir)
 
-            for file in os.listdir(xml_tempdir):
+            extracted_base_dir_list = os.listdir(xml_tempdir)
+            file_path = os.path.join(xml_tempdir, extracted_base_dir_list[0])
+            for file in os.listdir(file_path):
                 if not fnmatch.fnmatch(file, '*.xml'):
                     logging.warning("Skipping non-xml file %s" % file)
 
-                nodes_edges = self.parse_xml_to_nodes_edges(file)
+                nodes_edges = self.parse_xml_to_nodes_edges(os.path.join(file_path, file))
                 # TODO: write out nodes and edges
-                # write_node_edge_item(fh=fh,
-                #                      header=self.edge_header,
-                #                      data=[foo, bar, baz])
 
-            unlink(xml_tempdir)
+                # write out nodes
+                for this_node in nodes_edges['nodes']:
+                    write_node_edge_item(fh=node,
+                                         header=self.node_header,
+                                         data=this_node)
 
     def parse_xml_to_nodes_edges(self, xml_file: str) -> dict:
         parsed = dict()
