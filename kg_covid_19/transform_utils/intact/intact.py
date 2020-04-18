@@ -65,7 +65,9 @@ class IntAct(Transform):
         # interactor type to biolink category
         self.type_to_biolink_category = {
             'protein': 'biolink:Protein',
-            'rna': 'biolink:RNA'
+            'rna': 'biolink:RNA',
+            'mrna': 'biolink:RNA',
+            'snrna': 'biolink:RNA'
         }
         self.db_to_prefix = {
             'uniprot': 'UniProtKB',
