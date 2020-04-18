@@ -28,8 +28,8 @@ class TestIntAct(unittest.TestCase):
                               ['UniProtKB:P0C6X7-PRO_0000037317', 'nsp10_cvhsa',
                                'biolink:RNA'])
 
-    @unittest.skip
     def test_edges_parse_xml_to_nodes_edges(self):
         parsed = self.intact.parse_xml_to_nodes_edges(self.xml_file)
         self.assertTrue('edges' in parsed)
-
+        self.assertEqual(len(parsed['edges']), 8,
+                         "Didn't get the expected number of edges")
