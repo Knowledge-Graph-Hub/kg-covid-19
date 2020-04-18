@@ -147,10 +147,14 @@ class IntAct(Transform):
         #
         # edges
         #
-        for interactions in xmldoc.getElementsByTagName('interaction'):
+        for interaction in xmldoc.getElementsByTagName('interaction'):
+            edge_data = self.interaction_to_edge(interaction, nodes_dict)
             parsed['edges'].append("foo")
 
         return parsed
+
+    def interaction_to_edge(self, interaction: object, nodes_dict: dict) -> list:
+        return []
 
     def interactor_to_node(self, interactor) -> [int, list]:
         interactor_id = interactor.attributes['id'].value
