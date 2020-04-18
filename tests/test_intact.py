@@ -17,18 +17,19 @@ class TestIntAct(unittest.TestCase):
 
     def test_nodes_parse_xml_to_nodes_edges(self):
         parsed = self.intact.parse_xml_to_nodes_edges(self.xml_file)
+        self.assertTrue('nodes' in parsed)
         self.assertEqual(len(parsed['nodes']), 5,
                          "Didn't get the expected number of nodes")
         self.assertCountEqual(parsed['nodes'][0],
-                              ['uniprotkb:P20290', 'btf3_human', 'biolink:Protein'])
+                              ['UniProtKB:P20290', 'btf3_human', 'biolink:Protein'])
         # one xml contains an RNA interaction, so let's test that
         # we parse that correctly
         self.assertCountEqual(parsed['nodes'][1],
-                              ['uniprotkb:P0C6X7-PRO_0000037317', 'nsp10_cvhsa',
+                              ['UniProtKB:P0C6X7-PRO_0000037317', 'nsp10_cvhsa',
                                'biolink:RNA'])
 
     @unittest.skip
     def test_edges_parse_xml_to_nodes_edges(self):
         parsed = self.intact.parse_xml_to_nodes_edges(self.xml_file)
-        self.assertTrue(False)
+        self.assertTrue('edges' in parsed)
 
