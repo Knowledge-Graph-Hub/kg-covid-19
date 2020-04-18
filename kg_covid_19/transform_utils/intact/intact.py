@@ -77,6 +77,7 @@ class IntAct(Transform):
         self.pubmed_curie_prefix = 'PMID:'
         self.ppi_edge_label = 'biolink:interacts_with'
         self.ppi_ro_relation = 'RO:0002437'
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation']
 
     def run(self) -> None:
         """Method to run transform to ingest data from IntAct for viral/human PPIs"""
@@ -107,13 +108,17 @@ class IntAct(Transform):
                     logging.warning("Skipping non-xml file %s" % file)
 
                 nodes_edges = self.parse_xml_to_nodes_edges(os.path.join(file_path, file))
-                # TODO: write out nodes and edges
 
                 # write out nodes
                 for this_node in nodes_edges['nodes']:
                     write_node_edge_item(fh=node,
                                          header=self.node_header,
                                          data=this_node)
+                # write out edges
+                for this_edge in nodes_edges['edges']:
+                    write_node_edge_item(fh=edge,
+                                         header=self.edge_header,
+                                         data=this_edge)
 
     def parse_xml_to_nodes_edges(self, xml_file: str) -> dict:
         parsed = dict()
@@ -149,6 +154,8 @@ class IntAct(Transform):
         interactor1 = ""
         interactor2 = ""
         try:
+            # TODO: add interaction type, experiment type
+            # TODO: deal with cases where interactors != 2
             interactors = interaction.getElementsByTagName("interactorRef")
             if len(interactors) != 2:
                 logging.warning("Expected 2 interactors in interaction, got %i" %
