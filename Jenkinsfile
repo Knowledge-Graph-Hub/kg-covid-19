@@ -63,7 +63,7 @@ pipeline {
             steps {
 
                 script {
-                    if (env.BRANCH_NAME != 'master') {
+                    if (env.BRANCH_NAME != 'jenkins') {
                         echo "Will not push if not on correct branch."
                     } else {
                         // Push out to your S3 bucket.  The given
