@@ -161,13 +161,12 @@ class IntAct(Transform):
             # TODO: add interaction type, experiment type
             # TODO: deal with cases where interactors != 2
             interactors = interaction.getElementsByTagName("interactorRef")
-            if len(interactors) < 1: # this isn't interaction data
+            if len(interactors) < 2: # this isn't interaction data
                 return None
             interactor1 = nodes_dict[interactors[0].firstChild.data][0]
             interactor2 = nodes_dict[interactors[1].firstChild.data][0]
-        except (KeyError, IndexError):
-            logging.warning("Problem getting interactors from interaction %s" %
-                            interaction.toxml())
+        except (KeyError, IndexError) as e:
+            logging.warning("Problem getting interactors from interaction: %s" % e)
         return [interactor1, self.ppi_edge_label, interactor2, self.ppi_ro_relation]
 
     def interactor_to_node(self, interactor) -> [int, list]:
