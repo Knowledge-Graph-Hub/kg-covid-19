@@ -5,11 +5,11 @@ import logging
 import os
 import re
 import tempfile
-from typing import Union
+from typing import Union, Dict, List
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, unzip_to_tempdir
-from xml.dom import minidom
+from xml.dom import minidom  # type: ignore
 
 """
 Ingest IntAct protein/protein interaction data 
@@ -123,7 +123,7 @@ class IntAct(Transform):
                                          data=this_edge)
 
     def parse_xml_to_nodes_edges(self, xml_file: str) -> dict:
-        parsed = dict()
+        parsed: Dict[str, list] = dict()
         parsed['nodes'] = []
         parsed['edges'] = []
 
@@ -160,7 +160,7 @@ class IntAct(Transform):
         try:
             # TODO: add interaction type, experiment type
             # TODO: deal with cases where interactors != 2
-            interactors = interaction.getElementsByTagName("interactorRef")
+            interactors = interaction.getElementsByTagName("interactorRef")  # type: ignore
             if len(interactors) < 2:  # this isn't interaction data
                 return None
             if len(interactors) > 2:  # hmm
@@ -171,7 +171,7 @@ class IntAct(Transform):
             logging.warning("Problem getting interactors from interaction: %s" % e)
         return [interactor1, self.ppi_edge_label, interactor2, self.ppi_ro_relation]
 
-    def interactor_to_node(self, interactor) -> [int, list]:
+    def interactor_to_node(self, interactor) -> List[Union[int, list]]:
         interactor_id = interactor.attributes['id'].value
 
         this_id = ''
@@ -193,14 +193,14 @@ class IntAct(Transform):
                 this_id = ':'.join([prefix, id_val])
 
         except (KeyError, IndexError) as e:
-            logging.warning("Problem parsing id in xref interaction % " % interactor.toxml())
+            logging.warning("Problem parsing id in xref interaction %s" % interactor.toxml())
 
         name = ''
         try:
             # xml parsing amirite
             name = interactor.getElementsByTagName('names')[0].getElementsByTagName('shortLabel')[0].childNodes[0].data
         except (KeyError, IndexError) as e:
-            logging.warning("Problem parsing name in xref interaction % " % interactor.toxml())
+            logging.warning("Problem parsing name in xref interaction %s" % interactor.toxml())
 
         category = 'biolink:Protein'
         try:
@@ -209,6 +209,6 @@ class IntAct(Transform):
             if type in self.type_to_biolink_category:
                 category = self.type_to_biolink_category[type]
         except (KeyError, IndexError) as e:
-            logging.warning("Problem parsing name in xref interaction % " % interactor.toxml())
+            logging.warning("Problem parsing name in xref interaction %s" % interactor.toxml())
 
         return [interactor_id, [this_id, name, category]]
