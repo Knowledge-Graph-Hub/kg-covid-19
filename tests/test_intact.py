@@ -41,3 +41,9 @@ class TestIntAct(unittest.TestCase):
                                'UniProtKB:P0C6X7-PRO_0000037317',
                                'RO:0002437'
                                ])
+
+    def test_fix_for_chebi_id(self):
+        parsed = self.intact.parse_xml_to_nodes_edges(self.chebi_test_xml)
+        self.assertEqual(parsed['nodes'][0][0], 'CHEBI:28304')
+        self.assertEqual(parsed['edges'][0][0], 'CHEBI:28304')
+
