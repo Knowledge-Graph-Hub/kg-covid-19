@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 
 class Transform:
@@ -26,6 +27,5 @@ class Transform:
         self.output_edge_file = os.path.join(self.output_dir, "edges.tsv")
         self.output_json_file = os.path.join(self.output_dir, "nodes_edges.json")
 
-
-    def run(self):
+    def run(self, data_file: Optional[str] = None):
         pass
