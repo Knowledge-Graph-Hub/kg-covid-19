@@ -20,6 +20,9 @@ class TestIntAct(unittest.TestCase):
     @parameterized.expand([
         ('tests/resources/intact_test.xml',
          5, 8,  # node and edge count, respectively
+         # nodes and edges given here are checked against the first values in
+         # parsed['nodes'] and parsed['edges']. Extra items in parsed['nodes'] and
+         # parsed['edges'] are ignored
          {'nodes': [['UniProtKB:P20290', 'btf3_human', 'biolink:Protein'],
                     ['UniProtKB:P0C6X7-PRO_0000037317', 'nsp10_cvhsa', 'biolink:RNA']],
           'edges': [['UniProtKB:P20290',
