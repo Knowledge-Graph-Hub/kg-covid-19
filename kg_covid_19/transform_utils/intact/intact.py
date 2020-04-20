@@ -22,39 +22,8 @@ https://t.co/OUGKWbpQHG?amp=1
 is zip file containing XML files that describe coronavirus interactions shown in a
 publication. 
 
-Each XML looks like this: 
-<entrySet>
-<entry>
-    <source></source> <!-- stuff about IntAct -->
-    <experimentList>
-        <bibref>
-           <xref>
-           <primaryRef db="pubmed" dbAc="MI:0446" id="14647384" >  <!-- pubmed ID to cite on edge -->
-           </xref>
-        </bibref>
-    </experimentList>
-    <interactorList>
-        <interactor id="3674850">  <!-- interactor id, used in interactionList below -->
-            <names>
-            <shortLabel>ace2_human</shortLabel>       <!-- name for protein -->
-            <xref>
-            <primaryRef db="uniprotkb" dbAc="MI:0486" id="Q9BYF1">  <!-- db:id is CURIE for protein (Uniprot sometimes, but not always) -->
-        ...
-    </interactorList>
-    <interactionList>
-        <interaction>
-            <primaryRef db="intact" dbAc="MI:0469" id="EBI-25487299" > <!-- db:id is a CURIE for interaction -->
-            
-            <interactionType>
-                <names>
-                <shortLabel>physical association</shortLabel>
-                <fullName>physical association</fullName>            
-                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/> <!-- type of association -->
-            <interactorRef>3674850</interactorRef>  <!-- reference to interactor id above -->
-            
-    </interactionList>
-</entry>
-</entrySet>
+Each XML file is a miXML following this spec: 
+https://github.com/HUPO-PSI/miXML
 """
 
 
