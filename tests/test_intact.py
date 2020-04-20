@@ -43,10 +43,10 @@ class TestIntAct(unittest.TestCase):
                                'biolink:interacts_with',
                                'UniProtKB:P0C6X7-PRO_0000037317',
                                'RO:0002437',
+                               'PMID:16157265',
                                '2',
                                'physical association',
-                               '2 hybrid',
-                               'PMID:16157265'
+                               '2 hybrid'
                                ])
 
     def test_fix_for_chebi_id(self):

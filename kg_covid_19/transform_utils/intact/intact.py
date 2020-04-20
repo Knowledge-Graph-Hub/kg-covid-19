@@ -166,7 +166,6 @@ class IntAct(Transform):
         interactor1 = ""
         interactor2 = ""
         try:
-            # TODO: add interaction type, experiment type
             # TODO: deal with cases where interactors != 2
             interaction_type = interaction.getElementsByTagName('interactionType')
             interaction_type_str = interaction_type[0].getElementsByTagName(
@@ -177,7 +176,8 @@ class IntAct(Transform):
             if len(interactors) < 2:  # this isn't interaction data
                 return None
             if len(interactors) > 2:  # hmm
-                logging.warning("More than 2 interactors in interactions")
+                # logging.warning("More than 2 interactors in interactions")
+                return None
             interactor1 = nodes_dict[interactors[0].firstChild.data][0]
             interactor2 = nodes_dict[interactors[1].firstChild.data][0]
 
@@ -193,8 +193,8 @@ class IntAct(Transform):
             publication = exp_dict[experiment_ref]['publication']
 
         return [interactor1, self.ppi_edge_label, interactor2, self.ppi_ro_relation,
-                str(len(interactors)), interaction_type_str, detection_method,
-                publication]
+                publication, str(len(interactors)), interaction_type_str,
+                detection_method]
 
     def interactor_to_node(self, interactor) -> List[Union[int, list]]:
         interactor_id = interactor.attributes['id'].value
