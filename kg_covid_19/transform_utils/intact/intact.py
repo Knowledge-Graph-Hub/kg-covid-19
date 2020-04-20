@@ -5,6 +5,7 @@ import logging
 import os
 import re
 import tempfile
+from collections import defaultdict
 from typing import Union, Dict, List
 
 from kg_covid_19.transform_utils.transform import Transform
@@ -74,12 +75,14 @@ class IntAct(Transform):
             'uniprotkb': 'UniProtKB',
             'chebi': 'CHEBI',
             'ensembl': 'ENSEMBL',
-            'ddbj/embl/genbank': 'NCBIProtein'
+            'ddbj/embl/genbank': 'NCBIProtein',
+            'pubmed': 'PMID'
         }
         self.pubmed_curie_prefix = 'PMID:'
         self.ppi_edge_label = 'biolink:interacts_with'
         self.ppi_ro_relation = 'RO:0002437'
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation']
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+                            'num_participants', 'association_type']
 
     def run(self) -> None:
         """Method to run transform to ingest data from IntAct for viral/human PPIs"""
@@ -93,7 +96,7 @@ class IntAct(Transform):
         # make directory in data/transformed
         os.makedirs(self.output_dir, exist_ok=True)
 
-        with open(output_node_file, 'w') as node,\
+        with open(output_node_file, 'w') as node, \
                 open(output_edge_file, 'w') as edge:
 
             # write node.tsv header
@@ -109,7 +112,8 @@ class IntAct(Transform):
                 if not fnmatch.fnmatch(file, '*.xml'):
                     logging.warning("Skipping non-xml file %s" % file)
 
-                nodes_edges = self.parse_xml_to_nodes_edges(os.path.join(file_path, file))
+                nodes_edges = self.parse_xml_to_nodes_edges(
+                    os.path.join(file_path, file))
 
                 # write out nodes
                 for this_node in nodes_edges['nodes']:
@@ -139,6 +143,8 @@ class IntAct(Transform):
             (int_id, node_data) = self.interactor_to_node(interactor)
             nodes_dict[int_id] = node_data
 
+        experiment_dict = self.parse_experiment_info(xmldoc)
+
         # write nodes
         for key, value in nodes_dict.items():
             parsed['nodes'].append(value)
@@ -147,20 +153,26 @@ class IntAct(Transform):
         # edges
         #
         for interaction in xmldoc.getElementsByTagName('interaction'):
-            edge_data = self.interaction_to_edge(interaction, nodes_dict)
+            edge_data = self.interaction_to_edge(interaction, nodes_dict,
+                                                 experiment_dict)
             if edge_data is not None:
                 parsed['edges'].append(edge_data)
 
         return parsed
 
-    def interaction_to_edge(self, interaction: object, nodes_dict: dict) -> Union[
-        list, None]:
+    def interaction_to_edge(self, interaction: object, nodes_dict: dict,
+                            exp_dict: dict) -> Union[list, None]:
         interactor1 = ""
         interactor2 = ""
         try:
             # TODO: add interaction type, experiment type
             # TODO: deal with cases where interactors != 2
-            interactors = interaction.getElementsByTagName("interactorRef")  # type: ignore
+            interaction_type = interaction.getElementsByTagName('interactionType')
+            interaction_type_str = interaction_type[0].getElementsByTagName(
+            "shortLabel")[0].firstChild._data
+
+            interactors = interaction.getElementsByTagName(
+                "interactorRef")  # type: ignore
             if len(interactors) < 2:  # this isn't interaction data
                 return None
             if len(interactors) > 2:  # hmm
@@ -169,7 +181,8 @@ class IntAct(Transform):
             interactor2 = nodes_dict[interactors[1].firstChild.data][0]
         except (KeyError, IndexError) as e:
             logging.warning("Problem getting interactors from interaction: %s" % e)
-        return [interactor1, self.ppi_edge_label, interactor2, self.ppi_ro_relation]
+        return [interactor1, self.ppi_edge_label, interactor2, self.ppi_ro_relation,
+                str(len(interactors)), interaction_type_str]
 
     def interactor_to_node(self, interactor) -> List[Union[int, list]]:
         interactor_id = interactor.attributes['id'].value
@@ -193,22 +206,68 @@ class IntAct(Transform):
                 this_id = ':'.join([prefix, id_val])
 
         except (KeyError, IndexError) as e:
-            logging.warning("Problem parsing id in xref interaction %s" % interactor.toxml())
+            logging.warning(
+                "Problem parsing id in xref interaction %s" % interactor.toxml())
 
         name = ''
         try:
             # xml parsing amirite
-            name = interactor.getElementsByTagName('names')[0].getElementsByTagName('shortLabel')[0].childNodes[0].data
+            name = interactor.getElementsByTagName('names')[0].getElementsByTagName(
+                'shortLabel')[0].childNodes[0].data
         except (KeyError, IndexError) as e:
-            logging.warning("Problem parsing name in xref interaction %s" % interactor.toxml())
+            logging.warning(
+                "Problem parsing name in xref interaction %s" % interactor.toxml())
 
         category = 'biolink:Protein'
         try:
-            type = interactor.getElementsByTagName('interactorType')[0].getElementsByTagName('shortLabel')[0].childNodes[0].data
+            type = \
+            interactor.getElementsByTagName('interactorType')[0].getElementsByTagName(
+                'shortLabel')[0].childNodes[0].data
             type = type.lower()
             if type in self.type_to_biolink_category:
                 category = self.type_to_biolink_category[type]
         except (KeyError, IndexError) as e:
-            logging.warning("Problem parsing name in xref interaction %s" % interactor.toxml())
+            logging.warning(
+                "Problem parsing name in xref interaction %s" % interactor.toxml())
 
         return [interactor_id, [this_id, name, category]]
+
+    def parse_experiment_info(self, xmldoc: object) -> Dict[int, str]:
+        """Extract info about experiment from miXML doc
+
+        :param self: IntAct instance
+        :param xmldoc: a minidom object containing a miXML doc
+        :return: dictionary with parsed info about experiments (publication, exp type)
+        """
+        exp_dict = defaultdict(lambda: defaultdict(str))
+        for experiment in xmldoc.getElementsByTagName('experimentDescription'):
+            if experiment.hasAttribute('id'):
+                exp_id = experiment.getAttribute('id')
+            else:
+                continue
+
+            # get pub data
+            bibref = experiment.getElementsByTagName('bibref')
+            if bibref and bibref[0].getElementsByTagName('primaryRef'):
+                p_ref = bibref[0].getElementsByTagName('primaryRef')
+                try:
+                    db = p_ref[0].attributes['db'].value
+                    this_id = p_ref[0].attributes['id'].value
+                    if db in self.db_to_prefix:
+                        db = self.db_to_prefix[db]
+                    exp_dict[exp_id]['publication'] = ":".join([db, this_id])
+                except (KeyError, IndexError, AttributeError):
+                    pass
+
+            # interaction detection method
+            if experiment.getElementsByTagName('interactionDetectionMethod'):
+                try:
+                    method = experiment.getElementsByTagName(
+                        'interactionDetectionMethod')
+                    label = method[0].getElementsByTagName('shortLabel')[0].\
+                        firstChild.data
+                    exp_dict[exp_id]['detection_method'] = label
+                except (KeyError, IndexError, AttributeError):
+                    pass
+
+        return exp_dict
