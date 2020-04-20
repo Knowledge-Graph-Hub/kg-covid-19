@@ -82,7 +82,8 @@ class IntAct(Transform):
         self.ppi_edge_label = 'biolink:interacts_with'
         self.ppi_ro_relation = 'RO:0002437'
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
-                            'num_participants', 'association_type']
+                            'num_participants', 'association_type', 'detection_method',
+                            'publication']
 
     def run(self) -> None:
         """Method to run transform to ingest data from IntAct for viral/human PPIs"""
@@ -179,10 +180,21 @@ class IntAct(Transform):
                 logging.warning("More than 2 interactors in interactions")
             interactor1 = nodes_dict[interactors[0].firstChild.data][0]
             interactor2 = nodes_dict[interactors[1].firstChild.data][0]
+
+            experiment_ref = interaction.getElementsByTagName('experimentRef')[0].childNodes[0].data
         except (KeyError, IndexError) as e:
             logging.warning("Problem getting interactors from interaction: %s" % e)
+
+        detection_method = ''
+        publication = ''
+        if experiment_ref in exp_dict and 'detection_method' in exp_dict[experiment_ref]:
+            detection_method = exp_dict[experiment_ref]['detection_method']
+        if experiment_ref in exp_dict and 'publication' in exp_dict[experiment_ref]:
+            publication = exp_dict[experiment_ref]['publication']
+
         return [interactor1, self.ppi_edge_label, interactor2, self.ppi_ro_relation,
-                str(len(interactors)), interaction_type_str]
+                str(len(interactors)), interaction_type_str, detection_method,
+                publication]
 
     def interactor_to_node(self, interactor) -> List[Union[int, list]]:
         interactor_id = interactor.attributes['id'].value
