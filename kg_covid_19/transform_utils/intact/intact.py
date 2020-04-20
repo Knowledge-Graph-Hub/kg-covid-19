@@ -176,8 +176,9 @@ class IntAct(Transform):
             if len(interactors) < 2:  # this isn't interaction data
                 return None
             if len(interactors) > 2:  # hmm
-                # logging.warning("More than 2 interactors in interactions")
+                logging.warning("More than 2 interactors in interactions")
                 return None
+
             interactor1 = nodes_dict[interactors[0].firstChild.data][0]
             interactor2 = nodes_dict[interactors[1].firstChild.data][0]
 
