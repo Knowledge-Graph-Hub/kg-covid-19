@@ -144,6 +144,8 @@ class IntAct(Transform):
             participants = interaction.getElementsByTagName('participant')  # type: ignore
             if len(participants) < 2:  # this isn't interaction data
                 return edges
+            if len(participants) > 3:  # skip interactions with more than 3 participants
+                return edges
 
             experiment_ref = interaction.getElementsByTagName('experimentRef')[0].childNodes[0].data    # type: ignore
         except (KeyError, IndexError, AttributeError) as e:

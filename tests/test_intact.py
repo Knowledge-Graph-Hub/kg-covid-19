@@ -26,18 +26,18 @@ class TestIntAct(unittest.TestCase):
         self.assertTrue(isinstance(parsed['edges'], list))
 
     @parameterized.expand([
-        # ('tests/resources/intact_test.xml',
-        #  5, 8,  # node and edge count, respectively
-        #  # nodes and edges given here are checked against the first values in
-        #  # parsed['nodes'] and parsed['edges']. Extra items in parsed['nodes'] and
-        #  # parsed['edges'] are ignored
-        #  {'nodes': [['UniProtKB:P20290', 'btf3_human', 'biolink:Protein'],
-        #             ['UniProtKB:P0C6X7-PRO_0000037317', 'nsp10_cvhsa', 'biolink:RNA']],
-        #   'edges': [['UniProtKB:P20290', 'biolink:interacts_with',
-        #              'UniProtKB:P0C6X7-PRO_0000037317', 'RO:0002437',
-        #              'PMID:16157265', '2', 'physical association', '2 hybrid', 'prey',
-        #              'bait']]
-        #  }),
+        ('tests/resources/intact_test.xml',
+         5, 8,  # node and edge count, respectively
+         # nodes and edges given here are checked against the first values in
+         # parsed['nodes'] and parsed['edges']. Extra items in parsed['nodes'] and
+         # parsed['edges'] are ignored
+         {'nodes': [['UniProtKB:P20290', 'btf3_human', 'biolink:Protein'],
+                    ['UniProtKB:P0C6X7-PRO_0000037317', 'nsp10_cvhsa', 'biolink:RNA']],
+          'edges': [['UniProtKB:P20290', 'biolink:interacts_with',
+                     'UniProtKB:P0C6X7-PRO_0000037317', 'RO:0002437',
+                     'PMID:16157265', '2', 'physical association', '2 hybrid', 'prey',
+                     'bait']]
+         }),
         ('tests/resources/intact_3_participants.xml',  # test interactions with 3 participants
          3, 3,  # interaction with 3 participants yields 3 edges (1<->2, 2<->3, 1<->3)
          {'nodes': [],
