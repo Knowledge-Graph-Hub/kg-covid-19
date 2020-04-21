@@ -22,7 +22,7 @@ https://t.co/OUGKWbpQHG?amp=1
 is zip file containing XML files that describe coronavirus interactions shown in a
 publication. 
 
-Each XML file is a miXML following this spec: 
+Each XML file is an miXML following this spec: 
 https://github.com/HUPO-PSI/miXML
 """
 
@@ -136,7 +136,6 @@ class IntAct(Transform):
         interactor1 = ""
         interactor2 = ""
         try:
-            # TODO: deal with cases where interactors != 2
             interaction_type = interaction.getElementsByTagName('interactionType')  # type: ignore
             interaction_type_str = interaction_type[0].getElementsByTagName(
             "shortLabel")[0].firstChild._data
@@ -145,6 +144,8 @@ class IntAct(Transform):
             if len(interactors) < 2:  # this isn't interaction data
                 return None
             if len(interactors) > 2:  # hmm
+                # TODO: deal with cases where interactors > 2: write out three edges,
+                # and subject and object experimental role for each
                 logging.warning("More than 2 interactors in interactions")
                 return None
 
