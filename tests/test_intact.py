@@ -11,6 +11,14 @@ class TestIntAct(unittest.TestCase):
     def setUp(self) -> None:
         self.intact = IntAct()
 
+    def test_intact_instance(self):
+        self.assertEqual(self.intact.node_header,
+                         ['id', 'name', 'category'])
+        self.assertEqual(self.intact.edge_header,
+                        ['subject', 'edge_label', 'object', 'relation',
+                         'publication', 'num_participants', 'association_type',
+                         'detection_method'])
+
     def test_struct_parse_xml_to_nodes_edges(self):
         parsed = self.intact.parse_xml_to_nodes_edges('tests/resources/intact_test.xml')
         self.assertTrue(isinstance(parsed, dict))
