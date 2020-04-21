@@ -242,14 +242,13 @@ class IntAct(Transform):
                     pass
 
             # interaction detection method
-            if experiment.getElementsByTagName('interactionDetectionMethod'):
-                try:
-                    method = experiment.getElementsByTagName(
-                        'interactionDetectionMethod')
-                    label = method[0].getElementsByTagName('shortLabel')[0].\
-                        firstChild.data
-                    exp_dict[exp_id]['detection_method'] = label
-                except (KeyError, IndexError, AttributeError):
-                    pass
+            try:
+                method = experiment.getElementsByTagName(
+                    'interactionDetectionMethod')
+                label = method[0].getElementsByTagName('shortLabel')[0].\
+                    firstChild.data
+                exp_dict[exp_id]['detection_method'] = label
+            except (KeyError, IndexError, AttributeError):
+                pass
 
         return exp_dict
