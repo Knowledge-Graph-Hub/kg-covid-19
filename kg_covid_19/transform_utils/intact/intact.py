@@ -135,7 +135,7 @@ class IntAct(Transform):
     def interaction_to_edge(self, interaction: object, nodes_dict: dict,
                             exp_dict: dict) -> list:
 
-        edges = []
+        edges: List[list] = []
         try:
             interaction_type = interaction.getElementsByTagName('interactionType')  # type: ignore
             interaction_type_str = interaction_type[0].getElementsByTagName(
@@ -168,8 +168,10 @@ class IntAct(Transform):
                 p1_exp_role = self.participant_experimental_role(participant1)
                 p2_exp_role = self.participant_experimental_role(participant2)
 
-                node1: str = self.participant_to_node(participant1, nodes_dict)
-                node2: str = self.participant_to_node(participant2, nodes_dict)
+                node1: Union[str, None] = self.participant_to_node(participant1,
+                                                                   nodes_dict)
+                node2: Union[str, None] = self.participant_to_node(participant2,
+                                                                   nodes_dict)
                 if node1 is not None and node2 is not None:
                     edges.append(
                         [node1, self.ppi_edge_label, node2, self.ppi_ro_relation,
@@ -181,7 +183,7 @@ class IntAct(Transform):
     def participant_experimental_role(self, participant: object) -> str:
         try:
             # xml why are you like this
-            role = participant.getElementsByTagName(
+            role = participant.getElementsByTagName(  # type: ignore
                 'experimentalRole')[0].getElementsByTagName(
                 'shortLabel')[0].firstChild.data
             return role
@@ -191,7 +193,8 @@ class IntAct(Transform):
     def participant_to_node(self, participant: object,
                             nodes_dict: dict) -> Union[str, None]:
         try:
-            interact_ref = participant.getElementsByTagName('interactorRef')[0].childNodes[0].data
+            interact_ref = participant.getElementsByTagName(  # type: ignore
+                'interactorRef')[0].childNodes[0].data
             node = nodes_dict[interact_ref][0]
             return node
         except (KeyError, IndexError, AttributeError):
