@@ -25,7 +25,7 @@ DATA_SOURCES = {
     'ScibiteCordTransform': ScibiteCordTransform,
     'PharmGKB': PharmGKB,
     'SARSCoV2GeneAnnot': SARSCoV2GeneAnnot,
-    'IntAct': IntAct
+    'IntAct': IntAct,
     'GoTransform': OntologyTransform,
     'HpTransform': OntologyTransform,
     'MondoTransform': OntologyTransform
