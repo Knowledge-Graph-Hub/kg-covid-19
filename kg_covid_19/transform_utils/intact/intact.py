@@ -6,7 +6,7 @@ import os
 import re
 import tempfile
 from collections import defaultdict
-from typing import Union, Dict, List
+from typing import Union, Dict, List, Optional
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, unzip_to_tempdir
@@ -55,10 +55,17 @@ class IntAct(Transform):
                             'publication', 'num_participants', 'association_type',
                             'detection_method',  'subj_exp_role', 'obj_exp_role']
 
-    def run(self) -> None:
+    def run(self, data_file: Optional[str] = None):
         """Method to run transform to ingest data from IntAct for viral/human PPIs"""
 
-        zip_file = os.path.join(self.input_base_dir, 'intact_coronavirus.zip')
+        data_files = list()
+        if not data_file:
+            data_files.append(
+                os.path.join(self.input_base_dir, 'intact_coronavirus.zip'))
+        else:
+            data_files.append(data_file)
+
+        zip_file = data_files[0]
 
         # for tsv output:
         output_node_file = os.path.join(self.output_dir, 'nodes.tsv')
