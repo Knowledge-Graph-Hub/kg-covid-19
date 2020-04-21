@@ -124,33 +124,26 @@ class IntAct(Transform):
         # edges
         #
         for interaction in xmldoc.getElementsByTagName('interaction'):
-            edge_data = self.interaction_to_edge(interaction, nodes_dict,
-                                                 experiment_dict)
-            if edge_data is not None:
-                parsed['edges'].append(edge_data)
+            edges = self.interaction_to_edge(interaction,
+                                             nodes_dict,
+                                             experiment_dict)
+            for edge in edges:
+                parsed['edges'].append(edge)
 
         return parsed
 
     def interaction_to_edge(self, interaction: object, nodes_dict: dict,
-                            exp_dict: dict) -> Union[list, None]:
-        interactor1 = ""
-        interactor2 = ""
+                            exp_dict: dict) -> list:
+
+        edges = []
         try:
             interaction_type = interaction.getElementsByTagName('interactionType')  # type: ignore
             interaction_type_str = interaction_type[0].getElementsByTagName(
             "shortLabel")[0].firstChild._data
 
-            interactors = interaction.getElementsByTagName("interactorRef")  # type: ignore
-            if len(interactors) < 2:  # this isn't interaction data
-                return None
-            if len(interactors) > 2:  # hmm
-                # TODO: deal with cases where interactors > 2: write out three edges,
-                # and subject and object experimental role for each
-                logging.warning("More than 2 interactors in interactions")
-                return None
-
-            interactor1 = nodes_dict[interactors[0].firstChild.data][0]
-            interactor2 = nodes_dict[interactors[1].firstChild.data][0]
+            participants = interaction.getElementsByTagName("interactorRef")  # type: ignore
+            if len(participants) < 2:  # this isn't interaction data
+                return edges
 
             experiment_ref = interaction.getElementsByTagName('experimentRef')[0].childNodes[0].data    # type: ignore
         except (KeyError, IndexError, AttributeError) as e:
@@ -163,9 +156,30 @@ class IntAct(Transform):
         if experiment_ref in exp_dict and 'publication' in exp_dict[experiment_ref]:
             publication = exp_dict[experiment_ref]['publication']
 
-        return [interactor1, self.ppi_edge_label, interactor2, self.ppi_ro_relation,
-                publication, str(len(interactors)), interaction_type_str,
-                detection_method]
+        # write out an edge for every pairwise combination of participants (1 per pair)
+        for i in range(0, len(participants)):
+            for j in range(i, len(participants)):
+                participant1 = participants[i]
+                participant2 = participants[j]
+                if participant1 == participant2:
+                    continue
+                node1 = self.participant_to_node(participant1, nodes_dict)
+                node2 = self.participant_to_node(participant2, nodes_dict)
+                if node1 is not None and node2 is not None:
+                    edges.append(
+                        [node1, self.ppi_edge_label, node2, self.ppi_ro_relation,
+                        publication, str(len(participants)), interaction_type_str,
+                        detection_method])
+
+        return edges
+
+    def participant_to_node(self, participant: object,
+                            nodes_dict: dict) -> Union[str, None]:
+        try:
+            node = nodes_dict[participant.firstChild.data][0]
+            return node
+        except (KeyError, IndexError, AttributeError):
+            return None
 
     def interactor_to_node(self, interactor) -> List[Union[int, list]]:
         interactor_id = interactor.attributes['id'].value

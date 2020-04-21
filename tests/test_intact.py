@@ -36,7 +36,11 @@ class TestIntAct(unittest.TestCase):
           'edges': [['UniProtKB:P20290', 'biolink:interacts_with',
                      'UniProtKB:P0C6X7-PRO_0000037317', 'RO:0002437',
                      'PMID:16157265', '2', 'physical association', '2 hybrid']]
-         })
+         }),
+        ('tests/resources/intact_3_participants.xml',  # test interactions with 3 participants
+         3, 3,  # interaction with 3 participants yields 3 edges (1<->2, 2<->3, 1<->3)
+         {'nodes': [], 'edges': []}
+         )
     ])
     def test_nodes_parse_xml_to_nodes_edges(self, xml_file, node_count, edge_count,
                                             expect_nodes_edges):
