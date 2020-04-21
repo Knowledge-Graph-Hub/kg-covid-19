@@ -152,7 +152,7 @@ class IntAct(Transform):
             interactor2 = nodes_dict[interactors[1].firstChild.data][0]
 
             experiment_ref = interaction.getElementsByTagName('experimentRef')[0].childNodes[0].data    # type: ignore
-        except (KeyError, IndexError) as e:
+        except (KeyError, IndexError, AttributeError) as e:
             logging.warning("Problem getting interactors from interaction: %s" % e)
 
         detection_method = ''
@@ -187,7 +187,7 @@ class IntAct(Transform):
             else:
                 this_id = ':'.join([prefix, id_val])
 
-        except (KeyError, IndexError) as e:
+        except (KeyError, IndexError, AttributeError) as e:
             logging.warning(
                 "Problem parsing id in xref interaction %s" % e)
 
@@ -196,7 +196,7 @@ class IntAct(Transform):
             # xml parsing amirite
             name = interactor.getElementsByTagName('names')[0].getElementsByTagName(
                 'shortLabel')[0].childNodes[0].data
-        except (KeyError, IndexError) as e:
+        except (KeyError, IndexError, AttributeError) as e:
             logging.warning(
                 "Problem parsing name in xref interaction %s" % e)
 
@@ -208,7 +208,7 @@ class IntAct(Transform):
             type = type.lower()
             if type in self.type_to_biolink_category:
                 category = self.type_to_biolink_category[type]
-        except (KeyError, IndexError) as e:
+        except (KeyError, IndexError, AttributeError) as e:
             logging.warning(
                 "Problem parsing name in xref interaction %s" % e)
 
