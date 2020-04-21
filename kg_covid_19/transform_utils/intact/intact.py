@@ -33,11 +33,12 @@ class IntAct(Transform):
         source_name = "intact"
         super().__init__(source_name, input_dir, output_dir)
         # interactor type to biolink category
+        bl_rna_cat = 'biolink:RNA'
         self.type_to_biolink_category = {
             'protein': 'biolink:Protein',
-            'rna': 'biolink:RNA',
-            'mrna': 'biolink:RNA',
-            'snrna': 'biolink:RNA'
+            'rna': bl_rna_cat,
+            'mrna': bl_rna_cat,
+            'snrna': bl_rna_cat
         }
         self.db_to_prefix = {
             'uniprot': 'UniProtKB',
@@ -188,7 +189,7 @@ class IntAct(Transform):
 
         except (KeyError, IndexError) as e:
             logging.warning(
-                "Problem parsing id in xref interaction %s" % interactor.toxml())
+                "Problem parsing id in xref interaction %s" % e)
 
         name = ''
         try:
@@ -197,7 +198,7 @@ class IntAct(Transform):
                 'shortLabel')[0].childNodes[0].data
         except (KeyError, IndexError) as e:
             logging.warning(
-                "Problem parsing name in xref interaction %s" % interactor.toxml())
+                "Problem parsing name in xref interaction %s" % e)
 
         category = 'biolink:Protein'
         try:
@@ -209,7 +210,7 @@ class IntAct(Transform):
                 category = self.type_to_biolink_category[type]
         except (KeyError, IndexError) as e:
             logging.warning(
-                "Problem parsing name in xref interaction %s" % interactor.toxml())
+                "Problem parsing name in xref interaction %s" % e)
 
         return [interactor_id, [this_id, name, category]]
 
