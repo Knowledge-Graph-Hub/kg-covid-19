@@ -53,7 +53,7 @@ class IntAct(Transform):
         self.ppi_ro_relation = 'RO:0002437'
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'publication', 'num_participants', 'association_type',
-                            'detection_method']
+                            'detection_method',  'subj_exp_role', 'obj_exp_role']
 
     def run(self) -> None:
         """Method to run transform to ingest data from IntAct for viral/human PPIs"""
@@ -163,15 +163,27 @@ class IntAct(Transform):
                 participant2 = participants[j]
                 if participant1 == participant2:
                     continue
-                node1 = self.participant_to_node(participant1, nodes_dict)
-                node2 = self.participant_to_node(participant2, nodes_dict)
+                p1_exp_role = self.participant_experimental_role(participant1)
+                p2_exp_role = self.participant_experimental_role(participant2)
+
+                node1: str = self.participant_to_node(participant1, nodes_dict)
+                node2: str = self.participant_to_node(participant2, nodes_dict)
                 if node1 is not None and node2 is not None:
                     edges.append(
                         [node1, self.ppi_edge_label, node2, self.ppi_ro_relation,
                         publication, str(len(participants)), interaction_type_str,
-                        detection_method])
+                        detection_method, p1_exp_role, p2_exp_role])
 
         return edges
+
+    def participant_experimental_role(self, participant: object) -> str:
+        try:
+            # xml why are you like this
+            role = participant.nextSibling.nextSibling.nextSibling.nextSibling.getElementsByTagName(
+                'experimentalRole')[0].getElementsByTagName('shortLabel')[0].firstChild.data
+            return role
+        except (KeyError, IndexError, AttributeError):
+            return None
 
     def participant_to_node(self, participant: object,
                             nodes_dict: dict) -> Union[str, None]:

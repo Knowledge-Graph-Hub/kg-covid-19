@@ -514,8 +514,8 @@
                         <experimentalRoleList>
                             <experimentalRole>
                                 <names>
-                                    <shortLabel>neutral component</shortLabel>
-                                    <fullName>neutral component</fullName>
+                                    <shortLabel>bait</shortLabel>
+                                    <fullName>some kind of bait</fullName>
                                 </names>
                                 <xref>
                                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0497" refType="identity" refTypeAc="MI:0356"/>

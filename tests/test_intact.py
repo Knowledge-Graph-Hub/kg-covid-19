@@ -17,7 +17,7 @@ class TestIntAct(unittest.TestCase):
         self.assertEqual(self.intact.edge_header,
                         ['subject', 'edge_label', 'object', 'relation',
                          'publication', 'num_participants', 'association_type',
-                         'detection_method'])
+                         'detection_method', 'subj_exp_role', 'obj_exp_role'])
 
     def test_struct_parse_xml_to_nodes_edges(self):
         parsed = self.intact.parse_xml_to_nodes_edges('tests/resources/intact_test.xml')
@@ -35,24 +35,33 @@ class TestIntAct(unittest.TestCase):
                     ['UniProtKB:P0C6X7-PRO_0000037317', 'nsp10_cvhsa', 'biolink:RNA']],
           'edges': [['UniProtKB:P20290', 'biolink:interacts_with',
                      'UniProtKB:P0C6X7-PRO_0000037317', 'RO:0002437',
-                     'PMID:16157265', '2', 'physical association', '2 hybrid']]
+                     'PMID:16157265', '2', 'physical association', '2 hybrid', 'prey',
+                     'bait']]
          }),
         ('tests/resources/intact_3_participants.xml',  # test interactions with 3 participants
          3, 3,  # interaction with 3 participants yields 3 edges (1<->2, 2<->3, 1<->3)
-         {'nodes': [], 'edges': []}
-         )
+         {'nodes': [],
+          'edges': [['UniProtKB:Q3T133',
+                'biolink:interacts_with',
+                'UniProtKB:P41811',
+                'RO:0002437',
+                'PMID:23481256',
+                '3',
+                'physical association',
+                'itc', 'neutral component', 'bait']]
+          })
     ])
     def test_nodes_parse_xml_to_nodes_edges(self, xml_file, node_count, edge_count,
                                             expect_nodes_edges):
         parsed = self.intact.parse_xml_to_nodes_edges(xml_file)
-        self.assertEqual(len(parsed['nodes']), node_count,
+        self.assertEqual(node_count, len(parsed['nodes']),
                          "Didn't get the expected number of nodes")
-        self.assertEqual(len(parsed['edges']), edge_count,
+        self.assertEqual(edge_count, len(parsed['edges']),
                          "Didn't get the expected number of edges")
-        self.assertEqual(parsed['nodes'][:len(expect_nodes_edges['nodes'])],
-                         expect_nodes_edges['nodes'])
-        self.assertEqual(parsed['edges'][:len(expect_nodes_edges['edges'])],
-                         expect_nodes_edges['edges'])
+        self.assertEqual(expect_nodes_edges['nodes'],
+                         parsed['nodes'][:len(expect_nodes_edges['nodes'])])
+        self.assertEqual(expect_nodes_edges['edges'],
+                         parsed['edges'][:len(expect_nodes_edges['edges'])])
 
     @parameterized.expand([
         ('tests/resources/intact_test.xml', '3674925', {'publication': 'PMID:16157265', 'detection_method': '2 hybrid'}),
