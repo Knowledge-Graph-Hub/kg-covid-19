@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+from typing import Optional
 
 import obonet  # type: ignore
 from typing.io import TextIO  # type: ignore
@@ -24,7 +25,7 @@ class HpoTransform(Transform):
         source_name = "hpo"
         super().__init__(source_name, input_dir, output_dir)
 
-    def run(self):
+    def run(self, data_file: Optional[str] = None):
         self.node_header.extend(["comments", "description"])
         hpo_node_type = "biolink:PhenotypicFeature"
         hpo_edge_label = "rdfs:subClassOf"

@@ -4,7 +4,7 @@ import collections
 import logging
 import os
 import re
-from typing import Union, List, Dict, Any
+from typing import Union, List, Dict, Any, Optional
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
@@ -29,7 +29,7 @@ class TTDTransform(Transform):
         source_name = "ttd"
         super().__init__(source_name, input_dir, output_dir)
 
-    def run(self) -> None:
+    def run(self, data_file: Optional[str] = None):
         self.node_header.append("TTD_ID") # append ttd id for drug targets and drugs
         ttd_file_name = os.path.join(self.input_base_dir,
                                      "P1-01-TTD_target_download.txt")

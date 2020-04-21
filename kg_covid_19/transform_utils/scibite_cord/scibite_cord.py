@@ -3,7 +3,7 @@ import json
 import os
 import re
 import uuid
-from typing import List, Dict, Any, Set
+from typing import List, Dict, Any, Set, Optional
 from zipfile import ZipFile
 import pandas as pd # type: ignore
 from prefixcommons import contract_uri # type: ignore
@@ -31,21 +31,23 @@ class ScibiteCordTransform(Transform):
         self.gene_info_map: Dict = {}
         self.load_gene_info(self.input_base_dir, self.output_dir, ['9606'])
 
-    def run(self, data_files: List = None) -> None:
+    def run(self, data_file: Optional[str] = None) -> None:
         """Method is called and performs needed transformations to process
         annotations from SciBite CORD-19
 
         Args:
-            data_files: data files to parse
+            data_file: data file to parse
 
         Returns:
             None.
 
         """
-        if not data_files:
-            data_files = list()
+        data_files = list()
+        if not data_file:
             data_files.append(os.path.join(self.input_base_dir, "CORD-19_1_3.zip"))
             data_files.append(os.path.join(self.input_base_dir, "cv19_scc.zip"))
+        else:
+            data_files.append(data_file)
 
         self.node_header = ['id', 'name', 'category', 'description']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by']

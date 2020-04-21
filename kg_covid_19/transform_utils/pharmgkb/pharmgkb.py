@@ -5,6 +5,7 @@ import os
 import tempfile
 from collections import defaultdict
 from io import TextIOBase
+from typing import Optional, TextIO
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import data_to_dict, parse_header, \
@@ -36,7 +37,7 @@ class PharmGKB(Transform):
         self.uniprot_id_key = 'UniProtKB'  # id in genes.tsv where UniProt id is located
         self.key_parsed_ids = 'parsed_ids'  # key to put ids in after parsing
 
-    def run(self):
+    def run(self, data_file: Optional[str] = None):
         rel_zip_file_name = os.path.join(self.input_base_dir, "relationships.zip")
         relationship_file_name = "relationships.tsv"
         gene_mapping_zip_file = os.path.join(self.input_base_dir, "pharmgkb_genes.zip")
@@ -114,7 +115,7 @@ class PharmGKB(Transform):
                                             line_data=line_data)
 
     def make_pharmgkb_edge(self,
-                           fh: TextIOBase,
+                           fh: TextIO,
                            line_data: dict
                            ) -> None:
 
@@ -142,7 +143,7 @@ class PharmGKB(Transform):
                                    evidence])
 
     def make_pharmgkb_gene_node(self,
-                                fh: TextIOBase,
+                                fh: TextIO,
                                 this_id: str,
                                 name: str,
                                 biolink_type: str) -> None:
@@ -168,7 +169,7 @@ class PharmGKB(Transform):
         return gene_id
 
     def make_pharmgkb_chemical_node(self,
-                                    fh: TextIOBase,
+                                    fh: TextIO,
                                     chem_id: str,
                                     name: str,
                                     biolink_type: str

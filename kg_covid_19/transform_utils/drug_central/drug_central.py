@@ -6,7 +6,7 @@ import gzip
 import logging
 import os
 
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, \
@@ -28,7 +28,7 @@ class DrugCentralTransform(Transform):
         source_name = "drug_central"
         super().__init__(source_name, input_dir, output_dir)  # set some variables
 
-    def run(self, species="Homo sapiens") -> None:
+    def run(self, data_file: Optional[str] = None, species: str = "Homo sapiens") -> None:
         """Method is called and performs needed transformations to process the Drug
         Central data, additional information
         on this data can be found in the comment at the top of this script"""

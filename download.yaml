@@ -52,13 +52,6 @@
   local_name: gene_info.gz
 
 #
-# Human phenotype ontology (HPO) - no annotations for now
-#
--
-  # HPO obo file
-  url: http://purl.obolibrary.org/obo/hp.obo
-  local_name: hp.obo
-#
 # TTD - Therapeutic Targets Database
 # drug targets, and associated data for each (drugs, ids, etc)
 #
@@ -114,3 +107,15 @@
   url: https://t.co/OUGKWbpQHG?amp=1
   local_name: intact_coronavirus.zip
 
+#
+# Ontologies
+#
+-
+  url: http://purl.obolibrary.org/obo/hp.json
+  local_name: hp.json
+-
+  url: http://purl.obolibrary.org/obo/mondo.json
+  local_name: mondo.json
+-
+  url: http://current.geneontology.org/ontology/extensions/go-plus.json
+  local_name: go-plus.json
