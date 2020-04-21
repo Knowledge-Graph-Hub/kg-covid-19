@@ -142,9 +142,8 @@ class IntAct(Transform):
             "shortLabel")[0].firstChild._data
 
             participants = interaction.getElementsByTagName('participant')  # type: ignore
-            if len(participants) < 2:  # this isn't interaction data
-                return edges
-            if len(participants) > 3:  # skip interactions with more than 3 participants
+            # skip interactions with < 2 or > 3 participants
+            if len(participants) not in [2, 3]:
                 return edges
 
             experiment_ref = interaction.getElementsByTagName('experimentRef')[0].childNodes[0].data    # type: ignore
@@ -172,7 +171,7 @@ class IntAct(Transform):
                                                                    nodes_dict)
                 node2: Union[str, None] = self.participant_to_node(participant2,
                                                                    nodes_dict)
-                if node1 is not None and node2 is not None:
+                if None not in [node1, node2]:
                     edges.append(
                         [node1, self.ppi_edge_label, node2, self.ppi_ro_relation,
                         publication, str(len(participants)), interaction_type_str,
