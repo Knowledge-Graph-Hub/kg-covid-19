@@ -52,8 +52,8 @@ class IntAct(Transform):
         self.ppi_edge_label = 'biolink:interacts_with'
         self.ppi_ro_relation = 'RO:0002437'
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
-                            'num_participants', 'association_type', 'detection_method',
-                            'publication']
+                            'publication', 'num_participants', 'association_type',
+                            'detection_method',]
 
     def run(self) -> None:
         """Method to run transform to ingest data from IntAct for viral/human PPIs"""
