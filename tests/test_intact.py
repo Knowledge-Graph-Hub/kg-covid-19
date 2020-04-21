@@ -33,14 +33,9 @@ class TestIntAct(unittest.TestCase):
          # parsed['edges'] are ignored
          {'nodes': [['UniProtKB:P20290', 'btf3_human', 'biolink:Protein'],
                     ['UniProtKB:P0C6X7-PRO_0000037317', 'nsp10_cvhsa', 'biolink:RNA']],
-          'edges': [['UniProtKB:P20290',
-                     'biolink:interacts_with',
-                     'UniProtKB:P0C6X7-PRO_0000037317',
-                     'RO:0002437',
-                     'PMID:16157265',
-                     '2',
-                     'physical association',
-                     '2 hybrid']]
+          'edges': [['UniProtKB:P20290', 'biolink:interacts_with',
+                     'UniProtKB:P0C6X7-PRO_0000037317', 'RO:0002437',
+                     'PMID:16157265', '2', 'physical association', '2 hybrid']]
          })
     ])
     def test_nodes_parse_xml_to_nodes_edges(self, xml_file, node_count, edge_count,
