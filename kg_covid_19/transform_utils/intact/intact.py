@@ -141,7 +141,7 @@ class IntAct(Transform):
             interaction_type_str = interaction_type[0].getElementsByTagName(
             "shortLabel")[0].firstChild._data
 
-            participants = interaction.getElementsByTagName("interactorRef")  # type: ignore
+            participants = interaction.getElementsByTagName('participant')  # type: ignore
             if len(participants) < 2:  # this isn't interaction data
                 return edges
 
@@ -179,16 +179,18 @@ class IntAct(Transform):
     def participant_experimental_role(self, participant: object) -> str:
         try:
             # xml why are you like this
-            role = participant.nextSibling.nextSibling.nextSibling.nextSibling.getElementsByTagName(
-                'experimentalRole')[0].getElementsByTagName('shortLabel')[0].firstChild.data
+            role = participant.getElementsByTagName(
+                'experimentalRole')[0].getElementsByTagName(
+                'shortLabel')[0].firstChild.data
             return role
         except (KeyError, IndexError, AttributeError):
-            return None
+            return ''
 
     def participant_to_node(self, participant: object,
                             nodes_dict: dict) -> Union[str, None]:
         try:
-            node = nodes_dict[participant.firstChild.data][0]
+            interact_ref = participant.getElementsByTagName('interactorRef')[0].childNodes[0].data
+            node = nodes_dict[interact_ref][0]
             return node
         except (KeyError, IndexError, AttributeError):
             return None
