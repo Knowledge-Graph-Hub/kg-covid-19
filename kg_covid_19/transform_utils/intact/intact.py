@@ -53,7 +53,7 @@ class IntAct(Transform):
         self.ppi_ro_relation = 'RO:0002437'
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'publication', 'num_participants', 'association_type',
-                            'detection_method',]
+                            'detection_method']
 
     def run(self) -> None:
         """Method to run transform to ingest data from IntAct for viral/human PPIs"""
