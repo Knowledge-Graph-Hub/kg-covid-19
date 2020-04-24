@@ -57,6 +57,7 @@ pipeline {
         stage('Load') {
             steps {
                 sh 'cd config;. venv/bin/activate; python3.7 run.py load'
+                sh 'pigz merged-kg.tar'
             }
         }
         stage('Publish') {
@@ -71,7 +72,7 @@ pipeline {
                         // you need something appropriate for large
                         // files, let me know.
                         withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar s3://kg-hub-public-data/kg_covid_19.tar'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg_covid_19.tar.gz'
                             // Should now appear at:
                             // https://idg.berkeleybop.io/[artifact name]
                         }
