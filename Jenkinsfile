@@ -60,6 +60,11 @@ pipeline {
                 sh 'pigz merged-kg.tar'
             }
         }
+        stage('Convert to RDF') {
+            steps {
+                sh 'cd config;. venv/bin/activate; kgx transform --input-type tsv --output-type nt -o ./merged-kg.nt merged-kg.tar.gz'
+            }
+        }        
         stage('Publish') {
             steps {
 
@@ -67,12 +72,9 @@ pipeline {
                     if (env.BRANCH_NAME != 'jenkins') {
                         echo "Will not push if not on correct branch."
                     } else {
-                        // Push out to your S3 bucket.  The given
-                        // command is for small to medium files. If
-                        // you need something appropriate for large
-                        // files, let me know.
                         withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg_covid_19.tar.gz'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt s3://kg-hub-public-data/kg-covid-19.nt'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
                             // Should now appear at:
                             // https://idg.berkeleybop.io/[artifact name]
                         }
