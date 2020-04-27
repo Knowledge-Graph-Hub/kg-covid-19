@@ -44,7 +44,6 @@ target:
       filename:
          - data/transformed/intact/nodes.tsv
          - data/transformed/intact/edges.tsv
-         -
 
    gene-ontology:
       type: tsv
