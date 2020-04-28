@@ -57,7 +57,7 @@ pipeline {
         stage('Load') {
             steps {
                 sh 'cd config;. venv/bin/activate; python3.7 run.py load'
-                sh 'pigz merged-kg.tar'
+                sh 'cd config;. venv/bin/activate; pigz merged-kg.tar'
             }
         }
         stage('Convert to RDF') {
