@@ -47,6 +47,8 @@ class PharmGKB(Transform):
         # file stuff
         #
         # get relationship file (what we are ingest here)
+        # TODO: unlink relationship_tempdir and gene_id_tempdir
+
         relationship_tempdir = tempfile.mkdtemp()
         relationship_file_path = os.path.join(relationship_tempdir,
                                               relationship_file_name)

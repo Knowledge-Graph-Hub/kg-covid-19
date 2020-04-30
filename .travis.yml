@@ -16,6 +16,7 @@ before_install:
 - pip install --upgrade pylint
 - pip install bmt
 - pip install -r requirements.txt
+- pip install yamllint
 install:
 - pip install .[test]
 before_script:
@@ -33,6 +34,7 @@ script:
 - coverage xml
 - python -m pylint --errors-only --exit-zero kg_covid_19
 - mypy --strict-optional kg_covid_19
+- yamllint -d relaxed merge.yaml download.yaml
 - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner; fi' # sonar only on non-PRs
 
 after_success:
