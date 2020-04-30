@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import Dict, List
 import yaml
 import networkx as nx
@@ -34,6 +35,16 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
     gm = GraphMerge()
     config = parse_load_config(yaml_file)
     transformers: List = []
+
+    # make sure all files exist before we start load
+    for key in config['target']:
+        target = config['target'][key]
+        logging.info("Checking that file exist for {}".format(key))
+        if target['type'] in get_file_types():
+            for f in target['filename']:
+                if not os.path.exists(f) or not os.path.isfile(f):
+                    raise FileNotFoundError("File {} for transform {}  in yaml file {} "
+                                            "doesn't exist! Dying.", f, key, yaml_file)
 
     # read all the sources defined in the YAML
     for key in config['target']:
