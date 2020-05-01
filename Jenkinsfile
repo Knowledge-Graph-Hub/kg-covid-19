@@ -63,6 +63,7 @@ pipeline {
         stage('Convert to RDF') {
             steps {
                 sh 'cd config;. venv/bin/activate; kgx transform --input-type tsv --output-type nt -o ./merged-kg.nt merged-kg.tar.gz'
+                sh 'cd config;. venv/bin/activate; pigz merged-kg.nt'
             }
         }        
         stage('Publish') {
@@ -73,7 +74,7 @@ pipeline {
                         echo "Will not push if not on correct branch."
                     } else {
                         withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt s3://kg-hub-public-data/kg-covid-19.nt'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt s3://kg-hub-public-data/kg-covid-19.nt.gz'
                             sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
                             // Should now appear at:
                             // https://idg.berkeleybop.io/[artifact name]
