@@ -23,7 +23,8 @@ class SARSCoV2GeneAnnot(Transform):
 
         self.node_header = ['id', 'name', 'category', 'synonym', 'taxon']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
-                            'DB_References', 'ECO_code', 'With', 'Interacting_taxon_ID',
+                            'provided_by', 'DB_References', 'ECO_code', 'With',
+                            'Interacting_taxon_ID',
                             'Date', 'Assigned_by', 'Annotation_Extension',
                             'Annotation_Properties']
 
@@ -77,7 +78,8 @@ class SARSCoV2GeneAnnot(Transform):
         except KeyError:
             relation = ''
 
-        edge_data = [subj, self.edge_label_prefix + edge_label, obj, relation]
+        edge_data = [subj, self.edge_label_prefix + edge_label, obj, relation,
+                     self.source_name]
         # all the others
         for key in ['DB:Reference', 'ECO_Evidence_code', 'With', 'Interacting_taxon_ID',
                     'Date', 'Assigned_by', 'Annotation_Extension',
