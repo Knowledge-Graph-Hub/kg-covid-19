@@ -157,6 +157,7 @@ class StringTransform(Transform):
                 for protein_name in ('protein1', 'protein2'):
                     protein = get_item_by_priority(items_dict, [protein_name])
                     protein = '.'.join(protein.split('.')[1:])
+                    protein = f"ENSEMBL:{protein}"
                     proteins.append(protein)
                     if protein in self.protein_gene_map:
                         gene = self.protein_gene_map[protein]
