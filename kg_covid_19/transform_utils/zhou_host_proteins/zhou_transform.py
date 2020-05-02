@@ -34,6 +34,9 @@ class ZhouTransform(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
         source_name = "zhou_host_proteins"
         super().__init__(source_name, input_dir, output_dir)
+        self.node_header = ['id', 'name', 'category']
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+                            'provided_by', 'publication']
 
     def run(self, data_file: Optional[str] = None):
         """Method is called and performs needed transformations to process the zhou host protein data, additional
@@ -110,6 +113,7 @@ class ZhouTransform(Transform):
                                          host_gene_vgene_edge_label,
                                          corona_curie,
                                          host_gene_vgene_relation,
+                                         self.source_name,
                                          pubmed_curie_prefix + row['PubMed ID']
                                      ])
 

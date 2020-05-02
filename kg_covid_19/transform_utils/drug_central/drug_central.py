@@ -42,7 +42,8 @@ class DrugCentralTransform(Transform):
         gene_node_type = "biolink:Gene"
         drug_gene_edge_label = "biolink:interacts_with"
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'comment']
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+                            'provided_by', 'comment']
 
         with open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge, \
@@ -89,13 +90,15 @@ class DrugCentralTransform(Transform):
                                                gene_node_type])
 
                     # WRITE EDGES
-                    # ['subject', 'edge_label', 'object', 'relation', 'comment']
+                    # ['subject', 'edge_label', 'object', 'relation', 'provided_by',
+                    # 'comment']
                     write_node_edge_item(fh=edge,
                                          header=self.edge_header,
                                          data=[drug_id,
                                                drug_gene_edge_label,
                                                gene_id,
                                                drug_gene_edge_relation,
+                                               self.source_name,
                                                items_dict['ACT_COMMENT']])
 
         return None
