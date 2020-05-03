@@ -4,7 +4,6 @@ import logging
 from typing import List
 
 from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTransform
-from kg_covid_19.transform_utils.hpo.hpo import HpoTransform
 from kg_covid_19.transform_utils.intact.intact import IntAct
 from kg_covid_19.transform_utils.ontology import OntologyTransform
 from kg_covid_19.transform_utils.ontology.ontology_transform import ONTOLOGIES
