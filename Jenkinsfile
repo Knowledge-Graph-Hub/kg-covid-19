@@ -45,8 +45,15 @@ pipeline {
             }
         }
         stage('Download') {
-            steps {
-                sh 'cd config;. venv/bin/activate; python3.7 run.py download'
+        steps {
+            def run_py_dl = sh(
+                script: 'cd config;. venv/bin/activate; python3.7 run.py download', returnStatus: true
+            )
+            if (run_py_dl == 0) { // upload raw to s3
+                sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/raw'
+            } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
+                sh 'cd config; rm -fr data/raw'
+                sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate get -r s3://kg-hub-public-data/raw data/'
             }
         }
         stage('Transform') {
