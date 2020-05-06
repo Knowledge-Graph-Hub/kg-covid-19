@@ -56,6 +56,7 @@ pipeline {
                 sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate get -r s3://kg-hub-public-data/raw data/'
             }
         }
+        }
         stage('Transform') {
             steps {
                 sh 'cd config;. venv/bin/activate; python3.7 run.py transform'
