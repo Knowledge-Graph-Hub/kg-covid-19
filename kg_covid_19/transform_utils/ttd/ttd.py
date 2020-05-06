@@ -85,12 +85,13 @@ class TTDTransform(Transform):
 
                 # for each drug in DRUGINFO:
                 for this_drug in data['DRUGINFO']:
+                    this_drug_curie = drug_id_prefix + this_drug[0]
                     #
                     # make node for drug
                     #
                     write_node_edge_item(fh=node,
                                          header=self.node_header,
-                                         data=[drug_id_prefix + this_drug[0],
+                                         data=[this_drug_curie,
                                                this_drug[1],
                                                drug_node_type,
                                                this_drug[0]
@@ -105,7 +106,7 @@ class TTDTransform(Transform):
                     for this_id in uniproids:
                         write_node_edge_item(fh=edge,
                                              header=self.edge_header,
-                                             data=[target_id,
+                                             data=[this_drug_curie,
                                                    drug_gene_edge_label,
                                                    this_id,
                                                    drug_gene_edge_relation,
