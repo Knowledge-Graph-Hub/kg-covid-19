@@ -1,4 +1,4 @@
-kg_covid-19
+kg-covid-19
 =========================================================================================
 |travis| |sonar_quality| |sonar_maintainability| |codacy|
 |code_climate_maintainability|
@@ -14,7 +14,7 @@ How do I install this package?
 
     git clone https://github.com/Knowledge-Graph-Hub/kg-covid-19
     cd kg-covid-19
-    python setup.py install --user
+    pip install .
     pip install -r requirements.txt
 
 How do I use this package?
@@ -30,7 +30,7 @@ How do I use this package?
 Tests Coverage
 ----------------------------------------------
 Since some software handling coverages sometimes
-get slightly different results, here's three of them:
+get slightly different results, here are three of them:
 
 |coveralls| |sonar_coverage| |code_climate_coverage|
 
