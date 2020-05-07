@@ -81,7 +81,7 @@ pipeline {
             steps {
 
                 script {
-                    if (env.BRANCH_NAME != 'jenkins') {
+                    if (env.BRANCH_NAME != 'master') {
                         echo "Will not push if not on correct branch."
                     } else {
                         withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
