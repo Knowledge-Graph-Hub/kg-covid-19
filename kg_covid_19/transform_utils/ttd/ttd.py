@@ -4,7 +4,7 @@ import collections
 import logging
 import os
 import re
-from typing import Union, List, Dict, Any
+from typing import Union, List, Dict, Any, Optional
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
@@ -29,7 +29,7 @@ class TTDTransform(Transform):
         source_name = "ttd"
         super().__init__(source_name, input_dir, output_dir)
 
-    def run(self) -> None:
+    def run(self, data_file: Optional[str] = None):
         self.node_header.append("TTD_ID") # append ttd id for drug targets and drugs
         ttd_file_name = os.path.join(self.input_base_dir,
                                      "P1-01-TTD_target_download.txt")
@@ -41,7 +41,8 @@ class TTDTransform(Transform):
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
         uniprot_curie_prefix = "UniProtKB:"
 
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'target_type']
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+                            'provided_by', 'target_type']
 
         # make name to id map for uniprot names of human proteins
         dat_gz_id_file = os.path.join(self.input_base_dir,
@@ -84,12 +85,13 @@ class TTDTransform(Transform):
 
                 # for each drug in DRUGINFO:
                 for this_drug in data['DRUGINFO']:
+                    this_drug_curie = drug_id_prefix + this_drug[0]
                     #
                     # make node for drug
                     #
                     write_node_edge_item(fh=node,
                                          header=self.node_header,
-                                         data=[drug_id_prefix + this_drug[0],
+                                         data=[this_drug_curie,
                                                this_drug[1],
                                                drug_node_type,
                                                this_drug[0]
@@ -104,10 +106,11 @@ class TTDTransform(Transform):
                     for this_id in uniproids:
                         write_node_edge_item(fh=edge,
                                              header=self.edge_header,
-                                             data=[target_id,
+                                             data=[this_drug_curie,
                                                    drug_gene_edge_label,
                                                    this_id,
                                                    drug_gene_edge_relation,
+                                                   self.source_name,
                                                    targ_type])
 
     def get_uniproids(self, data: dict, name_2_id_map: dict,

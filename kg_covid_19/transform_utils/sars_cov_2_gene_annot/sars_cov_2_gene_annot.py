@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import os
-from typing import Generator, TextIO, List
+from typing import Generator, TextIO, List, Optional
 
 from kg_covid_19.utils.transform_utils import get_item_by_priority, ItemInDictNotFound
 
@@ -17,13 +17,14 @@ each gene -> annotation described in GPA
 
 class SARSCoV2GeneAnnot(Transform):
 
-    def __init__(self, input_dir: str = None, output_dir: str = None):
+    def __init__(self, input_dir: Optional[str] = None, output_dir: str = None):
         source_name = "sars_cov_2_gene_annot"
         super().__init__(source_name, input_dir, output_dir)
 
         self.node_header = ['id', 'name', 'category', 'synonym', 'taxon']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
-                            'DB_References', 'ECO_code', 'With', 'Interacting_taxon_ID',
+                            'provided_by', 'DB_References', 'ECO_code', 'With',
+                            'Interacting_taxon_ID',
                             'Date', 'Assigned_by', 'Annotation_Extension',
                             'Annotation_Properties']
 
@@ -38,7 +39,7 @@ class SARSCoV2GeneAnnot(Transform):
             'part_of': 'BFO:0000050'
         }
 
-    def run(self):
+    def run(self, data_file: str = None):
 
         # file housekeeping
         os.makedirs(self.output_dir, exist_ok=True)
@@ -77,7 +78,8 @@ class SARSCoV2GeneAnnot(Transform):
         except KeyError:
             relation = ''
 
-        edge_data = [subj, self.edge_label_prefix + edge_label, obj, relation]
+        edge_data = [subj, self.edge_label_prefix + edge_label, obj, relation,
+                     self.source_name]
         # all the others
         for key in ['DB:Reference', 'ECO_Evidence_code', 'With', 'Interacting_taxon_ID',
                     'Date', 'Assigned_by', 'Annotation_Extension',

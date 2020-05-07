@@ -1,4 +1,4 @@
-kg_covid-19
+kg-covid-19
 =========================================================================================
 |travis| |sonar_quality| |sonar_maintainability| |codacy|
 |code_climate_maintainability|
@@ -14,7 +14,7 @@ How do I install this package?
 
     git clone https://github.com/Knowledge-Graph-Hub/kg-covid-19
     cd kg-covid-19
-    python setup.py install --user
+    pip install .
     pip install -r requirements.txt
 
 How do I use this package?
@@ -30,7 +30,7 @@ How do I use this package?
 Tests Coverage
 ----------------------------------------------
 Since some software handling coverages sometimes
-get slightly different results, here's three of them:
+get slightly different results, here are three of them:
 
 |coveralls| |sonar_coverage| |code_climate_coverage|
 
@@ -39,20 +39,20 @@ get slightly different results, here's three of them:
    :target: https://travis-ci.org/github/Knowledge-Graph-Hub/kg-covid-19
    :alt: Travis CI build
 
-.. |sonar_quality| image:: https://sonarcloud.io/api/project_badges/measure?project=justaddcoffee_kg-emerging-viruses&metric=alert_status
-    :target: https://sonarcloud.io/dashboard/index/justaddcoffee_kg-emerging-viruses
+.. |sonar_quality| image:: https://sonarcloud.io/api/project_badges/measure?project=Knowledge-Graph-Hub_kg-covid-19&metric=alert_status
+    :target: https://sonarcloud.io/dashboard/index/Knowledge-Graph-Hub_kg-covid-19
     :alt: SonarCloud Quality
 
-.. |sonar_maintainability| image:: https://sonarcloud.io/api/project_badges/measure?project=justaddcoffee_kg-emerging-viruses&metric=sqale_rating
-    :target: https://sonarcloud.io/dashboard/index/justaddcoffee_kg-emerging-viruses
+.. |sonar_maintainability| image:: https://sonarcloud.io/api/project_badges/measure?project=Knowledge-Graph-Hub_kg-covid-19&metric=sqale_rating
+    :target: https://sonarcloud.io/dashboard/index/Knowledge-Graph-Hub_kg-covid-19
     :alt: SonarCloud Maintainability
 
-.. |sonar_coverage| image:: https://sonarcloud.io/api/project_badges/measure?project=justaddcoffee_kg-emerging-viruses&metric=coverage
-    :target: https://sonarcloud.io/dashboard/index/justaddcoffee_kg-emerging-viruses
+.. |sonar_coverage| image:: https://sonarcloud.io/api/project_badges/measure?project=Knowledge-Graph-Hub_kg-covid-19&metric=coverage
+    :target: https://sonarcloud.io/dashboard/index/Knowledge-Graph-Hub_kg-covid-19
     :alt: SonarCloud Coverage
 
-.. |coveralls| image:: https://coveralls.io/repos/github/justaddcoffee/kg-emerging-viruses/badge.svg?branch=master
-    :target: https://coveralls.io/github/justaddcoffee/kg-emerging-viruses?branch=master
+.. |coveralls| image:: https://coveralls.io/repos/github/Knowledge-Graph-Hub/kg-covid-19/badge.svg?branch=master
+    :target: https://coveralls.io/github/Knowledge-Graph-Hub/kg-covid-19?branch=master
     :alt: Coveralls Coverage
 
 .. |pip| image:: https://badge.fury.io/py/kg-emerging-viruses.svg

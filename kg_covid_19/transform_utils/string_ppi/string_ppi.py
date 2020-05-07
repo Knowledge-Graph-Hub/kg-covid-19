@@ -1,7 +1,7 @@
 import gzip
 import os
 import compress_json  # type: ignore
-from typing import Dict, List, Any, Set
+from typing import Dict, List, Any, Set, Optional
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, get_item_by_priority
@@ -110,7 +110,7 @@ class StringTransform(Transform):
                     self.gene_info_map[ncbi_gene_identifier]['symbol'] = symbol
                     self.gene_info_map[ncbi_gene_identifier]['description'] = description
 
-    def run(self, data_file: str = None) -> None:
+    def run(self, data_file: Optional[str] = None) -> None:
         """Method is called and performs needed transformations to process
         protein-protein interactions from the STRING DB data.
 
@@ -157,6 +157,7 @@ class StringTransform(Transform):
                 for protein_name in ('protein1', 'protein2'):
                     protein = get_item_by_priority(items_dict, [protein_name])
                     protein = '.'.join(protein.split('.')[1:])
+                    protein = f"ENSEMBL:{protein}"
                     proteins.append(protein)
                     if protein in self.protein_gene_map:
                         gene = self.protein_gene_map[protein]

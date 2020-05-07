@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 
 class Transform:
@@ -13,7 +14,7 @@ class Transform:
         self.source_name = source_name
         self.node_header = ['id', 'name', 'category']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
-                            'publications']
+                            'provided_by']
 
         # default dirs
         self.input_base_dir = input_dir if input_dir else self.DEFAULT_INPUT_DIR
@@ -26,6 +27,5 @@ class Transform:
         self.output_edge_file = os.path.join(self.output_dir, "edges.tsv")
         self.output_json_file = os.path.join(self.output_dir, "nodes_edges.json")
 
-
-    def run(self):
+    def run(self, data_file: Optional[str] = None):
         pass

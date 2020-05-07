@@ -3,6 +3,7 @@
 
 
 import os
+from typing import Optional
 
 from kg_covid_19.transform_utils.transform import Transform
 
@@ -25,7 +26,7 @@ class YourTransform(Transform):
         source_name = "some_unique_name"
         super().__init__(source_name, input_dir, output_dir)
 
-    def run(self):
+    def run(self, data_file: Optional[str] = None):
         # replace with downloaded data of for this source
         input_file = os.path.join(
             self.input_base_dir, "example_data.csv")  # must exist already

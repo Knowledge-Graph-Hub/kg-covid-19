@@ -5,6 +5,7 @@ import os
 import tempfile
 from collections import defaultdict
 from io import TextIOBase
+from typing import Optional, TextIO
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import data_to_dict, parse_header, \
@@ -23,7 +24,8 @@ class PharmGKB(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None):
         source_name = "pharmgkb"
         super().__init__(source_name, input_dir, output_dir)
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'evidence']
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+                            'provided_by', 'evidence']
         self.node_header = ['id', 'name', 'category']
         self.edge_of_interest = ['Gene',
                                  'Chemical']  # logic also matches 'Chemical'-'Gene'
@@ -36,7 +38,7 @@ class PharmGKB(Transform):
         self.uniprot_id_key = 'UniProtKB'  # id in genes.tsv where UniProt id is located
         self.key_parsed_ids = 'parsed_ids'  # key to put ids in after parsing
 
-    def run(self):
+    def run(self, data_file: Optional[str] = None):
         rel_zip_file_name = os.path.join(self.input_base_dir, "relationships.zip")
         relationship_file_name = "relationships.tsv"
         gene_mapping_zip_file = os.path.join(self.input_base_dir, "pharmgkb_genes.zip")
@@ -46,6 +48,8 @@ class PharmGKB(Transform):
         # file stuff
         #
         # get relationship file (what we are ingest here)
+        # TODO: unlink relationship_tempdir and gene_id_tempdir
+
         relationship_tempdir = tempfile.mkdtemp()
         relationship_file_path = os.path.join(relationship_tempdir,
                                               relationship_file_name)
@@ -112,7 +116,7 @@ class PharmGKB(Transform):
                                             line_data=line_data)
 
     def make_pharmgkb_edge(self,
-                           fh: TextIOBase,
+                           fh: TextIO,
                            line_data: dict
                            ) -> None:
 
@@ -137,10 +141,11 @@ class PharmGKB(Transform):
                                    self.drug_gene_edge_label,
                                    gene_id,
                                    self.drug_gene_edge_relation,
+                                   self.source_name,
                                    evidence])
 
     def make_pharmgkb_gene_node(self,
-                                fh: TextIOBase,
+                                fh: TextIO,
                                 this_id: str,
                                 name: str,
                                 biolink_type: str) -> None:
@@ -166,7 +171,7 @@ class PharmGKB(Transform):
         return gene_id
 
     def make_pharmgkb_chemical_node(self,
-                                    fh: TextIOBase,
+                                    fh: TextIO,
                                     chem_id: str,
                                     name: str,
                                     biolink_type: str
