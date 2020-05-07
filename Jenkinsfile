@@ -3,9 +3,9 @@ pipeline {
     options {
         timestamps()
     }
-    stages {
+    stages {        
         // Very first: pause for a minute to give a chance to
-        // cancel and clean the workspace before use.
+        // cancel and clean the workspace before use.        
         stage('Ready and clean') {
             steps {
                 // Give us a minute to cancel if we want.
@@ -28,7 +28,6 @@ pipeline {
                         })
             }
         }
-
         stage('Build kg_covid_19') {
             steps {
                 dir('./config') {
@@ -41,6 +40,18 @@ pipeline {
                     sh './venv/bin/pip install bmt'
                     sh './venv/bin/pip install -r requirements.txt'
                     sh './venv/bin/python setup.py install'
+                }
+            }
+        }
+        stage('Test Download') {
+            steps {
+                script {
+                    withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                        sh 'cd config; rm -fr data/raw; mkdir -p data/raw'
+                        sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate get -r s3://kg-hub-public-data/raw/ data/raw/'
+                        sh 'cd config; ls data/raw'
+                        }
+                    }
                 }
             }
         }
