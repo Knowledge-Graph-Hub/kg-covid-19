@@ -50,7 +50,6 @@ pipeline {
                         sh 'cd config; rm -fr data/raw; mkdir -p data/raw'
                         sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate get -r s3://kg-hub-public-data/raw/ data/raw/'
                         sh 'cd config; ls data/raw'
-                        }
                     }
                 }
             }
