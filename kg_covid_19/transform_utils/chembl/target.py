@@ -8,6 +8,8 @@ import os
 
 from typing import Dict, List
 
+from typing.io import IO
+
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, \
     get_item_by_priority, ItemInDictNotFound, parse_header
@@ -36,7 +38,7 @@ class ChEMBLTargetTransform(Transform):
         self._accession_sep = DEFAULT_ACCESSION_SEPARATOR
         self._compound_sep = DEFAULT_COMPOUND_SEPARATOR
         self._activity_sep = DEFAULT_ACTIVITY_SEPARATOR
-        
+
         self._qualified_organism_lookup = {}
         self._load_qualified_organism_lookup()
 
@@ -47,11 +49,11 @@ class ChEMBLTargetTransform(Transform):
 
         for organism in DEFAULT_QUALIFIED_ORGANISM_LIST:
             self._qualified_organism_lookup[organism] = True
-        
+
         logging.info("Loaded the qualified organism lookup")
 
     def run(self) -> None:
-        """Method is called and performs needed transformations to 
+        """Method is called and performs needed transformations to
         process the ChEMBL target data, additional information
         on this data can be found in the comment at the top of this script
         """
@@ -60,7 +62,7 @@ class ChEMBLTargetTransform(Transform):
         os.makedirs(self.output_dir, exist_ok=True)
 
         self._load_lookups()
-        
+
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'activity']
 
         with open(self.output_node_file, 'w') as node, \
@@ -94,9 +96,9 @@ class ChEMBLTargetTransform(Transform):
                         "No ChEMBL ID information for this line:\n{}\nskipping".format(line))
                     continue
 
-                target_id_list = self._create_target_nodes(items_dict)
+                target_id_list = self._create_target_nodes(items_dict, node)
 
-                compound_id_list = self._create_compound_nodes(items_dict)
+                compound_id_list = self._create_compound_nodes(items_dict, node)
 
                 if 'Activities' in items_dict:
                     activity_list = self._get_activity_list(items_dict['Activities'])
@@ -107,7 +109,7 @@ class ChEMBLTargetTransform(Transform):
                 for activity in activity_list:
                     for target_id in target_id_list:
                         for compound_id in compound_id_list:
-                            self._create_target_compound_edge_node(target_id, compound_id, activity)
+                            self._create_target_compound_edge_node(target_id, compound_id, activity, edge)
 
         return None
 
@@ -123,7 +125,7 @@ class ChEMBLTargetTransform(Transform):
             logging.error("Did not find '{}' separator in '{}'".format(self._activity_sep, activities))
             activity_list = [activities]
         return activity_list
-    
+
     def _get_accession_list(self, accessions: str) -> list:
         """Derive the list of Accession values
         :param accessions: {str}
@@ -150,7 +152,7 @@ class ChEMBLTargetTransform(Transform):
             compound_list = [compounds]
         return compound_list
 
-    def _create_target_nodes(self, items_dict: dict) -> list:
+    def _create_target_nodes(self, items_dict: dict, node: IO) -> list:
         """Create the node for the target node
         :param items_dict: {dict}
         :returns target_id_list: {list}
@@ -165,9 +167,9 @@ class ChEMBLTargetTransform(Transform):
         target_id_list = []
 
         if 'UniProt Accessions' in items_dict:
-        
+
             accession_list = self._get_accession_list(items_dict['UniProt Accessions'])
-        
+
             if len(accession_list) > 0:
                 for accession in accession_list:
                     id = 'UniProtKB:' + accession
@@ -200,7 +202,7 @@ class ChEMBLTargetTransform(Transform):
             logging.error("organism '{}' is not currently supported".format(organism))
         return taxon_id
 
-    def _create_compound_nodes(self, item_dict: dict) -> list:
+    def _create_compound_nodes(self, item_dict: dict, node: IO) -> list:
         """Create nodes for the compound
         :param item_dict: {dict}
         :returns compound_id_list: {list}
@@ -210,7 +212,7 @@ class ChEMBLTargetTransform(Transform):
         # name: whatever name chembl uses for the entry, or else just use the ID above
         # category: biolink:Drug
         # organism: NCBITaxon:XXXX (XXXX = 9606 if these are all human)
-        
+
         compound_id_list = []
 
         if 'Compounds' in item_dict:
@@ -233,15 +235,15 @@ class ChEMBLTargetTransform(Transform):
                 logging.info("Not compounds to process for this record")
         else:
             logging.info("Compounds does not exist in the items_dict")
-        
+
         return compound_id_list
 
-    def _create_target_compound_edge_node(self, target_id: str, compound_id: str, activity: str) -> None:
+    def _create_target_compound_edge_node(self, target_id: str, compound_id: str, activity: str, edge: IO) -> None:
         """
         """
         edge_label = 'biolink:interacts_with'
         relation = 'RO:0002436'
-        
+
         write_node_edge_item(fh=edge,
                             header=self.edge_header,
                             data=[target_id, edge_label, compound_id, relation, activity])
