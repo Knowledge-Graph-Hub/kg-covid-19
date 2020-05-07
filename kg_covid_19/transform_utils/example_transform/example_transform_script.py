@@ -3,6 +3,7 @@
 
 
 import os
+from typing import Optional
 
 from kg_covid_19.transform_utils.transform import Transform
 
@@ -13,20 +14,19 @@ format: https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md
 Input: any file in data/raw/ (that was downloaded by placing a URL in incoming.txt/yaml and running `run.py download`
 Output: transformed data in data/raw/[source name]:
 
-Either TSV, output these two files:
+Output these two files:
 - nodes.tsv
 - edges.tsv
-
-Or JSON, all in one file: nodes_edges.json
 """
 
 
 class YourTransform(Transform):
 
-    def __init__(self):
-        super().__init__(source_name="some_unique_name")
+    def __init__(self, input_dir: str = None, output_dir: str = None):
+        source_name = "some_unique_name"
+        super().__init__(source_name, input_dir, output_dir)
 
-    def run(self):
+    def run(self, data_file: Optional[str] = None):
         # replace with downloaded data of for this source
         input_file = os.path.join(
             self.input_base_dir, "example_data.csv")  # must exist already

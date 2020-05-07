@@ -1,6 +1,7 @@
 import gzip
 import os
-from typing import Dict, List, Any
+import compress_json  # type: ignore
+from typing import Dict, List, Any, Set, Optional
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, get_item_by_priority
@@ -29,10 +30,12 @@ NCBI_FTP_URL = 'https://ftp.ncbi.nlm.nih.gov/gene/DATA/'
 PROTEIN_MAPPING_FILE = 'gene2ensembl.gz'
 GENE_INFO_FILE = 'gene_info.gz'
 
+
 class StringTransform(Transform):
     """
     StringTransform parses interactions from STRING DB into nodes and edges.
     """
+
     def __init__(self, input_dir: str = None, output_dir: str = None):
         source_name = "STRING"
         super().__init__(source_name, input_dir, output_dir)
@@ -42,7 +45,6 @@ class StringTransform(Transform):
         self.ensembl2ncbi_map: Dict[str, Any] = {}
         self.load_mapping(self.input_base_dir, self.output_dir, ['9606'])
         self.load_gene_info(self.input_base_dir, self.output_dir, ['9606'])
-
 
     def load_mapping(self, input_dir: str, output_dir: str, species_id: List = None) -> None:
         """Load Ensembl Gene to Protein mapping from NCBI gene2ensembl (gene2ensembl.gz).
@@ -71,7 +73,8 @@ class StringTransform(Transform):
                 if ensembl_protein_identifier not in self.protein_gene_map:
                     self.protein_gene_map[ensembl_protein_identifier] = ensembl_gene_identifier
                 if ncbi_gene_identifier not in self.gene_info_map:
-                    self.gene_info_map[ncbi_gene_identifier] = {'ENSEMBL': ensembl_gene_identifier}
+                    self.gene_info_map[ncbi_gene_identifier] = {
+                        'ENSEMBL': ensembl_gene_identifier}
                 if ensembl_gene_identifier not in self.ensembl2ncbi_map:
                     self.ensembl2ncbi_map[ensembl_gene_identifier] = ncbi_gene_identifier
 
@@ -101,12 +104,13 @@ class StringTransform(Transform):
                 symbol = records[2]
                 description = records[8]
                 if ncbi_gene_identifier not in self.gene_info_map:
-                    self.gene_info_map[ncbi_gene_identifier] = {'symbol': symbol, 'description': description}
+                    self.gene_info_map[ncbi_gene_identifier] = {
+                        'symbol': symbol, 'description': description}
                 else:
                     self.gene_info_map[ncbi_gene_identifier]['symbol'] = symbol
                     self.gene_info_map[ncbi_gene_identifier]['description'] = description
 
-    def run(self, data_file: str = None) -> None:
+    def run(self, data_file: Optional[str] = None) -> None:
         """Method is called and performs needed transformations to process
         protein-protein interactions from the STRING DB data.
 
@@ -118,21 +122,26 @@ class StringTransform(Transform):
 
         """
         if not data_file:
-            data_file = os.path.join(self.input_base_dir, "9606.protein.links.full.v11.0.txt.gz")
+            data_file = os.path.join(
+                self.input_base_dir,
+                "9606.protein.links.full.v11.0.txt.gz"
+            )
         os.makedirs(self.output_dir, exist_ok=True)
         protein_node_type = "biolink:Protein"
         edge_label = "biolink:interacts_with"
-        self.node_header = ['id', 'name', 'category', 'description', 'alias']
-        edge_core_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by', 'combined_score']
-        edge_additional_headers = [
-            'neighborhood', 'neighborhood_transferred', 'fusion', 'cooccurence',
-            'homology', 'coexpression', 'coexpression_transferred', 'experiments',
-            'experiments_transferred', 'database', 'database_transferred', 'textmining',
-            'textmining_transferred'
-        ]
+        self.node_header = compress_json.local_load("node_header.json")
+        edge_core_header = compress_json.local_load("edge_core_header.json")
+        edge_additional_headers = compress_json.local_load(
+            "edge_additional_headers.json")
+
         self.edge_header = edge_core_header + edge_additional_headers
         relation = 'RO:0002434'
-        seen: List = []
+        seen_proteins: Set = set()
+        seen_genes: Set = set()
+
+        # Required to align the node edge header of the gene
+        # with the default header
+        extra_header = [""]*(len(edge_additional_headers)+1)
 
         with open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge, \
@@ -144,97 +153,60 @@ class StringTransform(Transform):
             header_items = parse_header(interactions.readline())
             for line in interactions:
                 items_dict = parse_stringdb_interactions(line, header_items)
-                protein1 = get_item_by_priority(items_dict, ['protein1'])
-                protein1 = '.'.join(protein1.split('.')[1:])
-                if protein1 in self.protein_gene_map:
-                    gene1 = self.protein_gene_map[protein1]
-                else:
-                    gene1 = None
-                protein2 = get_item_by_priority(items_dict, ['protein2'])
-                protein2 = '.'.join(protein2.split('.')[1:])
-                if protein2 in self.protein_gene_map:
-                    gene2 = self.protein_gene_map[protein2]
-                else:
-                    gene2 = None
+                proteins = []
+                for protein_name in ('protein1', 'protein2'):
+                    protein = get_item_by_priority(items_dict, [protein_name])
+                    protein = '.'.join(protein.split('.')[1:])
+                    protein = f"ENSEMBL:{protein}"
+                    proteins.append(protein)
+                    if protein in self.protein_gene_map:
+                        gene = self.protein_gene_map[protein]
+                        if gene not in seen_genes:
+                            seen_genes.add(gene)
+                            ensemble_gene = f"ENSEMBL:{gene}"
+                            gene_informations=self.gene_info_map[self.ensembl2ncbi_map[gene]]
+                            write_node_edge_item(
+                                fh=node,
+                                header=self.node_header,
+                                data=[
+                                    ensemble_gene,
+                                    gene_informations['symbol'],
+                                    'biolink:Gene',
+                                    gene_informations['description'],
+                                    f"NCBIGene:{self.ensembl2ncbi_map[gene]}"
+                                ]
+                            )
+                            write_node_edge_item(
+                                fh=edge,
+                                header=self.edge_header,
+                                data=[
+                                    ensemble_gene,
+                                    "biolink:has_gene_product",
+                                    protein,
+                                    "RO:0002205",
+                                    "NCBI",
+                                ] + extra_header
+                            )
 
-                if gene1 and gene1 not in seen:
-                    write_node_edge_item(
-                        fh=node,
-                        header=self.node_header,
-                        data=[
-                            f"ENSEMBL:{gene1}",
-                            self.gene_info_map[self.ensembl2ncbi_map[gene1]]['symbol'],
-                            'biolink:Gene',
-                            self.gene_info_map[self.ensembl2ncbi_map[gene1]]['description'],
-                            f"NCBIGene:{self.ensembl2ncbi_map[gene1]}"
-                        ]
-                    )
-                    write_node_edge_item(
-                        fh=edge,
-                        header=self.edge_header,
-                        data=[
-                            f"ENSEMBL:{gene1}",
-                            "biolink:has_gene_product",
-                            protein1,
-                            "RO:0002205",
-                            "NCBI",
-                            ""
-                        ] + ["" for x in edge_additional_headers]
-                    )
-                    seen.append(gene1)
-
-                if gene2 and gene2 not in seen:
-                    write_node_edge_item(
-                        fh=node,
-                        header=self.node_header,
-                        data=[
-                            f"ENSEMBL:{gene2}",
-                            self.gene_info_map[self.ensembl2ncbi_map[gene2]]['symbol'],
-                            'biolink:Gene',
-                            self.gene_info_map[self.ensembl2ncbi_map[gene2]]['description'],
-                            f"NCBIGene:{self.ensembl2ncbi_map[gene2]}"
-                        ]
-                    )
-                    write_node_edge_item(
-                        fh=edge,
-                        header=self.edge_header,
-                        data=[
-                            f"ENSEMBL:{gene2}",
-                            "biolink:has_gene_product",
-                            protein2,
-                            "RO:0002205",
-                            "NCBI",
-                            ""
-                        ] + ["" for x in edge_additional_headers]
-                    )
-                    seen.append(gene2)
-
-                # write node data
-                if protein1 not in seen:
-                    write_node_edge_item(
-                        fh=node,
-                        header=self.node_header,
-                        data=[f"ENSEMBL:{protein1}", "", protein_node_type, "", ""]
-                    )
-
-                if protein2 not in seen:
-                    write_node_edge_item(
-                        fh=node,
-                        header=self.node_header,
-                        data=[f"ENSEMBL:{protein2}", "", protein_node_type, "", ""]
-                    )
-                seen.append(protein1)
-                seen.append(protein2)
+                        # write node data
+                        if protein not in seen_proteins:
+                            seen_proteins.add(protein)
+                            write_node_edge_item(
+                                fh=node,
+                                header=self.node_header,
+                                data=[f"ENSEMBL:{protein}", "",
+                                      protein_node_type, "", ""]
+                            )
 
                 # write edge data
-                edge_data = [protein1, edge_label, protein2, relation, "STRING", items_dict['combined_score']]
-                for x in edge_additional_headers:
-                    edge_data.append(items_dict[x] if x in items_dict else "")
-
                 write_node_edge_item(
                     fh=edge,
                     header=self.edge_header,
-                    data=edge_data
+                    data=[proteins[0], edge_label, proteins[1],
+                          relation, "STRING", items_dict['combined_score']] + [
+                        items_dict.get(header, "")
+                        for header in edge_additional_headers
+                    ]
                 )
 
 

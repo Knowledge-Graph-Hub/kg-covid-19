@@ -3,6 +3,7 @@
 
 
 import os
+from typing import Optional
 
 from tabula import io  # type: ignore
 
@@ -33,22 +34,25 @@ class ZhouTransform(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
         source_name = "zhou_host_proteins"
         super().__init__(source_name, input_dir, output_dir)
+        self.node_header = ['id', 'name', 'category']
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+                            'provided_by', 'publication']
 
-    def run(self) -> None:
+    def run(self, data_file: Optional[str] = None):
         """Method is called and performs needed transformations to process the zhou host protein data, additional
         information on this data can be found in the comment at the top of this script."""
 
         input_file = os.path.join(self.input_base_dir, '41421_2020_153_MOESM1_ESM.pdf')
 
         pubmed_curie_prefix = 'PMID:'
-        gene_curie_prefix = 'NCBI:'
-        publication_node_type = 'Biolink:Publication'
-        gene_node_type = 'Biolink:Gene'
-        virus_node_type = 'Biolink:OrganismalEntity'
+        gene_curie_prefix = 'NCBIGene:'
+        publication_node_type = 'biolink:Publication'
+        gene_node_type = 'biolink:Gene'
+        virus_node_type = 'biolink:OrganismalEntity'
 
         # list of RO interactions:
         # https://raw.githubusercontent.com/oborel/obo-relations/master/subsets/ro-interaction.owl
-        host_gene_vgene_edge_label = 'biotically interacts with'
+        host_gene_vgene_edge_label = 'biolink:interacts_with'
         host_gene_vgene_relation = 'RO:0002437'
 
         ncbitaxon_curie_prefix = 'NCBITaxon:'
@@ -109,6 +113,7 @@ class ZhouTransform(Transform):
                                          host_gene_vgene_edge_label,
                                          corona_curie,
                                          host_gene_vgene_relation,
+                                         self.source_name,
                                          pubmed_curie_prefix + row['PubMed ID']
                                      ])
 

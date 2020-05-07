@@ -4,7 +4,7 @@ import collections
 import logging
 import os
 import re
-from typing import Union, List, Dict, Any
+from typing import Union, List, Dict, Any, Optional
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
@@ -29,18 +29,20 @@ class TTDTransform(Transform):
         source_name = "ttd"
         super().__init__(source_name, input_dir, output_dir)
 
-    def run(self) -> None:
+    def run(self, data_file: Optional[str] = None):
         self.node_header.append("TTD_ID") # append ttd id for drug targets and drugs
         ttd_file_name = os.path.join(self.input_base_dir,
                                      "P1-01-TTD_target_download.txt")
         ttd_data = self.parse_ttd_file(ttd_file_name)
         gene_node_type = "biolink:Protein"
+        drug_id_prefix = "TTD:"
         drug_node_type = "biolink:Drug"
         drug_gene_edge_label = "biolink:interacts_with"
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
         uniprot_curie_prefix = "UniProtKB:"
 
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'target_type']
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+                            'provided_by', 'target_type']
 
         # make name to id map for uniprot names of human proteins
         dat_gz_id_file = os.path.join(self.input_base_dir,
@@ -61,66 +63,70 @@ class TTDTransform(Transform):
                 # skip items that don't refer to UNIPRO gene targets or don't have
                 # drug info
                 if 'UNIPROID' not in data:
-                    logging.info("Skipping item that doesn't refer to UNIPROT gene")
                     continue
                 if 'DRUGINFO' not in data:
-                    logging.info("Skipping item that doesn't have any drug info")
                     continue
 
                 #
-                # make node for gene
+                # make node for gene(s)
                 #
-                uniproid = self.get_uniproid(data, name_2_id_map, uniprot_curie_prefix)
+                uniproids: list = self.get_uniproids(data, name_2_id_map, uniprot_curie_prefix)
                 gene_name = self.get_gene_name(data)
 
                 # gene - ['id', 'name', 'category', 'ttd id for this target']
-                write_node_edge_item(fh=node,
-                                     header=self.node_header,
-                                     data=[uniproid,
-                                           gene_name,
-                                           gene_node_type,
-                                           target_id
-                                           ])
+                for this_id in uniproids:
+                    write_node_edge_item(fh=node,
+                                         header=self.node_header,
+                                         data=[this_id,
+                                               gene_name,
+                                               gene_node_type,
+                                               target_id
+                                               ])
 
                 # for each drug in DRUGINFO:
                 for this_drug in data['DRUGINFO']:
+                    this_drug_curie = drug_id_prefix + this_drug[0]
                     #
                     # make node for drug
                     #
                     write_node_edge_item(fh=node,
                                          header=self.node_header,
-                                         data=[this_drug[0],
+                                         data=[this_drug_curie,
                                                this_drug[1],
                                                drug_node_type,
                                                this_drug[0]
                                                ])
 
                     #
-                    # make edge for target <-> drug
+                    # make edges for target gene ids <-> drug
                     #
                     targ_type = self.get_targ_type(data)
 
                     # ['subject', 'edge_label', 'object', 'relation', 'comment']
-                    write_node_edge_item(fh=edge,
-                                         header=self.edge_header,
-                                         data=[target_id,
-                                               drug_gene_edge_label,
-                                               uniproid,
-                                               drug_gene_edge_relation,
-                                               targ_type])
+                    for this_id in uniproids:
+                        write_node_edge_item(fh=edge,
+                                             header=self.edge_header,
+                                             data=[this_drug_curie,
+                                                   drug_gene_edge_label,
+                                                   this_id,
+                                                   drug_gene_edge_relation,
+                                                   self.source_name,
+                                                   targ_type])
 
-    def get_uniproid(self, data: dict, name_2_id_map: dict,
-                     uniprot_curie_prefix: str) -> str:
-        uniproid = ""
+    def get_uniproids(self, data: dict, name_2_id_map: dict,
+                      uniprot_curie_prefix: str) -> List[str]:
+        ids = []
         try:
-            uniproids = get_item_by_priority(data, ['UNIPROID'])
-            uniproid = uniproids[0]
-            # use uniprotkb accession if we can find it
-            if uniproid in name_2_id_map:
-                uniproid = uniprot_curie_prefix + name_2_id_map[uniproid]
+            uniproid_struct = get_item_by_priority(data, ['UNIPROID'])
+            uniprot_names = uniproid_struct[0]
+
+            for this_name in uniprot_names:
+                # use uniprotkb accession if we can find it
+                if this_name in name_2_id_map:
+                    ids.append(uniprot_curie_prefix + name_2_id_map[this_name])
         except ItemInDictNotFound:
             logging.warning("Problem with UNIPROID for this target id {}".format(data))
-        return uniproid
+        return ids
 
     def get_gene_name(self, data: dict) -> str:
         gene_name = ""
@@ -183,7 +189,7 @@ class TTDTransform(Transform):
 
         return parsed_data
 
-    def parse_line(self, line: str) -> list:
+    def parse_line(self, line: str, id_sep="; ") -> list:
         """Parse one line of data from  P1-01-TTD_target_download, and return
         list comprised of:
 
@@ -196,6 +202,7 @@ class TTDTransform(Transform):
 
         :param line: line from P1-01-TTD_target_download
         :return: [target_id, abbrev, data_list]
+        :param id_sep: character string that separates ID strings, as in ID1; ID2 ["; "]
         """
         fields = line.rstrip().split('\t')
         if len(fields) < 3:
@@ -205,7 +212,10 @@ class TTDTransform(Transform):
 
         data: Union[List, str]
         if len(fields[2:]) == 1:
-            data = fields[2]
+            if fields[1] == 'UNIPROID' and bool(re.search("\; ", fields[2])):
+                data = fields[2].split(id_sep)
+            else:
+                data = fields[2]
         else:
             data = fields[2:]
 

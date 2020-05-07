@@ -4,8 +4,13 @@ import logging
 from typing import List
 
 from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTransform
-from kg_covid_19.transform_utils.hpo.hpo import HpoTransform
+from kg_covid_19.transform_utils.intact.intact import IntAct
+from kg_covid_19.transform_utils.ontology import OntologyTransform
+from kg_covid_19.transform_utils.ontology.ontology_transform import ONTOLOGIES
+from kg_covid_19.transform_utils.\
+    sars_cov_2_gene_annot.sars_cov_2_gene_annot import SARSCoV2GeneAnnot
 from kg_covid_19.transform_utils.pharmgkb import PharmGKB
+from kg_covid_19.transform_utils.scibite_cord import ScibiteCordTransform
 from kg_covid_19.transform_utils.string_ppi import StringTransform
 from kg_covid_19.transform_utils.ttd.ttd import TTDTransform
 from kg_covid_19.transform_utils.zhou_host_proteins.zhou_transform import ZhouTransform
@@ -16,12 +21,17 @@ from kg_covid_19.transform_utils.chembl.antiviral import ChEMBLAntiviralTransfor
 DATA_SOURCES = {
     'ZhouTransform': ZhouTransform,
     'DrugCentralTransform': DrugCentralTransform,
-    'HpoTransform': HpoTransform,
     'TTDTransform': TTDTransform,
     'StringTransform': StringTransform,
-    'PharmGKB': PharmGKB,
     'ChEMBLTargetTransform': ChEMBLTargetTransform,
     'ChEMBLAntiviralTransform' : ChEMBLAntiviralTransform
+    'ScibiteCordTransform': ScibiteCordTransform,
+    'PharmGKB': PharmGKB,
+    'SARSCoV2GeneAnnot': SARSCoV2GeneAnnot,
+    'IntAct': IntAct,
+    'GoTransform': OntologyTransform,
+    'HpTransform': OntologyTransform,
+    'MondoTransform': OntologyTransform
 }
 
 
@@ -47,4 +57,7 @@ def transform(input_dir: str, output_dir: str, sources: List[str] = None) -> Non
         if source in DATA_SOURCES:
             logging.info(f"Parsing {source}")
             t = DATA_SOURCES[source](input_dir, output_dir)
-            t.run()
+            if source in ONTOLOGIES.keys():
+                t.run(ONTOLOGIES[source])
+            else:
+                t.run()
