@@ -3,9 +3,9 @@ pipeline {
     options {
         timestamps()
     }
-    stages {
+    stages {        
         // Very first: pause for a minute to give a chance to
-        // cancel and clean the workspace before use.
+        // cancel and clean the workspace before use.        
         stage('Ready and clean') {
             steps {
                 // Give us a minute to cancel if we want.
@@ -28,7 +28,6 @@ pipeline {
                         })
             }
         }
-
         stage('Build kg_covid_19') {
             steps {
                 dir('./config') {
@@ -46,7 +45,19 @@ pipeline {
         }
         stage('Download') {
             steps {
-                sh 'cd config;. venv/bin/activate; python3.7 run.py download'
+                script {
+                    def run_py_dl = sh(
+                        script: 'cd config;. venv/bin/activate; python3.7 run.py download', returnStatus: true
+                    )
+                    withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                        if (run_py_dl == 0) { // upload raw to s3
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
+                        } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
+                            sh 'cd config; rm -fr data/raw; mkdir -p data/raw'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate get -r s3://kg-hub-public-data/raw/ data/raw/'
+                        }
+                    }
+                }
             }
         }
         stage('Transform') {
@@ -57,29 +68,27 @@ pipeline {
         stage('Load') {
             steps {
                 sh 'cd config;. venv/bin/activate; python3.7 run.py load'
+                sh 'cd config;. venv/bin/activate; pigz merged-kg.tar'
             }
         }
         stage('Convert to RDF') {
             steps {
-                sh 'cd config;. venv/bin/activate; kgx transform --input-type tsv --output-type ttl -o . merged-kg.tar'
+                sh 'cd config;. venv/bin/activate; kgx transform --input-type tsv --output-type nt -o ./merged-kg.nt merged-kg.tar.gz'
+                sh 'cd config;. venv/bin/activate; pigz merged-kg.nt'
             }
-        }
+        }        
         stage('Publish') {
             steps {
 
                 script {
-                    if (env.BRANCH_NAME != 'master') {
+                    if (env.BRANCH_NAME != 'jenkins') {
                         echo "Will not push if not on correct branch."
                     } else {
-                        // Push out to your S3 bucket.  The given
-                        // command is for small to medium files. If
-                        // you need something appropriate for large
-                        // files, let me know.
-                        withCredentials([file(credentialsId: 's3cmd_idg_push_configuration', variable: 'S3CMD_JSON')]) {
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar s3://idg-public-data/dow.txt'
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.ttl s3://idg-public-data/dow.txt'
+                        withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
                             // Should now appear at:
-                            // https://idg.berkeleybop.io/[artifact name]
+                            // https://kg-hub.berkeleybop.io/[artifact name]
                         }
 
                     }
