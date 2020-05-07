@@ -59,16 +59,16 @@ class ChEMBLAntiviralTransform(Transform):
         self._target_node_to_etl_mapping_lookup = {}
 
         for target_node in self._mapping_lookup:
-            target_node_name = self._mapping_lookup['node name']
-            if 'ordered column name list' not in self._mapping_lookup[target_node]:
+            target_node_name = self._mapping_lookup[target_node][0]['node name']
+            if 'ordered column name list' not in self._mapping_lookup[target_node][0]:
                 logging.error("'ordered column name list' does not exist in the target node with name '{}'".format(target_node_name))
                 sys.exit(1)
-            self._target_node_lookup[target_node_name] = self._mapping_lookup['ordered column name list']
+            self._target_node_to_etl_mapping_lookup[target_node_name] = self._mapping_lookup[target_node][0]['ordered column name list']
 
-            if 'ETL mapping' not in self._mapping_lookup[target_node]:
+            if 'ETL mapping' not in self._mapping_lookup[target_node][0]:
                 logging.error("'ETL mapping' does not exist in the target node with name '{}'".format(target_node_name))
                 sys.exit(1)
-            self._target_node_to_etl_mapping_lookup[target_node_name] = self._mapping_lookup['ETL mapping']
+            self._target_node_to_etl_mapping_lookup[target_node_name] = self._mapping_lookup[target_node][0]['ETL mapping']
 
         logging.info("Loaded the mapping lookup from mapping file '{}'".format(mapping_file))
 
