@@ -51,8 +51,8 @@ get slightly different results, here's three of them:
     :target: https://sonarcloud.io/dashboard/index/justaddcoffee_kg-emerging-viruses
     :alt: SonarCloud Coverage
 
-.. |coveralls| image:: https://coveralls.io/repos/github/justaddcoffee/kg-emerging-viruses/badge.svg?branch=master
-    :target: https://coveralls.io/github/justaddcoffee/kg-emerging-viruses?branch=master
+.. |coveralls| image:: https://coveralls.io/repos/github/Knowledge-Graph-Hub/kg-covid-19/badge.svg?branch=master
+    :target: https://coveralls.io/github/Knowledge-Graph-Hub/kg-covid-19?branch=master
     :alt: Coveralls Coverage
 
 .. |pip| image:: https://badge.fury.io/py/kg-emerging-viruses.svg
