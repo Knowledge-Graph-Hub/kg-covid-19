@@ -52,10 +52,10 @@ pipeline {
                     )
                     withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                         if (run_py_dl == 0) { // upload raw to s3
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/raw'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
                         } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
-                            sh 'cd config; rm -fr data/raw'
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate get -r s3://kg-hub-public-data/raw data/'
+                            sh 'cd config; rm -fr data/raw; mkdir -p data/raw'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate get -r s3://kg-hub-public-data/raw/ data/raw/'
                         }
                     }
                 }
