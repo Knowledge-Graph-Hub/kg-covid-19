@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     def run_py_dl = sh(
-                        script: 'false # cd config;. venv/bin/activate; python3.7 run.py download', returnStatus: true
+                        script: 'cd config;. venv/bin/activate; python3.7 run.py download', returnStatus: true
                     )
                     withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                         if (run_py_dl == 0) { // upload raw to s3
