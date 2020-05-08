@@ -56,5 +56,14 @@ target:
          - data/transformed/ontologies/hp_nodes.tsv
          - data/transformed/ontologies/hp_edges.tsv
 destination:
-   type: tsv
-   filename: merged-kg
+   merged-kg-tsv:
+      type: tsv
+      filename: merged-kg
+   merged-kg-nt:
+      type: nt
+      filename: merged-kg.nt
+#   merged-kg-neo4j:
+#      type: neo4j
+#      uri: http://localhost:8484
+#      username: neo4j
+#      password: admin
