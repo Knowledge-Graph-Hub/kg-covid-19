@@ -68,19 +68,20 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
 
     # write the merged graph
     if 'destination' in config:
-        destination = config['destination']
-        if destination['type'] in ['csv', 'tsv', 'ttl', 'json', 'tar']:
-            destination_transformer = get_transformer(destination['type'])(merged_graph)
-            destination_transformer.save(destination['filename'], extension=destination['type'])
-        elif destination['type'] == 'neo4j':
-            destination_transformer = NeoTransformer(
-                merged_graph,
-                uri=destination['uri'],
-                username=destination['username'],
-                password=destination['password']
-            )
-            destination_transformer.save_with_unwind()
-        else:
-            logging.error("type {} not yet supported for KGX load-and-merge operation.".format(destination['type']))
+        for _, destination in config['destination'].items():
+            print(destination)
+            if destination['type'] == 'neo4j':
+                destination_transformer = NeoTransformer(
+                    merged_graph,
+                    uri=destination['uri'],
+                    username=destination['username'],
+                    password=destination['password']
+                )
+                destination_transformer.save_with_unwind()
+            elif destination['type'] in get_file_types():
+                destination_transformer = get_transformer(destination['type'])(merged_graph)
+                destination_transformer.save(destination['filename'], extension=destination['type'])
+            else:
+                logging.error("type {} not yet supported for KGX load-and-merge operation.".format(destination['type']))
 
     return merged_graph
