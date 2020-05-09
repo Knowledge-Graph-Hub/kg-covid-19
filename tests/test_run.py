@@ -24,9 +24,11 @@ class TestRun(TestCase):
 
     def test_merge_missing_file_error(self):
         with self.assertRaises(FileNotFoundError) as context:
-           self.runner.invoke(catch_exceptions=False,
+            result = self.runner.invoke(catch_exceptions=False,
                                         cli=load,
                                         args=['-y',
                                               'tests/resources/merge_MISSING_FILE.yaml']
                                         )
+            self.assertNotEqual(result.exit_code, 0)
+            self.assertRegexpMatches(result.output, "does not exist")
 
