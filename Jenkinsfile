@@ -3,9 +3,9 @@ pipeline {
     options {
         timestamps()
     }
-    stages {        
+    stages {
         // Very first: pause for a minute to give a chance to
-        // cancel and clean the workspace before use.        
+        // cancel and clean the workspace before use.
         stage('Ready and clean') {
             steps {
                 // Give us a minute to cancel if we want.
@@ -13,6 +13,7 @@ pipeline {
                 cleanWs()
             }
         }
+
         stage('Initialize') {
             steps {
                 // Start preparing environment.
@@ -28,9 +29,10 @@ pipeline {
                         })
             }
         }
+
         stage('Build kg_covid_19') {
             steps {
-                dir('./config') {
+                dir('./gitrepo') {
                     git(
                             url: 'https://github.com/Knowledge-Graph-Hub/kg-covid-19',
                             branch: 'master'
@@ -43,57 +45,72 @@ pipeline {
                 }
             }
         }
+
         stage('Download') {
             steps {
-                script {
-                    def run_py_dl = sh(
-                        script: 'cd config;. venv/bin/activate; python3.7 run.py download', returnStatus: true
-                    )
-                    withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
-                        if (run_py_dl == 0) { // upload raw to s3
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
-                        } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
-                            sh 'cd config; rm -fr data/raw; mkdir -p data/raw'
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate get -r s3://kg-hub-public-data/raw/ data/raw/'
+                dir('./gitrepo') {
+                    script {
+                        def run_py_dl = sh(
+                            script: '. venv/bin/activate; python3.7 run.py download', returnStatus: true
+                        )
+                        withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                            if (run_py_dl == 0) { // upload raw to s3
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
+                            } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
+                                sh 'rm -fr data/raw; mkdir -p data/raw'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate get -r s3://kg-hub-public-data/raw/ data/raw/'
+                            }
                         }
                     }
                 }
             }
         }
+
         stage('Transform') {
             steps {
-                sh 'cd config;. venv/bin/activate; python3.7 run.py transform'
+                dir('./gitrepo') {
+                    sh '. venv/bin/activate; python3.7 run.py transform'
+                }
             }
         }
+
         stage('Load') {
             steps {
-                sh 'cd config;. venv/bin/activate; python3.7 run.py load'
-                sh 'cd config;. venv/bin/activate; pigz merged-kg.tar'
+                dir('./gitrepo') {
+                    sh '. venv/bin/activate; python3.7 run.py load'
+                    sh '. venv/bin/activate; pigz merged-kg.tar'
+                }
             }
         }
+
         stage('Convert to RDF') {
             steps {
-                sh 'cd config;. venv/bin/activate; kgx transform --input-type tsv --output-type nt -o ./merged-kg.nt merged-kg.tar.gz'
-                sh 'cd config;. venv/bin/activate; pigz merged-kg.nt'
+                dir('./gitrepo') {
+                    sh '. venv/bin/activate; kgx transform --input-type tsv --output-type nt -o ./merged-kg.nt merged-kg.tar.gz'
+                    sh '. venv/bin/activate; pigz merged-kg.nt'
+                }
             }
-        }        
+        }
+
         stage('Publish') {
             steps {
+                dir('./gitrepo') {
+                    script {
+                        if (env.BRANCH_NAME != 'master') {
+                            echo "Will not push if not on correct branch."
+                        } else {
+                            withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
+                                // Should now appear at:
+                                // https://kg-hub.berkeleybop.io/[artifact name]
+                            }
 
-                script {
-                    if (env.BRANCH_NAME != 'master') {
-                        echo "Will not push if not on correct branch."
-                    } else {
-                        withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
-                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
-                            // Should now appear at:
-                            // https://kg-hub.berkeleybop.io/[artifact name]
                         }
-
                     }
                 }
             }
         }
+
     }
 }
