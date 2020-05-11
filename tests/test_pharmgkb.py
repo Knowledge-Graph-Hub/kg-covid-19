@@ -33,8 +33,8 @@ class TestPharmGKB(TestCase):
                                'Evidence','Association','PK','PD'])
         self.assertTrue(parsed_result['Entity1_name'], 'ANKFN1')
 
-    def test_make_gene_id_mapping_file(self) -> None:
-        self.assertTrue(isinstance(getattr(self.pharmgkb, "make_gene_id_mapping_file"),
+    def test_make_id_mapping_file(self) -> None:
+        self.assertTrue(isinstance(getattr(self.pharmgkb, "make_id_mapping_file"),
                                    types.MethodType))
         parsed_result = self.pharmgkb.make_id_mapping_file(
             self.pharmgkb_gene_map_snippet)
