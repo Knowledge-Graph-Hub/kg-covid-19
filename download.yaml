@@ -70,21 +70,18 @@
   url: https://s3.eu-west-2.amazonaws.com/scibite.covid19data/CORD19/annotated-cord19/CORD-19_1_3.zip
   local_name: CORD-19_1_3.zip
 
-# SciBite CORD-19 entity co-occurrences v1.0
-# -
-#  url: https://github.com/SciBiteLabs/CORD19/raw/master/sentence-co-occurrence-CORD-19/1.0/cv19_scc.zip
-#  local_name: cv19_scc.zip
-
 #
 # PharmGKB - drug -> drug target info, and gene id mappings
 #
 -
   url: https://api.pharmgkb.org/v1/download/file/data/relationships.zip
   local_name: relationships.zip
-
 -
   url: https://s3.pgkb.org/data/genes.zip
   local_name: pharmgkb_genes.zip
+-
+  url: https://s3.pgkb.org/data/drugs.zip
+  local_name: pharmgkb_drugs.zip
 
 # SARS-CoV-2 gene annotations from Uniprot
 #

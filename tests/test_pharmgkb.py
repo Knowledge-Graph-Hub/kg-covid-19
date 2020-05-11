@@ -36,7 +36,7 @@ class TestPharmGKB(TestCase):
     def test_make_gene_id_mapping_file(self) -> None:
         self.assertTrue(isinstance(getattr(self.pharmgkb, "make_gene_id_mapping_file"),
                                    types.MethodType))
-        parsed_result = self.pharmgkb.make_gene_id_mapping_file(
+        parsed_result = self.pharmgkb.make_id_mapping_file(
             self.pharmgkb_gene_map_snippet)
         self.assertTrue(isinstance(parsed_result, dict))
         self.assertCountEqual(parsed_result.keys(), ['PA24356', 'PA165392995'])

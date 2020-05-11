@@ -43,11 +43,13 @@ class PharmGKB(Transform):
         relationship_file_name = "relationships.tsv"
         gene_mapping_zip_file = os.path.join(self.input_base_dir, "pharmgkb_genes.zip")
         gene_mapping_file_name = "genes.tsv"
+        drug_mapping_zip_file = os.path.join(self.input_base_dir, "pharmgkb_drugs.zip")
+        drug_mapping_file_name = "drugs.tsv"
 
         #
         # file stuff
         #
-        # get relationship file (what we are ingest here)
+        # get relationship file (what we are ingesting here)
         # TODO: unlink relationship_tempdir and gene_id_tempdir
 
         relationship_tempdir = tempfile.mkdtemp()
@@ -64,8 +66,17 @@ class PharmGKB(Transform):
         unzip_to_tempdir(gene_mapping_zip_file, gene_id_tempdir)
         if not os.path.exists(gene_mapping_file_path):
             raise PharmGKBFileError("Can't find gene map file needed for ingest")
+        self.gene_id_map = self.make_id_mapping_file(gene_mapping_file_path)
 
-        self.gene_id_map = self.make_gene_id_mapping_file(gene_mapping_file_path)
+        # get mapping file for drug ids
+        drug_id_tempdir = tempfile.mkdtemp()
+        drug_mapping_file_path = os.path.join(drug_id_tempdir,
+                                              drug_mapping_file_name)
+        unzip_to_tempdir(drug_mapping_zip_file, drug_id_tempdir)
+
+        if not os.path.exists(drug_mapping_file_path):
+            raise PharmGKBFileError("Can't find drug map file needed for ingest")
+        self.drug_id_map = self.make_id_mapping_file(drug_mapping_file_path)
 
         #
         # read in and transform relationship.tsv
@@ -100,6 +111,8 @@ class PharmGKB(Transform):
                                                         name=entity_name,
                                                         biolink_type=self.gene_node_type)
                         elif entity_type == 'Chemical':
+                            preferred_drug_id = self.make_preferred_drug_id(entity_id)
+
                             self.make_pharmgkb_chemical_node(
                                                         fh=node,
                                                         chem_id=entity_id,
@@ -114,6 +127,9 @@ class PharmGKB(Transform):
                     #
                     self.make_pharmgkb_edge(fh=edge,
                                             line_data=line_data)
+
+
+
 
     def make_pharmgkb_edge(self,
                            fh: TextIO,
@@ -196,17 +212,16 @@ class PharmGKB(Transform):
         items = this_line.strip().split('\t')
         return data_to_dict(header_items, items)
 
-    def make_gene_id_mapping_file(self,
-                                  map_file: str,
-                                  sep: str = '\t',
-                                  pharmgkb_id_col: str = 'PharmGKB Accession Id',
-                                  id_key: str = 'Cross-references',
-                                  id_sep: str = ',',
-                                  id_key_val_sep: str = ':'
-                                  ) -> dict:
-        """Fxn to parse gene mappings for PharmGKB ids
-        What I need is PharmGKB -> uniprot ids, but this parses everything
-        They don't make this easy...
+    def make_id_mapping_file(self,
+                             map_file: str,
+                             sep: str = '\t',
+                             pharmgkb_id_col: str = 'PharmGKB Accession Id',
+                             id_key: str = 'Cross-references',
+                             id_sep: str = ',',
+                             id_key_val_sep: str = ':'
+                             ) -> dict:
+        """Fxn to parse gene ID mappings or drug ID mapping for PharmGKB ids
+        This is to parse both genes.tsv and drugs.tsv files
 
         :param map_file: genes.tsv file, containing mappings
         :param pharmgkb_id_col: column containing pharmgkb, to be used as key for map
