@@ -1,6 +1,8 @@
 import types
 from unittest import TestCase
 
+from parameterized import parameterized
+
 from kg_covid_19.transform_utils.pharmgkb import PharmGKB
 
 
@@ -21,6 +23,10 @@ class TestPharmGKB(TestCase):
             self.gene_file_header = r.readline().strip().split('\t')
             self.gene_file_lines = r.readlines()
 
+        # to test making preferred_ids:
+        self.drug_id_map = self.pharmgkb.make_id_mapping_file('tests/resources/drugs.tsv')
+
+
     def test_parse_pharmgkb_line(self) -> None:
         self.assertTrue(isinstance(getattr(self.pharmgkb, "parse_pharmgkb_line"),
                                    types.MethodType))
@@ -33,10 +39,10 @@ class TestPharmGKB(TestCase):
                                'Evidence','Association','PK','PD'])
         self.assertTrue(parsed_result['Entity1_name'], 'ANKFN1')
 
-    def test_make_gene_id_mapping_file(self) -> None:
-        self.assertTrue(isinstance(getattr(self.pharmgkb, "make_gene_id_mapping_file"),
+    def test_make_id_mapping_file(self) -> None:
+        self.assertTrue(isinstance(getattr(self.pharmgkb, "make_id_mapping_file"),
                                    types.MethodType))
-        parsed_result = self.pharmgkb.make_gene_id_mapping_file(
+        parsed_result = self.pharmgkb.make_id_mapping_file(
             self.pharmgkb_gene_map_snippet)
         self.assertTrue(isinstance(parsed_result, dict))
         self.assertCountEqual(parsed_result.keys(), ['PA24356', 'PA165392995'])
@@ -44,6 +50,15 @@ class TestPharmGKB(TestCase):
         self.assertTrue('UniProtKB' in parsed_result['PA24356']['parsed_ids'])
         self.assertTrue(parsed_result['PA24356']['parsed_ids']['UniProtKB'],
                         "P04217")
+
+    @parameterized.expand([
+        ('PA164712302', 'PHARMGKB:PA164712302'),
+        ('PA131887008', 'CHEBI:1391')
+    ])
+    def test_make_preferred_drug_id(self, pharmgkb_id, preferred_id) -> None:
+        self.assertEqual(self.pharmgkb.make_preferred_drug_id(pharmgkb_id,
+                                                              self.drug_id_map),
+                         preferred_id)
 
     def test_run(self) -> None:
         self.assertTrue(isinstance(getattr(self.pharmgkb, "run"), types.MethodType))

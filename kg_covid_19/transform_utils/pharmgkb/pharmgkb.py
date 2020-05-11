@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import os
+import re
 import tempfile
 from collections import defaultdict
 from io import TextIOBase
@@ -9,7 +10,7 @@ from typing import Optional, TextIO
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import data_to_dict, parse_header, \
-    unzip_to_tempdir, write_node_edge_item, get_item_by_priority
+    unzip_to_tempdir, write_node_edge_item, get_item_by_priority, ItemInDictNotFound
 
 """Ingest PharmGKB drug -> drug target info
 
@@ -43,11 +44,13 @@ class PharmGKB(Transform):
         relationship_file_name = "relationships.tsv"
         gene_mapping_zip_file = os.path.join(self.input_base_dir, "pharmgkb_genes.zip")
         gene_mapping_file_name = "genes.tsv"
+        drug_mapping_zip_file = os.path.join(self.input_base_dir, "pharmgkb_drugs.zip")
+        drug_mapping_file_name = "drugs.tsv"
 
         #
         # file stuff
         #
-        # get relationship file (what we are ingest here)
+        # get relationship file (what we are ingesting here)
         # TODO: unlink relationship_tempdir and gene_id_tempdir
 
         relationship_tempdir = tempfile.mkdtemp()
@@ -64,8 +67,17 @@ class PharmGKB(Transform):
         unzip_to_tempdir(gene_mapping_zip_file, gene_id_tempdir)
         if not os.path.exists(gene_mapping_file_path):
             raise PharmGKBFileError("Can't find gene map file needed for ingest")
+        self.gene_id_map = self.make_id_mapping_file(gene_mapping_file_path)
 
-        self.gene_id_map = self.make_gene_id_mapping_file(gene_mapping_file_path)
+        # get mapping file for drug ids
+        drug_id_tempdir = tempfile.mkdtemp()
+        drug_mapping_file_path = os.path.join(drug_id_tempdir,
+                                              drug_mapping_file_name)
+        unzip_to_tempdir(drug_mapping_zip_file, drug_id_tempdir)
+
+        if not os.path.exists(drug_mapping_file_path):
+            raise PharmGKBFileError("Can't find drug map file needed for ingest")
+        self.drug_id_map = self.make_id_mapping_file(drug_mapping_file_path)
 
         #
         # read in and transform relationship.tsv
@@ -115,6 +127,61 @@ class PharmGKB(Transform):
                     self.make_pharmgkb_edge(fh=edge,
                                             line_data=line_data)
 
+
+    def make_preferred_drug_id(self, pharmgkb_id: str,
+                               drug_id_map: dict,
+                               preferred_ids: dict={'ChEBI:CHEBI': 'CHEBI',
+                                                    'CHEMBL': 'CHEMBL',
+                                                    'DrugBank': 'DRUGBANK',
+                                                    'PubChem Compound:': 'PUBCHEM'},
+                               pharmgkb_prefix: str='PHARMGKB') \
+            -> str:
+        """Given a drug id, convert it to a cross-referenced ID, in this order of
+        preference:
+         CHEBI > CHEMBL > DRUGBANK > PUBCHEM
+
+        :param pharmgkb_id
+        :param drug_id_map - map of pharmgkb ids to cross-referenced IDs
+        :param preferred_ids - dict of preferred ids in desc order of preference
+                'their string' -> 'canonical CURIE prefix'
+                wow, they don't make this easy
+        :param pharmgkb_prefix thing to prepend to pharmgkb id ('PHARMGKB')
+        :return: preferred_id: preferred cross-referenced ID
+        """
+        preferred_id = pharmgkb_prefix + ":" + pharmgkb_id
+        if pharmgkb_id in drug_id_map:
+            if 'Cross-references' not in drug_id_map[pharmgkb_id]:
+                logging.warning("Can't find 'Cross-references' item in drug_id_map! "
+                                "Was it renamed?")
+            elif not drug_id_map[pharmgkb_id]['Cross-references']:
+                # 'Cross-references' is empty
+                pass
+            else:
+                map_string = drug_id_map[pharmgkb_id]['Cross-references']
+
+                # the following makes an atrocious string like
+                # '"PREFIX1:1234', 'PREFIX2:3456'
+                # into a dict I can pass to get_item_by_priority to look for preferred
+                # ID
+                these_cr_ids = map_string.split(",")
+                these_cr_ids_dict: dict = defaultdict()
+                for this_id in these_cr_ids:
+                    this_id = re.sub(r'^"|"$', '', this_id)  # strip quotes
+                    items = this_id.rpartition(':')
+                    if len(items) >= 3:
+                        these_cr_ids_dict[items[0]] = items[2]
+
+                for pharmgkb_prefix, curie_prefix in preferred_ids.items():
+                    try:
+                        this_id = get_item_by_priority(these_cr_ids_dict, [pharmgkb_prefix])
+                        preferred_id = curie_prefix + ":" + this_id
+                        break
+                    except ItemInDictNotFound:
+                        pass
+
+        return preferred_id
+
+
     def make_pharmgkb_edge(self,
                            fh: TextIO,
                            line_data: dict
@@ -135,14 +202,16 @@ class PharmGKB(Transform):
         gene_id = self.get_uniprot_id(this_id=gene_id)
 
         evidence = line_data['Evidence']
+
+        preferred_drug_id = self.make_preferred_drug_id(drug_id, self.drug_id_map)
+
+        data = [preferred_drug_id, self.drug_gene_edge_label,
+                gene_id, self.drug_gene_edge_relation,
+                self.source_name, evidence]
+
         write_node_edge_item(fh=fh,
                              header=self.edge_header,
-                             data=[drug_id,
-                                   self.drug_gene_edge_label,
-                                   gene_id,
-                                   self.drug_gene_edge_relation,
-                                   self.source_name,
-                                   evidence])
+                             data=data)
 
     def make_pharmgkb_gene_node(self,
                                 fh: TextIO,
@@ -162,12 +231,13 @@ class PharmGKB(Transform):
         write_node_edge_item(fh=fh, header=self.node_header, data=data)
 
     def get_uniprot_id(self,
-                       this_id: str):
+                       this_id: str,
+                       pharmgkb_prefix: str='PHARMGKB'):
         try:
             gene_id = self.uniprot_curie_prefix + \
                       self.gene_id_map[this_id][self.key_parsed_ids][self.uniprot_id_key]
         except KeyError:
-            gene_id = this_id
+            gene_id = pharmgkb_prefix + ":" + this_id
         return gene_id
 
     def make_pharmgkb_chemical_node(self,
@@ -183,7 +253,8 @@ class PharmGKB(Transform):
         :param biolink_type: biolink type for Chemical
         :return: None
         """
-        data = [chem_id, name, biolink_type]
+        preferred_drug_id = self.make_preferred_drug_id(chem_id, self.drug_id_map)
+        data = [preferred_drug_id, name, biolink_type]
         write_node_edge_item(fh=fh, header=self.node_header, data=data)
 
     def parse_pharmgkb_line(self, this_line: str, header_items) -> dict:
@@ -196,17 +267,16 @@ class PharmGKB(Transform):
         items = this_line.strip().split('\t')
         return data_to_dict(header_items, items)
 
-    def make_gene_id_mapping_file(self,
-                                  map_file: str,
-                                  sep: str = '\t',
-                                  pharmgkb_id_col: str = 'PharmGKB Accession Id',
-                                  id_key: str = 'Cross-references',
-                                  id_sep: str = ',',
-                                  id_key_val_sep: str = ':'
-                                  ) -> dict:
-        """Fxn to parse gene mappings for PharmGKB ids
-        What I need is PharmGKB -> uniprot ids, but this parses everything
-        They don't make this easy...
+    def make_id_mapping_file(self,
+                             map_file: str,
+                             sep: str = '\t',
+                             pharmgkb_id_col: str = 'PharmGKB Accession Id',
+                             id_key: str = 'Cross-references',
+                             id_sep: str = ',',
+                             id_key_val_sep: str = ':'
+                             ) -> dict:
+        """Fxn to parse gene ID mappings or drug ID mapping for PharmGKB ids
+        This is to parse both genes.tsv and drugs.tsv files
 
         :param map_file: genes.tsv file, containing mappings
         :param pharmgkb_id_col: column containing pharmgkb, to be used as key for map
