@@ -1,3 +1,5 @@
+def s3cmd_with_args = "s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate"
+
 pipeline {
     agent any
     options {
@@ -55,11 +57,11 @@ pipeline {
                         )
                         withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                             if (run_py_dl == 0) { // upload raw to s3
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
+                                sh '${s3cmd_with_args} put -r data/raw s3://kg-hub-public-data/'
                             } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
                                 sh 'rm -fr data/raw || true;'
                                 sh 'mkdir -p data/raw || true'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate get -r s3://kg-hub-public-data/raw/ data/raw/'
+                                sh '${s3cmd_with_args} get -r s3://kg-hub-public-data/raw/ data/raw/'
                             }
                         }
                     }
@@ -101,8 +103,8 @@ pipeline {
                             echo "Will not push if not on correct branch."
                         } else {
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
+                                sh '${s3cmd_with_args} put merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
+                                sh '${s3cmd_with_args} put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/[artifact name]
                             }
