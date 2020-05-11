@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import os
+import re
 import tempfile
 from collections import defaultdict
 from io import TextIOBase
@@ -9,7 +10,7 @@ from typing import Optional, TextIO
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import data_to_dict, parse_header, \
-    unzip_to_tempdir, write_node_edge_item, get_item_by_priority
+    unzip_to_tempdir, write_node_edge_item, get_item_by_priority, ItemInDictNotFound
 
 """Ingest PharmGKB drug -> drug target info
 
@@ -111,8 +112,6 @@ class PharmGKB(Transform):
                                                         name=entity_name,
                                                         biolink_type=self.gene_node_type)
                         elif entity_type == 'Chemical':
-                            preferred_drug_id = self.make_preferred_drug_id(entity_id)
-
                             self.make_pharmgkb_chemical_node(
                                                         fh=node,
                                                         chem_id=entity_id,
@@ -129,6 +128,56 @@ class PharmGKB(Transform):
                                             line_data=line_data)
 
 
+    def make_preferred_drug_id(self, pharmgkb_id: str,
+                               drug_id_map: dict,
+                               preferred_ids: dict={'ChEBI:CHEBI': 'CHEBI',
+                                                    'CHEMBL': 'CHEMBL',
+                                                    'DrugBank': 'DRUGBANK',
+                                                    'PubChem Compound:': 'PUBCHEM'},
+                               pharmgkb_prefix: str='PHARMGKB') \
+            -> str:
+        """Given a drug id, convert it to a cross-referenced ID, in this order of
+        preference:
+         CHEBI > CHEMBL > DRUGBANK > PUBCHEM
+
+        :param pharmgkb_id
+        :param drug_id_map - map of pharmgkb ids to cross-referenced IDs
+        :param preferred_ids - dict of preferred ids in desc order of preference
+                'their string' -> 'canonical CURIE prefix'
+                wow, they don't make this easy
+        :param pharmgkb_prefix thing to prepend to pharmgkb id ('PHARMGKB')
+        :return: preferred_id: preferred cross-referenced ID
+        """
+        preferred_id = pharmgkb_prefix + ":" + pharmgkb_id
+        if pharmgkb_id in drug_id_map:
+            if 'Cross-references' not in drug_id_map[pharmgkb_id]:
+                logging.warning("Can't find 'Cross-references' item in drug_id_map! "
+                                "Was it renamed?")
+            elif not drug_id_map[pharmgkb_id]['Cross-references']:
+                # 'Cross-references' is empty
+                pass
+            else:
+                map_string = drug_id_map[pharmgkb_id]['Cross-references']
+
+                # the following makes an atrocious string like
+                # '"PREFIX1:1234', 'PREFIX2:3456'
+                # into a dict I can pass to get_item_by_priority to look for preferred
+                # ID
+                these_cr_ids = map_string.split(",")
+                these_cr_ids_kv = [this_id.split(":") for this_id in these_cr_ids]
+                these_cr_ids_dict = {re.sub(r'^"|"$', '', d[0]):
+                                     re.sub(r'^"|"$', '', d[1])
+                                     for d in these_cr_ids_kv}
+
+                for pharmgkb_prefix, curie_prefix in preferred_ids.items():
+                    try:
+                        this_id = get_item_by_priority(these_cr_ids_dict, [pharmgkb_prefix])
+                        preferred_id = curie_prefix + ":" + this_id
+                        break
+                    except ItemInDictNotFound:
+                        pass
+
+        return preferred_id
 
 
     def make_pharmgkb_edge(self,
@@ -151,14 +200,16 @@ class PharmGKB(Transform):
         gene_id = self.get_uniprot_id(this_id=gene_id)
 
         evidence = line_data['Evidence']
+
+        preferred_drug_id = self.make_preferred_drug_id(drug_id, self.drug_id_map)
+
+        data = [preferred_drug_id, self.drug_gene_edge_label,
+                gene_id, self.drug_gene_edge_relation,
+                self.source_name, evidence]
+
         write_node_edge_item(fh=fh,
                              header=self.edge_header,
-                             data=[drug_id,
-                                   self.drug_gene_edge_label,
-                                   gene_id,
-                                   self.drug_gene_edge_relation,
-                                   self.source_name,
-                                   evidence])
+                             data=data)
 
     def make_pharmgkb_gene_node(self,
                                 fh: TextIO,
@@ -199,7 +250,8 @@ class PharmGKB(Transform):
         :param biolink_type: biolink type for Chemical
         :return: None
         """
-        data = [chem_id, name, biolink_type]
+        preferred_drug_id = self.make_preferred_drug_id(chem_id, self.drug_id_map)
+        data = [preferred_drug_id, name, biolink_type]
         write_node_edge_item(fh=fh, header=self.node_header, data=data)
 
     def parse_pharmgkb_line(self, this_line: str, header_items) -> dict:
