@@ -231,12 +231,13 @@ class PharmGKB(Transform):
         write_node_edge_item(fh=fh, header=self.node_header, data=data)
 
     def get_uniprot_id(self,
-                       this_id: str):
+                       this_id: str,
+                       pharmgkb_prefix: str='PHARMGKB'):
         try:
             gene_id = self.uniprot_curie_prefix + \
                       self.gene_id_map[this_id][self.key_parsed_ids][self.uniprot_id_key]
         except KeyError:
-            gene_id = this_id
+            gene_id = pharmgkb_prefix + ":" + this_id
         return gene_id
 
     def make_pharmgkb_chemical_node(self,
