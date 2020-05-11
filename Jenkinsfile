@@ -51,13 +51,14 @@ pipeline {
                 dir('./gitrepo') {
                     script {
                         def run_py_dl = sh(
-                            script: '. venv/bin/activate; python3.7 run.py download', returnStatus: true
+                            script: '. venv/bin/activate && python3.7 run.py download', returnStatus: true
                         )
                         withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                             if (run_py_dl == 0) { // upload raw to s3
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
                             } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
-                                sh 'rm -fr data/raw; mkdir -p data/raw'
+                                sh 'rm -fr data/raw || true;'
+                                sh 'mkdir -p data/raw || true'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate get -r s3://kg-hub-public-data/raw/ data/raw/'
                             }
                         }
@@ -69,7 +70,7 @@ pipeline {
         stage('Transform') {
             steps {
                 dir('./gitrepo') {
-                    sh '. venv/bin/activate; python3.7 run.py transform'
+                    sh '. venv/bin/activate && python3.7 run.py transform'
                 }
             }
         }
@@ -77,8 +78,8 @@ pipeline {
         stage('Load') {
             steps {
                 dir('./gitrepo') {
-                    sh '. venv/bin/activate; python3.7 run.py load'
-                    sh '. venv/bin/activate; pigz merged-kg.tar'
+                    sh '. venv/bin/activate && python3.7 run.py load'
+                    sh 'pigz merged-kg.tar'
                 }
             }
         }
@@ -86,8 +87,8 @@ pipeline {
         stage('Convert to RDF') {
             steps {
                 dir('./gitrepo') {
-                    sh '. venv/bin/activate; kgx transform --input-type tsv --output-type nt -o ./merged-kg.nt merged-kg.tar.gz'
-                    sh '. venv/bin/activate; pigz merged-kg.nt'
+                    sh '. venv/bin/activate && kgx transform --input-type tsv --output-type nt -o ./merged-kg.nt merged-kg.tar.gz'
+                    sh 'pigz merged-kg.nt'
                 }
             }
         }
