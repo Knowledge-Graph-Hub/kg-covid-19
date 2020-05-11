@@ -164,10 +164,12 @@ class PharmGKB(Transform):
                 # into a dict I can pass to get_item_by_priority to look for preferred
                 # ID
                 these_cr_ids = map_string.split(",")
-                these_cr_ids_kv = [this_id.split(":") for this_id in these_cr_ids]
-                these_cr_ids_dict = {re.sub(r'^"|"$', '', d[0]):
-                                     re.sub(r'^"|"$', '', d[1])
-                                     for d in these_cr_ids_kv}
+                these_cr_ids_dict: dict = defaultdict()
+                for this_id in these_cr_ids:
+                    this_id = re.sub(r'^"|"$', '', this_id)  # strip quotes
+                    items = this_id.rpartition(':')
+                    if len(items) >= 3:
+                        these_cr_ids_dict[items[0]] = items[2]
 
                 for pharmgkb_prefix, curie_prefix in preferred_ids.items():
                     try:
