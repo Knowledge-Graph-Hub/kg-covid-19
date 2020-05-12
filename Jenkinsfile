@@ -60,6 +60,7 @@ pipeline {
                                 withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                                     def s3cmd_with_args = 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text'
                                     sh '${s3cmd_with_args} --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
+                                }
                             }
                         } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
@@ -88,6 +89,7 @@ pipeline {
                                 withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                                     def s3cmd_with_args = 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text'
                                     sh '${s3cmd_with_args} --cf-invalidate put -r data/transformed s3://kg-hub-public-data/'
+                                }
                             }
                         } else { // 'run.py transform' failed - let's try to download last good copy of transformed/ from s3 to data/
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
