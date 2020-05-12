@@ -1,4 +1,7 @@
-class TargetCandidates:
+from kg_covid_19.query_utils.query import Query
+
+
+class TargetCandidates(Query):
     """Perform a query of TSV files to generate a short list of protein targets
     for further investigation.
 
