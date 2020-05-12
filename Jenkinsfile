@@ -53,20 +53,20 @@ pipeline {
                         def run_py_dl = sh(
                             script: '. venv/bin/activate && python3.7 run.py download', returnStatus: true
                         )
-                        if (env.BRANCH_NAME != 'master') {
-                            if (run_py_dl == 0) { // upload raw to s3
+                        if (run_py_dl == 0) {
+                            if (env.BRANCH_NAME == 'master') { // upload raw to s3 if we're on correct branch
                                 echo "Will not push if not on correct branch."
+                            } else {
+                                withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                                    def s3cmd_with_args = 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text'
+                                    sh '${s3cmd_with_args} --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
                             }
-                        } else {
+                        } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                                 def s3cmd_with_args = 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text'
-                                if (run_py_dl == 0) { // upload raw to s3
-                                    sh '${s3cmd_with_args} --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
-                                } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
-                                    sh 'rm -fr data/raw || true;'
-                                    sh 'mkdir -p data/raw || true'
-                                    sh '${s3cmd_with_args} get -r s3://kg-hub-public-data/raw/ data/raw/'
-                                }
+                                sh 'rm -fr data/raw || true;'
+                                sh 'mkdir -p data/raw || true'
+                                sh '${s3cmd_with_args} get -r s3://kg-hub-public-data/raw/ data/raw/'
                             }
                         }
                     }
@@ -77,7 +77,27 @@ pipeline {
         stage('Transform') {
             steps {
                 dir('./gitrepo') {
-                    sh '. venv/bin/activate && python3.7 run.py transform'
+                    script {
+                        def run_py_transform = sh(
+                            script: '. venv/bin/activate && python3.7 run.py transform', returnStatus: true
+                        )
+                        if (run_py_transform == 0) { // upload transformed to s3 if we're on correct branch
+                            if (env.BRANCH_NAME == 'master') {
+                                echo "Will not push if not on correct branch."
+                            } else {
+                                withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                                    def s3cmd_with_args = 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text'
+                                    sh '${s3cmd_with_args} --cf-invalidate put -r data/transformed s3://kg-hub-public-data/'
+                            }
+                        } else { // 'run.py transform' failed - let's try to download last good copy of transformed/ from s3 to data/
+                            withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                                def s3cmd_with_args = 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text'
+                                sh 'rm -fr data/transformed || true;'
+                                sh 'mkdir -p data/transformed || true'
+                                sh '${s3cmd_with_args} get -r s3://kg-hub-public-data/transformed/ data/transformed/'
+                            }
+                        }
+                    }
                 }
             }
         }
