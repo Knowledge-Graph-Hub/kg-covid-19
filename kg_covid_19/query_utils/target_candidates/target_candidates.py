@@ -1,7 +1,8 @@
 import os
 import tarfile
 from kg_covid_19.query_utils.query import Query
-import pandas as pd
+import pandas as pd  # type: ignore
+
 
 class TargetCandidates(Query):
     """Perform a query of TSV files to generate a short list of protein targets
