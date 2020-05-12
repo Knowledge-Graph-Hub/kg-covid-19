@@ -13,5 +13,10 @@ class TargetCandidates:
     the use of this software, even if advised of the possibility of such damage.
     """
 
-    # generate list of SARS-CoV-2 proteins
-    # generate list of proteins that interact with SARS-CoV-2 according to IntAct
+    def __init__(self, output_dir: str):
+        pass
+
+    def run(self):
+        # generate list of SARS-CoV-2 proteins
+        # generate list of proteins that interact with SARS-CoV-2 according to IntAct
+        pass
