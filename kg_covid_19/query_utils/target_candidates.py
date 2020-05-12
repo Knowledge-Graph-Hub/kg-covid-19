@@ -12,3 +12,6 @@ class TargetCandidates:
     liability, or tort (including negligence or otherwise) arising in any way out of
     the use of this software, even if advised of the possibility of such damage.
     """
+
+    # generate list of SARS-CoV-2 proteins
+    # generate list of proteins that interact with SARS-CoV-2 according to IntAct

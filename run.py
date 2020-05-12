@@ -6,6 +6,7 @@ import click
 from kg_covid_19 import download as kg_download
 from kg_covid_19 import transform as kg_transform
 from kg_covid_19.load_utils.merge_kg import load_and_merge
+from kg_covid_19.query import QUERIES
 from kg_covid_19.transform import DATA_SOURCES
 
 @click.group()
@@ -77,7 +78,7 @@ def load(yaml: str) -> None:
     load_and_merge(yaml)
 
 @cli.command()
-@click.option("query", "-q", type=click.Choice(DATA_SOURCES.keys()))
+@click.option("query", "-q", type=click.Choice(QUERIES.keys()))
 def query(yaml: str) -> None:
     """Perform a query of knowledge graph using a class contained in query_utils
 
@@ -88,8 +89,7 @@ def query(yaml: str) -> None:
         None.
 
     """
-
-    load_and_merge(yaml)
+    pass
 
 
 if __name__ == "__main__":
