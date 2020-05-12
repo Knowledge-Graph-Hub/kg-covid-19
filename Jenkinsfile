@@ -50,12 +50,14 @@ pipeline {
             steps {
                 dir('./gitrepo') {
                     script {
+                        def run_py_dl = sh(
+                            script: '. venv/bin/activate && python3.7 run.py download', returnStatus: true
+                        )
                         if (env.BRANCH_NAME != 'master') {
-                            echo "Will not push if not on correct branch."
+                            if (run_py_dl == 0) { // upload raw to s3
+                                echo "Will not push if not on correct branch."
+                            }
                         } else {
-                            def run_py_dl = sh(
-                                script: '. venv/bin/activate && python3.7 run.py download', returnStatus: true
-                            )
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                                 def s3cmd_with_args = 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text'
                                 if (run_py_dl == 0) { // upload raw to s3
