@@ -1,3 +1,6 @@
+import os
+import tarfile
+
 from kg_covid_19.query_utils.query import Query
 
 
@@ -16,10 +19,15 @@ class TargetCandidates(Query):
     the use of this software, even if advised of the possibility of such damage.
     """
 
-    def __init__(self, output_dir: str):
-        pass
+    def __init__(self, input_dir: str, output_dir: str):
+        query_name = "target_candidates"
+        super().__init__(query_name, input_dir, output_dir)  # set some variables
 
     def run(self):
         # generate list of SARS-CoV-2 proteins
+        tsv_tarfile = os.path.join(self.input_dir, 'kg-covid-19.tar.gz')
+        tar = tarfile.open(tsv_tarfile, "r:gz")
+        tar.extractall(path=self.input_dir)
+        tar.close()
         # generate list of proteins that interact with SARS-CoV-2 according to IntAct
         pass
