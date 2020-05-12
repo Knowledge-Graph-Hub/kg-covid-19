@@ -29,14 +29,12 @@ class TargetCandidates(Query):
         # generate list of SARS-CoV-2 proteins
         tsv_tarfile = os.path.join(self.input_dir, 'kg-covid-19.tar.gz')
         tar = tarfile.open(tsv_tarfile, "r:gz")
-        tar.extractall(path=self.input_dir)
+        tar.extractall()  # (path=self.input_dir)
         tar.close()
 
-        nodes_df = pd.DataFrame.from_csv(os.path.join(self.input_dir,
-                                                      self.nodes_file),
+        nodes_df = pd.DataFrame.from_csv(os.path.join(self.input_dir, self.nodes_file),
                                          sep='\t')
-        edges_df = pd.DataFrame.from_csv(os.path.join(self.input_dir,
-                                                      self.edges_file),
+        edges_df = pd.DataFrame.from_csv(os.path.join(self.input_dir, self.edges_file),
                                          sep='\t')
         # generate list of proteins that interact with SARS-CoV-2 according to IntAct
         pass
