@@ -3,9 +3,9 @@ pipeline {
     options {
         timestamps()
     }
-    stages {        
+    stages {
         // Very first: pause for a minute to give a chance to
-        // cancel and clean the workspace before use.        
+        // cancel and clean the workspace before use.
         stage('Ready and clean') {
             steps {
                 // Give us a minute to cancel if we want.
@@ -76,7 +76,20 @@ pipeline {
                 sh 'cd config;. venv/bin/activate; kgx transform --input-type tsv --output-type nt -o ./merged-kg.nt merged-kg.tar.gz'
                 sh 'cd config;. venv/bin/activate; pigz merged-kg.nt'
             }
-        }        
+        }
+        stage('Make blazegraph journal'){
+            dir('./config/blazegraph') {
+                    git(
+                            url: 'https://github.com/balhoff/blazegraph-runner.git',
+                            branch: 'master'
+                    )
+                    sh 'sbt stage'
+                    sh 'cd ..'
+                    sh 'pigz -d ../merged-kg.nt.gz'
+                    sh './blazegraph-runner/target/universal/stage/bin/blazegraph-runner/blazegraph-runner load --informat=ntriples --journal=merged-kg.jnl --use-ontology-graph=true ./merged-kg.nt'
+                    sh 'pigz merged-kg.jnl'
+            }
+        }
         stage('Publish') {
             steps {
 
@@ -87,6 +100,7 @@ pipeline {
                         withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                             sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
                             sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
+                            sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.jnl.gz s3://kg-hub-public-data/kg-covid-19.jnl.gz'
                             // Should now appear at:
                             // https://kg-hub.berkeleybop.io/[artifact name]
                         }
