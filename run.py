@@ -76,6 +76,21 @@ def load(yaml: str) -> None:
 
     load_and_merge(yaml)
 
+@cli.command()
+@click.option("query", "-q", type=click.Choice(DATA_SOURCES.keys()))
+def query(yaml: str) -> None:
+    """Perform a query of knowledge graph using a class contained in query_utils
+
+    Args:
+        query: A query class containing instructions for performing a query
+
+    Returns:
+        None.
+
+    """
+
+    load_and_merge(yaml)
+
 
 if __name__ == "__main__":
     cli()
