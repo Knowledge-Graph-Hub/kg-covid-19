@@ -84,11 +84,9 @@ def load(yaml: str) -> None:
 @cli.command()
 @click.option("query", "-q", required=True, default=None, multiple=False,
               type=click.Choice(QUERIES.keys()))
-@click.option("input_dir", "-i")
-@click.option("output_dir", "-o")
-def query(query: str,
-          input_dir: str = "data/merged/",
-          output_dir: str = "data/queries/") -> None:
+@click.option("input_dir", "-i", default="data/merged/")
+@click.option("output_dir", "-o", default="data/queries/")
+def query(query: str, input_dir: str, output_dir: str) -> None:
     """Perform a query of knowledge graph using a class contained in query_utils
 
     Args:
