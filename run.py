@@ -79,7 +79,7 @@ def load(yaml: str) -> None:
 
 @cli.command()
 @click.option("query", "-q", type=click.Choice(QUERIES.keys()))
-def query(yaml: str) -> None:
+def query(query: str) -> None:
     """Perform a query of knowledge graph using a class contained in query_utils
 
     Args:
