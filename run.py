@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import logging
 
 import click
 from kg_covid_19 import download as kg_download
@@ -82,7 +82,8 @@ def load(yaml: str) -> None:
 
 
 @cli.command()
-@click.option("query", "-q", type=click.Choice(QUERIES.keys()))
+@click.option("query", "-q", required=True, default=None, multiple=False,
+              type=click.Choice(QUERIES.keys()))
 @click.option("output_dir", "-o")
 def query(query: str, output_dir: str = "data/queries/") -> None:
     """Perform a query of knowledge graph using a class contained in query_utils
