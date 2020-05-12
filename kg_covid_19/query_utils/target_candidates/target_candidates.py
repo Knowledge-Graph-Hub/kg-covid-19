@@ -1,8 +1,7 @@
 import os
 import tarfile
-
 from kg_covid_19.query_utils.query import Query
-
+import pandas as pd
 
 class TargetCandidates(Query):
     """Perform a query of TSV files to generate a short list of protein targets
@@ -22,6 +21,8 @@ class TargetCandidates(Query):
     def __init__(self, input_dir: str, output_dir: str):
         query_name = "target_candidates"
         super().__init__(query_name, input_dir, output_dir)  # set some variables
+        self.nodes_file = 'merged-kg_nodes.tsv'
+        self.edges_file = 'merged-kg_edges.tsv'
 
     def run(self):
         # generate list of SARS-CoV-2 proteins
@@ -29,5 +30,10 @@ class TargetCandidates(Query):
         tar = tarfile.open(tsv_tarfile, "r:gz")
         tar.extractall(path=self.input_dir)
         tar.close()
+
+        nodes_df = pd.DataFrame.from_csv(os.path.join(self.input_dir, self.nodes_file),
+                                         sep='\t')
+        edges_df = pd.DataFrame.from_csv(os.path.join(self.input_dir, self.nodes_file),
+                                         sep='\t')
         # generate list of proteins that interact with SARS-CoV-2 according to IntAct
         pass
