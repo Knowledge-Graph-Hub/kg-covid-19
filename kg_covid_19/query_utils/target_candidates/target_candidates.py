@@ -169,19 +169,22 @@ class TargetCandidates(Query):
 
     def sars_cov2_and_intact_to_candidate_entries(self,
                                                   sars_cov2_ids: list,
-                                                  provided_by: list,
+                                                  provided_by: str,
                                                   edge_df,
                                                   nodes_df,
                                                   viral_or_host: str,
-                                                  id_cols: list,
+                                                  subject_and_object_columns: list,
+                                                  id_col_in_node_tsv: str,
                                                   name_col: str,
-                                                  confidence_score: str,
+                                                  confidence_score: float,
                                                   comments: str
                                                   ) -> List[List[Union[str, int]]]:
         """Given sars-cov-2 genes and a pandas DF with edge data and node data, extract
         all proteins that interact with these sars-cov2 genes according to source(s) in
         'provided_by'
 
+        :param id_cols:
+        :param nodes_df:
         :param sars_cov2_ids
         :param provided_by
         :param edge_df
@@ -197,11 +200,19 @@ class TargetCandidates(Query):
         """
         candidate_entries: list = []
 
-        # for _, row in sars_cov2_df.iterrows():
-        #     candidate_entry = [viral_or_host, None, None, confidence_score, comments]
-        #     if id_col in row:
-        #         candidate_entry[1] = row[id_col]
-        #     if name_col in row:
-        #         candidate_entry[2] = row[name_col]
-        #     candidate_entries.append(candidate_entry)
+        # find edges for 'provided_by'
+        these_edges = edge_df[edge_df.provided_by == provided_by]
+
+        # find IDs of interest in id_cols_to_search
+        for this_id in sars_cov2_ids:
+
+            for _, row in these_edges.iterrows():
+                if row[subject_and_object_columns[0]] == this_id:
+                    candidate_entry = [viral_or_host, row[subject_and_object_columns[1]],
+                                       None, confidence_score, comments]
+                    candidate_entries.append(candidate_entry)
+                elif row[subject_and_object_columns[1]] == this_id:
+                    candidate_entry = [viral_or_host, row[subject_and_object_columns[0]],
+                                       None, confidence_score, comments]
+                    candidate_entries.append(candidate_entry)
         return candidate_entries
