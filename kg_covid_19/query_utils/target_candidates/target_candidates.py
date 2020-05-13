@@ -1,3 +1,4 @@
+import csv
 import logging
 import os
 import re
@@ -36,32 +37,25 @@ class TargetCandidates(Query):
         query_name = "target_candidates"
         super().__init__(query_name, input_dir, output_dir)  # set some variables
         # data file locations
-        self.merged_tsv_tarfile =\
-            os.path.join(self.input_dir, 'merged', 'kg-covid-19.tar.gz')
-        self.merged_nodes_file = os.path.join('merged', 'merged-kg_nodes.tsv')
-        self.merged_edges_file = os.path.join('merged', 'merged-kg_edges.tsv')
+        self.intact_nodes_file = os.path.join('transformed', 'intact', 'nodes.tsv')
+        self.intact_edges_file = os.path.join('transformed', 'intact', 'edges.tsv')
         self.sars_cov_2_nodes = os.path.join('data', "transformed",
                                              "sars_cov_2_gene_annot/nodes.tsv")
         self.sars_cov_2_edges = os.path.join('data', "transformed",
                                              "sars_cov_2_gene_annot/edges.tsv")
+        self.outfile_name = "target_candidates.tsv"
 
     def run(self):
-        logging.info("extracting tar")
-        # extract TSV files
-        tar = tarfile.open(self.merged_tsv_tarfile, "r:gz")
-        tar.extractall(path=os.path.join("data", "merged"))
-        tar.close()
-
         candidates: list = []
 
         # read in data files
         logging.info("reading in data files")
         sars_cov2_df = pd.read_csv(self.sars_cov_2_nodes, sep="\t")
         merged_edges_df = pd.read_csv(os.path.join(self.input_dir,
-                                                   self.merged_edges_file),
+                                                   self.intact_edges_file),
                                       sep='\t')
         merged_nodes_df = pd.read_csv(os.path.join(self.input_dir,
-                                                   self.merged_nodes_file),
+                                                   self.intact_nodes_file),
                                       sep='\t')
 
         # add SARS-CoV-2 proteins from gene annotation transform
@@ -90,7 +84,7 @@ class TargetCandidates(Query):
         candidates.extend(
         self.sars_cov2_and_intact_to_candidate_entries(
                             sars_cov2_ids=all_sars_cov2_ids,
-                            provided_by=['intact'],
+                            provided_by='intact',
                             edge_df=merged_edges_df,
                             nodes_df=merged_nodes_df,
                             viral_or_host="H",
@@ -101,12 +95,11 @@ class TargetCandidates(Query):
                             comments='inferred from intact')
         )
 
-        self.candidates_to_tsv(candidates, self.output_dir, "target_candidates.tsv")
-        # import csv
-        # data = ['text1', 'text2', 'text3', 'text4']
-        # with open('output.tsv', 'w', newline='') as f_output:
-        #     tsv_output = csv.writer(f_output, delimiter='\t')
-        #     tsv_output.writerow(data)
+        os.makedirs(self.output_dir, exist_ok=True)
+        with open(os.path.join(self.output_dir, self.outfile_name), 'w', newline="") as out:
+            tsv_output = csv.writer(out, delimiter='\t')
+            for candidate in candidates:
+                tsv_output.writerow(candidate)
 
     def sars_cov2_pro_candidates(self,
                                  these_ids: list,
@@ -230,8 +223,9 @@ class TargetCandidates(Query):
                 try:
                     node_rows = nodes_df[nodes_df[id_col_in_node_tsv] == interactor_id]
                     name = node_rows[name_col][0]
-                except IndexError:
-                    logging.warning("Problem getting name for id: {}", interactor_id)
+                except KeyError:
+                    logging.warning("Problem getting name for id: %"
+                                    .format(interactor_id))
 
                 candidate_entry = [viral_or_host, interactor_id, name, confidence_score,
                                    comments]
