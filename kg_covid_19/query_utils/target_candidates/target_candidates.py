@@ -35,37 +35,49 @@ class TargetCandidates(Query):
         super().__init__(query_name, input_dir, output_dir)  # set some variables
         # data file locations
         self.merged_tsv_tarfile =\
-            os.path.join(self.input_dir, 'merged/kg-covid-19.tar.gz')
-        self.merged_nodes_file = 'merged/merged-kg_nodes.tsv'
-        self.merged_edges_file = 'merged/merged-kg_edges.tsv'
-        self.sars_cov_2_nodes = "data/transformed/sars_cov_2_gene_annot/nodes.tsv"
-        self.sars_cov_2_edges = "data/transformed/sars_cov_2_gene_annot/edges.tsv"
+            os.path.join(self.input_dir, 'merged', 'kg-covid-19.tar.gz')
+        self.merged_nodes_file = os.path.join('merged', 'merged-kg_nodes.tsv')
+        self.merged_edges_file = os.path.join('merged', 'merged-kg_edges.tsv')
+        self.sars_cov_2_nodes = os.path.join('data', "transformed",
+                                             "sars_cov_2_gene_annot/nodes.tsv")
+        self.sars_cov_2_edges = os.path.join('data', "transformed",
+                                             "sars_cov_2_gene_annot/edges.tsv")
 
     def run(self):
         # extract TSV files
         tar = tarfile.open(self.merged_tsv_tarfile, "r:gz")
-        tar.extractall()
+        tar.extractall(path=os.path.join("data", "merged"))
         tar.close()
+
+        candidates: list = []
 
         # include SARS-CoV-2 proteins from gene annotation transform
         sars_cov2_df = pd.read_csv(self.sars_cov_2_nodes, sep="\t")
-        self.sars_cov2_to_candidate_entry(sars_cov2_df)
+        candidates.extend(
+            self.sars_cov2_to_candidate_entries(sars_cov2_df,
+                                              'V', 'id', 'name', 1,
+                                              "annotated SARS-CoV-2 gene"))
 
-        merged_nodes_df = pd.read_csv(os.path.join(self.input_dir, self.merged_nodes_file),
-                               sep='\t')
-        merged_edges_df = pd.read_csv(os.path.join(self.input_dir, self.merged_nodes_file),
-                               sep='\t')
+        merged_nodes_df = pd.read_csv(os.path.join(self.input_dir,
+                                                   self.merged_nodes_file),
+                                      sep='\t')
+        merged_edges_df = pd.read_csv(os.path.join(self.input_dir,
+                                                   self.merged_nodes_file),
+                                      sep='\t')
         # generate list of proteins that interact with SARS-CoV-2 according to IntAct
+
+
+
         pass
 
-    def sars_cov2_to_candidate_entry(self,
-                                     sars_cov2_df,
-                                     viral_or_host: str,
-                                     id_col: str,
-                                     name_col: str,
-                                     confidence_score: str,
-                                     comments: str
-                                     ) -> List[List[Union[str, int]]]:
+    def sars_cov2_to_candidate_entries(self,
+                                       sars_cov2_df,
+                                       viral_or_host: str,
+                                       id_col: str,
+                                       name_col: str,
+                                       confidence_score: str,
+                                       comments: str
+                                       ) -> List[List[Union[str, int]]]:
         """Given sars-cov-2 gene annotations, extract and make candidate entry
 
         :param comments:

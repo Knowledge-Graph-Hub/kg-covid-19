@@ -13,13 +13,13 @@ class TestTargetCandidates(TestCase):
         self.assertTrue(hasattr(self.tc, 'sars_cov2_to_candidate_entry'))
         sars_cov2_df = pd.read_csv("tests/resources/sars_cov_2_gene_annot_SNIPPET.tsv",
                                    sep="\t")
-        candidates = self.tc.sars_cov2_to_candidate_entry(sars_cov2_df,
+        candidates = self.tc.sars_cov2_to_candidate_entries(sars_cov2_df,
                                                           'V',
                                                           'id',
                                                           'name',
-                                                          1,
+                                                            1,
                                                           "annotated SARS-CoV-2 gene"
-                                                          )
+                                                            )
         self.assertEqual(len(candidates), 2)
         self.assertEqual(
                          ["V",
