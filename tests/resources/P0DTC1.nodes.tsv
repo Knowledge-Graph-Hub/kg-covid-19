@@ -1,0 +1,5 @@
+id	name	category	TTD_ID	iri	description	synonym	taxon
+UniProtKB:O75347	tbca_human	biolink:Protein					
+TTD:D01YGD	ICO-25	biolink:Drug	D01YGD				
+TTD:D02HKC	MUC1-Poly-ICLC	biolink:Drug	D02HKC				
+TTD:D0T1KL	Pankomab-GEX	biolink:Drug	D0T1KL				
