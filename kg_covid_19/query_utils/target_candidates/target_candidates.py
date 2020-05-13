@@ -44,6 +44,11 @@ class TargetCandidates(Query):
         self.sars_cov_2_edges = os.path.join('data', "transformed",
                                              "sars_cov_2_gene_annot/edges.tsv")
         self.outfile_name = "target_candidates.tsv"
+        self.outfile_header = ["species",
+                               "protein ID",
+                               "protein/gene name",
+                               "confidence score",
+                               "comments"]
 
     def run(self):
         candidates: list = []
@@ -98,6 +103,7 @@ class TargetCandidates(Query):
         os.makedirs(self.output_dir, exist_ok=True)
         with open(os.path.join(self.output_dir, self.outfile_name), 'w', newline="") as out:
             tsv_output = csv.writer(out, delimiter='\t')
+            tsv_output.writerow(self.outfile_header)
             for candidate in candidates:
                 tsv_output.writerow(candidate)
 
