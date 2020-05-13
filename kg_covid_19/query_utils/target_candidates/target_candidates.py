@@ -44,6 +44,7 @@ class TargetCandidates(Query):
                                              "sars_cov_2_gene_annot/edges.tsv")
 
     def run(self):
+        logging.info("extracting tar")
         # extract TSV files
         tar = tarfile.open(self.merged_tsv_tarfile, "r:gz")
         tar.extractall(path=os.path.join("data", "merged"))
@@ -52,6 +53,7 @@ class TargetCandidates(Query):
         candidates: list = []
 
         # read in data files
+        logging.info("reading in data files")
         sars_cov2_df = pd.read_csv(self.sars_cov_2_nodes, sep="\t")
         merged_edges_df = pd.read_csv(os.path.join(self.input_dir,
                                                    self.merged_edges_file),
@@ -61,6 +63,7 @@ class TargetCandidates(Query):
                                       sep='\t')
 
         # add SARS-CoV-2 proteins from gene annotation transform
+        logging.info("adding annotated SARS-CoV-2 proteins")
         candidates.extend(
             self.sars_cov2_to_candidate_entries(sars_cov2_df,
                                               'V', 'id', 'name', 1,
@@ -68,6 +71,7 @@ class TargetCandidates(Query):
         sars_cov2_ids = [c[1] for c in candidates]
 
         # append PRO_ SARS-CoV-2 proteins
+        logging.info("adding SARS-CoV-2 proteins PRO_ proteins")
         candidates.extend(
             self.sars_cov2_pro_candidates(sars_cov2_ids,
                                           sars_cov2_df,
@@ -79,6 +83,8 @@ class TargetCandidates(Query):
 
 
         # append list of proteins that interact with SARS-CoV-2 according to IntAct
+        logging.info("adding human proteins that interact with SARS-CoV-2 proteins" +
+                     "according to IntAct")
         candidates.extend(
         self.sars_cov2_and_intact_to_candidate_entries(all_sars_cov2_ids,
                                                        ['intact'],
@@ -86,12 +92,13 @@ class TargetCandidates(Query):
                                                        merged_nodes_df,
                                                        "H",
                                                        ['subject', 'object'],
-                                                       ['name'],
+                                                       'id'
+                                                       'name',
                                                        0.75,
                                                        'inferred from intact')
         )
 
-        self.candidates_to_tsv(candidates, self.output_dir, outfile_name)
+        self.candidates_to_tsv(candidates, self.output_dir, "target_candidates.tsv")
         # import csv
         # data = ['text1', 'text2', 'text3', 'text4']
         # with open('output.tsv', 'w', newline='') as f_output:
