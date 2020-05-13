@@ -214,7 +214,17 @@ class TargetCandidates(Query):
                 else:
                     continue
 
-                candidate_entry = [viral_or_host, row[interactor_col_name],
-                                   None, confidence_score, comments]
+                interactor_id = row[interactor_col_name]
+
+                # find interactor name
+                name = "NA"
+                try:
+                    node_rows = nodes_df[nodes_df[id_col_in_node_tsv] == interactor_id]
+                    name = node_rows[name_col][0]
+                except IndexError:
+                    logging.warning("Problem getting name for id: {}", interactor_id)
+
+                candidate_entry = [viral_or_host, interactor_id, name, confidence_score,
+                                   comments]
                 candidate_entries.append(candidate_entry)
         return candidate_entries
