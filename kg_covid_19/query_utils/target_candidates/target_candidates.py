@@ -5,7 +5,7 @@ import re
 import tarfile
 from typing import List, Union
 
-from tqdm import tqdm
+from tqdm import tqdm  # type: ignore
 
 from kg_covid_19.query_utils.query import Query
 import pandas as pd  # type: ignore
@@ -224,8 +224,7 @@ class TargetCandidates(Query):
                     node_rows = nodes_df[nodes_df[id_col_in_node_tsv] == interactor_id]
                     name = node_rows[name_col][0]
                 except KeyError:
-                    logging.warning("Problem getting name for id: %"
-                                    .format(interactor_id))
+                    logging.warning("Problem getting name for id: %", interactor_id)
 
                 candidate_entry = [viral_or_host, interactor_id, name, confidence_score,
                                    comments]
