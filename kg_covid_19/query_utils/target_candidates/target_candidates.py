@@ -1,4 +1,3 @@
-import builtins
 import logging
 import os
 import re
@@ -44,7 +43,7 @@ class TargetCandidates(Query):
         self.sars_cov_2_edges = os.path.join('data', "transformed",
                                              "sars_cov_2_gene_annot/edges.tsv")
 
-    def run(self) -> None:
+    def run(self):
         # extract TSV files
         tar = tarfile.open(self.merged_tsv_tarfile, "r:gz")
         tar.extractall(path=os.path.join("data", "merged"))
