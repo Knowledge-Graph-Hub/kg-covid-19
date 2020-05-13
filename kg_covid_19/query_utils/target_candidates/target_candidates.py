@@ -211,6 +211,8 @@ class TargetCandidates(Query):
         # find edges for 'provided_by'
         these_edges = edge_df[edge_df.provided_by == provided_by]
 
+        interactor_ids: list = []
+
         # find IDs of interest in id_cols_to_search
         for this_id in tqdm(sars_cov2_ids):
 
@@ -222,17 +224,22 @@ class TargetCandidates(Query):
                 else:
                     continue
 
-                interactor_id = row[interactor_col_name]
+                interactor_ids.append(row[interactor_col_name])
 
-                # find interactor name
-                name = "NA"
-                try:
-                    node_rows = nodes_df[nodes_df[id_col_in_node_tsv] == interactor_id]
-                    name = node_rows[name_col][0]
-                except KeyError:
-                    logging.warning("Problem getting name for id: %", interactor_id)
+        interactor_ids = list(set(interactor_ids))
 
-                candidate_entry = [viral_or_host, interactor_id, name, confidence_score,
-                                   comments]
-                candidate_entries.append(candidate_entry)
+        for interactor_id in interactor_ids:
+            # find interactor name
+            name = "NA"
+            try:
+                node_rows = nodes_df[nodes_df[id_col_in_node_tsv] == interactor_id]
+                name = node_rows[name_col][0]
+            except KeyError:
+                logging.warning("Problem getting name for id: %s", interactor_id)
+                pass
+
+            candidate_entry = [viral_or_host, interactor_id, name, confidence_score,
+                               comments]
+            candidate_entries.append(candidate_entry)
+
         return candidate_entries
