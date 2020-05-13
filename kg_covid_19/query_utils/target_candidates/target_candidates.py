@@ -79,9 +79,7 @@ class TargetCandidates(Query):
                                           'V', 'id', 'name', 1,
                                           "annotated SARS-CoV-2 gene"))
 
-
         all_sars_cov2_ids = [c[1] for c in candidates]
-
 
         # append list of proteins that interact with SARS-CoV-2 according to IntAct
         logging.info("adding human proteins that interact with SARS-CoV-2 proteins" +
@@ -144,7 +142,6 @@ class TargetCandidates(Query):
                 candidate_entries.append(candidate_entry)
         return candidate_entries
 
-
     def sars_cov2_to_candidate_entries(self,
                                        sars_cov2_df,
                                        viral_or_host: str,
@@ -173,7 +170,6 @@ class TargetCandidates(Query):
                 candidate_entry[2] = row[name_col]
             candidate_entries.append(candidate_entry)
         return candidate_entries
-
 
     def sars_cov2_and_intact_to_candidate_entries(self,
                                                   sars_cov2_ids: list,
