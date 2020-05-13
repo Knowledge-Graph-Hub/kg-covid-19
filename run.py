@@ -84,7 +84,7 @@ def load(yaml: str) -> None:
 @cli.command()
 @click.option("query", "-q", required=True, default=None, multiple=False,
               type=click.Choice(QUERIES.keys()))
-@click.option("input_dir", "-i", default="data/merged/")
+@click.option("input_dir", "-i", default="data/")
 @click.option("output_dir", "-o", default="data/queries/")
 def query(query: str, input_dir: str, output_dir: str) -> None:
     """Perform a query of knowledge graph using a class contained in query_utils
@@ -92,7 +92,7 @@ def query(query: str, input_dir: str, output_dir: str) -> None:
     Args:
         query: A query class containing instructions for performing a query
         input_dir: Directory where any input files required to execute query are
-        located
+        located (typically 'data', where transformed and merged graph files are)
         output_dir: Directory to output results of query
 
     Returns:
