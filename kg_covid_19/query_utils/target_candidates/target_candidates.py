@@ -208,11 +208,13 @@ class TargetCandidates(Query):
 
             for _, row in these_edges.iterrows():
                 if row[subject_and_object_columns[0]] == this_id:
-                    candidate_entry = [viral_or_host, row[subject_and_object_columns[1]],
-                                       None, confidence_score, comments]
-                    candidate_entries.append(candidate_entry)
+                    interactor_col_name = subject_and_object_columns[1]
                 elif row[subject_and_object_columns[1]] == this_id:
-                    candidate_entry = [viral_or_host, row[subject_and_object_columns[0]],
-                                       None, confidence_score, comments]
-                    candidate_entries.append(candidate_entry)
+                    interactor_col_name = subject_and_object_columns[0]
+                else:
+                    continue
+
+                candidate_entry = [viral_or_host, row[interactor_col_name],
+                                   None, confidence_score, comments]
+                candidate_entries.append(candidate_entry)
         return candidate_entries
