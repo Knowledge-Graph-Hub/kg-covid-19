@@ -4,6 +4,8 @@ import re
 import tarfile
 from typing import List, Union
 
+from tqdm import tqdm
+
 from kg_covid_19.query_utils.query import Query
 import pandas as pd  # type: ignore
 
@@ -210,7 +212,7 @@ class TargetCandidates(Query):
         these_edges = edge_df[edge_df.provided_by == provided_by]
 
         # find IDs of interest in id_cols_to_search
-        for this_id in sars_cov2_ids:
+        for this_id in tqdm(sars_cov2_ids):
 
             for _, row in these_edges.iterrows():
                 if row[subject_and_object_columns[0]] == this_id:
