@@ -26,14 +26,16 @@ class TargetCandidates(Query):
         self.edges_file = 'merged-kg_edges.tsv'
 
     def run(self):
-        # generate list of SARS-CoV-2 proteins
+        # extract TSV files
         tsv_tarfile = os.path.join(self.input_dir, 'kg-covid-19.tar.gz')
         tar = tarfile.open(tsv_tarfile, "r:gz")
         tar.extractall()
         tar.close()
 
-        nodes_df = pd.DataFrame.from_csv(os.path.join(self.input_dir, self.nodes_file),
+        # generate list of SARS-CoV-2 proteins
+        nodes_df = pd.read_csv(os.path.join(self.input_dir, self.nodes_file),
                                          sep='\t')
-        edges_df = pd.DataFrame.from_csv(os.path.join(self.input_dir, self.edges_file),
+        edges_df = pd.read_csv(os.path.join(self.input_dir, self.edges_file),
                                          sep='\t')
         # generate list of proteins that interact with SARS-CoV-2 according to IntAct
+        pass
