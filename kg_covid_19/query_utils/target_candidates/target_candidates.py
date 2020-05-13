@@ -88,16 +88,17 @@ class TargetCandidates(Query):
         logging.info("adding human proteins that interact with SARS-CoV-2 proteins" +
                      "according to IntAct")
         candidates.extend(
-        self.sars_cov2_and_intact_to_candidate_entries(all_sars_cov2_ids,
-                                                       ['intact'],
-                                                       merged_edges_df,
-                                                       merged_nodes_df,
-                                                       "H",
-                                                       ['subject', 'object'],
-                                                       'id'
-                                                       'name',
-                                                       0.75,
-                                                       'inferred from intact')
+        self.sars_cov2_and_intact_to_candidate_entries(
+                            sars_cov2_ids=all_sars_cov2_ids,
+                            provided_by=['intact'],
+                            edge_df=merged_edges_df,
+                            nodes_df=merged_nodes_df,
+                            viral_or_host="H",
+                            subject_and_object_columns=['subject', 'object'],
+                            id_col_in_node_tsv='id',
+                            name_col='name',
+                            confidence_score=0.75,
+                            comments='inferred from intact')
         )
 
         self.candidates_to_tsv(candidates, self.output_dir, "target_candidates.tsv")
