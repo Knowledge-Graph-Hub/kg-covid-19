@@ -10,7 +10,7 @@ class TestTargetCandidates(TestCase):
         self.tc = TargetCandidates("/dev/null", "/dev/null")
 
     def test_sars_cov2_to_candidate_entry(self):
-        self.assertTrue(hasattr(self.tc, 'sars_cov2_to_candidate_entry'))
+        self.assertTrue(hasattr(self.tc, 'sars_cov2_to_candidate_entries'))
         sars_cov2_df = pd.read_csv("tests/resources/sars_cov_2_gene_annot_SNIPPET.tsv",
                                    sep="\t")
         candidates = self.tc.sars_cov2_to_candidate_entries(sars_cov2_df,
