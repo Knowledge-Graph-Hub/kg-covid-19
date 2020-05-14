@@ -56,10 +56,10 @@ class TargetCandidates(Query):
         # read in data files
         logging.info("reading in data files")
         sars_cov2_df = pd.read_csv(self.sars_cov_2_nodes, sep="\t")
-        merged_edges_df = pd.read_csv(os.path.join(self.input_dir,
+        intact_edges_df = pd.read_csv(os.path.join(self.input_dir,
                                                    self.intact_edges_file),
                                       sep='\t')
-        merged_nodes_df = pd.read_csv(os.path.join(self.input_dir,
+        intact_nodes_df = pd.read_csv(os.path.join(self.input_dir,
                                                    self.intact_nodes_file),
                                       sep='\t')
 
@@ -79,9 +79,15 @@ class TargetCandidates(Query):
                                           'V', 'id', 'name', 1,
                                           "annotated SARS-CoV-2 gene"))
 
+        sars_cov2_ids_plus_pro = [c[1] for c in candidates]
+
         logging.info("adding SARS-CoV-2 proteins present in IntAct")
         candidates.extend(
-            self.sars_cov2_in_intact_set_to_candidate_entries()
+            self.sars_cov2_in_intact_set_to_candidate_entries(
+                                            existing_ids=sars_cov2_ids_plus_pro,
+                                            taxon_id=2697049,
+                                            nodes_df=intact_nodes_df,
+                                            taxid_col='ncbi_taxid')
         )
 
         all_sars_cov2_ids = [c[1] for c in candidates]
@@ -93,8 +99,8 @@ class TargetCandidates(Query):
         self.sars_cov2_human_interactors_to_candidate_entries(
                             sars_cov2_ids=all_sars_cov2_ids,
                             provided_by='intact',
-                            edge_df=merged_edges_df,
-                            nodes_df=merged_nodes_df,
+                            edge_df=intact_edges_df,
+                            nodes_df=intact_nodes_df,
                             viral_or_host="H",
                             subject_and_object_columns=['subject', 'object'],
                             id_col_in_node_tsv='id',
@@ -112,16 +118,28 @@ class TargetCandidates(Query):
 
     def sars_cov2_in_intact_set_to_candidate_entries(self,
                                                      existing_ids: list,
-                                                     taxon_id: str,
-                                                     nodes_df):
+                                                     taxon_id: int,
+                                                     nodes_df,
+                                                     taxid_col: str,
+                                                     id_col = 'id',
+                                                     name_col = 'name'
+                                                     ):
         """Extract list of SARS-CoV-2 protein from IntAct nodes file
 
+        :param taxid_col: column name with taxon id
         :param existing_ids: exclude entries present in this list
         :param taxon_id: taxon ID to search for
         :param nodes_df: pandas dataframe for intact nodes
         :return:
         """
-        return [1]
+
+        candidate_entries: list = []
+        rows = nodes_df[nodes_df[taxid_col] == taxon_id]
+        for _, row in rows.iterrows():
+            if row[id_col] not in existing_ids:
+                candidate_entries.append(['V', row[id_col], row[name_col], 1,
+                                          'present in intact database'])
+        return candidate_entries
 
     def sars_cov2_pro_candidates(self,
                                  these_ids: list,

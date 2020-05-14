@@ -53,12 +53,13 @@ class TestTargetCandidates(TestCase):
         self.assertTrue(hasattr(self.tc,
                                 'sars_cov2_in_intact_set_to_candidate_entries'))
         existing_ids = ['UniProtKB:P0DTC2']  # don't want these again
-        nodes_df = pd.read_csv("tests/resources/P0DTC1.nodes.tsv", sep="\t")
+        nodes_df = pd.read_csv("tests/resources/test_sars_cov2_intact_nodes.tsv",
+                               sep="\t")
         candidates = self.tc.sars_cov2_in_intact_set_to_candidate_entries(
-            existing_ids=existing_ids,
-            taxon_id='2697049',
-            nodes_df=nodes_df
-        )
+                        existing_ids=existing_ids,
+                        taxon_id=2697049,
+                        nodes_df=nodes_df,
+                        taxid_col='ncbi_taxid')
         self.assertEqual(1, len(candidates))
         self.assertEqual(
                          ['V',
