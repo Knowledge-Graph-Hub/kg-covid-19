@@ -77,5 +77,22 @@ def load(yaml: str) -> None:
     load_and_merge(yaml)
 
 
+@cli.command()
+@click.option("input_dir", "-i", default="data/merged/", type=click.Path(exists=True))
+@click.option("output_dir", "-o", default="data/edges/")
+def edges(input_dir: str, output_dir: str) -> None:
+    """Make positive and negative edges for ML training
+
+    Args:
+        input_dir: A string pointing to the directory to import data from.
+        output_dir: A string pointing to the directory to output data to.
+
+    Returns:
+        None.
+
+    """
+    pass
+
+
 if __name__ == "__main__":
     cli()
