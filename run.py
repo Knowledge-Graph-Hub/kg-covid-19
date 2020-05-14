@@ -5,6 +5,7 @@ import logging
 import click
 from kg_covid_19 import download as kg_download
 from kg_covid_19 import transform as kg_transform
+from kg_covid_19.edges import make_edges
 from kg_covid_19.load_utils.merge_kg import load_and_merge
 from kg_covid_19.query import QUERIES, run_query
 from kg_covid_19.transform import DATA_SOURCES
@@ -84,14 +85,20 @@ def load(yaml: str) -> None:
 @cli.command()
 @click.option("input_dir", "-i", default="data/merged/", type=click.Path(exists=True))
 @click.option("output_dir", "-o", default="data/edges/")
-def edges(input_dir: str, output_dir: str) -> None:
+@click.option("graph_edges_file", default="edges.tsv")
+@click.option("graph_nodes_file", default="nodes.tsv")
+@click.option("pos_train_file", default="pos_train.tsv")
+@click.option("pos_test_file",  default="pos_test.tsv")
+@click.option("neg_train_file", default="neg_train.tsv")
+@click.option("neg_test_file",  default="neg_test.tsv")
+def edges(*args, **kwargs) -> None:
     """Make positive and negative edges for ML training
 
     Args:
         input_dir: A string pointing to the directory to import data from.
         output_dir: A string pointing to the directory to output data to.
     """
-    pass
+    make_edges(*args, **kwargs)
 
 
 @click.option("query", "-q", required=True, default=None, multiple=False,
