@@ -102,9 +102,8 @@ pipeline {
                                 branch: 'master'
                         )
                         sh 'sbt stage'
-                        sh 'cd ..'
                         sh 'pigz -d ../merged-kg.nt.gz'
-                        sh './target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=merged-kg.jnl --use-ontology-graph=true ./merged-kg.nt'
+                        sh './target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=merged-kg.jnl --use-ontology-graph=true ../merged-kg.nt'
                         sh 'pigz merged-kg.jnl'
                 }
             }
