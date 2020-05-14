@@ -28,23 +28,7 @@ pipeline {
                         })
             }
         }
-        
-        stage('Build blazegraph and die'){
-            steps {
-                dir('./config/blazegraph') {
-                        git(
-                                url: 'https://github.com/balhoff/blazegraph-runner.git',
-                                branch: 'master'
-                        )
-                        sh 'sbt stage'
-                        sh 'cd ..'
-                        sh 'pwd;find . -name "blazegraph-runner"'
-                        sh './target/universal/stage/bin/blazegraph-runner'
-                        sh 'false'
-                }
-            }
-        }
-        
+                
         stage('Build kg_covid_19') {
             steps {
                 dir('./config') {
