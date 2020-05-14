@@ -46,7 +46,8 @@ class IntAct(Transform):
             'chebi': 'CHEBI',
             'ensembl': 'ENSEMBL',
             'ddbj/embl/genbank': 'NCBIProtein',
-            'pubmed': 'PMID'
+            'pubmed': 'PMID',
+            'intact': 'INTACT'
         }
         self.pubmed_curie_prefix = 'PMID:'
         self.ppi_edge_label = 'biolink:interacts_with'
