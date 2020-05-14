@@ -1,0 +1,5 @@
+subject	object	relation	edge_label	provided_by	combined_score	neighborhood	neighborhood_transferred	fusion	cooccurence	homology	coexpression	coexpression_transferred	experiments	experiments_transferred	database	database_transferred	textmining	textmining_transferred	comment	publication	num_participants	association_type	detection_method	subj_exp_role	obj_exp_role	evidence	target_type	DB_References	ECO_code	With	Date	Assigned_by	Annotation_Properties
+UniProtKB:O75347	UniProtKB:P0DTC1-PRO_0000449645	RO:0002437	biolink:interacts_with	intact																PMID:unassigned2316	2	physical association	pull down	prey	bait
+UniProtKB:P0DTC1	GO:0033644	BFO:0000050	biolink:part_of	sars_cov_2_gene_annot																								GO_REF:0000044	ECO:0000322	UniProtKB-SubCell:SL-0380	20200404	UniProt	go_evidence=IEA
+UniProtKB:P0DTC1	GO:0044220	BFO:0000050	biolink:part_of	sars_cov_2_gene_annot																								GO_REF:0000044	ECO:0000322	UniProtKB-SubCell:SL-0382	20200404	UniProt	go_evidence=IEA
+

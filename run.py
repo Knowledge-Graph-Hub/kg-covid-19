@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import logging
 
 import click
 from kg_covid_19 import download as kg_download
 from kg_covid_19 import transform as kg_transform
 from kg_covid_19.load_utils.merge_kg import load_and_merge
+from kg_covid_19.query import QUERIES, run_query
 from kg_covid_19.transform import DATA_SOURCES
+
 
 @click.group()
 def cli():
@@ -14,7 +16,8 @@ def cli():
 
 
 @cli.command()
-@click.option("yaml_file", "-y", required=True, default="download.yaml", type=click.Path(exists=True))
+@click.option("yaml_file", "-y", required=True, default="download.yaml",
+              type=click.Path(exists=True))
 @click.option("output_dir", "-o", required=True, default="data/raw")
 @click.option("ignore_cache", "-i", is_flag=True, default=False,
               help='ignore cache and download files even if they exist [false]')
@@ -40,7 +43,8 @@ def download(*args, **kwargs) -> None:
 @cli.command()
 @click.option("input_dir", "-i", default="data/raw", type=click.Path(exists=True))
 @click.option("output_dir", "-o", default="data/transformed")
-@click.option("sources", "-s", default=None, multiple=True, type=click.Choice(DATA_SOURCES.keys()))
+@click.option("sources", "-s", default=None, multiple=True,
+              type=click.Choice(DATA_SOURCES.keys()))
 def transform(*args, **kwargs) -> None:
     """Calls scripts in kg_covid_19/transform/[source name]/ to transform each source
     into nodes and edges.
@@ -86,12 +90,28 @@ def edges(input_dir: str, output_dir: str) -> None:
     Args:
         input_dir: A string pointing to the directory to import data from.
         output_dir: A string pointing to the directory to output data to.
+    """
+    pass
+
+
+@click.option("query", "-q", required=True, default=None, multiple=False,
+              type=click.Choice(QUERIES.keys()))
+@click.option("input_dir", "-i", default="data/")
+@click.option("output_dir", "-o", default="data/queries/")
+def query(query: str, input_dir: str, output_dir: str) -> None:
+    """Perform a query of knowledge graph using a class contained in query_utils
+
+    Args:
+        query: A query class containing instructions for performing a query
+        input_dir: Directory where any input files required to execute query are
+        located (typically 'data', where transformed and merged graph files are)
+        output_dir: Directory to output results of query
 
     Returns:
         None.
 
     """
-    pass
+    run_query(query=query, input_dir=input_dir, output_dir=output_dir)
 
 
 if __name__ == "__main__":

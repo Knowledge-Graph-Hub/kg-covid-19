@@ -1,0 +1,7 @@
+id	name	category	ncbi_taxid
+UniProtKB:P0DTC2	spike_wcpv	biolink:Protein	2697049
+UniProtKB:Q14181	dpoa2_human	biolink:Protein	9606
+UniProtKB:P49643	pri2_human	biolink:Protein	9606
+UniProtKB:P49642	pri1_human	biolink:Protein	9606
+UniProtKB:P09884	dpola_human	biolink:Protein	9606
+UniProtKB:P0DTD1-PRO_0000449619	nsp1_wcpv	biolink:Protein	2697049
