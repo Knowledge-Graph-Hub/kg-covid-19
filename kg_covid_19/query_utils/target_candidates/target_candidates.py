@@ -79,9 +79,10 @@ class TargetCandidates(Query):
                                           'V', 'id', 'name', 1,
                                           "annotated SARS-CoV-2 gene"))
 
-        # logging.info("adding SARS-CoV-2 proteins present in IntAct")
-        # candidates.extend(
-        # self.sars_cov2_in_intact_set_to_candidate_entries()
+        logging.info("adding SARS-CoV-2 proteins present in IntAct")
+        candidates.extend(
+            self.sars_cov2_in_intact_set_to_candidate_entries()
+        )
 
         all_sars_cov2_ids = [c[1] for c in candidates]
 
@@ -108,6 +109,19 @@ class TargetCandidates(Query):
             tsv_output.writerow(self.outfile_header)
             for candidate in candidates:
                 tsv_output.writerow(candidate)
+
+    def sars_cov2_in_intact_set_to_candidate_entries(self,
+                                                     existing_ids: list,
+                                                     taxon_id: str,
+                                                     nodes_df):
+        """Extract list of SARS-CoV-2 protein from IntAct nodes file
+
+        :param existing_ids: exclude entries present in this list
+        :param taxon_id: taxon ID to search for
+        :param nodes_df: pandas dataframe for intact nodes
+        :return:
+        """
+        return [1]
 
     def sars_cov2_pro_candidates(self,
                                  these_ids: list,
