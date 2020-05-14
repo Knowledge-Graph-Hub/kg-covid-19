@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
+from typing import List, Union
 
 import click
 from kg_covid_19 import download as kg_download
@@ -82,25 +83,6 @@ def load(yaml: str) -> None:
     load_and_merge(yaml)
 
 
-@cli.command()
-@click.option("input_dir", "-i", default="data/merged/", type=click.Path(exists=True))
-@click.option("output_dir", "-o", default="data/edges/")
-@click.option("graph_edges_file", default="edges.tsv")
-@click.option("graph_nodes_file", default="nodes.tsv")
-@click.option("pos_train_file", default="pos_train.tsv")
-@click.option("pos_test_file",  default="pos_test.tsv")
-@click.option("neg_train_file", default="neg_train.tsv")
-@click.option("neg_test_file",  default="neg_test.tsv")
-def edges(*args, **kwargs) -> None:
-    """Make positive and negative edges for ML training
-
-    Args:
-        input_dir: A string pointing to the directory to import data from.
-        output_dir: A string pointing to the directory to output data to.
-    """
-    make_edges(*args, **kwargs)
-
-
 @click.option("query", "-q", required=True, default=None, multiple=False,
               type=click.Choice(QUERIES.keys()))
 @click.option("input_dir", "-i", default="data/")
@@ -119,6 +101,55 @@ def query(query: str, input_dir: str, output_dir: str) -> None:
 
     """
     run_query(query=query, input_dir=input_dir, output_dir=output_dir)
+
+
+@cli.command()
+@click.option("num_edges", required=True, type=int)
+@click.option("nodes", default="data/merged/nodes.tsv", type=click.Path(exists=True))
+@click.option("edges", default="data/merged/edges.tsv", type=click.Path(exists=True))
+@click.option("output_dir", default="data/edges/", type=click.Path(exists=True))
+@click.option("train_fraction", default=0.8)
+@click.option("validation", is_flag=True, default=False)
+@click.option("node_src_dst_types", default=[None, None], type=List[Union[str, None],
+                                                                    Union[str, None]])
+@click.option("min_degree", default=2)
+def edges(*args, **kwargs) -> None:
+    """Make sets of edges for ML training
+
+    Given a graph (in KGX formatted node and edge TSVs), output positive and negative
+    edges for use in machine learning.
+
+    Positive edges are randomly selected from the edges in the graph, IFF both nodes
+    participating in the edge have a degree greater than min_degree. This edge is
+    then removed in the output graph. Negative edges are selected by randomly
+    selecting pairs of nodes that are not connected by an edge. Optionally, if edge_type
+    is specified, only edges between nodes of node_src_dst_types[0] and
+    node_src_dst_types[1] are selected.
+
+    For both positive and negative edge sets, edges are assigned to training set
+    according to train_fraction (0.8 by default). The remaining are assigned to test set
+    or split evenly between test and validation set, if [validation==True].
+
+    Outputs these files in [output_dir]:
+        edges.tsv + edges.tsv - new graph with positive edges removed
+        pos_train.tsv
+        pos_test.tsv
+        pos_valid.tsv (optional)
+        neg_train.tsv
+        neg_test.tsv
+        neg_valid.tsv (optional)
+
+    Args:
+        num_edges:      number of positive and negative edges to emit
+        nodes:           nodes in KGX formatted TSV format [data/merged/nodes.tsv]
+        edges:           edges in KGX formatted TSV format [data/merged/edges.tsv]
+        output_dir:      directory to output edges and new graph     [data/edges/]
+        train_fraction:     [0.8]
+        validation:         [False]
+        node_src_dst_types: [None, None]
+        min_degree", default=2)
+    """
+    make_edges(*args, **kwargs)
 
 
 if __name__ == "__main__":
