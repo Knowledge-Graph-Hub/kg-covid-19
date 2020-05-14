@@ -64,7 +64,7 @@ class TargetCandidates(Query):
                                       sep='\t')
 
         # add SARS-CoV-2 proteins from gene annotation transform
-        logging.info("adding annotated SARS-CoV-2 proteins")
+        logging.info("adding annotated SARS-CoV-2 proteins from annotations")
         candidates.extend(
             self.sars_cov2_to_candidate_entries(sars_cov2_df,
                                               'V', 'id', 'name', 1,
@@ -79,13 +79,17 @@ class TargetCandidates(Query):
                                           'V', 'id', 'name', 1,
                                           "annotated SARS-CoV-2 gene"))
 
+        # logging.info("adding SARS-CoV-2 proteins present in IntAct")
+        # candidates.extend(
+        # self.sars_cov2_in_intact_set_to_candidate_entries()
+
         all_sars_cov2_ids = [c[1] for c in candidates]
 
         # append list of proteins that interact with SARS-CoV-2 according to IntAct
         logging.info("adding human proteins that interact with SARS-CoV-2 proteins" +
                      "according to IntAct")
         candidates.extend(
-        self.sars_cov2_and_intact_to_candidate_entries(
+        self.sars_cov2_human_interactors_to_candidate_entries(
                             sars_cov2_ids=all_sars_cov2_ids,
                             provided_by='intact',
                             edge_df=merged_edges_df,
@@ -171,18 +175,18 @@ class TargetCandidates(Query):
             candidate_entries.append(candidate_entry)
         return candidate_entries
 
-    def sars_cov2_and_intact_to_candidate_entries(self,
-                                                  sars_cov2_ids: list,
-                                                  provided_by: str,
-                                                  edge_df,
-                                                  nodes_df,
-                                                  viral_or_host: str,
-                                                  subject_and_object_columns: list,
-                                                  id_col_in_node_tsv: str,
-                                                  name_col: str,
-                                                  confidence_score: float,
-                                                  comments: str
-                                                  ) -> List[List[Union[str, int]]]:
+    def sars_cov2_human_interactors_to_candidate_entries(self,
+                                                         sars_cov2_ids: list,
+                                                         provided_by: str,
+                                                         edge_df,
+                                                         nodes_df,
+                                                         viral_or_host: str,
+                                                         subject_and_object_columns: list,
+                                                         id_col_in_node_tsv: str,
+                                                         name_col: str,
+                                                         confidence_score: float,
+                                                         comments: str
+                                                         ) -> List[List[Union[str, int]]]:
         """Given sars-cov-2 genes and a pandas DF with edge data and node data, extract
         all proteins that interact with these sars-cov2 genes according to source(s) in
         'provided_by'

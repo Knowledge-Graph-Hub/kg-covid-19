@@ -54,7 +54,7 @@ class TestTargetCandidates(TestCase):
         edges_df = pd.read_csv("tests/resources/P0DTC1.edges.tsv", sep="\t")
         nodes_df = pd.read_csv("tests/resources/P0DTC1.nodes.tsv", sep="\t")
 
-        candidates = self.tc.sars_cov2_and_intact_to_candidate_entries(
+        candidates = self.tc.sars_cov2_human_interactors_to_candidate_entries(
                             ['UniProtKB:P0DTC1-PRO_0000449645', 'IDNOTINFILE'],
                             'intact',
                             edges_df,
