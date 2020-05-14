@@ -39,6 +39,7 @@ pipeline {
                         sh 'sbt stage'
                         sh 'cd ..'
                         sh 'pwd;find . -name "blazegraph-runner"'
+                        sh './target/universal/stage/bin/blazegraph-runner'
                         sh 'false'
                 }
             }
@@ -103,7 +104,7 @@ pipeline {
                         sh 'sbt stage'
                         sh 'cd ..'
                         sh 'pigz -d ../merged-kg.nt.gz'
-                        sh './blazegraph/target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=merged-kg.jnl --use-ontology-graph=true ./merged-kg.nt'
+                        sh './target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=merged-kg.jnl --use-ontology-graph=true ./merged-kg.nt'
                         sh 'pigz merged-kg.jnl'
                 }
             }
