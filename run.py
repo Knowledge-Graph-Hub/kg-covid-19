@@ -140,15 +140,15 @@ def edges(*args, **kwargs) -> None:
         neg_valid.tsv (optional)
 
     Args:
-        num_edges:      number of positive and negative edges to emit
-        nodes:          nodes of input graph, in KGX TSV format [data/merged/nodes.tsv]
-        edges:          edges for input graph, in KGX TSV format [data/merged/edges.tsv]
-        output_dir:     directory to output edges and new graph [data/edges/]
-        train_fraction: fraction of edges to emit as training [0.8]
-        validation:     should we make validation edges? [False]
-        min_degree      when choosing edges, what is the minimum degree of nodes
+        :param num_edges:      number of positive and negative edges to emit
+        :param nodes:   nodes for input graph, in KGX TSV format [data/merged/nodes.tsv]
+        :param edges:   edges for input graph, in KGX TSV format [data/merged/edges.tsv]
+        :param output_dir:     directory to output edges and new graph [data/edges/]
+        :param train_fraction: fraction of edges to emit as training [0.8]
+        :param validation:     should we make validation edges? [False]
+        :param min_degree      when choosing edges, what is the minimum degree of nodes
                         involved in the edge [1]
-        node_types:    what node types should we make edges from? by default, any
+        :param node_types:    what node types should we make edges from? by default, any
                         type. If specified, should use items from 'category' column
     """
     make_edges(*args, **kwargs)
