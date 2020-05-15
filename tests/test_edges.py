@@ -2,7 +2,7 @@ import unittest
 
 import pandas as pd
 
-from kg_covid_19.edges import make_edges, tsv_to_df
+from kg_covid_19.edges import make_edges, tsv_to_df, has_disconnected_nodes
 
 
 class TestEdges(unittest.TestCase):
@@ -18,5 +18,12 @@ class TestEdges(unittest.TestCase):
 
     def test_make_edges(self):
         self.assertTrue(True)
+
+    def test_has_disconnected_nodes(self):
+        edges = tsv_to_df('tests/resources/edges/small_graph_edges.tsv')
+        nodes = tsv_to_df('tests/resources/edges/small_graph_nodes.tsv')
+        nodes_extra = tsv_to_df('tests/resources/edges/small_graph_nodes_EXTRA_IDS.tsv')
+        self.assertTrue(not has_disconnected_nodes(edges_df=edges, nodes_df=nodes))
+        self.assertTrue(has_disconnected_nodes(edges_df=edges, nodes_df=nodes_extra))
 
 
