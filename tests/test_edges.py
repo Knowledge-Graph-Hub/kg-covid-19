@@ -1,6 +1,7 @@
 import unittest
 
 import pandas as pd
+from pandas import np
 
 from kg_covid_19.edges import make_edges, tsv_to_df, has_disconnected_nodes, \
     make_negative_edges
@@ -31,12 +32,19 @@ class TestEdges(unittest.TestCase):
         num_edges = 5
         edges = tsv_to_df(self.small_edges_file)
         nodes = tsv_to_df(self.small_nodes_file)
+        unique_node_ids = list(np.unique(nodes.id))
 
-        df = make_negative_edges(num_edges=num_edges, edges_df=edges, nodes_df=nodes)
-        self.assertTrue(isinstance(df, pd.DataFrame))
-        self.assertEqual(num_edges, df.shape[0])
-        self.assertEqual(edges.shape[1], df.shape[1])
-        self.assertListEqual(list(edges.columns), list(df.columns))
+        neg_edge_df = make_negative_edges(num_edges=num_edges, edges_df=edges,
+                                          nodes_df=nodes)
+        self.assertTrue(isinstance(neg_edge_df, pd.DataFrame))
+        self.assertEqual(num_edges, neg_edge_df.shape[0])
+        self.assertEqual(2, neg_edge_df.shape[1],
+                         "expected two columns in negative edge df")
+
+        neg_nodes = list(np.unique(np.concatenate((neg_edge_df.subject,
+                                                   neg_edge_df.object))))
+        self.assertTrue(set(neg_nodes) <= set(unique_node_ids),
+                        "Some nodes from negative edges are not in the nodes tsv file")
         # node_types
 
 

@@ -76,8 +76,10 @@ def make_negative_edges(num_edges: int,
     :param node_types: if given, we select edges involving nodes of the given types
     :return:
     """
-    df = pd.DataFrame(np.random.randint(0, 100, size=(5, 5)),
-                      columns=list(edges_df.columns))
+    if 'subject' not in list(edges_df.columns) or 'object' not in list(edges_df.columns):
+        logging.warning("Can't find subject or object column in edges")
+    df = edges_df[:5]
+    df = df.loc[:, ['subject', 'object']]
     return df
 
 
