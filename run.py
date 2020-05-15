@@ -93,7 +93,7 @@ def query(query: str, input_dir: str, output_dir: str) -> None:
     Args:
         query: A query class containing instructions for performing a query
         input_dir: Directory where any input files required to execute query are
-        located (typically 'data', where transformed and merged graph files are)
+            located (typically 'data', where transformed and merged graph files are)
         output_dir: Directory to output results of query
 
     Returns:
@@ -110,8 +110,7 @@ def query(query: str, input_dir: str, output_dir: str) -> None:
 @click.option("output_dir", default="data/edges/", type=click.Path(exists=True))
 @click.option("train_fraction", default=0.8)
 @click.option("validation", is_flag=True, default=False)
-@click.option("node_src_dst_types", default=[None, None], type=List[Union[str, None],
-                                                                    Union[str, None]])
+@click.option("node_src_dst_types", default=[None, None], type=List[Union[str, None]])
 @click.option("min_degree", default=2)
 def edges(*args, **kwargs) -> None:
     """Make sets of edges for ML training
@@ -120,11 +119,11 @@ def edges(*args, **kwargs) -> None:
     edges for use in machine learning.
 
     Positive edges are randomly selected from the edges in the graph, IFF both nodes
-    participating in the edge have a degree greater than min_degree. This edge is
-    then removed in the output graph. Negative edges are selected by randomly
-    selecting pairs of nodes that are not connected by an edge. Optionally, if edge_type
-    is specified, only edges between nodes of node_src_dst_types[0] and
-    node_src_dst_types[1] are selected.
+    participating in the edge have a degree greater than min_degree (to avoid creating
+    disconnected components). This edge is then removed in the output graph. Negative
+    edges are selected by randomly selecting pairs of nodes that are not connected by an
+    edge. Optionally, if edge_type is specified, only edges between nodes of
+    node_src_dst_types[0] and node_src_dst_types[1] are selected.
 
     For both positive and negative edge sets, edges are assigned to training set
     according to train_fraction (0.8 by default). The remaining are assigned to test set
@@ -141,13 +140,15 @@ def edges(*args, **kwargs) -> None:
 
     Args:
         num_edges:      number of positive and negative edges to emit
-        nodes:           nodes in KGX formatted TSV format [data/merged/nodes.tsv]
-        edges:           edges in KGX formatted TSV format [data/merged/edges.tsv]
-        output_dir:      directory to output edges and new graph     [data/edges/]
-        train_fraction:     [0.8]
-        validation:         [False]
-        node_src_dst_types: [None, None]
-        min_degree", default=2)
+        nodes:          nodes of input graph, in KGX TSV format [data/merged/nodes.tsv]
+        edges:          edges for input graph, in KGX TSV format [data/merged/edges.tsv]
+        output_dir:     directory to output edges and new graph [data/edges/]
+        train_fraction: fraction of edges to emit as training [0.8]
+        validation:     should we make validation edges? [False]
+        min_degree      when choosing edges, what is the minimum degree of nodes involved
+                        in the edge
+        node_src_dst_types: what node types should we make edges from? by default, any
+                       [None, None]
     """
     make_edges(*args, **kwargs)
 
