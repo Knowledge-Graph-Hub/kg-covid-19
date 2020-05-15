@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 def make_edges(*args, **kwargs) -> None:
     """Prepare positive and negative edges for testing and training
 
@@ -17,3 +20,13 @@ def make_edges(*args, **kwargs) -> None:
 
     """
     pass
+
+
+def tsv_to_df(tsv_file: str) -> pd.DataFrame:
+    """Read in a TSV file and return a pandas dataframe
+
+    :param tsv_file: file to read in
+    :return: pandas dataframe
+    """
+    df = pd.read_csv(tsv_file, sep="\t")
+    return df
