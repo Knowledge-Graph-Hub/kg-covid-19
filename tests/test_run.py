@@ -2,7 +2,7 @@ from unittest import TestCase
 from click.testing import CliRunner
 from unittest import mock
 
-from run import download, transform, load, edges
+from run import download, transform, load, edges, query
 
 
 class TestRun(TestCase):
@@ -31,6 +31,10 @@ class TestRun(TestCase):
                                         )
             self.assertNotEqual(result.exit_code, 0)
             self.assertRegexpMatches(result.output, "does not exist")
+
+    def test_query_command(self):
+        result = self.runner.invoke(cli=query, args=['-q', 'TargetCandidates'])
+        self.assertEqual(result.exit_code, 0)
 
     def test_edges_command(self):
         result = self.runner.invoke(cli=edges, args=[
