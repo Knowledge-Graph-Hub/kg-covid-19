@@ -32,7 +32,7 @@ class TestTargetCandidates(TestCase):
 
     def test_sars_cov2_pro_candidates(self):
         sars_cov_df = pd.read_csv(
-            "tests/test_sars_cov2_pro_candidates_nodes_SNIPPET.tsv", sep="\t")
+            "tests/resources/test_sars_cov2_pro_candidates_nodes_SNIPPET.tsv", sep="\t")
 
         candidates = self.tc.sars_cov2_pro_candidates(
                                                         ["UniProtKB:P0DTC1"],
