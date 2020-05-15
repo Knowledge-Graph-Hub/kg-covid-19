@@ -1,151 +1,151 @@
-subject	object	weight
-g1	g2	10
-g1	g3	10
-g1	g4	10
-g1	g5	10
-g1	g6	10
-g1	g7	10
-g1	g8	10
-g1	g9	10
-g1	g10	10
-g1	g11	10
-g1	g12	10
-g1	g13	10
-g1	g14	10
-g1	g15	10
-g1	g16	10
-g1	g17	10
-g1	g18	10
-g1	g19	10
-g1	g20	10
-g1	g21	10
-g1	g22	10
-g1	g23	10
-g1	g24	10
-g1	g25	10
-g1	g26	10
-g1	g27	10
-g1	g28	10
-g1	g29	10
-g1	g30	10
-g1	g31	10
-g1	g32	10
-g1	g33	10
-g1	g34	10
-g1	g35	10
-g1	g36	10
-g1	g37	10
-g1	g38	10
-g1	g39	10
-g1	g40	10
-g1	g41	10
-g1	g42	10
-g1	g43	10
-g1	g44	10
-g1	g45	10
-g1	g46	10
-g1	g47	10
-g1	g48	10
-g1	g49	10
-g1	g50	10
-g1	g51	10
-g1	g52	10
-g1	g53	10
-g1	g54	10
-g1	g55	10
-g1	g56	10
-g1	g57	10
-g1	g58	10
-g1	g59	10
-g1	g60	10
-g1	g61	10
-g1	g62	10
-g1	g63	10
-g1	g64	10
-g1	g65	10
-g1	g66	10
-g1	g67	10
-g1	g68	10
-g1	g69	10
-g1	g70	10
-g1	g71	10
-g1	g72	10
-g1	g73	10
-g1	g74	10
-g1	g75	10
-g1	g76	10
-g1	g77	10
-g1	g78	10
-g1	g79	10
-g1	g80	10
-g1	g81	10
-g1	g82	10
-g1	g83	10
-g1	g84	10
-g1	g85	10
-g1	g86	10
-g1	g87	10
-g1	g88	10
-g1	g89	10
-g1	g90	10
-g1	g91	10
-g1	g92	10
-g1	g93	10
-g1	g94	10
-g1	g95	10
-g1	g96	10
-g1	g97	10
-g1	g98	10
-g1	g99	10
-g1	g100	10
-g0	g1	10
-g1	d1	10
-d1	d2	10
-d1	d3	10
-d1	d4	10
-d1	d5	10
-d1	d6	10
-d1	d7	10
-d1	d8	10
-d1	d9	10
-d1	d10	10
-d1	d11	10
-d1	d12	10
-d1	d13	10
-d1	d14	10
-d1	d15	10
-d1	d16	10
-d1	d17	10
-d1	d18	10
-d1	d19	10
-d1	d20	10
-g1	p1	10
-p1	p2	10
-p1	p3	10
-p1	p4	10
-p1	p5	10
-p1	p6	10
-p1	p7	10
-p1	p8	10
-p1	p9	10
-p1	p10	10
-p1	p11	10
-p1	p12	10
-p1	p13	10
-p1	p14	10
-p1	p15	10
-p1	p16	10
-p1	p17	10
-p1	p18	10
-p1	p19	10
-p1	p20	10
-p1	p21	10
-p1	p22	10
-p1	p23	10
-p1	p24	10
-p1	p25	10
-p1	p26	10
-p1	p27	10
-p1	p28	10
-p1	p29	10
-p1	p30	10
+subject	edge_label	object	relation	weight
+g1	biolink:interacts_with	g2	RO:0002410	10
+g1	biolink:interacts_with	g3	RO:0002410	10
+g1	biolink:interacts_with	g4	RO:0002410	10
+g1	biolink:interacts_with	g5	RO:0002410	10
+g1	biolink:interacts_with	g6	RO:0002410	10
+g1	biolink:interacts_with	g7	RO:0002410	10
+g1	biolink:interacts_with	g8	RO:0002410	10
+g1	biolink:interacts_with	g9	RO:0002410	10
+g1	biolink:interacts_with	g10	RO:0002410	10
+g1	biolink:interacts_with	g11	RO:0002410	10
+g1	biolink:interacts_with	g12	RO:0002410	10
+g1	biolink:genetically_interacts_with	g13	RO:0002410	10
+g1	biolink:genetically_interacts_with	g14	RO:0002410	10
+g1	biolink:genetically_interacts_with	g15	RO:0002410	10
+g1	biolink:genetically_interacts_with	g16	RO:0002410	10
+g1	biolink:genetically_interacts_with	g17	RO:0002410	10
+g1	biolink:genetically_interacts_with	g18	RO:0002410	10
+g1	biolink:genetically_interacts_with	g19	RO:0002410	10
+g1	biolink:genetically_interacts_with	g20	RO:0002410	10
+g1	biolink:genetically_interacts_with	g21	RO:0002410	10
+g1	biolink:genetically_interacts_with	g22	RO:0002410	10
+g1	biolink:genetically_interacts_with	g23	RO:0002410	10
+g1	biolink:genetically_interacts_with	g24	RO:0002410	10
+g1	biolink:genetically_interacts_with	g25	RO:0002410	10
+g1	biolink:genetically_interacts_with	g26	RO:0002410	10
+g1	biolink:genetically_interacts_with	g27	RO:0002410	10
+g1	biolink:genetically_interacts_with	g28	RO:0002410	10
+g1	biolink:genetically_interacts_with	g29	RO:0002410	10
+g1	biolink:genetically_interacts_with	g30	RO:0002410	10
+g1	biolink:genetically_interacts_with	g31	RO:0002410	10
+g1	biolink:genetically_interacts_with	g32	RO:0002410	10
+g1	biolink:genetically_interacts_with	g33	RO:0002410	10
+g1	biolink:genetically_interacts_with	g34	RO:0002410	10
+g1	biolink:genetically_interacts_with	g35	RO:0002410	10
+g1	biolink:genetically_interacts_with	g36	RO:0002410	10
+g1	biolink:genetically_interacts_with	g37	RO:0002410	10
+g1	biolink:genetically_interacts_with	g38	RO:0002410	10
+g1	biolink:genetically_interacts_with	g39	RO:0002410	10
+g1	biolink:genetically_interacts_with	g40	RO:0002410	10
+g1	biolink:genetically_interacts_with	g41	RO:0002410	10
+g1	biolink:genetically_interacts_with	g42	RO:0002410	10
+g1	biolink:genetically_interacts_with	g43	RO:0002410	10
+g1	biolink:genetically_interacts_with	g44	RO:0002410	10
+g1	biolink:genetically_interacts_with	g45	RO:0002410	10
+g1	biolink:genetically_interacts_with	g46	RO:0002410	10
+g1	biolink:genetically_interacts_with	g47	RO:0002410	10
+g1	biolink:genetically_interacts_with	g48	RO:0002410	10
+g1	biolink:genetically_interacts_with	g49	RO:0002410	10
+g1	biolink:genetically_interacts_with	g50	RO:0002410	10
+g1	biolink:genetically_interacts_with	g51	RO:0002410	10
+g1	biolink:genetically_interacts_with	g52	RO:0002410	10
+g1	biolink:genetically_interacts_with	g53	RO:0002410	10
+g1	biolink:genetically_interacts_with	g54	RO:0002410	10
+g1	biolink:genetically_interacts_with	g55	RO:0002410	10
+g1	biolink:genetically_interacts_with	g56	RO:0002410	10
+g1	biolink:genetically_interacts_with	g57	RO:0002410	10
+g1	biolink:genetically_interacts_with	g58	RO:0002410	10
+g1	biolink:genetically_interacts_with	g59	RO:0002410	10
+g1	biolink:genetically_interacts_with	g60	RO:0002410	10
+g1	biolink:genetically_interacts_with	g61	RO:0002410	10
+g1	biolink:genetically_interacts_with	g62	RO:0002410	10
+g1	biolink:genetically_interacts_with	g63	RO:0002410	10
+g1	biolink:genetically_interacts_with	g64	RO:0002410	10
+g1	biolink:genetically_interacts_with	g65	RO:0002410	10
+g1	biolink:genetically_interacts_with	g66	RO:0002410	10
+g1	biolink:genetically_interacts_with	g67	RO:0002410	10
+g1	biolink:genetically_interacts_with	g68	RO:0002410	10
+g1	biolink:genetically_interacts_with	g69	RO:0002410	10
+g1	biolink:genetically_interacts_with	g70	RO:0002410	10
+g1	biolink:genetically_interacts_with	g71	RO:0002410	10
+g1	biolink:genetically_interacts_with	g72	RO:0002410	10
+g1	biolink:genetically_interacts_with	g73	RO:0002410	10
+g1	biolink:genetically_interacts_with	g74	RO:0002410	10
+g1	biolink:genetically_interacts_with	g75	RO:0002410	10
+g1	biolink:genetically_interacts_with	g76	RO:0002410	10
+g1	biolink:genetically_interacts_with	g77	RO:0002410	10
+g1	biolink:genetically_interacts_with	g78	RO:0002410	10
+g1	biolink:genetically_interacts_with	g79	RO:0002410	10
+g1	biolink:genetically_interacts_with	g80	RO:0002410	10
+g1	biolink:genetically_interacts_with	g81	RO:0002410	10
+g1	biolink:genetically_interacts_with	g82	RO:0002410	10
+g1	biolink:genetically_interacts_with	g83	RO:0002410	10
+g1	biolink:genetically_interacts_with	g84	RO:0002410	10
+g1	biolink:genetically_interacts_with	g85	RO:0002410	10
+g1	biolink:genetically_interacts_with	g86	RO:0002410	10
+g1	biolink:genetically_interacts_with	g87	RO:0002410	10
+g1	biolink:genetically_interacts_with	g88	RO:0002410	10
+g1	biolink:genetically_interacts_with	g89	RO:0002410	10
+g1	biolink:genetically_interacts_with	g90	RO:0002410	10
+g1	biolink:genetically_interacts_with	g91	RO:0002410	10
+g1	biolink:genetically_interacts_with	g92	RO:0002410	10
+g1	biolink:genetically_interacts_with	g93	RO:0002410	10
+g1	biolink:genetically_interacts_with	g94	RO:0002410	10
+g1	biolink:genetically_interacts_with	g95	RO:0002410	10
+g1	biolink:genetically_interacts_with	g96	RO:0002410	10
+g1	biolink:genetically_interacts_with	g97	RO:0002410	10
+g1	biolink:genetically_interacts_with	g98	RO:0002410	10
+g1	biolink:genetically_interacts_with	g99	RO:0002410	10
+g1	biolink:genetically_interacts_with	g100	RO:0002410	10
+g0	biolink:genetically_interacts_with	g1	RO:0002410	10
+g1	biolink:causes	d1	RO:0002410	10
+d1	biolink:causes	d2	RO:0002410	10
+d1	biolink:causes	d3	RO:0002410	10
+d1	biolink:causes	d4	RO:0002410	10
+d1	biolink:causes	d5	RO:0002410	10
+d1	biolink:causes	d6	RO:0002410	10
+d1	biolink:causes	d7	RO:0002410	10
+d1	biolink:causes	d8	RO:0002410	10
+d1	biolink:causes	d9	RO:0002410	10
+d1	biolink:causes	d10	RO:0002410	10
+d1	biolink:causes	d11	RO:0002410	10
+d1	biolink:causes	d12	RO:0002410	10
+d1	biolink:causes	d13	RO:0002410	10
+d1	biolink:causes	d14	RO:0002410	10
+d1	biolink:causes	d15	RO:0002410	10
+d1	biolink:causes	d16	RO:0002410	10
+d1	biolink:causes	d17	RO:0002410	10
+d1	biolink:causes	d18	RO:0002410	10
+d1	biolink:causes	d19	RO:0002410	10
+d1	biolink:causes	d20	RO:0002410	10
+g1	biolink:interacts_with	p1	RO:0002410	10
+p1	biolink:interacts_with	p2	RO:0002410	10
+p1	biolink:interacts_with	p3	RO:0002410	10
+p1	biolink:interacts_with	p4	RO:0002410	10
+p1	biolink:interacts_with	p5	RO:0002410	10
+p1	biolink:interacts_with	p6	RO:0002410	10
+p1	biolink:interacts_with	p7	RO:0002410	10
+p1	biolink:interacts_with	p8	RO:0002410	10
+p1	biolink:interacts_with	p9	RO:0002410	10
+p1	biolink:interacts_with	p10	RO:0002410	10
+p1	biolink:interacts_with	p11	RO:0002410	10
+p1	biolink:interacts_with	p12	RO:0002410	10
+p1	biolink:physically_interacts_with	p13	RO:0002410	10
+p1	biolink:physically_interacts_with	p14	RO:0002410	10
+p1	biolink:physically_interacts_with	p15	RO:0002410	10
+p1	biolink:physically_interacts_with	p16	RO:0002410	10
+p1	biolink:physically_interacts_with	p17	RO:0002410	10
+p1	biolink:physically_interacts_with	p18	RO:0002410	10
+p1	biolink:physically_interacts_with	p19	RO:0002410	10
+p1	biolink:physically_interacts_with	p20	RO:0002410	10
+p1	biolink:physically_interacts_with	p21	RO:0002410	10
+p1	biolink:physically_interacts_with	p22	RO:0002410	10
+p1	biolink:physically_interacts_with	p23	RO:0002410	10
+p1	biolink:physically_interacts_with	p24	RO:0002410	10
+p1	biolink:physically_interacts_with	p25	RO:0002410	10
+p1	biolink:physically_interacts_with	p26	RO:0002410	10
+p1	biolink:physically_interacts_with	p27	RO:0002410	10
+p1	biolink:physically_interacts_with	p28	RO:0002410	10
+p1	biolink:physically_interacts_with	p29	RO:0002410	10
+p1	biolink:physically_interacts_with	p30	RO:0002410	10
