@@ -34,8 +34,8 @@ class TestRun(TestCase):
 
     def test_edges_command(self):
         result = self.runner.invoke(cli=edges, args=[
-             '-n 100',
-             '-d tests/resources/edges/small_graph_nodes.tsv',
-             '-e tests/resources/edges/small_graph_edges.tsv'],
+             '-n', '100',
+             '-d', 'tests/resources/edges/small_graph_nodes.tsv',
+             '-e', 'tests/resources/edges/small_graph_edges.tsv'],
             catch_exceptions=False)
         self.assertEqual(result.exit_code, 0)
