@@ -1,8 +1,8 @@
-from unittest import TestCase, skip
+from unittest import TestCase
 from click.testing import CliRunner
 from unittest import mock
 
-from run import download, transform, load
+from run import download, transform, load, edges
 
 
 class TestRun(TestCase):
@@ -32,3 +32,10 @@ class TestRun(TestCase):
             self.assertNotEqual(result.exit_code, 0)
             self.assertRegexpMatches(result.output, "does not exist")
 
+    def test_edges_command(self):
+        result = self.runner.invoke(cli=edges, args=[
+             '-n 100',
+             '-d tests/resources/edges/small_graph_nodes.tsv',
+             '-e tests/resources/edges/small_graph_edges.tsv'],
+            catch_exceptions=False)
+        self.assertEqual(result.exit_code, 0)

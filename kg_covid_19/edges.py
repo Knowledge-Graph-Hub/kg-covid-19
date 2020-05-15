@@ -1,4 +1,4 @@
-def make_edges(input_dir: str, output_dir: str) -> None:
+def make_edges(*args, **kwargs) -> None:
     """Prepare positive and negative edges for testing and training
 
     Args:
