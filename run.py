@@ -83,6 +83,7 @@ def load(yaml: str) -> None:
     load_and_merge(yaml)
 
 
+@cli.command()
 @click.option("query", "-q", required=True, default=None, multiple=False,
               type=click.Choice(QUERIES.keys()))
 @click.option("input_dir", "-i", default="data/")
@@ -104,14 +105,14 @@ def query(query: str, input_dir: str, output_dir: str) -> None:
 
 
 @cli.command()
-@click.option("num_edges", required=True, type=int)
-@click.option("nodes", default="data/merged/nodes.tsv", type=click.Path(exists=True))
-@click.option("edges", default="data/merged/edges.tsv", type=click.Path(exists=True))
-@click.option("output_dir", default="data/edges/", type=click.Path(exists=True))
-@click.option("train_fraction", default=0.8)
-@click.option("validation", is_flag=True, default=False)
-@click.option("node_src_dst_types", default=None, multiple=True, type=str)
-@click.option("min_degree", default=2)
+@click.option("num_edges", "-m", required=True, type=int)
+@click.option("nodes", "-n", default="data/merged/nodes.tsv", type=click.Path(exists=True))
+@click.option("edges", "-e", default="data/merged/edges.tsv", type=click.Path(exists=True))
+@click.option("output_dir", "-o", default="data/edges/", type=click.Path(exists=True))
+@click.option("train_fraction", "-t", default=0.8)
+@click.option("validation", "-v", is_flag=True, default=False)
+@click.option("node_src_dst_types", "-y", default=None, multiple=True, type=str)
+@click.option("min_degree", "-d", default=2)
 def edges(*args, **kwargs) -> None:
     """Make sets of edges for ML training
 
