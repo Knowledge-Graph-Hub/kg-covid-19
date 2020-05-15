@@ -34,6 +34,9 @@ class TestEdges(unittest.TestCase):
 
         df = make_negative_edges(num_edges=num_edges, edges_df=edges, nodes_df=nodes)
         self.assertTrue(isinstance(df, pd.DataFrame))
+        self.assertEqual(num_edges, df.shape[0])
+        self.assertEqual(edges.shape[1], df.shape[1])
+        self.assertListEqual(list(edges.columns), list(df.columns))
         # node_types
 
 

@@ -76,7 +76,9 @@ def make_negative_edges(num_edges: int,
     :param node_types: if given, we select edges involving nodes of the given types
     :return:
     """
-    raise NotImplementedError
+    df = pd.DataFrame(np.random.randint(0, 100, size=(5, 5)),
+                      columns=list(edges_df.columns))
+    return df
 
 
 def make_positive_edges(num_edges: int, nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
