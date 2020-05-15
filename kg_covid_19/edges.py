@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import List
+from typing import List, Union
 
 import pandas as pd
 import numpy as np
@@ -66,14 +66,21 @@ def df_to_tsv(new_edges_df, new_edges_outfile) -> None:
 def make_negative_edges(num_edges: int,
                         nodes_df: pd.DataFrame,
                         edges_df: pd.DataFrame,
-                        node_types: list) -> pd.DataFrame:
+                        node_types: list = None) -> pd.DataFrame:
+    """Given a graph (as nodes and edges pandas dataframes), select num_edges edges that
+    are NOT present in the graph
+
+    :param num_edges:
+    :param nodes_df:
+    :param edges_df:
+    :param node_types: if given, we select edges involving nodes of the given types
+    :return:
+    """
     raise NotImplementedError
 
 
 def make_positive_edges(num_edges: int, nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
-                        node_types: list, min_degree: int) -> List[pd.DataFrame,
-                                                                   pd.DataFrame,
-                                                                   pd.DataFrame]:
+                        node_types: list, min_degree: int) -> List[Union[pd.DataFrame]]:
     # Positive edges are randomly selected from the edges in the graph, IFF both nodes
     # participating in the edge have a degree greater than min_degree (to avoid creating
     # disconnected components). This edge is then removed in the output graph. Negative
