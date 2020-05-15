@@ -109,10 +109,10 @@ def query(query: str, input_dir: str, output_dir: str) -> None:
 @click.option("nodes", "-d", default="data/merged/nodes.tsv")
 @click.option("edges", "-e", default="data/merged/edges.tsv")
 @click.option("output_dir", "-o", default="data/edges/")
-@click.option("train_fraction", "-t", default=0.8)
+@click.option("train_fraction", "-t", default=0.8, type=click.FLOAT)
 @click.option("validation", "-v", is_flag=True, default=False)
 @click.option("node_types", "-y", default=None, multiple=True, type=str)
-@click.option("min_degree", "-m", default=1)
+@click.option("min_degree", "-m", default=1, type=click.INT)
 def edges(*args, **kwargs) -> None:
     """Make sets of edges for ML training
 
