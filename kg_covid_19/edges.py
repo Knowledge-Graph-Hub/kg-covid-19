@@ -22,7 +22,7 @@ def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
         :param min_degree:
 
     """
-
+    pass
 
 
 def tsv_to_df(tsv_file: str) -> pd.DataFrame:
