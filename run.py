@@ -110,7 +110,7 @@ def query(query: str, input_dir: str, output_dir: str) -> None:
 @click.option("output_dir", default="data/edges/", type=click.Path(exists=True))
 @click.option("train_fraction", default=0.8)
 @click.option("validation", is_flag=True, default=False)
-@click.option("node_src_dst_types", default=[None, None], type=List[Union[str, None]])
+@click.option("node_src_dst_types", default=None, multiple=True, type=str)
 @click.option("min_degree", default=2)
 def edges(*args, **kwargs) -> None:
     """Make sets of edges for ML training
@@ -148,7 +148,7 @@ def edges(*args, **kwargs) -> None:
         min_degree      when choosing edges, what is the minimum degree of nodes involved
                         in the edge
         node_src_dst_types: what node types should we make edges from? by default, any
-                       [None, None]
+                        type. If specified, should use items from 'category' column
     """
     make_edges(*args, **kwargs)
 
