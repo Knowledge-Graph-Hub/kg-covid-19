@@ -111,12 +111,12 @@ def query(query: str, input_dir: str, output_dir: str) -> None:
 @click.option("output_dir", "-o", default="data/edges/", type=click.Path(exists=True))
 @click.option("train_fraction", "-t", default=0.8)
 @click.option("validation", "-v", is_flag=True, default=False)
-@click.option("node_src_dst_types", "-y", default=None, multiple=True, type=str)
-@click.option("min_degree", "-d", default=2)
+@click.option("node_types", "-y", default=None, multiple=True, type=str)
+@click.option("min_degree", "-d", default=1)
 def edges(*args, **kwargs) -> None:
     """Make sets of edges for ML training
 
-    Given a graph (in KGX formatted node and edge TSVs), output positive and negative
+    Given a graph (from formatted node and edge TSVs), output positive and negative
     edges for use in machine learning.
 
     Positive edges are randomly selected from the edges in the graph, IFF both nodes
@@ -124,7 +124,7 @@ def edges(*args, **kwargs) -> None:
     disconnected components). This edge is then removed in the output graph. Negative
     edges are selected by randomly selecting pairs of nodes that are not connected by an
     edge. Optionally, if edge_type is specified, only edges between nodes of
-    node_src_dst_types[0] and node_src_dst_types[1] are selected.
+    specified in node_types are selected.
 
     For both positive and negative edge sets, edges are assigned to training set
     according to train_fraction (0.8 by default). The remaining are assigned to test set
@@ -146,9 +146,9 @@ def edges(*args, **kwargs) -> None:
         output_dir:     directory to output edges and new graph [data/edges/]
         train_fraction: fraction of edges to emit as training [0.8]
         validation:     should we make validation edges? [False]
-        min_degree      when choosing edges, what is the minimum degree of nodes involved
-                        in the edge
-        node_src_dst_types: what node types should we make edges from? by default, any
+        min_degree      when choosing edges, what is the minimum degree of nodes
+                        involved in the edge [1]
+        node_types:    what node types should we make edges from? by default, any
                         type. If specified, should use items from 'category' column
     """
     make_edges(*args, **kwargs)
