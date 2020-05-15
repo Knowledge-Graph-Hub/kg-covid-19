@@ -2,10 +2,16 @@ def make_edges(*args, **kwargs) -> None:
     """Prepare positive and negative edges for testing and training
 
     Args:
-        input_dir: A string pointing to the directory to import data from.
-        output_dir: A string pointing to the directory to output data to.
-        sources: A list of sources to transform.
-
+        num_edges:      number of positive and negative edges to emit
+        nodes:          nodes of input graph, in KGX TSV format [data/merged/nodes.tsv]
+        edges:          edges for input graph, in KGX TSV format [data/merged/edges.tsv]
+        output_dir:     directory to output edges and new graph [data/edges/]
+        train_fraction: fraction of edges to emit as training [0.8]
+        validation:     should we make validation edges? [False]
+        min_degree      when choosing edges, what is the minimum degree of nodes
+                        involved in the edge [1]
+        node_types:    what node types should we make edges from? by default, any
+                        type. If specified, should use items from 'category' column
     Returns:
         None.
 
