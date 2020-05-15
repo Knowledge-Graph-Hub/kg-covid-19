@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import List
 
 import pandas as pd
 import numpy as np
@@ -24,31 +25,93 @@ def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
         :param check_disconnected_nodes: should we check for disconnected nodes? [True]
     Returns:
         None.
-        :param min_degree:
-
     """
-    edges_df = tsv_to_df(edges)
-    nodes_df = tsv_to_df(nodes)
+    new_edges_outfile = os.path.join(output_dir, "edges.tsv")
+    new_nodes_outfile = os.path.join(output_dir, "nodes.tsv")
+
+    edges_df: pd.DataFrame = tsv_to_df(edges)
+    nodes_df: pd.DataFrame = tsv_to_df(nodes)
 
     # emit warning if there are nodes in nodes tsv not present in edges tsv
-    if has_disconnected_nodes(nodes_df, edges_df):
+    if check_disconnected_nodes and has_disconnected_nodes(nodes_df, edges_df):
         logging.warning("Graph has disconnected nodes")
 
     os.makedirs(output_dir, exist_ok=True)
 
-    # make positive edges
+    neg_edges_df: pd.DataFrame = \
+        make_negative_edges(num_edges, nodes_df, edges_df, node_types)
+
+    # make positive edges and new graph with those edges removed
+    pos_edges_df: pd.DataFrame
+    new_edges_df: pd.DataFrame
+    new_nodes_df: pd.DataFrame
+    pos_edges_df, new_edges_df, new_nodes_df = \
+        make_positive_edges(num_edges, nodes_df, edges_df, node_types, min_degree)
+
+    # write out new graph
+    df_to_tsv(new_edges_df, new_edges_outfile)
+    df_to_tsv(new_nodes_df, new_nodes_outfile)
+
+    # write out negative edges
+    write_edge_files(neg_edges_df, train_fraction, validation, "neg")
+
+    # write out positive edges
+    write_edge_files(pos_edges_df, train_fraction, validation, "pos")
 
 
+def df_to_tsv(new_edges_df, new_edges_outfile) -> None:
+    raise NotImplementedError
+
+
+def make_negative_edges(num_edges: int,
+                        nodes_df: pd.DataFrame,
+                        edges_df: pd.DataFrame,
+                        node_types: list) -> pd.DataFrame:
+    raise NotImplementedError
+
+
+def make_positive_edges(num_edges: int, nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
+                        node_types: list, min_degree: int) -> List[pd.DataFrame,
+                                                                   pd.DataFrame,
+                                                                   pd.DataFrame]:
     # Positive edges are randomly selected from the edges in the graph, IFF both nodes
     # participating in the edge have a degree greater than min_degree (to avoid creating
     # disconnected components). This edge is then removed in the output graph. Negative
     # edges are selected by randomly selecting pairs of nodes that are not connected by an
     # edge. Optionally, if edge_type is specified, only edges between nodes of
     # specified in node_types are selected.
-    #
-    # For both positive and negative edge sets, edges are assigned to training set
-    # according to train_fraction (0.8 by default). The remaining are assigned to test set
-    # or split evenly between test and validation set, if [validation==True].
+    raise NotImplementedError
+
+
+def write_edge_files(edges_df: pd.DataFrame,
+                     train_fraction: float,
+                     validation: bool,
+                     prefix: str,
+                     train_str: str = "train",
+                     test_str: str = "test",
+                     valid_str: str = "valid",
+                     sep: str = "_",
+                     suffix: str = ".tsv") -> None:
+    """Write out edges (training, testing, validation if validation == True)
+
+    :param edges_df: pandas dataframe with edge data
+    :param train_fraction: fraction of data to use for training
+    :param validation: should we write validation edges? (if so, split
+                        edges evenly between test and validation)
+    :param prefix: prefix for out file
+    :param train_str: string to use for training file name
+    :param test_str: string to use for test file name
+    :param valid_str: string to use for valid file name
+    :param sep: separator
+    :param suffix: suffix for file name
+    :return: None
+    """
+    raise NotImplementedError
+
+
+def write_positive_edges(pos_edges_df: pd.DataFrame, train_fraction, validation):
+    raise NotImplementedError
+
 
 def has_disconnected_nodes(nodes_df: pd.DataFrame, edges_df: pd.DataFrame) -> bool:
     """Given nodes and edges df, determine if there are nodes that are not present in
