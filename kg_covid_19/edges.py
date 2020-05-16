@@ -1,10 +1,10 @@
 import logging
 import os
 import warnings
-from typing import List, Union
+from typing import List, Union, Tuple
 
-import pandas as pd
-import numpy as np
+import pandas as pd  # type: ignore
+import numpy as np  # type: ignore
 
 
 def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
@@ -35,11 +35,7 @@ def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
 
     # emit warning if there are nodes in nodes tsv not present in edges tsv
     if check_disconnected_nodes and has_disconnected_nodes(nodes_df, edges_df):
-        logging.warning("Graph has disconnected nodes")
-
-    # emit warning if there are edges that involve nodes not in nodes tsv
-    if edges_have_nodes_not_in_nodes_file(nodes_df, edges_df):
-        logging.warning("Edges have nodes not described in node file")
+        warnings.warn("Graph has disconnected nodes")
 
     os.makedirs(output_dir, exist_ok=True)
 
@@ -72,8 +68,8 @@ def make_negative_edges(num_edges: int,
                         nodes_df: pd.DataFrame,
                         edges_df: pd.DataFrame,
                         node_types: list = None,
-                        return_edge_columns: list = ('subject', 'edge_label',
-                                                     'object', 'relation'),
+                        return_edge_columns: Tuple[str, str, str, str] =
+                        ('subject', 'edge_label', 'object', 'relation'),
                         edge_label: str = 'negative_edge',
                         relation: str = 'negative_edge'
                         ) -> pd.DataFrame:

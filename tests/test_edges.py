@@ -4,7 +4,7 @@ import pandas as pd
 from pandas import np
 
 from kg_covid_19.edges import make_edges, tsv_to_df, has_disconnected_nodes, \
-    make_negative_edges, edges_have_nodes_not_in_nodes_file
+    make_negative_edges
 
 
 class TestEdges(unittest.TestCase):
