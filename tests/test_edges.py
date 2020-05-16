@@ -31,6 +31,8 @@ class TestEdges(unittest.TestCase):
     def test_make_negative_edges(self):
         num_edges = 5
         expected_columns = ['subject', 'edge_label', 'object', 'relation']
+        expected_edge_label = 'negative_edge'
+        expected_relation = 'negative_edge'
         edges = tsv_to_df(self.small_edges_file)
         nodes = tsv_to_df(self.small_nodes_file)
         unique_node_ids = list(np.unique(nodes.id))
@@ -42,6 +44,12 @@ class TestEdges(unittest.TestCase):
         self.assertEqual(len(expected_columns), neg_edge_df.shape[1],
                          "didn't get expected columns in negative edge df")
         self.assertListEqual(expected_columns, list(neg_edge_df.columns))
+        self.assertListEqual([expected_edge_label] * neg_edge_df.shape[0],
+                             list(neg_edge_df.edge_label),
+                             "Edge label column not correct")
+        self.assertListEqual([expected_relation] * neg_edge_df.shape[0],
+                             list(neg_edge_df.relation),
+                             "Relation column not correct")
 
         neg_nodes = list(np.unique(np.concatenate((neg_edge_df.subject,
                                                    neg_edge_df.object))))

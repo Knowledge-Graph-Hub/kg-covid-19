@@ -66,14 +66,22 @@ def df_to_tsv(new_edges_df, new_edges_outfile) -> None:
 def make_negative_edges(num_edges: int,
                         nodes_df: pd.DataFrame,
                         edges_df: pd.DataFrame,
-                        node_types: list = None) -> pd.DataFrame:
+                        node_types: list = None,
+                        return_edge_columns: list = ('subject', 'edge_label',
+                                                     'object', 'relation'),
+                        edge_label: str = 'negative_edge',
+                        relation: str = 'negative_edge'
+                        ) -> pd.DataFrame:
     """Given a graph (as nodes and edges pandas dataframes), select num_edges edges that
     are NOT present in the graph
 
-    :param num_edges:
-    :param nodes_df:
-    :param edges_df:
+    :param num_edges: how many edges
+    :param nodes_df: pandas dataframe containing node info
+    :param edges_df: pandas dataframe containing edge info
     :param node_types: if given, we select edges involving nodes of the given types
+    :param return_edge_columns: columns in return dataframe
+    :param relation: string to put in relation column
+    :param edge_label: string to put in edge_label column
     :return:
     """
     if 'subject' not in list(edges_df.columns) or 'object' not in list(edges_df.columns):
@@ -83,14 +91,13 @@ def make_negative_edges(num_edges: int,
     iteration = 0
     edge_list: list = []
     while completed_edges < num_edges:
-        edge_list.append(['g1'] * 4)
+        edge_list.append(['g1', edge_label, 'g1', relation])
         completed_edges += 1
 
         if iteration > (10 * num_edges):
             raise RuntimeError("Too many iterations")
 
-    return_df = \
-        pd.DataFrame(edge_list, columns=['subject', 'edge_label', 'object', 'relation'])
+    return_df = pd.DataFrame(edge_list, columns=return_edge_columns)
     return return_df
 
 
