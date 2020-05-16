@@ -135,6 +135,10 @@ def _generate_negative_edges(num_edges: int,
     # negative_edges = possible_edges[(~possible_edges.subject.isin(edges_df.subject)
     # & ~possible_edges.object.isin(edges_df.object))]
 
+    logging.debug("Dropping reflexive edges")
+    negative_edges = \
+        negative_edges[negative_edges['subject'] != negative_edges['object']]
+
     # select only num_edges edges
     logging.debug("Selecting %i edges..." % num_edges)
     negative_edges = negative_edges.head(num_edges)
