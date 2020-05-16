@@ -50,16 +50,20 @@ class TestEdges(unittest.TestCase):
     def test_make_negative_edges_check_num_edges_returned(self):
         self.assertEqual(self.num_edges, self.neg_edge_df.shape[0])
 
-    def test_make_negative_edges_check_columns(self):
+    def test_make_negative_edges_check_column_names(self):
         expected_columns = ['subject', 'edge_label', 'object', 'relation']
-        expected_edge_label = 'negative_edge'
-        expected_relation = 'negative_edge'
         self.assertEqual(len(expected_columns), self.neg_edge_df.shape[1],
                          "didn't get expected columns in negative edge df")
         self.assertListEqual(expected_columns, list(self.neg_edge_df.columns))
+
+    def test_make_negative_edges_check_edge_label_column(self):
+        expected_edge_label = 'negative_edge'
         self.assertListEqual([expected_edge_label] * self.neg_edge_df.shape[0],
                              list(self.neg_edge_df.edge_label),
                              "Edge label column not correct")
+
+    def test_make_negative_edges_check_relation_column(self):
+        expected_relation = 'negative_edge'
         self.assertListEqual([expected_relation] * self.neg_edge_df.shape[0],
                              list(self.neg_edge_df.relation),
                              "Relation column not correct")
