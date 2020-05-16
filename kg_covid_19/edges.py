@@ -109,18 +109,22 @@ def _generate_negative_edges(num_edges: int,
                                                   edges_df.object))))
 
     if rseed:
+        logging.debug("Setting random seed")
         random.seed(rseed)
     if shuffle:
+        logging.debug("Shuffling nodes")
         random.shuffle(unique_nodes)
 
-    logging.info("Found %i unique nodes" % len(unique_nodes))
+    logging.debug("Found %i unique nodes" % len(unique_nodes))
 
     subject_df = pd.DataFrame({'subject': unique_nodes, 'key': 'xyz'})
     object_df = pd.DataFrame({'object': unique_nodes, 'key': 'xyz'})
 
     # cartesian product all possible edges
+    logging.debug("Doing cartesian product of all nodes...")
     possible_edges = pd.merge(subject_df, object_df, on='key').drop('key', axis=1)
 
+    logging.debug("Eliminating positives edges...")
     negative_edges = possible_edges.merge(edges_df.drop_duplicates(),
                                           on=['subject', 'object'],
                                           how='left', indicator=True)
@@ -132,9 +136,11 @@ def _generate_negative_edges(num_edges: int,
     # & ~possible_edges.object.isin(edges_df.object))]
 
     # select only num_edges edges
+    logging.debug("Selecting %i edges..." % num_edges)
     negative_edges = negative_edges.head(num_edges)
 
     # only subject and object
+    logging.debug("Making new dataframe")
     negative_edges = negative_edges[['subject', 'object']]
 
     # add edge_label and relation
