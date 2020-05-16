@@ -41,6 +41,7 @@ class TestEdges(unittest.TestCase):
         self.assertEqual(num_edges, neg_edge_df.shape[0])
         self.assertEqual(len(expected_columns), neg_edge_df.shape[1],
                          "didn't get expected columns in negative edge df")
+        self.assertListEqual(expected_columns, list(neg_edge_df.columns))
 
         neg_nodes = list(np.unique(np.concatenate((neg_edge_df.subject,
                                                    neg_edge_df.object))))
