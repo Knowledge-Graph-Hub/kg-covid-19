@@ -89,11 +89,18 @@ class TestEdges(unittest.TestCase):
         vals = [','.join(ele.split()) for ele in dup_rows_str]
 
         self.assertTrue(dup_rows.shape[0] == 0,
-                        "Got %i duplicated edges: %s" % (dup_rows.shape[0], vals))
+                        "Got %i duplicated edges:\n%s" % (dup_rows.shape[0], vals))
 
     def test_make_negative_edges_ensure_neg_edges_are_actually_negative(self):
         # make sure our negative edges are actually negative, i.e. not in edges_df
-        pass
+        non_neg_edges = self.ne.merge(self.edges, how='inner',
+                                  left_on=['subject', 'object'],
+                                  right_on=['subject', 'object'])
+        non_neg_edges_str = non_neg_edges.to_string(header=False, index=False,
+                                                    index_names=False).split('\n')
+        self.assertTrue(non_neg_edges.shape[0] == 0,
+                        "Got %i negative edges that are not actually negative:\n%s" %
+                        (non_neg_edges.shape[0], non_neg_edges_str))
 
     # TODO - test node_types fxn
 
