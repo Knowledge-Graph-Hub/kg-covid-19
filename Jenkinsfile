@@ -118,6 +118,21 @@ pipeline {
             }
         }
 
+        stage('Make blazegraph journal'){
+            steps {
+                dir('./config/blazegraph') {
+                        git(
+                                url: 'https://github.com/balhoff/blazegraph-runner.git',
+                                branch: 'master'
+                        )
+                        sh 'sbt stage'
+                        sh 'pigz -d ../merged-kg.nt.gz'
+                        sh './target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=merged-kg.jnl --use-ontology-graph=true ../merged-kg.nt'
+                        sh 'pigz merged-kg.jnl'
+                }
+            }
+        }
+
         stage('Publish') {
             steps {
                 dir('./gitrepo') {
@@ -128,6 +143,7 @@ pipeline {
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
+                                sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.jnl.gz s3://kg-hub-public-data/kg-covid-19.jnl.gz'
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/[artifact name]
                             }
