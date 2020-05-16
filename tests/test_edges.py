@@ -43,8 +43,7 @@ class TestEdges(unittest.TestCase):
         nodes = tsv_to_df(self.small_nodes_file)
         unique_node_ids = list(np.unique(nodes.id))
 
-        neg_edge_df = make_negative_edges(num_edges=num_edges, edges_df=edges,
-                                          nodes_df=nodes)
+        neg_edge_df = make_negative_edges(num_edges, nodes, edges)
         self.assertTrue(isinstance(neg_edge_df, pd.DataFrame))
         self.assertEqual(num_edges, neg_edge_df.shape[0])
         self.assertEqual(len(expected_columns), neg_edge_df.shape[1],
