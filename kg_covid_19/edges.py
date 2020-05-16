@@ -1,5 +1,6 @@
 import logging
 import os
+import random
 import warnings
 from typing import List, Union, Tuple, Optional
 
@@ -86,16 +87,13 @@ def make_negative_edges(num_edges: int,
     :param edge_label: string to put in edge_label column
     :return:
     """
-    if 'subject' not in list(edges_df.columns) or 'object' not in list(edges_df.columns):
+    if 'subject' not in list(edges_df.columns) or 'object' not in list(
+            edges_df.columns):
         logging.error("Can't find subject or object column in edges")
 
-    edge_list: list = []
-    for _ in tqdm(range(num_edges)):
-        edge_list = _generate_negative_edges(num_edges, nodes_df, edges_df,
+    edge_list = _generate_negative_edges(num_edges, nodes_df, edges_df,
                                              node_types, edge_label, relation)
-
-    return_df = pd.DataFrame(edge_list, columns=return_edge_columns)
-    return return_df
+    return edge_list
 
 
 def _generate_negative_edges(num_edges: int,
@@ -103,15 +101,49 @@ def _generate_negative_edges(num_edges: int,
                              edges_df: pd.DataFrame,
                              node_types: Optional[List[str]],
                              edge_label: str,
-                             relation: str) -> List[List[str]]:
-
+                             relation: str,
+                             rseed: str = None,
+                             shuffle: bool = True) -> pd.DataFrame:
     unique_nodes = list(np.unique(np.concatenate((nodes_df.id,
                                                   edges_df.subject,
                                                   edges_df.object))))
-    edge_list: list = []
-    for _ in tqdm(range(num_edges)):
-        edge_list.append(['g1', edge_label, 'g2', relation])
-    return edge_list
+
+    if rseed:
+        random.seed(rseed)
+    if shuffle:
+        random.shuffle(unique_nodes)
+
+    logging.info("Found %i unique nodes" % len(unique_nodes))
+
+    subject_df = pd.DataFrame({'subject': unique_nodes, 'key': 'xyz'})
+    object_df = pd.DataFrame({'object': unique_nodes, 'key': 'xyz'})
+
+    # cartesian product all possible edges
+    possible_edges = pd.merge(subject_df, object_df, on='key').drop('key', axis=1)
+
+    negative_edges = possible_edges.merge(edges_df.drop_duplicates(),
+                                          on=['subject', 'object'],
+                                          how='left', indicator=True)
+    negative_edges = negative_edges[negative_edges['_merge'] == 'left_only']
+
+    # two other possibilities, in case we want to refactor:
+    # negative_edges = possible_edges[~possible_edges.isin(edges_df)].dropna()
+    # negative_edges = possible_edges[(~possible_edges.subject.isin(edges_df.subject)
+    # & ~possible_edges.object.isin(edges_df.object))]
+
+    # select only num_edges edges
+    negative_edges = negative_edges.head(num_edges)
+
+    # only subject and object
+    negative_edges = negative_edges[['subject', 'object']]
+
+    # add edge_label and relation
+    negative_edges = pd.DataFrame({'subject': negative_edges['subject'],
+                                   'edge_label': edge_label,
+                                   'object': negative_edges['object'],
+                                   'relation': relation})
+
+    return negative_edges
 
 
 def make_positive_edges(num_edges: int, nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
