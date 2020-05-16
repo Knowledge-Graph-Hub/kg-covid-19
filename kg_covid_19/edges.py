@@ -1,10 +1,11 @@
 import logging
 import os
 import warnings
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, Optional
 
 import pandas as pd  # type: ignore
 import numpy as np  # type: ignore
+from tqdm import tqdm
 
 
 def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
@@ -88,21 +89,29 @@ def make_negative_edges(num_edges: int,
     if 'subject' not in list(edges_df.columns) or 'object' not in list(edges_df.columns):
         logging.error("Can't find subject or object column in edges")
 
-    unique_nodes = list(np.unique(np.concatenate((edges_df.subject, edges_df.object))))
-
-    completed_edges = 0
-    iteration = 0
     edge_list: list = []
-    while completed_edges < num_edges:
-        edge_list.append(['g1', edge_label, 'g2', relation])
-        completed_edges += 1
-
-        if iteration > (10 * num_edges):
-            raise RuntimeError("Too many iterations")
+    for _ in tqdm(range(num_edges)):
+        edge_list = _generate_negative_edges(num_edges, nodes_df, edges_df,
+                                             node_types, edge_label, relation)
 
     return_df = pd.DataFrame(edge_list, columns=return_edge_columns)
     return return_df
 
+
+def _generate_negative_edges(num_edges: int,
+                             nodes_df: pd.DataFrame,
+                             edges_df: pd.DataFrame,
+                             node_types: Optional[List[str]],
+                             edge_label: str,
+                             relation: str) -> List[List[str]]:
+
+    unique_nodes = list(np.unique(np.concatenate((nodes_df.id,
+                                                  edges_df.subject,
+                                                  edges_df.object))))
+    edge_list: list = []
+    for _ in tqdm(range(num_edges)):
+        edge_list.append(['g1', edge_label, 'g2', relation])
+    return edge_list
 
 def make_positive_edges(num_edges: int, nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
                         node_types: list, min_degree: int) -> List[Union[pd.DataFrame]]:
