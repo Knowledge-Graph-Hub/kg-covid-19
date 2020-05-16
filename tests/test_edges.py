@@ -32,16 +32,15 @@ class TestEdges(unittest.TestCase):
         self.assertTrue(True)
 
     def test_has_disconnected_nodes(self):
-        edges = tsv_to_df(self.small_edges_file)
-        nodes = tsv_to_df(self.small_nodes_file)
         nodes_extra_ids = tsv_to_df('tests/resources/edges/small_graph_nodes_EXTRA_IDS.tsv')
         nodes_missing_ids = tsv_to_df(
             'tests/resources/edges/small_graph_nodes_MISSING_IDS.tsv')
-        self.assertTrue(not has_disconnected_nodes(edges_df=edges, nodes_df=nodes))
+        self.assertTrue(not has_disconnected_nodes(edges_df=self.edges,
+                                                   nodes_df=self.nodes))
         with self.assertWarns(Warning):
-            self.assertTrue(not has_disconnected_nodes(edges_df=edges,
+            self.assertTrue(not has_disconnected_nodes(edges_df=self.edges,
                                                        nodes_df=nodes_missing_ids))
-        self.assertTrue(has_disconnected_nodes(edges_df=edges,
+        self.assertTrue(has_disconnected_nodes(edges_df=self.edges,
                                                nodes_df=nodes_extra_ids))
 
     def test_make_negative_edges_check_instance_type(self):
