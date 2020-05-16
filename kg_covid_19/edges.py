@@ -145,19 +145,6 @@ def write_positive_edges(pos_edges_df: pd.DataFrame, train_fraction, validation)
     raise NotImplementedError
 
 
-def edges_have_nodes_not_in_nodes_file(nodes_df: pd.DataFrame,
-                                       edges_df: pd.DataFrame) -> bool:
-    """Determine edges involve nodes not described in nodes df
-
-    :param nodes_df: pandas dataframe with node info
-    :param edges_df: pandas dataframe with edge info
-    :return: bool
-    """
-    nodes_edge_file = \
-        np.sort(np.unique(np.concatenate((edges_df.subject, edges_df.object))))
-    nodes_node_file = np.sort(nodes_df.id.unique())
-
-
 def has_disconnected_nodes(nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
                            check_nodes_in_edge_df_not_in_node_df=True) -> bool:
     """Given nodes and edges df, determine if there are nodes that are not present in
@@ -177,8 +164,7 @@ def has_disconnected_nodes(nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
         diff = len(np.setdiff1d(nodes_in_edge_file, nodes_in_node_file))
         if diff != 0:
             warnings.warn(
-                "There are %i nodes in edge file that aren't in nodes file".format(diff)
-            )
+                "There are %i nodes in edge file that aren't in nodes file" % diff)
 
     # if setdiff below is zero, odes_in_node_file is a subset of nodes_in_edge_file
     if len(np.setdiff1d(nodes_in_node_file, nodes_in_edge_file)) == 0:
