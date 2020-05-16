@@ -36,6 +36,8 @@ def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
     if check_disconnected_nodes and has_disconnected_nodes(nodes_df, edges_df):
         logging.warning("Graph has disconnected nodes")
 
+    # TODO: check for edges that mention nodes not in nodes df
+
     os.makedirs(output_dir, exist_ok=True)
 
     neg_edges_df: pd.DataFrame = \
@@ -86,6 +88,8 @@ def make_negative_edges(num_edges: int,
     """
     if 'subject' not in list(edges_df.columns) or 'object' not in list(edges_df.columns):
         logging.warning("Can't find subject or object column in edges")
+
+    unique_nodes = list(np.unique(np.concatenate((edges_df.subject, edges_df.object))))
 
     completed_edges = 0
     iteration = 0
