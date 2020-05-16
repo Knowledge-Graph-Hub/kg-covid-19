@@ -85,7 +85,7 @@ class TestEdges(unittest.TestCase):
             reset_index().rename(columns={0:'counts'})
         dup_rows = count_info.loc[count_info.counts > 0]
         dup_rows_str = dup_rows.to_string(header=False, index=False,
-                                          index_names=False).split('\n')
+                                          index_names=False)
         vals = [','.join(ele.split()) for ele in dup_rows_str]
 
         self.assertTrue(dup_rows.shape[0] == 0,
@@ -97,7 +97,7 @@ class TestEdges(unittest.TestCase):
                                   left_on=['subject', 'object'],
                                   right_on=['subject', 'object'])
         non_neg_edges_str = non_neg_edges.to_string(header=False, index=False,
-                                                    index_names=False).split('\n')
+                                                    index_names=False)
         self.assertTrue(non_neg_edges.shape[0] == 0,
                         "Got %i negative edges that are not actually negative:\n%s" %
                         (non_neg_edges.shape[0], non_neg_edges_str))
