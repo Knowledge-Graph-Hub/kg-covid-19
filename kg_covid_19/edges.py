@@ -1,5 +1,6 @@
 import logging
 import os
+import warnings
 from typing import List, Union
 
 import pandas as pd
@@ -36,7 +37,9 @@ def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
     if check_disconnected_nodes and has_disconnected_nodes(nodes_df, edges_df):
         logging.warning("Graph has disconnected nodes")
 
-    # TODO: check for edges that mention nodes not in nodes df
+    # emit warning if there are edges that involve nodes not in nodes tsv
+    if edges_have_nodes_not_in_nodes_file(nodes_df, edges_df):
+        logging.warning("Edges have nodes not described in node file")
 
     os.makedirs(output_dir, exist_ok=True)
 
@@ -87,7 +90,7 @@ def make_negative_edges(num_edges: int,
     :return:
     """
     if 'subject' not in list(edges_df.columns) or 'object' not in list(edges_df.columns):
-        logging.warning("Can't find subject or object column in edges")
+        logging.error("Can't find subject or object column in edges")
 
     unique_nodes = list(np.unique(np.concatenate((edges_df.subject, edges_df.object))))
 
@@ -146,18 +149,43 @@ def write_positive_edges(pos_edges_df: pd.DataFrame, train_fraction, validation)
     raise NotImplementedError
 
 
-def has_disconnected_nodes(nodes_df: pd.DataFrame, edges_df: pd.DataFrame) -> bool:
-    """Given nodes and edges df, determine if there are nodes that are not present in
-    edges
+def edges_have_nodes_not_in_nodes_file(nodes_df: pd.DataFrame,
+                                       edges_df: pd.DataFrame) -> bool:
+    """Determine edges involve nodes not described in nodes df
 
-    :param nodes_df: pandas data
-    :param edges_df:
-    :return:
+    :param nodes_df: pandas dataframe with node info
+    :param edges_df: pandas dataframe with edge info
+    :return: bool
     """
     nodes_edge_file = \
         np.sort(np.unique(np.concatenate((edges_df.subject, edges_df.object))))
     nodes_node_file = np.sort(nodes_df.id.unique())
-    if np.array_equal(nodes_edge_file, nodes_node_file):
+
+
+def has_disconnected_nodes(nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
+                           check_nodes_in_edge_df_not_in_node_df=True) -> bool:
+    """Given nodes and edges df, determine if there are nodes that are not present in
+    edges (disconnected vertices)
+
+    :param nodes_df: pandas dataframe with node info
+    :param edges_df: pandas dataframe with edge info
+    :param check_nodes_in_edge_df_not_in_node_df: while we're at it, check if
+            edge df has nodes not mentioned in node df [True]
+    :return: bool
+    """
+    nodes_in_edge_file = \
+        np.sort(np.unique(np.concatenate((edges_df.subject, edges_df.object))))
+    nodes_in_node_file = np.sort(nodes_df.id.unique())
+
+    if check_nodes_in_edge_df_not_in_node_df:
+        diff = len(np.setdiff1d(nodes_in_edge_file, nodes_in_node_file))
+        if diff != 0:
+            warnings.warn(
+                "There are %i nodes in edge file that aren't in nodes file".format(diff)
+            )
+
+    # if setdiff below is zero, odes_in_node_file is a subset of nodes_in_edge_file
+    if len(np.setdiff1d(nodes_in_node_file, nodes_in_edge_file)) == 0:
         return False
     else:
         return True

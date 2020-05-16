@@ -1,0 +1,11 @@
+id	name	category
+d1	disease1	biolink:Disease
+d2	disease2	biolink:Disease
+d3	disease2	biolink:Disease
+g1	gene1	biolink:Gene
+g2	gene2	biolink:Gene
+g3	gene3	biolink:Gene
+g4	gene4	biolink:Gene
+p1	protein1	biolink:Protein
+p2	protein2	biolink:Protein
+p3	protein3	biolink:Protein

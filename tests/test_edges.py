@@ -4,7 +4,7 @@ import pandas as pd
 from pandas import np
 
 from kg_covid_19.edges import make_edges, tsv_to_df, has_disconnected_nodes, \
-    make_negative_edges
+    make_negative_edges, edges_have_nodes_not_in_nodes_file
 
 
 class TestEdges(unittest.TestCase):
@@ -24,9 +24,15 @@ class TestEdges(unittest.TestCase):
     def test_has_disconnected_nodes(self):
         edges = tsv_to_df(self.small_edges_file)
         nodes = tsv_to_df(self.small_nodes_file)
-        nodes_extra = tsv_to_df('tests/resources/edges/small_graph_nodes_EXTRA_IDS.tsv')
+        nodes_extra_ids = tsv_to_df('tests/resources/edges/small_graph_nodes_EXTRA_IDS.tsv')
+        nodes_missing_ids = tsv_to_df(
+            'tests/resources/edges/small_graph_nodes_MISSING_IDS.tsv')
         self.assertTrue(not has_disconnected_nodes(edges_df=edges, nodes_df=nodes))
-        self.assertTrue(has_disconnected_nodes(edges_df=edges, nodes_df=nodes_extra))
+        with self.assertWarns(Warning):
+            self.assertTrue(not has_disconnected_nodes(edges_df=edges,
+                                                       nodes_df=nodes_missing_ids))
+        self.assertTrue(has_disconnected_nodes(edges_df=edges,
+                                               nodes_df=nodes_extra_ids))
 
     def test_make_negative_edges(self):
         num_edges = 5
@@ -55,6 +61,7 @@ class TestEdges(unittest.TestCase):
                                                    neg_edge_df.object))))
         self.assertTrue(set(neg_nodes) <= set(unique_node_ids),
                         "Some nodes from negative edges are not in the nodes tsv file")
+
         # test node_types
 
 
