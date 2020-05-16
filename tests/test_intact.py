@@ -13,7 +13,7 @@ class TestIntAct(unittest.TestCase):
 
     def test_intact_instance(self):
         self.assertEqual(self.intact.node_header,
-                         ['id', 'name', 'category'])
+                         ['id', 'name', 'category', 'ncbi_taxid'])
         self.assertEqual(self.intact.edge_header,
                         ['subject', 'edge_label', 'object', 'relation', 'provided_by',
                          'publication', 'num_participants', 'association_type',
@@ -31,8 +31,9 @@ class TestIntAct(unittest.TestCase):
          # nodes and edges given here are checked against the first values in
          # parsed['nodes'] and parsed['edges']. Extra items in parsed['nodes'] and
          # parsed['edges'] are ignored
-         {'nodes': [['UniProtKB:P20290', 'btf3_human', 'biolink:Protein'],
-                    ['UniProtKB:P0C6X7-PRO_0000037317', 'nsp10_cvhsa', 'biolink:RNA']],
+         {'nodes': [['UniProtKB:P20290', 'btf3_human', 'biolink:Protein', '9606'],
+                    ['UniProtKB:P0C6X7-PRO_0000037317', 'nsp10_cvhsa', 'biolink:RNA',
+                     '694009']],
           'edges': [['UniProtKB:P20290', 'biolink:interacts_with',
                      'UniProtKB:P0C6X7-PRO_0000037317', 'RO:0002437', 'intact',
                      'PMID:16157265', '2', 'physical association', '2 hybrid', 'prey',

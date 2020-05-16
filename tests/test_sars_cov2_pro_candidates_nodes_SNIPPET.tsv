@@ -1,0 +1,3 @@
+id	name	category	TTD_ID	iri	description	synonym	taxon
+UniProtKB:P0DTC1	Replicase polyprotein 1a	biolink:Protein					taxon:2697049
+UniProtKB:P0DTC1-PRO_0000449645	p0dtc1-pro_0000449645	biolink:Protein

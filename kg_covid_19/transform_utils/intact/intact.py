@@ -46,11 +46,13 @@ class IntAct(Transform):
             'chebi': 'CHEBI',
             'ensembl': 'ENSEMBL',
             'ddbj/embl/genbank': 'NCBIProtein',
-            'pubmed': 'PMID'
+            'pubmed': 'PMID',
+            'intact': 'INTACT'
         }
         self.pubmed_curie_prefix = 'PMID:'
         self.ppi_edge_label = 'biolink:interacts_with'
         self.ppi_ro_relation = 'RO:0002437'
+        self.node_header = ['id', 'name', 'category', 'ncbi_taxid']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by',
                             'publication', 'num_participants', 'association_type',
                             'detection_method',  'subj_exp_role', 'obj_exp_role']
@@ -233,6 +235,12 @@ class IntAct(Transform):
                 "Problem parsing id in xref interaction %s" % e)
 
         name = ''
+
+        try:
+            tax_id = interactor.getElementsByTagName('organism')[0].attributes['ncbiTaxId'].value
+        except (KeyError, IndexError, AttributeError) as e:
+            tax_id = "NA"
+
         try:
             # xml parsing amirite
             name = interactor.getElementsByTagName('names')[0].getElementsByTagName(
@@ -253,7 +261,7 @@ class IntAct(Transform):
             logging.warning(
                 "Problem parsing name in xref interaction %s" % e)
 
-        return [interactor_id, [this_id, name, category]]
+        return [interactor_id, [this_id, name, category, tax_id]]
 
     def parse_experiment_info(self, xmldoc: object) -> Dict[int, str]:
         """Extract info about experiment from miXML doc

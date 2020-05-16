@@ -1,0 +1,4 @@
+id	name	category	synonym	taxon
+UniProtKB:P0DTD2	Protein 9b	biolink:Protein		taxon:2697049
+UniProtKB:A0A663DJA2	ORF10 protein	biolink:Protein	O	taxon:2697049
+
