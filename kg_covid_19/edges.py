@@ -113,6 +113,7 @@ def _generate_negative_edges(num_edges: int,
         edge_list.append(['g1', edge_label, 'g2', relation])
     return edge_list
 
+
 def make_positive_edges(num_edges: int, nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
                         node_types: list, min_degree: int) -> List[Union[pd.DataFrame]]:
     # Positive edges are randomly selected from the edges in the graph, IFF both nodes
