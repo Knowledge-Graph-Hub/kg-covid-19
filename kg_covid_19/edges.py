@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
                train_fraction: float, validation: bool, node_types: list,
-               min_degree: int, check_disconnected_nodes: bool = True) -> None:
+               min_degree: int, check_disconnected_nodes: bool = False) -> None:
     """Prepare positive and negative edges for testing and training
 
     Args:
@@ -32,10 +32,15 @@ def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
     new_edges_outfile = os.path.join(output_dir, "edges.tsv")
     new_nodes_outfile = os.path.join(output_dir, "nodes.tsv")
 
-    edges_df: pd.DataFrame = tsv_to_df(edges)
+    logging.info("Loading edge file %s" % edges)
+    edges_df: pd.DataFrame = tsv_to_df(edges, usecols=['subject', 'object', 'relation',
+                                                       'edge_label', 'provided_by'])
+
+    logging.info("Loading node file %s" % nodes)
     nodes_df: pd.DataFrame = tsv_to_df(nodes)
 
     # emit warning if there are nodes in nodes tsv not present in edges tsv
+    logging.info("Check for disconnected nodes: %r" % check_disconnected_nodes)
     if check_disconnected_nodes and has_disconnected_nodes(nodes_df, edges_df):
         warnings.warn("Graph has disconnected nodes")
 
@@ -70,8 +75,6 @@ def make_negative_edges(num_edges: int,
                         nodes_df: pd.DataFrame,
                         edges_df: pd.DataFrame,
                         node_types: list = None,
-                        return_edge_columns: Tuple[str, str, str, str] =
-                        ('subject', 'edge_label', 'object', 'relation'),
                         edge_label: str = 'negative_edge',
                         relation: str = 'negative_edge'
                         ) -> pd.DataFrame:
@@ -82,7 +85,7 @@ def make_negative_edges(num_edges: int,
     :param nodes_df: pandas dataframe containing node info
     :param edges_df: pandas dataframe containing edge info
     :param node_types: if given, we select edges involving nodes of the given types
-    :param return_edge_columns: columns in return dataframe
+    (not implemented yet)
     :param relation: string to put in relation column
     :param edge_label: string to put in edge_label column
     :return:
@@ -92,7 +95,7 @@ def make_negative_edges(num_edges: int,
         logging.error("Can't find subject or object column in edges")
 
     edge_list = _generate_negative_edges(num_edges, nodes_df, edges_df,
-                                             node_types, edge_label, relation)
+                                         node_types, edge_label, relation)
     return edge_list
 
 
@@ -108,14 +111,14 @@ def _generate_negative_edges(num_edges: int,
                                                   edges_df.subject,
                                                   edges_df.object))))
 
+    logging.debug("Found %i unique nodes" % len(unique_nodes))
+
     if rseed:
         logging.debug("Setting random seed")
         random.seed(rseed)
     if shuffle:
         logging.debug("Shuffling nodes")
         random.shuffle(unique_nodes)
-
-    logging.debug("Found %i unique nodes" % len(unique_nodes))
 
     subject_df = pd.DataFrame({'subject': unique_nodes, 'key': 'xyz'})
     object_df = pd.DataFrame({'object': unique_nodes, 'key': 'xyz'})
@@ -225,11 +228,11 @@ def has_disconnected_nodes(nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
         return True
 
 
-def tsv_to_df(tsv_file: str) -> pd.DataFrame:
+def tsv_to_df(tsv_file: str, *args, **kwargs) -> pd.DataFrame:
     """Read in a TSV file and return a pandas dataframe
 
     :param tsv_file: file to read in
     :return: pandas dataframe
     """
-    df = pd.read_csv(tsv_file, sep="\t")
+    df = pd.read_csv(tsv_file, sep="\t", *args, **kwargs)
     return df
