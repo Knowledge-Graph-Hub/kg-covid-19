@@ -78,9 +78,23 @@ def make_negative_edges(num_edges: int,
     """
     if 'subject' not in list(edges_df.columns) or 'object' not in list(edges_df.columns):
         logging.warning("Can't find subject or object column in edges")
-    df = edges_df[:5]
-    df = df.loc[:, ['subject', 'object']]
-    return df
+
+    # edge label and relation columns
+    # edge_label_col = \
+    #     pd.DataFrame(["negative_edge"] * return_df.shape[0], columns=['edge_label'])
+    # relation_col = \
+    #     pd.DataFrame(["negative_edge"] * return_df.shape[0], columns=['edge_label'])
+
+    # return_df = pd.DataFrame([
+    #         return_df.loc[:, ['subject']],
+    #         ["negative_edge"] * return_df.shape[0],
+    #         return_df.loc[:, ['object']],
+    #         ["negative_edge"] * return_df.shape[0]
+    #     ])
+
+    return_df = edges_df.loc[:, ['subject', 'edge_label', 'object', 'relation']]
+    return_df = return_df[:5]
+    return return_df
 
 
 def make_positive_edges(num_edges: int, nodes_df: pd.DataFrame, edges_df: pd.DataFrame,

@@ -30,6 +30,7 @@ class TestEdges(unittest.TestCase):
 
     def test_make_negative_edges(self):
         num_edges = 5
+        expected_columns = ['subject', 'edge_label', 'object', 'relation']
         edges = tsv_to_df(self.small_edges_file)
         nodes = tsv_to_df(self.small_nodes_file)
         unique_node_ids = list(np.unique(nodes.id))
@@ -38,13 +39,13 @@ class TestEdges(unittest.TestCase):
                                           nodes_df=nodes)
         self.assertTrue(isinstance(neg_edge_df, pd.DataFrame))
         self.assertEqual(num_edges, neg_edge_df.shape[0])
-        self.assertEqual(2, neg_edge_df.shape[1],
-                         "expected two columns in negative edge df")
+        self.assertEqual(len(expected_columns), neg_edge_df.shape[1],
+                         "didn't get expected columns in negative edge df")
 
         neg_nodes = list(np.unique(np.concatenate((neg_edge_df.subject,
                                                    neg_edge_df.object))))
         self.assertTrue(set(neg_nodes) <= set(unique_node_ids),
                         "Some nodes from negative edges are not in the nodes tsv file")
-        # node_types
+        # test node_types
 
 
