@@ -17,7 +17,7 @@ class TestEdges(unittest.TestCase):
 
         # make neg edges for small graph
         cls.num_edges = 5
-        cls.neg_edge_df = make_negative_edges(cls.num_edges, cls.nodes, cls.edges)
+        cls.ne = make_negative_edges(cls.num_edges, cls.nodes, cls.edges)
 
     def setUp(self) -> None:
         pass
@@ -44,36 +44,48 @@ class TestEdges(unittest.TestCase):
                                                nodes_df=nodes_extra_ids))
 
     def test_make_negative_edges_check_instance_type(self):
-        self.assertTrue(isinstance(self.neg_edge_df, pd.DataFrame))
+        self.assertTrue(isinstance(self.ne, pd.DataFrame))
 
     def test_make_negative_edges_check_num_edges_returned(self):
-        self.assertEqual(self.num_edges, self.neg_edge_df.shape[0])
+        self.assertEqual(self.num_edges, self.ne.shape[0])
 
     def test_make_negative_edges_check_column_names(self):
         expected_columns = ['subject', 'edge_label', 'object', 'relation']
-        self.assertEqual(len(expected_columns), self.neg_edge_df.shape[1],
+        self.assertEqual(len(expected_columns), self.ne.shape[1],
                          "didn't get expected columns in negative edge df")
-        self.assertListEqual(expected_columns, list(self.neg_edge_df.columns))
+        self.assertListEqual(expected_columns, list(self.ne.columns))
 
     def test_make_negative_edges_check_edge_label_column(self):
         expected_edge_label = 'negative_edge'
-        self.assertListEqual([expected_edge_label] * self.neg_edge_df.shape[0],
-                             list(self.neg_edge_df.edge_label),
+        self.assertListEqual([expected_edge_label] * self.ne.shape[0],
+                             list(self.ne.edge_label),
                              "Edge label column not correct")
 
     def test_make_negative_edges_check_relation_column(self):
         expected_relation = 'negative_edge'
-        self.assertListEqual([expected_relation] * self.neg_edge_df.shape[0],
-                             list(self.neg_edge_df.relation),
+        self.assertListEqual([expected_relation] * self.ne.shape[0],
+                             list(self.ne.relation),
                              "Relation column not correct")
 
     def test_make_negative_edges_check_neg_nodes(self):
         unique_node_ids = list(np.unique(self.nodes.id))
-        neg_nodes = list(np.unique(np.concatenate((self.neg_edge_df.subject,
-                                                   self.neg_edge_df.object))))
+        neg_nodes = list(np.unique(np.concatenate((self.ne.subject,
+                                                   self.ne.object))))
         self.assertTrue(set(neg_nodes) <= set(unique_node_ids),
                         "Some nodes from negative edges are not in the nodes tsv file")
 
+    def test_make_negative_edges_no_reflexive_edges(self):
+        reflexive_es = self.ne.loc[(self.ne['subject'] == self.ne['object'])]
+        self.assertEqual(0, reflexive_es.shape[0],
+                         "%i edges are reflexive" % reflexive_es.shape[0])
+
+    def test_make_negative_edges_test_repeated_edges(self):
+        # make sure we don't create duplicate negative edges
+        pass
+
+    def test_make_negative_edges_ensure_neg_edges_are_actually_negative(self):
+        # make sure our negative edges are actually negative, i.e. not in edges_df
+        pass
 
     # TODO - test node_types fxn
 

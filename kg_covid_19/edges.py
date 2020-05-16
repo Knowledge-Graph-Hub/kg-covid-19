@@ -94,7 +94,7 @@ def make_negative_edges(num_edges: int,
     iteration = 0
     edge_list: list = []
     while completed_edges < num_edges:
-        edge_list.append(['g1', edge_label, 'g1', relation])
+        edge_list.append(['g1', edge_label, 'g2', relation])
         completed_edges += 1
 
         if iteration > (10 * num_edges):
