@@ -52,13 +52,12 @@ def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
     # make positive edges and new graph with those edges removed
     pos_edges_df: pd.DataFrame
     new_edges_df: pd.DataFrame
-    new_nodes_df: pd.DataFrame
     pos_edges_df, new_edges_df, new_nodes_df = \
         make_positive_edges(num_edges, nodes_df, edges_df, node_types, min_degree)
 
     # write out new graph
     df_to_tsv(new_edges_df, new_edges_outfile)
-    df_to_tsv(new_nodes_df, new_nodes_outfile)
+    df_to_tsv(nodes_df, new_nodes_outfile)
 
     # write out negative edges
     write_edge_files(neg_edges_df, train_fraction, validation, "neg")
@@ -90,9 +89,11 @@ def make_negative_edges(num_edges: int,
     :param edge_label: string to put in edge_label column
     :return:
     """
-    if 'subject' not in list(edges_df.columns) or 'object' not in list(
-            edges_df.columns):
-        logging.error("Can't find subject or object column in edges")
+    if 'subject' not in list(edges_df.columns) or 'object' not in list(edges_df.columns):
+        raise ValueError("Can't find subject or object column in edges")
+
+    if 'id' not in list(nodes_df.columns):
+        raise ValueError("Can't find id column in nodes")
 
     edge_list = _generate_negative_edges(num_edges, nodes_df, edges_df,
                                          node_types, edge_label, relation)
@@ -105,8 +106,7 @@ def _generate_negative_edges(num_edges: int,
                              node_types: Optional[List[str]],
                              edge_label: str,
                              relation: str,
-                             rseed: str = None,
-                             shuffle: bool = True) -> pd.DataFrame:
+                             rseed: str = None) -> pd.DataFrame:
     unique_nodes = list(np.unique(np.concatenate((nodes_df.id,
                                                   edges_df.subject,
                                                   edges_df.object))))
@@ -116,9 +116,6 @@ def _generate_negative_edges(num_edges: int,
     if rseed:
         logging.debug("Setting random seed")
         random.seed(rseed)
-    if shuffle:
-        logging.debug("Shuffling nodes")
-        random.shuffle(unique_nodes)
 
     logging.debug("Making random pairs of nodes (equal in size to edges)")
     random_subjects = [unique_nodes[random.randint(0, len(unique_nodes) - 1)] for _ in
@@ -165,14 +162,35 @@ def _generate_negative_edges(num_edges: int,
     return negative_edges
 
 
-def make_positive_edges(num_edges: int, nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
-                        node_types: list, min_degree: int) -> List[Union[pd.DataFrame]]:
-    # Positive edges are randomly selected from the edges in the graph, IFF both nodes
-    # participating in the edge have a degree greater than min_degree (to avoid creating
-    # disconnected components). This edge is then removed in the output graph. Negative
-    # edges are selected by randomly selecting pairs of nodes that are not connected by an
-    # edge. Optionally, if edge_type is specified, only edges between nodes of
-    # specified in node_types are selected.
+def make_positive_edges(num_edges: int,
+                        nodes_df: pd.DataFrame,
+                        edges_df: pd.DataFrame,
+                        min_degree: int,
+                        node_types: list = None) -> List[Union[pd.DataFrame]]:
+    """Positive edges are randomly selected from the edges in the graph, IFF both nodes
+    participating in the edge have a degree greater than min_degree (to avoid creating
+    disconnected components). This edge is then removed in the output graph. Negative
+    edges are selected by randomly selecting pairs of nodes that are not connected by an
+    edge. Optionally, if edge_type is specified, only edges between nodes of
+    specified in node_types are selected.
+
+    :param num_edges: how many edges to generate
+    :param nodes_df: pandas dataframe with node info, generated from KGX TSV file
+    :param edges_df: pandas dataframe with edge info, generated from KGX TSV file
+    :param min_degree: the minimum degree of nodes to be selected for positive edges
+    :param node_types:  if given, we select edges involving nodes of the given types
+    (not implemented yet)
+    :return: three pandas dataframes:
+    pos_edges_df: a dataframe with positive edges,
+    new_edges_df: a dataframe with edges for new graph, with positive edges we
+    selected removed from graph
+    """
+    if 'subject' not in list(edges_df.columns) or 'object' not in list(edges_df.columns):
+        raise ValueError("Can't find subject or object column in edges")
+
+    if 'id' not in list(nodes_df.columns):
+        raise ValueError("Can't find id column in nodes")
+
     raise NotImplementedError
 
 
