@@ -120,12 +120,12 @@ def _generate_negative_edges(num_edges: int,
         logging.debug("Shuffling nodes")
         random.shuffle(unique_nodes)
 
-    subject_df = pd.DataFrame({'subject': unique_nodes, 'key': 'xyz'})
-    object_df = pd.DataFrame({'object': unique_nodes, 'key': 'xyz'})
-
-    # cartesian product all possible edges
-    logging.debug("Doing cartesian product of all nodes...")
-    possible_edges = pd.merge(subject_df, object_df, on='key').drop('key', axis=1)
+    logging.debug("Making random pairs of nodes (equal in size to edges)")
+    random_subjects = [unique_nodes[random.randint(0, len(unique_nodes) - 1)] for _ in
+                       range(edges_df.shape[0])]
+    random_objects = [unique_nodes[random.randint(0, len(unique_nodes) - 1)] for _ in
+                      range(edges_df.shape[0])]
+    possible_edges = pd.DataFrame({'subject': random_subjects,'object': random_objects})
 
     logging.debug("Eliminating positives edges...")
     negative_edges = possible_edges.merge(edges_df.drop_duplicates(),
@@ -141,6 +141,12 @@ def _generate_negative_edges(num_edges: int,
     logging.debug("Dropping reflexive edges")
     negative_edges = \
         negative_edges[negative_edges['subject'] != negative_edges['object']]
+
+    # theoretically might not have enough edges here
+    if negative_edges.shape[0] < num_edges:
+        warnings.warn("Couldn't generate %i negative edges - only %i edges left after"
+                      "after removing positives and reflexives" %
+                      (num_edges, negative_edges.shape[0]))
 
     # select only num_edges edges
     logging.debug("Selecting %i edges..." % num_edges)
