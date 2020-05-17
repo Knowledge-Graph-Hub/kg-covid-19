@@ -86,7 +86,7 @@ class TestEdges(unittest.TestCase):
                                                nodes_df=nodes_extra_ids))
 
     def test_make_negative_edges_check_instance_type(self):
-        self.assertTrue(isinstance(self.pe, pd.DataFrame))
+        self.assertTrue(isinstance(self.ne, pd.DataFrame))
 
     def test_make_negative_edges_check_num_edges_returned(self):
         self.assertEqual(self.num_edges, self.ne.shape[0])
