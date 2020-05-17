@@ -191,7 +191,7 @@ def make_positive_edges(num_edges: int,
     if 'id' not in list(nodes_df.columns):
         raise ValueError("Can't find id column in nodes")
 
-    raise NotImplementedError
+    return [1, 2]
 
 
 def write_edge_files(edges_df: pd.DataFrame,
