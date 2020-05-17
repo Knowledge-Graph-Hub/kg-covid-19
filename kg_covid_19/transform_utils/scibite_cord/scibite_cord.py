@@ -44,8 +44,8 @@ class ScibiteCordTransform(Transform):
         """
         data_files = list()
         if not data_file:
-            data_files.append(os.path.join(self.input_base_dir, "CORD-19_1_3.zip"))
-            data_files.append(os.path.join(self.input_base_dir, "cv19_scc.zip"))
+            data_files.append(os.path.join(self.input_base_dir, "CORD-19_1_4.zip"))
+            data_files.append(os.path.join(self.input_base_dir, "cv19_scc_1_2.zip"))
         else:
             data_files.append(data_file)
 
