@@ -195,12 +195,12 @@ def make_positive_edges(num_edges: int,
                                                   edges_df.subject,
                                                   edges_df.object))))
 
-    random_objects = [unique_nodes[0] for _ in range(edges_df.shape[0])]
+    random_objects = ['' for _ in range(edges_df.shape[0])]
 
     new_graph_edges = pd.DataFrame({'subject': random_objects,
-                                   'edge_label': 'positive_edge',
-                                   'object': random_objects,
-                                   'relation': 'positive_edge'})
+                                    'edge_label': 'positive_edge',
+                                    'object': random_objects,
+                                    'relation': 'positive_edge'})
 
     positive_edges = new_graph_edges.head(num_edges)
 
