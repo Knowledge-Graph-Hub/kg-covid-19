@@ -72,6 +72,22 @@ class TestEdges(unittest.TestCase):
                              list(self.pe.relation),
                              "Relation column not correct  in positive edges")
 
+    def test_make_positive_edges_check_nodes(self):
+        unique_node_ids = list(np.unique(self.nodes.id))
+        pos_nodes = list(np.unique(np.concatenate((self.pe.subject,
+                                                   self.pe.object))))
+        self.assertTrue(set(pos_nodes) <= set(unique_node_ids),
+                        "Some nodes from positive edges are not in the nodes tsv file")
+
+    def test_make_positive_edges_test_repeated_edges(self):
+        count_info = self.pe.groupby(['subject', 'object']).size().\
+            reset_index().rename(columns={0: 'counts'})
+        dup_rows = count_info.loc[count_info.counts > 1]
+        dup_rows_str = dup_rows.to_string(index=False, index_names=False)
+        self.assertTrue(dup_rows.shape[0] == 0,
+                        "Got %i duplicated edges:\n%s" % (dup_rows.shape[0],
+                                                          dup_rows_str))
+
     #
     # negative edge tests
     #

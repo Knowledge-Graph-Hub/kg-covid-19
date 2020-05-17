@@ -191,11 +191,9 @@ def make_positive_edges(num_edges: int,
     if 'id' not in list(nodes_df.columns):
         raise ValueError("Can't find id column in nodes")
 
-    unique_nodes = list(np.unique(np.concatenate((nodes_df.id,
-                                                  edges_df.subject,
-                                                  edges_df.object))))
+    shuffled_edges = edges_df[['subject', 'object']].sample(frac=1)
 
-    random_objects = ['' for _ in range(edges_df.shape[0])]
+    random_objects = ['g1' for _ in range(edges_df.shape[0])]
 
     new_graph_edges = pd.DataFrame({'subject': random_objects,
                                     'edge_label': 'positive_edge',
