@@ -4,7 +4,7 @@ import pandas as pd
 from pandas import np
 
 from kg_covid_19.edges import make_edges, tsv_to_df, has_disconnected_nodes, \
-    make_negative_edges
+    make_negative_edges, make_positive_edges
 
 
 class TestEdges(unittest.TestCase):
@@ -15,9 +15,14 @@ class TestEdges(unittest.TestCase):
         cls.edges = tsv_to_df(cls.small_edges_file)
         cls.nodes = tsv_to_df(cls.small_nodes_file)
 
-        # make neg edges for small graph
+        # make negative edges for small graph
         cls.num_edges = 5
         cls.ne = make_negative_edges(cls.num_edges, cls.nodes, cls.edges)
+
+        # make positive edges for small graph
+        (cls.pe, cls.new_graph_edges) = make_positive_edges(cls.num_edges,
+                                                      cls.nodes,
+                                                      cls.edges, min_degree = 1)
 
     def setUp(self) -> None:
         pass
@@ -31,6 +36,43 @@ class TestEdges(unittest.TestCase):
     def test_make_edges(self):
         self.assertTrue(True)
 
+    #
+    # positive edge tests
+    #
+    def test_make_positives_edges_check_pe_instance_type(self):
+        self.assertTrue(isinstance(self.pe, pd.DataFrame))
+
+    def test_make_positives_edges_check_new_edges_instance_type(self):
+        self.assertTrue(isinstance(self.new_graph_edges, pd.DataFrame))
+
+    def test_make_positive_edges_check_num_edges_returned(self):
+        self.assertEqual(self.num_edges, self.pe.shape[0])
+
+    def test_make_positive_edges_check_new_graph_size(self):
+        self.assertEqual(self.num_edges,
+                         self.edges.shape - self.new_graph_edges.shape[0])
+
+    def test_make_positive_edges_check_column_names(self):
+        expected_columns = ['subject', 'edge_label', 'object', 'relation']
+        self.assertEqual(len(expected_columns), self.pe.shape[1],
+                         "didn't get expected columns in negative edge df")
+        self.assertListEqual(expected_columns, list(self.pe.columns))
+
+    def test_make_positive_edges_check_edge_label_column(self):
+        expected_edge_label = 'positive_edge'
+        self.assertListEqual([expected_edge_label] * self.pe.shape[0],
+                             list(self.pe.edge_label),
+                             "Edge label column not correct in positive edges")
+
+    def test_make_positive_edges_check_relation_column(self):
+        expected_relation = 'positive_edge'
+        self.assertListEqual([expected_relation] * self.pe.shape[0],
+                             list(self.pe.relation),
+                             "Relation column not correct  in positive edges")
+
+    #
+    # negative edge tests
+    #
     def test_has_disconnected_nodes(self):
         nodes_extra_ids = tsv_to_df('tests/resources/edges/small_graph_nodes_EXTRA_IDS.tsv')
         nodes_missing_ids = tsv_to_df(
@@ -44,7 +86,7 @@ class TestEdges(unittest.TestCase):
                                                nodes_df=nodes_extra_ids))
 
     def test_make_negative_edges_check_instance_type(self):
-        self.assertTrue(isinstance(self.ne, pd.DataFrame))
+        self.assertTrue(isinstance(self.pe, pd.DataFrame))
 
     def test_make_negative_edges_check_num_edges_returned(self):
         self.assertEqual(self.num_edges, self.ne.shape[0])
