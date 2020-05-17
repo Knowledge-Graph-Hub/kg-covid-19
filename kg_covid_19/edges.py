@@ -53,7 +53,7 @@ def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
     pos_edges_df: pd.DataFrame
     new_edges_df: pd.DataFrame
     pos_edges_df, new_edges_df, new_nodes_df = \
-        make_positive_edges(num_edges, nodes_df, edges_df, node_types, min_degree)
+        make_positive_edges(num_edges, nodes_df, edges_df, min_degree, node_types)
 
     # write out new graph
     df_to_tsv(new_edges_df, new_edges_outfile)
@@ -191,7 +191,23 @@ def make_positive_edges(num_edges: int,
     if 'id' not in list(nodes_df.columns):
         raise ValueError("Can't find id column in nodes")
 
-    return [1, 2]
+    unique_nodes = list(np.unique(np.concatenate((nodes_df.id,
+                                                  edges_df.subject,
+                                                  edges_df.object))))
+
+    random_objects = [unique_nodes[0] for _ in range(edges_df.shape[0])]
+
+    new_graph_edges = pd.DataFrame({'subject': random_objects,
+                                   'edge_label': 'positive_edge',
+                                   'object': random_objects,
+                                   'relation': 'positive_edge'})
+
+    positive_edges = new_graph_edges.head(num_edges)
+
+    new_graph_edges = new_graph_edges.head(
+        new_graph_edges.shape[0] - positive_edges.shape[0])
+
+    return [positive_edges, new_graph_edges]
 
 
 def write_edge_files(edges_df: pd.DataFrame,

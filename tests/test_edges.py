@@ -49,8 +49,10 @@ class TestEdges(unittest.TestCase):
         self.assertEqual(self.num_edges, self.pe.shape[0])
 
     def test_make_positive_edges_check_new_graph_size(self):
-        self.assertEqual(self.num_edges,
-                         self.edges.shape - self.new_graph_edges.shape[0])
+        self.assertEqual(self.edges.shape[0] - self.num_edges,
+                         self.new_graph_edges.shape[0],
+                         "New graph edges aren't equal to the old graph edges minus "
+                         "positive edges")
 
     def test_make_positive_edges_check_column_names(self):
         expected_columns = ['subject', 'edge_label', 'object', 'relation']
