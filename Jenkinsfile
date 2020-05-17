@@ -120,7 +120,7 @@ pipeline {
 
         stage('Make blazegraph journal'){
             steps {
-                dir('./config/blazegraph') {
+                dir('./gitrepo/blazegraph') {
                         git(
                                 url: 'https://github.com/balhoff/blazegraph-runner.git',
                                 branch: 'master'
