@@ -193,17 +193,26 @@ def make_positive_edges(num_edges: int,
 
     shuffled_edges = edges_df[['subject', 'object']].sample(frac=1)
 
-    random_objects = ['g1' for _ in range(edges_df.shape[0])]
+    positive_edges = pd.DataFrame(columns=['subject', 'edge_label', 'object', 'relation'])
 
-    new_graph_edges = pd.DataFrame({'subject': random_objects,
-                                    'edge_label': 'positive_edge',
-                                    'object': random_objects,
-                                    'relation': 'positive_edge'})
+    # iterate through shuffled edges until we get num_edges, or run out of edges
+    with tqdm(total=num_edges) as pbar:
+        for i in range(shuffled_edges.shape[0]):
+            this_row = shuffled_edges.iloc[[i]]
+            # pandas why are you like this
+            to_append = [this_row['subject'].item(),
+                         'positive_edge',
+                         this_row['object'].item(),
+                         'positive_edge']
+            length = len(positive_edges)
+            positive_edges.loc[len] = to_append
 
-    positive_edges = new_graph_edges.head(num_edges)
+            pbar.update(1)
 
-    new_graph_edges = new_graph_edges.head(
-        new_graph_edges.shape[0] - positive_edges.shape[0])
+            if positive_edges.shape[0] == num_edges:
+                break
+
+    new_graph_edges = edges_df.head(edges_df.shape[0] - num_edges)
 
     return [positive_edges, new_graph_edges]
 

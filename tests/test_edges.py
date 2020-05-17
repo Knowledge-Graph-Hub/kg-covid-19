@@ -54,10 +54,22 @@ class TestEdges(unittest.TestCase):
                          "New graph edges aren't equal to the old graph edges minus "
                          "positive edges")
 
+    def test_make_positive_edges_check_new_graph_column_num(self):
+        self.assertEqual(self.edges.shape[1],
+                         self.new_graph_edges.shape[1],
+                         "New graph edges don't have the same number of columns"
+                         "as the original")
+
+    def test_make_positive_edges_check_new_graph_columns(self):
+        self.assertListEqual(list(self.edges.columns),
+                             list(self.new_graph_edges.columns),
+                             "New graph edges don't have the same columns"
+                             "as the original")
+
     def test_make_positive_edges_check_column_names(self):
         expected_columns = ['subject', 'edge_label', 'object', 'relation']
         self.assertEqual(len(expected_columns), self.pe.shape[1],
-                         "didn't get expected columns in negative edge df")
+                         "didn't get expected columns in positive edge df")
         self.assertListEqual(expected_columns, list(self.pe.columns))
 
     def test_make_positive_edges_check_edge_label_column(self):
@@ -70,7 +82,7 @@ class TestEdges(unittest.TestCase):
         expected_relation = 'positive_edge'
         self.assertListEqual([expected_relation] * self.pe.shape[0],
                              list(self.pe.relation),
-                             "Relation column not correct  in positive edges")
+                             "Relation column not correct in positive edges")
 
     def test_make_positive_edges_check_nodes(self):
         unique_node_ids = list(np.unique(self.nodes.id))
