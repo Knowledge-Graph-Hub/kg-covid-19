@@ -9,13 +9,12 @@ import numpy as np  # type: ignore
 from tqdm import tqdm
 
 
-def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
-               train_fraction: float, validation: bool, node_types: list,
+def make_edges(nodes: str, edges: str, output_dir: str,
+               train_fraction: float, validation: bool,
                min_degree: int, check_disconnected_nodes: bool = False) -> None:
     """Prepare positive and negative edges for testing and training
 
     Args:
-        :param num_edges      number of positive and negative edges to emit
         :param nodes     nodes of input graph, in KGX TSV format [data/merged/nodes.tsv]
         :param edges:   edges for input graph, in KGX TSV format [data/merged/edges.tsv]
         :param output_dir:     directory to output edges and new graph [data/edges/]
@@ -23,9 +22,8 @@ def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
         :param validation:     should we make validation edges? [False]
         :param min_degree      when choosing edges, what is the minimum degree of nodes
                         involved in the edge [1]
-        :param node_types:    what node types should we make edges from? by default, any
-                        type. If specified, should use items from 'category' column
-        :param check_disconnected_nodes: should we check for disconnected nodes? [True]
+        :param check_disconnected_nodes: should we check for disconnected nodes in input
+                        graph? [False]
     Returns:
         None.
     """
@@ -47,13 +45,13 @@ def make_edges(num_edges: int, nodes: str, edges: str, output_dir: str,
     os.makedirs(output_dir, exist_ok=True)
 
     neg_edges_df: pd.DataFrame = \
-        make_negative_edges(num_edges, nodes_df, edges_df, node_types)
+        make_negative_edges(nodes_df, edges_df)
 
     # make positive edges and new graph with those edges removed
     pos_edges_df: pd.DataFrame
     new_edges_df: pd.DataFrame
     pos_edges_df, new_edges_df, new_nodes_df = \
-        make_positive_edges(num_edges, nodes_df, edges_df, min_degree, node_types)
+        make_positive_edges(nodes_df, edges_df, min_degree)
 
     # write out new graph
     df_to_tsv(new_edges_df, new_edges_outfile)
