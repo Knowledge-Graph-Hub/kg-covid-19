@@ -56,7 +56,12 @@ class ScibiteCordTransform(Transform):
         node_handle.write("\t".join(self.node_header) + "\n")
         edge_handle.write("\t".join(self.edge_header) + "\n")
         self.parse_annotations(node_handle, edge_handle, data_files[0])
-        #self.parse_cooccurrence(node_handle, edge_handle, data_files[1])
+
+        node_handle = open(os.path.join(self.output_dir, "entity_cooccurrence_nodes.tsv"), 'w')
+        edge_handle = open(os.path.join(self.output_dir, "entity_cooccurrence_edges.tsv"), 'w')
+        node_handle.write("\t".join(self.node_header) + "\n")
+        edge_handle.write("\t".join(self.edge_header) + "\n")
+        self.parse_cooccurrence(node_handle, edge_handle, data_files[1])
 
     def parse_annotations(self, node_handle: Any, edge_handle: Any, data_file: str) -> None:
         """Parse annotations from CORD-19_1_2.zip.
