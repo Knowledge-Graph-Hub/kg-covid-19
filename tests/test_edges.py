@@ -101,7 +101,7 @@ class TestEdges(unittest.TestCase):
                         "Got %i duplicated edges:\n%s" % (dup_rows.shape[0],
                                                           dup_rows_str))
 
-    def test_make_positive_edges_test_pos_edges_are_in_edge_df(self):
+    def test_make_positive_edges_test_pos_edges_are_in_input_edge_df(self):
         overlap_pe_edges = self.test_edges.merge(self.edges, on=['subject', 'object'])
         self.assertEqual(overlap_pe_edges.shape[0], self.test_edges.shape[0],
                          "%i rows in positive edges aren't in original edges: %s" %
@@ -110,8 +110,7 @@ class TestEdges(unittest.TestCase):
     def test_make_positive_edges_test_pos_edges_are_removed_from_train_edges(self):
         overlap_test_train = self.test_edges.merge(self.train_edges,
                                                    on=['subject', 'object'])
-        self.assertEqual(overlap_test_train.shape[0],
-                         self.test_edges.shape[0],
+        self.assertEqual(overlap_test_train.shape[0], 0,
                          "%i rows in positive edges were not removed from new edges: %s"
                          % (overlap_test_train.shape[0],
                             overlap_test_train.to_string()))
