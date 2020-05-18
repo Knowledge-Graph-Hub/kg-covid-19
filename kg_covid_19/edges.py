@@ -117,12 +117,16 @@ def _generate_negative_edges(num_edges: int,
         logging.debug("Setting random seed")
         random.seed(rseed)
 
-    logging.debug("Making random pairs of nodes (equal in size to edges)")
+    logging.debug("Making random pairs of nodes (twice the size of edges)")
     random_subjects = [unique_nodes[random.randint(0, len(unique_nodes) - 1)] for _ in
-                       range(edges_df.shape[0])]
+                       range(2 * edges_df.shape[0])]
     random_objects = [unique_nodes[random.randint(0, len(unique_nodes) - 1)] for _ in
-                      range(edges_df.shape[0])]
+                      range(2 * edges_df.shape[0])]
     possible_edges = pd.DataFrame({'subject': random_subjects,'object': random_objects})
+
+    logging.debug("Eliminate duplicated negative edges")
+    possible_edges.drop_duplicates(subset=['subject', 'object'], keep=False,
+                                   inplace=True)
 
     logging.debug("Eliminating positives edges...")
     negative_edges = possible_edges.merge(edges_df.drop_duplicates(),
