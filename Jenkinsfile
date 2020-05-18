@@ -81,10 +81,11 @@ pipeline {
                             script: '. venv/bin/activate && python3.7 run.py transform', returnStatus: true
                         )
                         if (run_py_transform == 0) { // upload transformed to s3 if we're on correct branch
-                            if (env.BRANCH_NAME == 'master') {
+                            if (env.BRANCH_NAME != 'master') {
                                 echo "Will not push if not on correct branch."
                             } else {
                                 withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                                    sh 'rm -fr data/transformed/.gitkeep'
                                     sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/transformed s3://kg-hub-public-data/'
                                 }
                             }
