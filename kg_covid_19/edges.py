@@ -191,7 +191,7 @@ def make_positive_edges(nodes_df: pd.DataFrame,
     test_edges = \
         pd.DataFrame(columns=['subject', 'edge_label', 'object', 'relation'])
 
-    test_edge_num = int(edges_df.shape[0] * train_fraction)
+    test_edge_num = int(edges_df.shape[0] * (1 - train_fraction))
 
     # iterate through shuffled edges until we get num_edges, or run out of edges
     with tqdm(total=test_edge_num) as pbar:
