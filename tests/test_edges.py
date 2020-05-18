@@ -16,13 +16,13 @@ class TestEdges(unittest.TestCase):
         cls.nodes = tsv_to_df(cls.small_nodes_file)
 
         # make negative edges for small graph
-        cls.num_edges = 5
-        cls.ne = make_negative_edges(cls.num_edges, cls.nodes, cls.edges)
+        cls.ne = make_negative_edges(nodes_df=cls.nodes, edges_df=cls.edges)
 
         # make positive edges for small graph
-        (cls.pe, cls.new_graph_edges) = make_positive_edges(cls.num_edges,
-                                                      cls.nodes,
-                                                      cls.edges, min_degree = 1)
+        cls.train_fraction = 0.8
+        (cls.train_edges, cls.test_edges) = make_positive_edges(
+            nodes_df=cls.nodes, edges_df=cls.edges, train_fraction= cls.train_fraction,
+            min_degree=1)
 
     def setUp(self) -> None:
         pass
@@ -39,14 +39,14 @@ class TestEdges(unittest.TestCase):
     #
     # positive edge tests
     #
-    def test_make_positives_edges_check_pe_instance_type(self):
-        self.assertTrue(isinstance(self.pe, pd.DataFrame))
+    def test_make_positives_edges_check_test_edge_instance_type(self):
+        self.assertTrue(isinstance(self.test_edges, pd.DataFrame))
 
     def test_make_positives_edges_check_new_edges_instance_type(self):
-        self.assertTrue(isinstance(self.new_graph_edges, pd.DataFrame))
+        self.assertTrue(isinstance(self.train_edges, pd.DataFrame))
 
     def test_make_positive_edges_check_num_edges_returned(self):
-        self.assertEqual(self.num_edges, self.pe.shape[0])
+        self.assertEqual(self., self.train_edges.shape[0])
 
     def test_make_positive_edges_check_new_graph_size(self):
         self.assertEqual(self.edges.shape[0] - self.num_edges,
@@ -118,7 +118,8 @@ class TestEdges(unittest.TestCase):
     # negative edge tests
     #
     def test_has_disconnected_nodes(self):
-        nodes_extra_ids = tsv_to_df('tests/resources/edges/small_graph_nodes_EXTRA_IDS.tsv')
+        nodes_extra_ids = tsv_to_df(
+            'tests/resources/edges/small_graph_nodes_EXTRA_IDS.tsv')
         nodes_missing_ids = tsv_to_df(
             'tests/resources/edges/small_graph_nodes_MISSING_IDS.tsv')
         self.assertTrue(not has_disconnected_nodes(edges_df=self.edges,
@@ -133,7 +134,7 @@ class TestEdges(unittest.TestCase):
         self.assertTrue(isinstance(self.ne, pd.DataFrame))
 
     def test_make_negative_edges_check_num_edges_returned(self):
-        self.assertEqual(self.num_edges, self.ne.shape[0])
+        self.assertEqual(self.edges.shape[0], self.ne.shape[0])
 
     def test_make_negative_edges_check_column_names(self):
         expected_columns = ['subject', 'edge_label', 'object', 'relation']
@@ -169,7 +170,7 @@ class TestEdges(unittest.TestCase):
         # make sure we don't create duplicate negative edges
         repeat_test = 20  # repeat to ensure we aren't sometimes generating dups
         for _ in range(repeat_test):
-            ne = make_negative_edges(self.num_edges, self.nodes, self.edges)
+            ne = make_negative_edges(nodes_df=self.nodes, edges_df=self.edges)
             count_info = ne.groupby(['subject', 'object']).size().\
                 reset_index().rename(columns={0: 'counts'})
             dup_rows = count_info.loc[count_info.counts > 1]
@@ -181,8 +182,8 @@ class TestEdges(unittest.TestCase):
     def test_make_negative_edges_ensure_neg_edges_are_actually_negative(self):
         # make sure our negative edges are actually negative, i.e. not in edges_df
         non_neg_edges = self.ne.merge(self.edges, how='inner',
-                                  left_on=['subject', 'object'],
-                                  right_on=['subject', 'object'])
+                                      left_on=['subject', 'object'],
+                                      right_on=['subject', 'object'])
         non_neg_edges_str = non_neg_edges.to_string(index=False, index_names=False)
         self.assertTrue(non_neg_edges.shape[0] == 0,
                         "Got %i negative edges that are not actually negative:\n%s" %

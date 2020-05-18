@@ -51,7 +51,10 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     pos_edges_df: pd.DataFrame
     new_edges_df: pd.DataFrame
     pos_edges_df, new_edges_df, new_nodes_df = \
-        make_positive_edges(nodes_df, edges_df, min_degree)
+        make_positive_edges(nodes_df=nodes_df,
+                            edges_df=edges_df,
+                            train_fraction=train_fraction,
+                            min_degree=min_degree)
 
     # write out new graph
     df_to_tsv(new_edges_df, new_edges_outfile)
@@ -68,21 +71,15 @@ def df_to_tsv(new_edges_df, new_edges_outfile) -> None:
     raise NotImplementedError
 
 
-def make_negative_edges(num_edges: int,
-                        nodes_df: pd.DataFrame,
+def make_negative_edges(nodes_df: pd.DataFrame,
                         edges_df: pd.DataFrame,
-                        node_types: list = None,
                         edge_label: str = 'negative_edge',
                         relation: str = 'negative_edge'
                         ) -> pd.DataFrame:
     """Given a graph (as nodes and edges pandas dataframes), select num_edges edges that
     are NOT present in the graph
 
-    :param num_edges: how many edges
-    :param nodes_df: pandas dataframe containing node info
     :param edges_df: pandas dataframe containing edge info
-    :param node_types: if given, we select edges involving nodes of the given types
-    (not implemented yet)
     :param relation: string to put in relation column
     :param edge_label: string to put in edge_label column
     :return:
@@ -93,15 +90,13 @@ def make_negative_edges(num_edges: int,
     if 'id' not in list(nodes_df.columns):
         raise ValueError("Can't find id column in nodes")
 
-    edge_list = _generate_negative_edges(num_edges, nodes_df, edges_df,
-                                         node_types, edge_label, relation)
+    edge_list = _generate_negative_edges(nodes_df=nodes_df, edges_df=edges_df,
+                                         edge_label=edge_label, relation=relation)
     return edge_list
 
 
-def _generate_negative_edges(num_edges: int,
-                             nodes_df: pd.DataFrame,
+def _generate_negative_edges(nodes_df: pd.DataFrame,
                              edges_df: pd.DataFrame,
-                             node_types: Optional[List[str]],
                              edge_label: str,
                              relation: str,
                              rseed: str = None) -> pd.DataFrame:
@@ -142,14 +137,14 @@ def _generate_negative_edges(num_edges: int,
         negative_edges[negative_edges['subject'] != negative_edges['object']]
 
     # theoretically might not have enough edges here
-    if negative_edges.shape[0] < num_edges:
+    if negative_edges.shape[0] < edges_df.shape[0]:
         warnings.warn("Couldn't generate %i negative edges - only %i edges left after"
                       "after removing positives and reflexives" %
-                      (num_edges, negative_edges.shape[0]))
+                      (edges_df.shape[0], negative_edges.shape[0]))
 
     # select only num_edges edges
-    logging.debug("Selecting %i edges..." % num_edges)
-    negative_edges = negative_edges.head(num_edges)
+    logging.debug("Selecting %i edges..." % edges_df.shape[0])
+    negative_edges = negative_edges.head(edges_df.shape[0])
 
     # only subject and object
     logging.debug("Making new dataframe")
@@ -164,28 +159,25 @@ def _generate_negative_edges(num_edges: int,
     return negative_edges
 
 
-def make_positive_edges(num_edges: int,
-                        nodes_df: pd.DataFrame,
+def make_positive_edges(nodes_df: pd.DataFrame,
                         edges_df: pd.DataFrame,
-                        min_degree: int,
-                        node_types: list = None) -> List[Union[pd.DataFrame]]:
+                        train_fraction: float,
+                        min_degree: int) -> List[Union[pd.DataFrame]]:
     """Positive edges are randomly selected from the edges in the graph, IFF both nodes
     participating in the edge have a degree greater than min_degree (to avoid creating
     disconnected components). This edge is then removed in the output graph. Negative
     edges are selected by randomly selecting pairs of nodes that are not connected by an
-    edge. Optionally, if edge_type is specified, only edges between nodes of
-    specified in node_types are selected.
+    edge.
 
-    :param num_edges: how many edges to generate
     :param nodes_df: pandas dataframe with node info, generated from KGX TSV file
     :param edges_df: pandas dataframe with edge info, generated from KGX TSV file
+    :param train_fraction: fraction of input edges to emit as test (and optionally
+                  validation) edges
     :param min_degree: the minimum degree of nodes to be selected for positive edges
-    :param node_types:  if given, we select edges involving nodes of the given types
-    (not implemented yet)
-    :return: three pandas dataframes:
-    pos_edges_df: a dataframe with positive edges,
-    new_edges_df: a dataframe with edges for new graph, with positive edges we
-    selected removed from graph
+    :return:  pandas dataframes:
+    training_edges_df: a dataframe with training edges with positive edges we
+                    selected for test removed from graph
+    test_edges_df: a dataframe with training edges with positive edges
     """
     if 'subject' not in list(edges_df.columns) or \
             'object' not in list(edges_df.columns):
@@ -196,11 +188,13 @@ def make_positive_edges(num_edges: int,
 
     shuffled_edges = edges_df[['subject', 'object']].sample(frac=1)
 
-    positive_edges = \
+    test_edges = \
         pd.DataFrame(columns=['subject', 'edge_label', 'object', 'relation'])
 
+    test_edge_num = int(edges_df.shape[0] * train_fraction)
+
     # iterate through shuffled edges until we get num_edges, or run out of edges
-    with tqdm(total=num_edges) as pbar:
+    with tqdm(total=test_edge_num) as pbar:
         for i in range(shuffled_edges.shape[0]):
             this_row = shuffled_edges.iloc[[i]]
             # pandas why are you like this
@@ -208,17 +202,17 @@ def make_positive_edges(num_edges: int,
                          'positive_edge',
                          this_row['object'].item(),
                          'positive_edge']
-            length = len(positive_edges)
-            positive_edges.loc[len] = to_append
+            length = len(test_edges)
+            test_edges.loc[len] = to_append
 
             pbar.update(1)
 
-            if positive_edges.shape[0] == num_edges:
+            if test_edges.shape[0] == test_edge_num:
                 break
 
-    new_graph_edges = edges_df.head(edges_df.shape[0] - num_edges)
+    train_edges = edges_df.head(edges_df.shape[0] - test_edge_num)
 
-    return [positive_edges, new_graph_edges]
+    return [train_edges, test_edges]
 
 
 def write_edge_files(edges_df: pd.DataFrame,
