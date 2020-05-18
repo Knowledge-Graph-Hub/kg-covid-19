@@ -45,54 +45,53 @@ class TestEdges(unittest.TestCase):
     def test_make_positives_edges_check_new_edges_instance_type(self):
         self.assertTrue(isinstance(self.train_edges, pd.DataFrame))
 
-    def test_make_positive_edges_check_num_edges_returned(self):
-        self.assertEqual(self., self.train_edges.shape[0])
+    def test_make_positive_edges_check_num_train_edges_returned(self):
+        self.assertAlmostEqual(self.train_edges.shape[0],
+                               int(self.edges.shape[0] * self.train_fraction))
 
-    def test_make_positive_edges_check_new_graph_size(self):
-        self.assertEqual(self.edges.shape[0] - self.num_edges,
-                         self.new_graph_edges.shape[0],
-                         "New graph edges aren't equal to the old graph edges minus "
-                         "positive edges")
+    def test_make_positive_edges_check_num_test_edges_returned(self):
+        self.assertAlmostEqual(self.test_edges.shape[0],
+                               int(self.edges.shape[0] * (1 - self.train_fraction)))
 
-    def test_make_positive_edges_check_new_graph_column_num(self):
+    def test_make_positive_edges_check_train_edges_column_num(self):
         self.assertEqual(self.edges.shape[1],
-                         self.new_graph_edges.shape[1],
+                         self.train_edges.shape[1],
                          "New graph edges don't have the same number of columns"
                          "as the original")
 
-    def test_make_positive_edges_check_new_graph_columns(self):
+    def test_make_positive_edges_check_train_edges_columns(self):
         self.assertListEqual(list(self.edges.columns),
-                             list(self.new_graph_edges.columns),
+                             list(self.train_edges.columns),
                              "New graph edges don't have the same columns"
                              "as the original")
 
-    def test_make_positive_edges_check_column_names(self):
+    def test_make_positive_edges_check_test_edges_column_names(self):
         expected_columns = ['subject', 'edge_label', 'object', 'relation']
-        self.assertEqual(len(expected_columns), self.pe.shape[1],
+        self.assertEqual(len(expected_columns), self.test_edges.shape[1],
                          "didn't get expected columns in positive edge df")
-        self.assertListEqual(expected_columns, list(self.pe.columns))
+        self.assertListEqual(expected_columns, list(self.test_edges.columns))
 
-    def test_make_positive_edges_check_edge_label_column(self):
+    def test_make_positive_edges_check_test_edge_label_column(self):
         expected_edge_label = 'positive_edge'
-        self.assertListEqual([expected_edge_label] * self.pe.shape[0],
-                             list(self.pe.edge_label),
+        self.assertListEqual([expected_edge_label] * self.test_edges.shape[0],
+                             list(self.test_edges.edge_label),
                              "Edge label column not correct in positive edges")
 
-    def test_make_positive_edges_check_relation_column(self):
+    def test_make_positive_edges_check_test_edge_relation_column(self):
         expected_relation = 'positive_edge'
-        self.assertListEqual([expected_relation] * self.pe.shape[0],
-                             list(self.pe.relation),
+        self.assertListEqual([expected_relation] * self.test_edges.shape[0],
+                             list(self.test_edges.relation),
                              "Relation column not correct in positive edges")
 
     def test_make_positive_edges_check_nodes(self):
         unique_node_ids = list(np.unique(self.nodes.id))
-        pos_nodes = list(np.unique(np.concatenate((self.pe.subject,
-                                                   self.pe.object))))
+        pos_nodes = list(np.unique(np.concatenate((self.test_edges.subject,
+                                                   self.test_edges.object))))
         self.assertTrue(set(pos_nodes) <= set(unique_node_ids),
                         "Some nodes from positive edges are not in the nodes tsv file")
 
     def test_make_positive_edges_test_repeated_edges(self):
-        count_info = self.pe.groupby(['subject', 'object']).size().\
+        count_info = self.test_edges.groupby(['subject', 'object']).size().\
             reset_index().rename(columns={0: 'counts'})
         dup_rows = count_info.loc[count_info.counts > 1]
         dup_rows_str = dup_rows.to_string(index=False, index_names=False)
@@ -101,18 +100,19 @@ class TestEdges(unittest.TestCase):
                                                           dup_rows_str))
 
     def test_make_positive_edges_test_pos_edges_are_in_edge_df(self):
-        overlap_pe_edges = self.pe.merge(self.edges, on=['subject', 'object'])
-        self.assertEqual(overlap_pe_edges.shape[0], self.pe.shape[0],
+        overlap_pe_edges = self.test_edges.merge(self.edges, on=['subject', 'object'])
+        self.assertEqual(overlap_pe_edges.shape[0], self.test_edges.shape[0],
                          "%i rows in positive edges aren't in original edges: %s" %
                          (overlap_pe_edges.shape[0], overlap_pe_edges.to_string()))
 
-    def test_make_positive_edges_test_pos_edges_are_not_in_new_edges(self):
-        overlap_pe_new_edges = self.pe.merge(self.edges, on=['subject', 'object'])
-        self.assertEqual(overlap_pe_new_edges.shape[0],
-                         self.pe.shape[0],
+    def test_make_positive_edges_test_pos_edges_are_removed_from_train_edges(self):
+        overlap_test_train = self.test_edges.merge(self.train_edges,
+                                                   on=['subject', 'object'])
+        self.assertEqual(overlap_test_train.shape[0],
+                         self.test_edges.shape[0],
                          "%i rows in positive edges were not removed from new edges: %s"
-                         % (overlap_pe_new_edges.shape[0],
-                            overlap_pe_new_edges.to_string()))
+                         % (overlap_test_train.shape[0],
+                            overlap_test_train.to_string()))
 
     #
     # negative edge tests
