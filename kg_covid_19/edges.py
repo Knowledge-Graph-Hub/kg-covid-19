@@ -185,7 +185,8 @@ def make_positive_edges(num_edges: int,
     new_edges_df: a dataframe with edges for new graph, with positive edges we
     selected removed from graph
     """
-    if 'subject' not in list(edges_df.columns) or 'object' not in list(edges_df.columns):
+    if 'subject' not in list(edges_df.columns) or \
+            'object' not in list(edges_df.columns):
         raise ValueError("Can't find subject or object column in edges")
 
     if 'id' not in list(nodes_df.columns):
@@ -193,7 +194,8 @@ def make_positive_edges(num_edges: int,
 
     shuffled_edges = edges_df[['subject', 'object']].sample(frac=1)
 
-    positive_edges = pd.DataFrame(columns=['subject', 'edge_label', 'object', 'relation'])
+    positive_edges = \
+        pd.DataFrame(columns=['subject', 'edge_label', 'object', 'relation'])
 
     # iterate through shuffled edges until we get num_edges, or run out of edges
     with tqdm(total=num_edges) as pbar:
