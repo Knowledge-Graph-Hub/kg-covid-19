@@ -167,13 +167,16 @@ class TestEdges(unittest.TestCase):
 
     def test_make_negative_edges_test_repeated_edges(self):
         # make sure we don't create duplicate negative edges
-        count_info = self.ne.groupby(['subject', 'object']).size().\
-            reset_index().rename(columns={0: 'counts'})
-        dup_rows = count_info.loc[count_info.counts > 1]
-        dup_rows_str = dup_rows.to_string(index=False, index_names=False)
-        self.assertTrue(dup_rows.shape[0] == 0,
-                        "Got %i duplicated edges:\n%s" % (dup_rows.shape[0],
-                                                          dup_rows_str))
+        repeat_test = 20  # repeat to ensure we aren't sometimes generating dups
+        for _ in range(repeat_test):
+            ne = make_negative_edges(self.num_edges, self.nodes, self.edges)
+            count_info = ne.groupby(['subject', 'object']).size().\
+                reset_index().rename(columns={0: 'counts'})
+            dup_rows = count_info.loc[count_info.counts > 1]
+            dup_rows_str = dup_rows.to_string(index=False, index_names=False)
+            self.assertTrue(dup_rows.shape[0] == 0,
+                            "Got %i duplicated edges:\n%s" % (dup_rows.shape[0],
+                                                              dup_rows_str))
 
     def test_make_negative_edges_ensure_neg_edges_are_actually_negative(self):
         # make sure our negative edges are actually negative, i.e. not in edges_df
