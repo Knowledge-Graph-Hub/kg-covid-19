@@ -79,6 +79,7 @@ def make_negative_edges(nodes_df: pd.DataFrame,
     """Given a graph (as nodes and edges pandas dataframes), select num_edges edges that
     are NOT present in the graph
 
+    :param nodes_df: pandas dataframe containing node info
     :param edges_df: pandas dataframe containing edge info
     :param relation: string to put in relation column
     :param edge_label: string to put in edge_label column

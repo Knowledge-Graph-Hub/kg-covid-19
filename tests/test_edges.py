@@ -10,10 +10,10 @@ from kg_covid_19.edges import make_edges, tsv_to_df, has_disconnected_nodes, \
 class TestEdges(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.small_nodes_file = 'tests/resources/edges/small_graph_nodes.tsv'
-        cls.small_edges_file = 'tests/resources/edges/small_graph_edges.tsv'
-        cls.edges = tsv_to_df(cls.small_edges_file)
-        cls.nodes = tsv_to_df(cls.small_nodes_file)
+        cls.nodes_file = 'tests/resources/edges/bigger_graph_nodes.tsv'
+        cls.edges_file = 'tests/resources/edges/bigger_graph_edges.tsv'
+        cls.edges = tsv_to_df(cls.edges_file)
+        cls.nodes = tsv_to_df(cls.nodes_file)
 
         # make negative edges for small graph
         cls.ne = make_negative_edges(nodes_df=cls.nodes, edges_df=cls.edges)
@@ -28,9 +28,9 @@ class TestEdges(unittest.TestCase):
         pass
 
     def test_tsv_to_df(self):
-        df = tsv_to_df(self.small_edges_file)
+        df = tsv_to_df(self.edges_file)
         self.assertTrue(isinstance(df, pd.DataFrame))
-        self.assertEqual((21, 5), df.shape)
+        self.assertEqual((150, 5), df.shape)
         self.assertEqual(df['subject'][0], 'g1')
 
     def test_make_edges(self):
@@ -46,12 +46,14 @@ class TestEdges(unittest.TestCase):
         self.assertTrue(isinstance(self.train_edges, pd.DataFrame))
 
     def test_make_positive_edges_check_num_train_edges_returned(self):
-        self.assertAlmostEqual(self.train_edges.shape[0],
-                               int(self.edges.shape[0] * self.train_fraction))
+        self.assertTrue(self.train_edges.shape[0] -
+                        (self.edges.shape[0] * self.train_fraction) <= 1,
+                        "Didn't get the expected number of training edges (within 1)")
 
     def test_make_positive_edges_check_num_test_edges_returned(self):
-        self.assertAlmostEqual(self.test_edges.shape[0],
-                               int(self.edges.shape[0] * (1 - self.train_fraction)))
+        self.assertTrue(self.test_edges.shape[0] -
+                           (self.edges.shape[0] * (1 - self.train_fraction)) <= 1,
+                        "Didn't get the expected number of training edges (within 1)")
 
     def test_make_positive_edges_check_train_edges_column_num(self):
         self.assertEqual(self.edges.shape[1],
@@ -134,7 +136,11 @@ class TestEdges(unittest.TestCase):
         self.assertTrue(isinstance(self.ne, pd.DataFrame))
 
     def test_make_negative_edges_check_num_edges_returned(self):
-        self.assertEqual(self.edges.shape[0], self.ne.shape[0])
+        # make sure we don't create duplicate negative edges
+        repeat_test = 20  # repeat to ensure we aren't sometimes truncating
+        for _ in range(repeat_test):
+            ne = make_negative_edges(nodes_df=self.nodes, edges_df=self.edges)
+            self.assertEqual(self.edges.shape[0], ne.shape[0])
 
     def test_make_negative_edges_check_column_names(self):
         expected_columns = ['subject', 'edge_label', 'object', 'relation']
