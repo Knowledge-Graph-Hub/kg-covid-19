@@ -105,42 +105,40 @@ def query(query: str, input_dir: str, output_dir: str) -> None:
 
 
 @cli.command()
-@click.option("num_edges", "-n", required=True, type=int)
 @click.option("nodes", "-d", default="data/merged/nodes.tsv", type=click.Path(exists=True))
 @click.option("edges", "-e", default="data/merged/edges.tsv", type=click.Path(exists=True))
 @click.option("output_dir", "-o", default="data/edges/", type=click.Path())
 @click.option("train_fraction", "-t", default=0.8, type=float)
 @click.option("validation", "-v", is_flag=True, default=False)
-@click.option("node_types", "-y", default=None, multiple=True, type=str)
 @click.option("min_degree", "-m", default=1, type=int)
 def edges(*args, **kwargs) -> None:
     """Make sets of edges for ML training
 
-    Given a graph (from formatted node and edge TSVs), output positive and negative
+    Given a graph (from formatted node and edge TSVs), output positive edges and negative
     edges for use in machine learning.
 
-    Positive edges are randomly selected from the edges in the graph, IFF both nodes
-    participating in the edge have a degree greater than min_degree (to avoid creating
-    disconnected components). This edge is then removed in the output graph. Negative
-    edges are selected by randomly selecting pairs of nodes that are not connected by an
-    edge. Optionally, if edge_type is specified, only edges between nodes of
-    specified in node_types are selected.
+    To generate positive edges: a set of test (and optionally validation) positive edges
+    equal in number to [train_fraction * number of edges in input graph] are randomly
+    selected from the edges in the input graph, such that both nodes participating in
+    the edge have a degree greater than min_degree (to avoid creating disconnected
+    components). These edges are emitting as positive test [and optionally positive
+    validation] nodes. These edges are then removed from the edges from the input graph
+    and these are the training edges.
 
-    For both positive and negative edge sets, edges are assigned to training set
-    according to train_fraction (0.8 by default). The remaining are assigned to test set
-    or split evenly between test and validation set, if [validation==True].
+    Negative edges are selected by randomly selecting pairs of nodes that are not
+    connected by an edge in the input graph. The number of negative edges emitted is
+    equal to the number of positive edges emitted above.
 
     Outputs these files in [output_dir]:
-        edges.tsv + edges.tsv - new graph with positive edges removed
-        pos_train.tsv
-        pos_test.tsv
-        pos_valid.tsv (optional)
-        neg_train.tsv
+        pos_train_edges.tsv - input graph with test [and validation] positive edges
+                              removed
+        pos_test_edges.tsv - positive edges for test
+        pos_valid_edges.tsv (optional) - positive edges for validation
+        neg_train.tsv - a set of edges equal in number to pos_train_edges.tsv
         neg_test.tsv
         neg_valid.tsv (optional)
 
     Args:
-        :param num_edges:      number of positive and negative edges to emit
         :param nodes:   nodes for input graph, in KGX TSV format [data/merged/nodes.tsv]
         :param edges:   edges for input graph, in KGX TSV format [data/merged/edges.tsv]
         :param output_dir:     directory to output edges and new graph [data/edges/]
@@ -148,8 +146,6 @@ def edges(*args, **kwargs) -> None:
         :param validation:     should we make validation edges? [False]
         :param min_degree      when choosing edges, what is the minimum degree of nodes
                         involved in the edge [1]
-        :param node_types:    what node types should we make edges from? by default, any
-                        type. If specified, should use items from 'category' column
     """
     make_edges(*args, **kwargs)
 
