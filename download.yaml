@@ -63,12 +63,18 @@
 -
   url: ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/by_organism/HUMAN_9606_idmapping.dat.gz
   local_name: HUMAN_9606_idmapping.dat.gz
+
 #
-# SciBite CORD-19 annotations v1.2
+# SciBite CORD-19 annotations v1.4
 #
 -
-  url: https://s3.eu-west-2.amazonaws.com/scibite.covid19data/CORD19/annotated-cord19/CORD-19_1_3.zip
-  local_name: CORD-19_1_3.zip
+  url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/annotated-CORD-19/1.4/CORD-19_1_4.zip
+  local_name: CORD-19_1_4.zip
+
+ # SciBite CORD-19 entity co-occurrences v1.2
+-
+  url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/sentence-co-occurrence-CORD-19/1.2/cv19_scc_1_2.zip
+  local_name: cv19_scc_1_2.zip
 
 #
 # PharmGKB - drug -> drug target info, and gene id mappings
