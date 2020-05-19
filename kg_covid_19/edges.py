@@ -206,12 +206,23 @@ def make_positive_edges(nodes_df: pd.DataFrame,
             this_row = edges_df.iloc[[i]]
             this_subject = this_row['subject'].item()
             this_object = this_row['object'].item()
-            # if degree of sub
-            if (s_counts[this_subject] + s_counts[this_subject]) < min_degree or \
-                (o_counts[this_object] + o_counts[this_object]) < min_degree:
+
+            # reject if degree of sub < min_degree or degree of obj < min_degree (refactor)
+            this_subject_degree = 0
+            if this_subject in s_counts:
+                this_subject_degree += s_counts[this_subject]
+            if this_subject in o_counts:
+                this_subject_degree += o_counts[this_subject]
+
+            this_object_degree = 0
+            if this_object in s_counts:
+                this_object_degree += s_counts[this_object]
+            if this_object in o_counts:
+                this_object_degree += o_counts[this_object]
+
+            if this_subject_degree < min_degree or this_object_degree < min_degree:
                 continue
 
-            # pandas why are you like this
             to_append = [this_subject, 'positive_edge', this_object, 'positive_edge']
             test_edges.loc[len] = to_append
 

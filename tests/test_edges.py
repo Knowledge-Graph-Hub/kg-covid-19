@@ -125,10 +125,10 @@ class TestEdges(unittest.TestCase):
         hd_edges_file =\
             'tests/resources/edges/bigger_graph_edges_HIGHER_DEGREE_NODES.tsv'
         hd_edges = tsv_to_df(hd_edges_file)
-        hd_nodes = ['p1', 'g1',
-                    'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'd8', 'd9', 'd10',
-                    'd11', 'd12', 'd13', 'd14', 'd15', 'd16', 'd17', 'd18', 'd19',
-                    'd20', 'd21', 'd22', 'd23', 'd24', 'd25']
+        hd_nodes = ['p1', 'd1',
+                    'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10',
+                    'g11', 'g12', 'g13', 'g14', 'g15', 'g16', 'g17', 'g18', 'g19',
+                    'g20', 'g21', 'g22', 'g23', 'g24', 'g25']
         for _ in range(10):
             (train_edges, test_edges) = make_positive_edges(
                 nodes_df=self.nodes, edges_df=hd_edges, train_fraction=train_fraction,
