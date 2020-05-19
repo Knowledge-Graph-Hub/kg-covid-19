@@ -217,7 +217,7 @@ def make_positive_edges(nodes_df: pd.DataFrame,
     train_edges = edges_df.copy(deep=True)
     train_edges.drop(train_edges.index[edge_indices_to_drop], inplace=True)
 
-    return [edges_df, test_edges]
+    return [train_edges, test_edges]
 
 
 def write_edge_files(edges_df: pd.DataFrame,
