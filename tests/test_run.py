@@ -32,6 +32,7 @@ class TestRun(TestCase):
             self.assertNotEqual(result.exit_code, 0)
             self.assertRegexpMatches(result.output, "does not exist")
 
+    @skip("to be refactored")
     def test_query_command(self):
         result = self.runner.invoke(cli=query, args=['-q', 'TargetCandidates'])
         self.assertEqual(result.exit_code, 0)
