@@ -110,7 +110,8 @@ def query(query: str, input_dir: str, output_dir: str) -> None:
 @click.option("output_dir", "-o", default="data/edges/", type=click.Path())
 @click.option("train_fraction", "-t", default=0.8, type=float)
 @click.option("validation", "-v", is_flag=True, default=False)
-@click.option("min_degree", "-m", default=1, type=int)
+@click.option("min_degree", "-m", default=1, type=click.IntRange(min=0, max=None,
+                                                                 clamp=False))
 def edges(*args, **kwargs) -> None:
     """Make sets of edges for ML training
 
