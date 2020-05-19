@@ -189,56 +189,47 @@ def make_positive_edges(nodes_df: pd.DataFrame,
 
     logging.debug("Making positive edges")
 
-    test_edges = \
-        pd.DataFrame(columns=['subject', 'edge_label', 'object', 'relation'])
-
-    test_edge_num = int(edges_df.shape[0] * (1 - train_fraction))
-
-    edge_indices_to_drop: list = []
+    logging.debug("Copying edges df")
+    test_edges = edges_df.copy(deep=True)
 
     # count degrees
+    logging.debug("Calculating degrees for nodes")
     s_counts = edges_df['subject'].value_counts()
+    s_counts_df = pd.DataFrame({'subject': list(s_counts.index),
+                                's_count': list(s_counts.values)})
+
     o_counts = edges_df['object'].value_counts()
+    o_counts_df = pd.DataFrame({'object': list(o_counts.index),
+                                'o_count': list(o_counts.values)})
+
+    logging.debug("Merging count data")
+    test_edges = test_edges.merge(s_counts_df, how='left', on='subject')
+    test_edges = test_edges.merge(o_counts_df, how='left', on='object')
 
     # iterate through shuffled edges until we get num_edges, or run out of edges
+    logging.debug("Eliminating subject edges")
+    test_edges.drop(test_edges[test_edges['s_count'] < min_degree].index, inplace=True)
+    logging.debug("Eliminating object edges")
+    test_edges.drop(test_edges[test_edges['o_count'] < min_degree].index, inplace=True)
     logging.debug("Choosing edges")
-    with tqdm(total=test_edge_num) as pbar:
-        rand_i = list(range(edges_df.shape[0]))
-        random.shuffle(rand_i)
-        for i in rand_i:
-            this_row = edges_df.iloc[[i]]
-            this_subject = this_row['subject'].item()
-            this_object = this_row['object'].item()
-
-            # reject if degree of sub < min_degree or degree of obj < min_degree (refactor)
-            this_subject_degree = 0
-            if this_subject in s_counts:
-                this_subject_degree += s_counts[this_subject]
-            if this_subject in o_counts:
-                this_subject_degree += o_counts[this_subject]
-
-            this_object_degree = 0
-            if this_object in s_counts:
-                this_object_degree += s_counts[this_object]
-            if this_object in o_counts:
-                this_object_degree += o_counts[this_object]
-
-            if this_subject_degree < min_degree or this_object_degree < min_degree:
-                continue
-
-            to_append = [this_subject, 'positive_edge', this_object, 'positive_edge']
-            test_edges.loc[len] = to_append
-
-            edge_indices_to_drop.append(i)
-            pbar.update(1)
-
-            if test_edges.shape[0] >= test_edge_num:
-                break
+    test_edges = test_edges.sample(frac=(1-train_fraction))
+    test_edges['edge_label'] = 'positive_edge'
+    test_edges['relation'] = 'positive_edge'
 
     train_edges = edges_df.copy(deep=True)
-    train_edges.drop(train_edges.index[edge_indices_to_drop], inplace=True)
+    train_edges.drop(train_edges.index[test_edges.index], inplace=True)
 
+    logging.debug("Done making positive edges")
     return [train_edges, test_edges]
+
+
+def evaluate_edges(idx: int,
+                   subj: str, obj: str, min_degree: int,
+                   subj_degree: int, obj_degree: int) -> Optional[List[Union[int, list]]]:
+    if subj_degree >= min_degree and obj_degree >= min_degree:
+        return [idx, [subj, 'positive_edge', obj, 'positive_edge']]
+    else:
+        return None
 
 
 def write_edge_files(edges_df: pd.DataFrame,
