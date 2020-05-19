@@ -3,9 +3,11 @@ import os
 from typing import Dict, List
 import yaml
 import networkx as nx
-from kgx import Transformer, NeoTransformer
+from kgx import NeoTransformer
 from kgx.cli.utils import get_file_types, get_transformer
 from kgx.operations.graph_merge import GraphMerge
+from kgx.operations.summarize_graph import generate_graph_stats
+
 
 def parse_load_config(yaml_file: str) -> Dict:
     """Parse load config YAML.
@@ -62,9 +64,12 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
             transformers.append(transformer)
         else:
             logging.error("type {} not yet supported".format(target['type']))
+        stats_filename = f"{key}_stats.yaml"
+        generate_graph_stats(transformer.graph, key, stats_filename)
 
     # merge all subgraphs into a single graph
     merged_graph = gm.merge_all_graphs([x.graph for x in transformers])
+    generate_graph_stats(merged_graph, 'merged_graph', f"merged_graph_stats.yaml")
 
     # write the merged graph
     if 'destination' in config:
