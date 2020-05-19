@@ -194,17 +194,25 @@ def make_positive_edges(nodes_df: pd.DataFrame,
 
     edge_indices_to_drop: list = []
 
+    # count degrees
+    s_counts = edges_df['subject'].value_counts()
+    o_counts = edges_df['object'].value_counts()
+
     # iterate through shuffled edges until we get num_edges, or run out of edges
     with tqdm(total=test_edge_num) as pbar:
         rand_i = list(range(edges_df.shape[0]))
         random.shuffle(rand_i)
         for i in rand_i:
             this_row = edges_df.iloc[[i]]
+            this_subject = this_row['subject'].item()
+            this_object = this_row['object'].item()
+            # if degree of sub
+            if (s_counts[this_subject] + s_counts[this_subject]) < min_degree or \
+                (o_counts[this_object] + o_counts[this_object]) < min_degree:
+                continue
+
             # pandas why are you like this
-            to_append = [this_row['subject'].item(),
-                         'positive_edge',
-                         this_row['object'].item(),
-                         'positive_edge']
+            to_append = [this_subject, 'positive_edge', this_object, 'positive_edge']
             test_edges.loc[len] = to_append
 
             edge_indices_to_drop.append(i)
