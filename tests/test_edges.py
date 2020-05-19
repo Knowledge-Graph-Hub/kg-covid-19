@@ -198,6 +198,5 @@ class TestEdges(unittest.TestCase):
                         "Got %i negative edges that are not actually negative:\n%s" %
                         (non_neg_edges.shape[0], non_neg_edges_str))
 
-    # TODO - test node_types fxn
 
 
