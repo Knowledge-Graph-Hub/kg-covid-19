@@ -187,6 +187,8 @@ def make_positive_edges(nodes_df: pd.DataFrame,
     if 'id' not in list(nodes_df.columns):
         raise ValueError("Can't find id column in nodes")
 
+    logging.debug("Making positive edges")
+
     test_edges = \
         pd.DataFrame(columns=['subject', 'edge_label', 'object', 'relation'])
 
@@ -199,6 +201,7 @@ def make_positive_edges(nodes_df: pd.DataFrame,
     o_counts = edges_df['object'].value_counts()
 
     # iterate through shuffled edges until we get num_edges, or run out of edges
+    logging.debug("Choosing edges")
     with tqdm(total=test_edge_num) as pbar:
         rand_i = list(range(edges_df.shape[0]))
         random.shuffle(rand_i)
