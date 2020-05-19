@@ -55,7 +55,7 @@ class TestEdges(unittest.TestCase):
     def test_make_positive_edges_check_num_test_edges_returned(self):
         num_test_edges = self.test_edges.shape[0]
         expected_edges = self.edges.shape[0] * (1 - self.train_fraction)
-        self.assertTrue(abs(num_test_edges, expected_edges) <= 1,
+        self.assertTrue(abs(num_test_edges - expected_edges) <= 1,
                         "Didn't get the expected number of test edges (within 1)"
                         "Expected %i got %i" % (expected_edges, num_test_edges))
 
