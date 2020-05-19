@@ -214,7 +214,8 @@ def make_positive_edges(nodes_df: pd.DataFrame,
             if test_edges.shape[0] >= test_edge_num:
                 break
 
-    edges_df.drop(edges_df.index[edge_indices_to_drop], inplace=True)
+    train_edges = edges_df.copy(deep=True)
+    train_edges.drop(train_edges.index[edge_indices_to_drop], inplace=True)
 
     return [edges_df, test_edges]
 

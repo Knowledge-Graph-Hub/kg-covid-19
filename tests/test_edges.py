@@ -124,9 +124,9 @@ class TestEdges(unittest.TestCase):
     #
     def test_has_disconnected_nodes(self):
         nodes_extra_ids = tsv_to_df(
-            'tests/resources/edges/small_graph_nodes_EXTRA_IDS.tsv')
+            'tests/resources/edges/bigger_graph_nodes_EXTRA_IDS.tsv')
         nodes_missing_ids = tsv_to_df(
-            'tests/resources/edges/small_graph_nodes_MISSING_IDS.tsv')
+            'tests/resources/edges/bigger_graph_nodes_MISSING_IDS.tsv')
         self.assertTrue(not has_disconnected_nodes(edges_df=self.edges,
                                                    nodes_df=self.nodes))
         with self.assertWarns(Warning):
