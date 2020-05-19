@@ -205,7 +205,6 @@ def make_positive_edges(nodes_df: pd.DataFrame,
                          'positive_edge',
                          this_row['object'].item(),
                          'positive_edge']
-            length = len(test_edges)
             test_edges.loc[len] = to_append
 
             edge_indices_to_drop.append(i)
