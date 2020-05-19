@@ -163,7 +163,7 @@ def _generate_negative_edges(nodes_df: pd.DataFrame,
 def make_positive_edges(nodes_df: pd.DataFrame,
                         edges_df: pd.DataFrame,
                         train_fraction: float,
-                        min_degree: int) -> List[Union[pd.DataFrame]]:
+                        min_degree: int) -> List[pd.DataFrame]:
     """Positive edges are randomly selected from the edges in the graph, IFF both nodes
     participating in the edge have a degree greater than min_degree (to avoid creating
     disconnected components). This edge is then removed in the output graph. Negative
@@ -192,6 +192,8 @@ def make_positive_edges(nodes_df: pd.DataFrame,
 
     test_edge_num = int(edges_df.shape[0] * (1 - train_fraction))
 
+    edge_indices_to_drop: list = []
+
     # iterate through shuffled edges until we get num_edges, or run out of edges
     with tqdm(total=test_edge_num) as pbar:
         rand_i = list(range(edges_df.shape[0]))
@@ -206,12 +208,13 @@ def make_positive_edges(nodes_df: pd.DataFrame,
             length = len(test_edges)
             test_edges.loc[len] = to_append
 
-            edges_df.drop(edges_df.index[2])
-
+            edge_indices_to_drop.append(i)
             pbar.update(1)
 
-            if test_edges.shape[0] == test_edge_num:
+            if test_edges.shape[0] >= test_edge_num:
                 break
+
+    edges_df.drop(edges_df.index[edge_indices_to_drop], inplace=True)
 
     return [edges_df, test_edges]
 
