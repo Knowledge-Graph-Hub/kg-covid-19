@@ -3,9 +3,11 @@ import os
 from typing import Dict, List
 import yaml
 import networkx as nx
-from kgx import Transformer, NeoTransformer
+from kgx import NeoTransformer
 from kgx.cli.utils import get_file_types, get_transformer
 from kgx.operations.graph_merge import GraphMerge
+from kgx.operations.summarize_graph import generate_graph_stats
+
 
 def parse_load_config(yaml_file: str) -> Dict:
     """Parse load config YAML.
@@ -55,21 +57,26 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
             transformer = get_transformer(target['type'])()
             for f in target['filename']:
                 transformer.parse(f, input_format='tsv')
+                transformer.graph.name = key
             transformers.append(transformer)
         elif target['type'] == 'neo4j':
             transformer = NeoTransformer(None, target['uri'], target['username'],  target['password'])
             transformer.load()
             transformers.append(transformer)
+            transformer.graph.name = key
         else:
             logging.error("type {} not yet supported".format(target['type']))
+        stats_filename = f"{key}_stats.yaml"
+        generate_graph_stats(transformer.graph, key, stats_filename)
 
     # merge all subgraphs into a single graph
     merged_graph = gm.merge_all_graphs([x.graph for x in transformers])
+    merged_graph.name = 'merged_graph'
+    generate_graph_stats(merged_graph, merged_graph.name, f"merged_graph_stats.yaml")
 
     # write the merged graph
     if 'destination' in config:
         for _, destination in config['destination'].items():
-            print(destination)
             if destination['type'] == 'neo4j':
                 destination_transformer = NeoTransformer(
                     merged_graph,
