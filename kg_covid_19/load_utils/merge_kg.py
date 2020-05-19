@@ -57,11 +57,13 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
             transformer = get_transformer(target['type'])()
             for f in target['filename']:
                 transformer.parse(f, input_format='tsv')
+                transformer.graph.name = key
             transformers.append(transformer)
         elif target['type'] == 'neo4j':
             transformer = NeoTransformer(None, target['uri'], target['username'],  target['password'])
             transformer.load()
             transformers.append(transformer)
+            transformer.graph.name = key
         else:
             logging.error("type {} not yet supported".format(target['type']))
         stats_filename = f"{key}_stats.yaml"
@@ -69,12 +71,12 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
 
     # merge all subgraphs into a single graph
     merged_graph = gm.merge_all_graphs([x.graph for x in transformers])
-    generate_graph_stats(merged_graph, 'merged_graph', f"merged_graph_stats.yaml")
+    merged_graph.name = 'merged_graph'
+    generate_graph_stats(merged_graph, merged_graph.name, f"merged_graph_stats.yaml")
 
     # write the merged graph
     if 'destination' in config:
         for _, destination in config['destination'].items():
-            print(destination)
             if destination['type'] == 'neo4j':
                 destination_transformer = NeoTransformer(
                     merged_graph,
