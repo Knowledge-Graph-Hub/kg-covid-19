@@ -187,8 +187,6 @@ def make_positive_edges(nodes_df: pd.DataFrame,
     if 'id' not in list(nodes_df.columns):
         raise ValueError("Can't find id column in nodes")
 
-    shuffled_edges = edges_df[['subject', 'object']].sample(frac=1)
-
     test_edges = \
         pd.DataFrame(columns=['subject', 'edge_label', 'object', 'relation'])
 
@@ -196,8 +194,10 @@ def make_positive_edges(nodes_df: pd.DataFrame,
 
     # iterate through shuffled edges until we get num_edges, or run out of edges
     with tqdm(total=test_edge_num) as pbar:
-        for i in range(shuffled_edges.shape[0]):
-            this_row = shuffled_edges.iloc[[i]]
+        rand_i = list(range(edges_df.shape[0]))
+        random.shuffle(rand_i)
+        for i in rand_i:
+            this_row = edges_df.iloc[[i]]
             # pandas why are you like this
             to_append = [this_row['subject'].item(),
                          'positive_edge',
@@ -206,14 +206,14 @@ def make_positive_edges(nodes_df: pd.DataFrame,
             length = len(test_edges)
             test_edges.loc[len] = to_append
 
+            edges_df.drop(edges_df.index[2])
+
             pbar.update(1)
 
             if test_edges.shape[0] == test_edge_num:
                 break
 
-    train_edges = edges_df.head(edges_df.shape[0] - test_edge_num)
-
-    return [train_edges, test_edges]
+    return [edges_df, test_edges]
 
 
 def write_edge_files(edges_df: pd.DataFrame,

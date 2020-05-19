@@ -46,14 +46,18 @@ class TestEdges(unittest.TestCase):
         self.assertTrue(isinstance(self.train_edges, pd.DataFrame))
 
     def test_make_positive_edges_check_num_train_edges_returned(self):
-        self.assertTrue(self.train_edges.shape[0] -
-                        (self.edges.shape[0] * self.train_fraction) <= 1,
-                        "Didn't get the expected number of training edges (within 1)")
+        num_train_edges = self.train_edges.shape[0]
+        expected_edges = self.edges.shape[0] * self.train_fraction
+        self.assertTrue(abs(num_train_edges - expected_edges) <= 1,
+                        "Didn't get the expected number of training edges (within 1)"
+                        "Expected %i got %i" % (expected_edges, num_train_edges))
 
     def test_make_positive_edges_check_num_test_edges_returned(self):
-        self.assertTrue(self.test_edges.shape[0] -
-                           (self.edges.shape[0] * (1 - self.train_fraction)) <= 1,
-                        "Didn't get the expected number of training edges (within 1)")
+        num_test_edges = self.test_edges.shape[0]
+        expected_edges = self.edges.shape[0] * (1 - self.train_fraction)
+        self.assertTrue(abs(num_test_edges, expected_edges) <= 1,
+                        "Didn't get the expected number of test edges (within 1)"
+                        "Expected %i got %i" % (expected_edges, num_test_edges))
 
     def test_make_positive_edges_check_train_edges_column_num(self):
         self.assertEqual(self.edges.shape[1],
