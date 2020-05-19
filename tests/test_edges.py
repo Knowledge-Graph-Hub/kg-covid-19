@@ -22,7 +22,7 @@ class TestEdges(unittest.TestCase):
         cls.train_fraction = 0.8
         (cls.train_edges, cls.test_edges) = make_positive_edges(
             nodes_df=cls.nodes, edges_df=cls.edges, train_fraction= cls.train_fraction,
-            min_degree=1)
+            min_degree=0)
 
     def setUp(self) -> None:
         pass
