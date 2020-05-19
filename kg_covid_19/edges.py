@@ -50,7 +50,7 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     # make positive edges and new graph with those edges removed
     pos_edges_df: pd.DataFrame
     new_edges_df: pd.DataFrame
-    pos_edges_df, new_edges_df, new_nodes_df = \
+    pos_train_edges_df, pos_test_edges_df = \
         make_positive_edges(nodes_df=nodes_df,
                             edges_df=edges_df,
                             train_fraction=train_fraction,
@@ -194,27 +194,29 @@ def make_positive_edges(nodes_df: pd.DataFrame,
 
     # count degrees
     logging.debug("Calculating degrees for nodes")
-    s_counts = edges_df['subject'].value_counts()
-    s_counts_df = pd.DataFrame({'subject': list(s_counts.index),
-                                's_count': list(s_counts.values)})
+    subj_degrees = edges_df['subject'].value_counts()
+    subj_degrees_df = pd.DataFrame({'subject': list(subj_degrees.index),
+                                    'subj_degrees': list(subj_degrees.values)})
 
-    o_counts = edges_df['object'].value_counts()
-    o_counts_df = pd.DataFrame({'object': list(o_counts.index),
-                                'o_count': list(o_counts.values)})
+    obj_degrees = edges_df['object'].value_counts()
+    obj_degrees_df = pd.DataFrame({'object': list(obj_degrees.index),
+                                   'obj_degrees': list(obj_degrees.values)})
 
     logging.debug("Merging count data")
-    test_edges = test_edges.merge(s_counts_df, how='left', on='subject')
-    test_edges = test_edges.merge(o_counts_df, how='left', on='object')
+    test_edges = test_edges.merge(subj_degrees_df, how='left', on='subject')
+    test_edges = test_edges.merge(obj_degrees_df, how='left', on='object')
 
     # iterate through shuffled edges until we get num_edges, or run out of edges
     logging.debug("Eliminating subject edges")
-    test_edges.drop(test_edges[test_edges['s_count'] < min_degree].index, inplace=True)
+    test_edges.drop(test_edges[test_edges['subj_degrees'] < min_degree].index, inplace=True)
     logging.debug("Eliminating object edges")
-    test_edges.drop(test_edges[test_edges['o_count'] < min_degree].index, inplace=True)
+    test_edges.drop(test_edges[test_edges['obj_degrees'] < min_degree].index, inplace=True)
     logging.debug("Choosing edges")
     test_edges = test_edges.sample(frac=(1-train_fraction))
     test_edges['edge_label'] = 'positive_edge'
     test_edges['relation'] = 'positive_edge'
+
+    test_edges.drop(['subj_degrees', 'obj_degrees'], axis=1, inplace=True)
 
     train_edges = edges_df.copy(deep=True)
     train_edges.drop(train_edges.index[test_edges.index], inplace=True)
