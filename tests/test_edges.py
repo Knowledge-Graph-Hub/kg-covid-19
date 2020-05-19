@@ -119,6 +119,25 @@ class TestEdges(unittest.TestCase):
                          % (overlap_test_train.shape[0],
                             overlap_test_train.to_string()))
 
+    def test_make_positive_edges_test_min_degree_gt_zero(self):
+        train_fraction = 0.90
+        degree = 2
+        hd_edges_file =\
+            'tests/resources/edges/bigger_graph_edges_HIGHER_DEGREE_NODES.tsv'
+        hd_edges = tsv_to_df(hd_edges_file)
+        hd_nodes = ['p1', 'g1',
+                    'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'd8', 'd9', 'd10',
+                    'd11', 'd12', 'd13', 'd14', 'd15', 'd16', 'd17', 'd18', 'd19',
+                    'd20', 'd21', 'd22', 'd23', 'd24', 'd25']
+        for _ in range(10):
+            (train_edges, test_edges) = make_positive_edges(
+                nodes_df=self.nodes, edges_df=hd_edges, train_fraction=train_fraction,
+                min_degree=degree)
+            these_nodes = set(list(test_edges.subject) + list(test_edges.object))
+            self.assertTrue(set(these_nodes) < set(hd_nodes),
+                            "Got some nodes with degree < 2: %s" %
+                            " ".join(np.setdiff1d(these_nodes,hd_nodes)[0]))
+
     #
     # negative edge tests
     #
