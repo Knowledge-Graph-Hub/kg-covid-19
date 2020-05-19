@@ -6,7 +6,7 @@ from typing import List, Union, Tuple, Optional
 
 import pandas as pd  # type: ignore
 import numpy as np  # type: ignore
-from tqdm import tqdm
+from tqdm import tqdm  # type: ignore
 
 
 def make_edges(nodes: str, edges: str, output_dir: str,
