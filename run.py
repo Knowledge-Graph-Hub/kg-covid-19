@@ -105,7 +105,7 @@ def query(query: str, input_dir: str, output_dir: str) -> None:
 
 
 @cli.command()
-@click.option("nodes", "-d", default="data/merged/nodes.tsv", type=click.Path(exists=True))
+@click.option("nodes", "-n", default="data/merged/nodes.tsv", type=click.Path(exists=True))
 @click.option("edges", "-e", default="data/merged/edges.tsv", type=click.Path(exists=True))
 @click.option("output_dir", "-o", default="data/edges/", type=click.Path())
 @click.option("train_fraction", "-t", default=0.8, type=float)
