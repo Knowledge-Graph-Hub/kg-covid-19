@@ -33,7 +33,7 @@ def make_edges(nodes: str, edges: str, output_dir: str,
 
     logging.info("Loading edge file %s" % edges)
     edges_df: pd.DataFrame = tsv_to_df(edges, usecols=['subject', 'object', 'relation',
-                                                       'edge_label', 'provided_by'])
+                                                       'edge_label'])
 
     logging.info("Loading node file %s" % nodes)
     nodes_df: pd.DataFrame = tsv_to_df(nodes)

@@ -1,7 +1,10 @@
+import os
+import tempfile
 import unittest
 
 import pandas as pd
 from pandas import np
+from parameterized import parameterized
 
 from kg_covid_19.edges import make_edges, tsv_to_df, has_disconnected_nodes, \
     make_negative_edges, make_positive_edges
@@ -33,8 +36,35 @@ class TestEdges(unittest.TestCase):
         self.assertEqual((150, 5), df.shape)
         self.assertEqual(df['subject'][0], 'g1')
 
-    def test_make_edges(self):
-        self.assertTrue(True)
+    def test_make_edges_exists(self):
+        self.assertTrue(isinstance(make_edges, object))
+
+    @parameterized.expand([
+        'pos_train_edges.tsv',
+        'pos_test_edges.tsv',
+        'neg_train.tsv',
+        'neg_test.tsv',
+    ])
+    def test_make_edges_check_output_files(self, output_file):
+        me_output_dir = tempfile.mkdtemp()
+        make_edges(nodes=self.nodes_file, edges=self.edges_file,
+                   output_dir=me_output_dir, train_fraction=0.8, validation=False,
+                   min_degree=1)
+        self.assertTrue(os.path.isfile(output_file))
+
+    @parameterized.expand([
+        'pos_valid_edges.tsv', 'neg_valid.tsv'
+    ])
+    def test_make_edges_check_validation_output_files(self, output_file):
+        me_output_dir = tempfile.mkdtemp()
+        args = {'nodes': self.nodes_file, 'edges': self.edges_file,
+                'output_dir': me_output_dir, 'train_fraction': 0.8,
+                'validation': False, 'min_degree': 1}
+        make_edges(*args)
+        self.assertTrue(not os.path.isfile(output_file))
+        args['validation'] = True
+        make_edges(*args)
+        self.assertTrue(os.path.isfile(output_file))
 
     #
     # positive edge tests
