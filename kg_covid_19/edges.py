@@ -189,44 +189,44 @@ def make_positive_edges(nodes_df: pd.DataFrame,
 
     with tqdm(total=10) as pbar:
         test_edges = edges_df.copy(deep=True)
-        pbar.update(1)
+        pbar.update()
 
         # count degrees
         subj_degree = edges_df['subject'].value_counts()
         subj_degree_df = pd.DataFrame({'subject': list(subj_degree.index),
                                        'subj_degree': list(subj_degree.values)})
-        pbar.update(1)
+        pbar.update()
 
         obj_degree = edges_df['object'].value_counts()
         obj_degree_df = pd.DataFrame({'object': list(obj_degree.index),
                                       'obj_degree': list(obj_degree.values)})
-        pbar.update(1)
+        pbar.update()
 
         test_edges = test_edges.merge(subj_degree_df, how='left', on='subject')
-        pbar.update(1)
+        pbar.update()
 
         test_edges = test_edges.merge(obj_degree_df, how='left', on='object')
-        pbar.update(1)
+        pbar.update()
 
         # iterate through shuffled edges until we get num_edges, or run out of edges
         test_edges.drop(test_edges[test_edges['subj_degree'] < min_degree].index,
                         inplace=True)
-        pbar.update(1)
+        pbar.update()
 
         test_edges.drop(test_edges[test_edges['obj_degree'] < min_degree].index,
                         inplace=True)
-        pbar.update(1)
+        pbar.update()
 
         test_edges = test_edges.sample(frac=(1-train_fraction))
         test_edges['edge_label'] = 'positive_edge'
         test_edges['relation'] = 'positive_edge'
-        pbar.update(1)
+        pbar.update()
 
         train_edges = edges_df.copy(deep=True)
-        pbar.update(1)
+        pbar.update()
 
         train_edges.drop(train_edges.index[test_edges.index], inplace=True)
-        pbar.update(1)
+        pbar.update()
 
     return [train_edges, test_edges]
 
