@@ -7,7 +7,7 @@ from pandas import np
 from parameterized import parameterized
 
 from kg_covid_19.edges import make_edges, tsv_to_df, has_disconnected_nodes, \
-    make_negative_edges, make_positive_edges
+    make_negative_edges, make_positive_edges, df_to_tsv
 
 
 class TestEdges(unittest.TestCase):
@@ -35,6 +35,14 @@ class TestEdges(unittest.TestCase):
         self.assertTrue(isinstance(df, pd.DataFrame))
         self.assertEqual((150, 5), df.shape)
         self.assertEqual(df['subject'][0], 'g1')
+
+    def test_df_to_tsv(self):
+        path = os.path.join(tempfile.mkdtemp(), 'some.tsv')
+        df = tsv_to_df(self.edges_file)
+        df_to_tsv(df, path)
+        self.assertTrue(os.path.isfile(path))
+        df_roundtrip = tsv_to_df(path)
+        self.assertEqual(df.shape, df_roundtrip.shape)
 
     def test_make_edges_exists(self):
         self.assertTrue(isinstance(make_edges, object))

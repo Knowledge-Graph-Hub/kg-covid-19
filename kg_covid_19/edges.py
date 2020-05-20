@@ -28,9 +28,6 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     Returns:
         None.
     """
-    pos_train_edges_outfile = os.path.join(output_dir, "pos_train_edges.tsv")
-    pos_train_nodes_outfile = os.path.join(output_dir, "pos_train_nodes.tsv")
-
     logging.info("Loading edge file %s" % edges)
     edges_df: pd.DataFrame = tsv_to_df(edges, usecols=['subject', 'object', 'relation',
                                                        'edge_label'])
@@ -56,15 +53,30 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     # make negative edges
     neg_edges_df: pd.DataFrame = make_negative_edges(nodes_df, edges_df)
 
+    #
     # write out positive edges
-    write_edge_files(pos_train_edges, train_fraction, validation, "pos")
+    #
+    # training:
+    pos_train_edges_outfile = os.path.join(output_dir, "pos_train_edges.tsv")
+    pos_train_nodes_outfile = os.path.join(output_dir, "pos_train_nodes.tsv")
+    df_to_tsv(df=pos_train_edges, outfile=pos_train_edges_outfile)
+    df_to_tsv(df=pos_train_edges, outfile=pos_train_nodes_outfile)
+    # training:
+    pos_test_edges_outfile = os.path.join(output_dir, "pos_test_edges.tsv")
+    df_to_tsv(df=pos_train_edges, outfile=pos_test_edges_outfile)
 
+    #
     # write out negative edges
-    write_edge_files(neg_edges_df, train_fraction, validation, "neg")
+    #
+    neg_train_edges_outfile = os.path.join(output_dir, "neg_train_edges.tsv")
+    neg_test_edges_outfile = os.path.join(output_dir, "neg_test_edges.tsv")
+    df_to_tsv(df=neg_edges_df, outfile=neg_train_edges_outfile)
+    df_to_tsv(df=neg_edges_df, outfile=neg_test_edges_outfile)
 
 
-def df_to_tsv(new_edges_df, new_edges_outfile) -> None:
-    raise NotImplementedError
+def df_to_tsv(new_edges_df: pd.DataFrame, new_edges_outfile: str,
+              sep="\t", index=False) -> None:
+    new_edges_df.to_csv(new_edges_outfile, sep=sep, index=index)
 
 
 def make_negative_edges(nodes_df: pd.DataFrame,
