@@ -28,8 +28,8 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     Returns:
         None.
     """
-    new_edges_outfile = os.path.join(output_dir, "edges.tsv")
-    new_nodes_outfile = os.path.join(output_dir, "nodes.tsv")
+    pos_train_edges_outfile = os.path.join(output_dir, "pos_train_edges.tsv")
+    pos_train_nodes_outfile = os.path.join(output_dir, "pos_train_nodes.tsv")
 
     logging.info("Loading edge file %s" % edges)
     edges_df: pd.DataFrame = tsv_to_df(edges, usecols=['subject', 'object', 'relation',
@@ -58,8 +58,8 @@ def make_edges(nodes: str, edges: str, output_dir: str,
                             min_degree=min_degree)
 
     # write out new graph
-    df_to_tsv(pos_train_edges, new_edges_outfile)
-    df_to_tsv(pos_test_edges, new_nodes_outfile)
+    df_to_tsv(pos_train_edges, pos_train_edges_outfile)
+    df_to_tsv(pos_test_edges, pos_train_nodes_outfile)
 
     # write out negative edges
     write_edge_files(neg_edges_df, train_fraction, validation, "neg")
