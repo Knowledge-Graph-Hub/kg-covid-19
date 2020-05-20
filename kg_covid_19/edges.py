@@ -15,15 +15,15 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     """Prepare positive and negative edges for testing and training
 
     Args:
-        :param nodes     nodes of input graph, in KGX TSV format [data/merged/nodes.tsv]
+        :param nodes    nodes of input graph, in KGX TSV format [data/merged/nodes.tsv]
         :param edges:   edges for input graph, in KGX TSV format [data/merged/edges.tsv]
         :param output_dir:     directory to output edges and new graph [data/edges/]
-        :param train_fraction: fraction of edges to emit as training [0.8]
+        :param train_fraction: fraction of edges to emit as training
         :param validation:     should we make validation edges? [False]
         :param min_degree      when choosing positive edges, what is the minimum degree
                         of nodes involved in the edge [2]
-        :param check_disconnected_nodes: should we check for disconnected nodes in input
-                        graph? [False]
+        :param check_disconnected_nodes: should we check for disconnected nodes (i.e.
+                        nodes with degree of 0) in input graph? [False]
     Returns:
         None.
     """
@@ -48,17 +48,17 @@ def make_edges(nodes: str, edges: str, output_dir: str,
         make_negative_edges(nodes_df, edges_df)
 
     # make positive edges and new graph with those edges removed
-    pos_edges_df: pd.DataFrame
-    new_edges_df: pd.DataFrame
-    pos_train_edges_df, pos_test_edges_df = \
+    pos_train_edges: pd.DataFrame
+    pos_test_edges: pd.DataFrame
+    pos_train_edges, pos_test_edges = \
         make_positive_edges(nodes_df=nodes_df,
                             edges_df=edges_df,
                             train_fraction=train_fraction,
                             min_degree=min_degree)
 
     # write out new graph
-    df_to_tsv(new_edges_df, new_edges_outfile)
-    df_to_tsv(nodes_df, new_nodes_outfile)
+    df_to_tsv(pos_train_edges, new_edges_outfile)
+    df_to_tsv(pos_test_edges, new_nodes_outfile)
 
     # write out negative edges
     write_edge_files(neg_edges_df, train_fraction, validation, "neg")
