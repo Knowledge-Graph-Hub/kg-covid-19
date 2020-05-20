@@ -57,14 +57,10 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     neg_edges_df: pd.DataFrame = make_negative_edges(nodes_df, edges_df)
 
     # write out positive edges
-    df_to_tsv(pos_train_edges, pos_train_edges_outfile)
-    df_to_tsv(pos_test_edges, pos_train_nodes_outfile)
+    write_edge_files(pos_train_edges, train_fraction, validation, "pos")
 
     # write out negative edges
     write_edge_files(neg_edges_df, train_fraction, validation, "neg")
-
-    # write out positive edges
-    write_edge_files(pos_edges_df, train_fraction, validation, "pos")
 
 
 def df_to_tsv(new_edges_df, new_edges_outfile) -> None:
@@ -233,36 +229,6 @@ def make_positive_edges(nodes_df: pd.DataFrame,
         pbar.update()
 
     return [train_edges, test_edges]
-
-
-def write_edge_files(edges_df: pd.DataFrame,
-                     train_fraction: float,
-                     validation: bool,
-                     prefix: str,
-                     train_str: str = "train",
-                     test_str: str = "test",
-                     valid_str: str = "valid",
-                     sep: str = "_",
-                     suffix: str = ".tsv") -> None:
-    """Write out edges (training, testing, validation if validation == True)
-
-    :param edges_df: pandas dataframe with edge data
-    :param train_fraction: fraction of data to use for training
-    :param validation: should we write validation edges? (if so, split
-                        edges evenly between test and validation)
-    :param prefix: prefix for out file
-    :param train_str: string to use for training file name
-    :param test_str: string to use for test file name
-    :param valid_str: string to use for valid file name
-    :param sep: separator
-    :param suffix: suffix for file name
-    :return: None
-    """
-    raise NotImplementedError
-
-
-def write_positive_edges(pos_edges_df: pd.DataFrame, train_fraction, validation):
-    raise NotImplementedError
 
 
 def has_disconnected_nodes(nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
