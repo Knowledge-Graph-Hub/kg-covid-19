@@ -20,8 +20,8 @@ def make_edges(nodes: str, edges: str, output_dir: str,
         :param output_dir:     directory to output edges and new graph [data/edges/]
         :param train_fraction: fraction of edges to emit as training [0.8]
         :param validation:     should we make validation edges? [False]
-        :param min_degree      when choosing edges, what is the minimum degree of nodes
-                        involved in the edge [1]
+        :param min_degree      when choosing positive edges, what is the minimum degree
+                        of nodes involved in the edge [2]
         :param check_disconnected_nodes: should we check for disconnected nodes in input
                         graph? [False]
     Returns:
