@@ -110,7 +110,6 @@ def _generate_negative_edges(nodes_df: pd.DataFrame,
                                                       edges_df.subject,
                                                       edges_df.object))))
         pbar.update()
-        pbar.set_description("Found %i unique nodes" % len(unique_nodes))
 
         pbar.set_description("Making random pairs of nodes")
         random_subjects = [unique_nodes[random.randint(0, len(unique_nodes) - 1)]
@@ -138,15 +137,16 @@ def _generate_negative_edges(nodes_df: pd.DataFrame,
             negative_edges[negative_edges['subject'] != negative_edges['object']]
         pbar.update()
 
+        pbar.set_description("Selecting %i edges..." % edges_df.shape[0])
         # theoretically might not have enough edges here
         if negative_edges.shape[0] < edges_df.shape[0]:
             warnings.warn("Couldn't generate %i negative edges - only %i edges left "
                           "after removing positives and reflexives" %
                           (edges_df.shape[0], negative_edges.shape[0]))
-
-        # select only num_edges edges
-        pbar.set_description("Selecting %i edges..." % edges_df.shape[0])
-        negative_edges = negative_edges.head(edges_df.shape[0])
+            negative_edges = negative_edges.head(negative_edges.shape[0])
+        else:
+            # select only num_edges edges
+            negative_edges = negative_edges.head(edges_df.shape[0])
         pbar.update()
 
         # only subject and object
