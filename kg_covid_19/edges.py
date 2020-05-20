@@ -101,61 +101,65 @@ def _generate_negative_edges(nodes_df: pd.DataFrame,
                              edge_label: str,
                              relation: str,
                              rseed: str = None) -> pd.DataFrame:
-    unique_nodes = list(np.unique(np.concatenate((nodes_df.id,
-                                                  edges_df.subject,
-                                                  edges_df.object))))
-
-    logging.debug("Found %i unique nodes" % len(unique_nodes))
-
     if rseed:
         logging.debug("Setting random seed")
         random.seed(rseed)
 
-    logging.debug("Making random pairs of nodes (twice the size of edges)")
-    random_subjects = [unique_nodes[random.randint(0, len(unique_nodes) - 1)] for _ in
-                       range(2 * edges_df.shape[0])]
-    random_objects = [unique_nodes[random.randint(0, len(unique_nodes) - 1)] for _ in
-                      range(2 * edges_df.shape[0])]
-    possible_edges = pd.DataFrame({'subject': random_subjects,'object': random_objects})
+    with tqdm(total=8) as pbar:
+        unique_nodes = list(np.unique(np.concatenate((nodes_df.id,
+                                                      edges_df.subject,
+                                                      edges_df.object))))
+        pbar.update()
+        pbar.set_description("Found %i unique nodes" % len(unique_nodes))
 
-    logging.debug("Eliminate duplicated negative edges")
-    possible_edges.drop_duplicates(subset=['subject', 'object'], keep=False,
-                                   inplace=True)
+        pbar.set_description("Making random pairs of nodes")
+        random_subjects = [unique_nodes[random.randint(0, len(unique_nodes) - 1)]
+                           for _ in range(2 * edges_df.shape[0])]
+        random_objects = [unique_nodes[random.randint(0, len(unique_nodes) - 1)]
+                          for _ in range(2 * edges_df.shape[0])]
+        possible_edges = pd.DataFrame({'subject': random_subjects,
+                                       'object': random_objects})
+        pbar.update()
 
-    logging.debug("Eliminating positives edges...")
-    negative_edges = possible_edges.merge(edges_df.drop_duplicates(),
-                                          on=['subject', 'object'],
-                                          how='left', indicator=True)
-    negative_edges = negative_edges[negative_edges['_merge'] == 'left_only']
+        pbar.set_description("Eliminating duplicated negative edges")
+        possible_edges.drop_duplicates(subset=['subject', 'object'], keep=False,
+                                       inplace=True)
+        pbar.update()
 
-    # two other possibilities, in case we want to refactor:
-    # negative_edges = possible_edges[~possible_edges.isin(edges_df)].dropna()
-    # negative_edges = possible_edges[(~possible_edges.subject.isin(edges_df.subject)
-    # & ~possible_edges.object.isin(edges_df.object))]
+        pbar.set_description("Eliminating positives edges")
+        negative_edges = possible_edges.merge(edges_df.drop_duplicates(),
+                                              on=['subject', 'object'],
+                                              how='left', indicator=True)
+        negative_edges = negative_edges[negative_edges['_merge'] == 'left_only']
+        pbar.update()
 
-    logging.debug("Dropping reflexive edges")
-    negative_edges = \
-        negative_edges[negative_edges['subject'] != negative_edges['object']]
+        pbar.set_description("Dropping reflexive edges")
+        negative_edges = \
+            negative_edges[negative_edges['subject'] != negative_edges['object']]
+        pbar.update()
 
-    # theoretically might not have enough edges here
-    if negative_edges.shape[0] < edges_df.shape[0]:
-        warnings.warn("Couldn't generate %i negative edges - only %i edges left after"
-                      "after removing positives and reflexives" %
-                      (edges_df.shape[0], negative_edges.shape[0]))
+        # theoretically might not have enough edges here
+        if negative_edges.shape[0] < edges_df.shape[0]:
+            warnings.warn("Couldn't generate %i negative edges - only %i edges left "
+                          "after removing positives and reflexives" %
+                          (edges_df.shape[0], negative_edges.shape[0]))
 
-    # select only num_edges edges
-    logging.debug("Selecting %i edges..." % edges_df.shape[0])
-    negative_edges = negative_edges.head(edges_df.shape[0])
+        # select only num_edges edges
+        pbar.set_description("Selecting %i edges..." % edges_df.shape[0])
+        negative_edges = negative_edges.head(edges_df.shape[0])
+        pbar.update()
 
-    # only subject and object
-    logging.debug("Making new dataframe")
-    negative_edges = negative_edges[['subject', 'object']]
+        # only subject and object
+        pbar.set_description("Making new dataframe")
+        negative_edges = negative_edges[['subject', 'object']]
+        pbar.update()
 
-    # add edge_label and relation
-    negative_edges = pd.DataFrame({'subject': negative_edges['subject'],
-                                   'edge_label': edge_label,
-                                   'object': negative_edges['object'],
-                                   'relation': relation})
+        # add edge_label and relation
+        negative_edges = pd.DataFrame({'subject': negative_edges['subject'],
+                                       'edge_label': edge_label,
+                                       'object': negative_edges['object'],
+                                       'relation': relation})
+        pbar.update()
 
     return negative_edges
 
@@ -187,57 +191,48 @@ def make_positive_edges(nodes_df: pd.DataFrame,
     if 'id' not in list(nodes_df.columns):
         raise ValueError("Can't find id column in nodes")
 
-    with tqdm(total=10) as pbar:
+    with tqdm(total=7) as pbar:
+        pbar.set_description("Copying edges")
         test_edges = edges_df.copy(deep=True)
         pbar.update()
 
         # count degrees
+        pbar.set_description("Calculating degrees")
         subj_degree = edges_df['subject'].value_counts()
         subj_degree_df = pd.DataFrame({'subject': list(subj_degree.index),
                                        'subj_degree': list(subj_degree.values)})
-        pbar.update()
-
         obj_degree = edges_df['object'].value_counts()
         obj_degree_df = pd.DataFrame({'object': list(obj_degree.index),
                                       'obj_degree': list(obj_degree.values)})
         pbar.update()
 
+        pbar.set_description("Merging degrees")
         test_edges = test_edges.merge(subj_degree_df, how='left', on='subject')
-        pbar.update()
-
         test_edges = test_edges.merge(obj_degree_df, how='left', on='object')
         pbar.update()
 
-        # iterate through shuffled edges until we get num_edges, or run out of edges
+        pbar.set_description("Removing edges < min_degree")
         test_edges.drop(test_edges[test_edges['subj_degree'] < min_degree].index,
                         inplace=True)
-        pbar.update()
-
         test_edges.drop(test_edges[test_edges['obj_degree'] < min_degree].index,
                         inplace=True)
         pbar.update()
 
+        pbar.set_description("Adding edge_label and relation columns")
         test_edges = test_edges.sample(frac=(1-train_fraction))
         test_edges['edge_label'] = 'positive_edge'
         test_edges['relation'] = 'positive_edge'
         pbar.update()
 
+        pbar.set_description("Making training edges")
         train_edges = edges_df.copy(deep=True)
         pbar.update()
 
+        pbar.set_description("Removing test edges from training data")
         train_edges.drop(train_edges.index[test_edges.index], inplace=True)
         pbar.update()
 
     return [train_edges, test_edges]
-
-
-def evaluate_edges(idx: int,
-                   subj: str, obj: str, min_degree: int,
-                   subj_degree: int, obj_degree: int) -> Optional[List[Union[int, list]]]:
-    if subj_degree >= min_degree and obj_degree >= min_degree:
-        return [idx, [subj, 'positive_edge', obj, 'positive_edge']]
-    else:
-        return None
 
 
 def write_edge_files(edges_df: pd.DataFrame,
