@@ -12,7 +12,8 @@ from tqdm import tqdm  # type: ignore
 def make_edges(nodes: str, edges: str, output_dir: str,
                train_fraction: float, validation: bool,
                min_degree: int, check_disconnected_nodes: bool = False) -> None:
-    """Prepare positive and negative edges for testing and training
+    """Prepare positive and negative edges for testing and training (see run.py edges
+    command for documentation)
 
     Args:
         :param nodes    nodes of input graph, in KGX TSV format [data/merged/nodes.tsv]
