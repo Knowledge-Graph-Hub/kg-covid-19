@@ -58,7 +58,7 @@ class TestEdges(unittest.TestCase):
         ('neg_valid_edges.tsv', True, True, 0.1),
         ('neg_valid_edges.tsv', False, False, NaN),
     ])
-    def test_make_edges_check_output_files(self, output_file: str,
+    def test_make_edges_check_edge_output_files(self, output_file: str,
                                            make_validation: bool,
                                            file_should_exist: bool,
                                            expected_fract: float):
@@ -80,6 +80,22 @@ class TestEdges(unittest.TestCase):
             self.assertTrue('object' in new_edges_df)
         else:
             self.assertTrue(not os.path.isfile(output_file_with_path))
+
+    def test_make_edges_check_node_output_file(self):
+        output_dir = tempfile.mkdtemp()
+        output_file_with_path = os.path.join(output_dir, 'pos_train_nodes.tsv')
+        input_nodes = tsv_to_df(self.nodes_file)
+        make_edges(nodes=self.nodes_file, edges=self.edges_file,
+                   output_dir=output_dir, train_fraction=0.8,
+                   validation=False, min_degree=1)
+        self.assertTrue(os.path.isfile(output_file_with_path))
+        new_nodes_df = tsv_to_df(output_file_with_path)
+        # make sure we get expected
+        self.assertAlmostEqual(new_nodes_df.shape[0], input_nodes.shape[0])
+        # should also have subject and object column
+        self.assertTrue('id' in new_nodes_df)
+        self.assertTrue('category' in new_nodes_df)
+
 
     #
     # positive edge tests
