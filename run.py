@@ -132,13 +132,14 @@ def edges(*args, **kwargs) -> None:
     equal to the number of positive edges emitted above.
 
     Outputs these files in [output_dir]:
-        pos_train_edges.tsv - input graph with test [and validation] positive edges
-                              removed
-        pos_test_edges.tsv - positive edges for test
+        pos_train_edges.tsv - positive edges for training (this is the input graph with
+                      test [and validation] positive edges removed)
+        pos_test_edges.tsv - positive edges for testing
         pos_valid_edges.tsv (optional) - positive edges for validation
-        neg_train.tsv - a set of edges equal in number to pos_train_edges.tsv
-        neg_test.tsv
-        neg_valid.tsv (optional)
+        neg_train.tsv - a set of edges not present in input graph for training
+        neg_test.tsv - a set of edges not present in input graph for testing
+        neg_valid.tsv (optional) - a set of edges not present in input graph for
+                      validation
 
     Args:
         :param nodes:   nodes for input graph, in KGX TSV format [data/merged/nodes.tsv]
