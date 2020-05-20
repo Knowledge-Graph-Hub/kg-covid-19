@@ -74,9 +74,8 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     df_to_tsv(df=neg_edges_df, outfile=neg_test_edges_outfile)
 
 
-def df_to_tsv(new_edges_df: pd.DataFrame, new_edges_outfile: str,
-              sep="\t", index=False) -> None:
-    new_edges_df.to_csv(new_edges_outfile, sep=sep, index=index)
+def df_to_tsv(df: pd.DataFrame, outfile: str, sep="\t", index=False) -> None:
+    df.to_csv(outfile, sep=sep, index=index)
 
 
 def make_negative_edges(nodes_df: pd.DataFrame,
