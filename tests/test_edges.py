@@ -87,6 +87,35 @@ class TestEdges(unittest.TestCase):
         else:
             self.assertTrue(not os.path.isfile(output_file_with_path))
 
+    @parameterized.expand([
+        ('pos_train_edges.tsv', 'pos_test_edges.tsv', 'pos_valid_edges.tsv'),
+        ('neg_train_edges.tsv', 'neg_test_edges.tsv', 'neg_valid_edges.tsv'),
+    ])
+    def test_make_edges_pos_train_test_valid_edges_distinct(self, train, test, valid):
+        output_dir = tempfile.mkdtemp()
+        input_edges = tsv_to_df(self.edges_file)
+        make_edges(nodes=self.nodes_file, edges=self.edges_file,
+                   output_dir=output_dir, train_fraction=0.8,
+                   validation=True, min_degree=1)
+        input_edges = tsv_to_df(self.edges_file)[['subject', 'object']]
+        train_edges = tsv_to_df(os.path.join(output_dir, train))[['subject', 'object']]
+        test_edges = tsv_to_df(os.path.join(output_dir, test))[['subject', 'object']]
+        valid_edges = tsv_to_df(os.path.join(output_dir, valid))[['subject', 'object']]
+
+        # train should not share any members with test
+        self.assertTrue(not set(train_edges).isdisjoint(test_edges))
+        # train should not share any members with valid
+        self.assertTrue(not set(train_edges).isdisjoint(valid_edges))
+        # test should not share any members with valid
+        self.assertTrue(not set(test_edges).isdisjoint(valid_edges))
+
+        # train should be a subset of input_edges
+        self.assertTrue(set(train_edges) <= set(input_edges))
+        # test should be a subset of input_edges
+        self.assertTrue(set(test_edges) <= set(input_edges))
+        # valid should be a subset of input_edges
+        self.assertTrue(set(valid_edges) <= set(input_edges))
+
     def test_make_edges_check_node_output_file(self):
         output_dir = tempfile.mkdtemp()
         output_file_with_path = os.path.join(output_dir, 'pos_train_nodes.tsv')
