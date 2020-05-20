@@ -55,12 +55,14 @@ class TestEdges(unittest.TestCase):
     @parameterized.expand([
         ('pos_train_edges.tsv', True, True, 0.8),
         ('pos_test_edges.tsv', True, True, 0.1),
+        ('pos_test_edges.tsv', False, True, 0.2),  # no validation set
         ('pos_valid_edges.tsv', True, True, 0.1),
-        ('pos_valid_edges.tsv', False, False, NaN),
+        ('pos_valid_edges.tsv', False, False, NaN),  # no validation set
         ('neg_train_edges.tsv', True, True, 0.8),
         ('neg_test_edges.tsv', True, True, 0.1),
+        ('neg_test_edges.tsv', False, True, 0.2),  # no validation set
         ('neg_valid_edges.tsv', True, True, 0.1),
-        ('neg_valid_edges.tsv', False, False, NaN),
+        ('neg_valid_edges.tsv', False, False, NaN),  # no validation set
     ])
     def test_make_edges_check_edge_output_files(self, output_file: str,
                                                 make_validation: bool,
