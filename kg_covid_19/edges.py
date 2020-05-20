@@ -44,11 +44,16 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     # make positive edges
     pos_train_edges: pd.DataFrame
     pos_test_edges: pd.DataFrame
+    pos_valid_edges: pd.DataFrame
     pos_train_edges, pos_test_edges = \
         make_positive_edges(nodes_df=nodes_df,
                             edges_df=edges_df,
                             train_fraction=train_fraction,
                             min_degree=min_degree)
+    if validation:
+        logging.debug("Making positive validation edges")
+        pos_valid_edges = pos_test_edges.sample(frac=0.5, random_state=200)
+        pos_test_edges = pos_test_edges.drop(pos_valid_edges.index)
 
     # make negative edges
     neg_edges_df: pd.DataFrame = make_negative_edges(nodes_df, edges_df)
@@ -60,9 +65,12 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     pos_train_edges_outfile = os.path.join(output_dir, "pos_train_edges.tsv")
     pos_train_nodes_outfile = os.path.join(output_dir, "pos_train_nodes.tsv")
     pos_test_edges_outfile = os.path.join(output_dir, "pos_test_edges.tsv")
+    pos_valid_edges_outfile = os.path.join(output_dir, "pos_valid_edges.tsv")
     df_to_tsv(df=pos_train_edges, outfile=pos_train_edges_outfile)
     df_to_tsv(df=nodes_df, outfile=pos_train_nodes_outfile)
     df_to_tsv(df=pos_test_edges, outfile=pos_test_edges_outfile)
+    if validation:
+        df_to_tsv(df=pos_valid_edges, outfile=pos_valid_edges_outfile)
 
     #
     # write out negative edges
