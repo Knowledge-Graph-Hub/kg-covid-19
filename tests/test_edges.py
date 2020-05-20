@@ -48,6 +48,10 @@ class TestEdges(unittest.TestCase):
     def test_make_edges_exists(self):
         self.assertTrue(isinstance(make_edges, object))
 
+    #
+    # Test output files
+    #
+
     @parameterized.expand([
         ('pos_train_edges.tsv', True, True, 0.8),
         ('pos_test_edges.tsv', True, True, 0.1),
@@ -59,9 +63,9 @@ class TestEdges(unittest.TestCase):
         ('neg_valid_edges.tsv', False, False, NaN),
     ])
     def test_make_edges_check_edge_output_files(self, output_file: str,
-                                           make_validation: bool,
-                                           file_should_exist: bool,
-                                           expected_fract: float):
+                                                make_validation: bool,
+                                                file_should_exist: bool,
+                                                expected_fract: float):
         me_output_dir = tempfile.mkdtemp()
         output_file_with_path = os.path.join(me_output_dir, output_file)
         input_edges = tsv_to_df(self.edges_file)
@@ -96,10 +100,10 @@ class TestEdges(unittest.TestCase):
         self.assertTrue('id' in new_nodes_df)
         self.assertTrue('category' in new_nodes_df)
 
-
     #
     # positive edge tests
     #
+
     def test_make_positives_edges_check_test_edge_instance_type(self):
         self.assertTrue(isinstance(self.test_edges, pd.DataFrame))
 
