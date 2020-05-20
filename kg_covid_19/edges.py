@@ -184,6 +184,7 @@ def _generate_negative_edges(nodes_df: pd.DataFrame,
                                        'object': negative_edges['object'],
                                        'relation': relation})
         pbar.update()
+        pbar.set_description("Done making negative edges")
 
     return negative_edges
 
@@ -255,6 +256,7 @@ def make_positive_edges(nodes_df: pd.DataFrame,
         pbar.set_description("Removing test edges from training data")
         train_edges.drop(train_edges.index[test_edges.index], inplace=True)
         pbar.update()
+        pbar.set_description("Done making positive edges")
 
     return [train_edges, test_edges]
 
