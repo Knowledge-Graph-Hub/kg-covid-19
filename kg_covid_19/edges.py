@@ -42,6 +42,7 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     os.makedirs(output_dir, exist_ok=True)
 
     # make positive edges
+    logging.info("Making positive edges")
     pos_train_edges: pd.DataFrame
     pos_test_edges: pd.DataFrame
     pos_valid_edges: pd.DataFrame
@@ -51,17 +52,16 @@ def make_edges(nodes: str, edges: str, output_dir: str,
                             train_fraction=train_fraction,
                             min_degree=min_degree)
     if validation:
-        logging.debug("Making positive validation edges")
         pos_valid_edges = pos_test_edges.sample(frac=0.5)
         pos_test_edges = pos_test_edges.drop(pos_valid_edges.index)
 
     # make negative edges
+    logging.info("Making negative edges")
     neg_edges_df: pd.DataFrame = make_negative_edges(nodes_df, edges_df)
     neg_train_edges: pd.DataFrame = neg_edges_df.sample(frac=train_fraction)
     neg_test_edges: pd.DataFrame = neg_edges_df.drop(neg_train_edges.index)
     neg_valid_edges: pd.DataFrame
     if validation:
-        logging.debug("Making negative validation edges")
         neg_valid_edges = neg_test_edges.sample(frac=0.5)
         neg_test_edges = neg_test_edges.drop(neg_valid_edges.index)
 
@@ -69,6 +69,7 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     # write out positive edges
     #
     # training:
+    logging.info("Writing out positive edges")
     pos_train_edges_outfile = os.path.join(output_dir, "pos_train_edges.tsv")
     pos_train_nodes_outfile = os.path.join(output_dir, "pos_train_nodes.tsv")
     pos_test_edges_outfile = os.path.join(output_dir, "pos_test_edges.tsv")
@@ -82,6 +83,7 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     #
     # write out negative edges
     #
+    logging.info("Writing out negative edges")
     neg_train_edges_outfile = os.path.join(output_dir, "neg_train_edges.tsv")
     neg_test_edges_outfile = os.path.join(output_dir, "neg_test_edges.tsv")
     neg_valid_edges_outfile = os.path.join(output_dir, "neg_valid_edges.tsv")
