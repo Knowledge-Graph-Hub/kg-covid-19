@@ -60,7 +60,7 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     pos_train_edges_outfile = os.path.join(output_dir, "pos_train_edges.tsv")
     pos_train_nodes_outfile = os.path.join(output_dir, "pos_train_nodes.tsv")
     df_to_tsv(df=pos_train_edges, outfile=pos_train_edges_outfile)
-    df_to_tsv(df=pos_train_edges, outfile=pos_train_nodes_outfile)
+    df_to_tsv(df=nodes_df, outfile=pos_train_nodes_outfile)
     # training:
     pos_test_edges_outfile = os.path.join(output_dir, "pos_test_edges.tsv")
     df_to_tsv(df=pos_train_edges, outfile=pos_test_edges_outfile)

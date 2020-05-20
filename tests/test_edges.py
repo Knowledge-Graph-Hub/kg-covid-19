@@ -3,6 +3,7 @@ import tempfile
 import unittest
 
 import pandas as pd
+from numpy import NaN
 from pandas import np
 from parameterized import parameterized
 
@@ -48,31 +49,37 @@ class TestEdges(unittest.TestCase):
         self.assertTrue(isinstance(make_edges, object))
 
     @parameterized.expand([
-        'pos_train_edges.tsv',
-        'pos_test_edges.tsv',
-        'neg_train.tsv',
-        'neg_test.tsv',
+        ('pos_train_edges.tsv', True, True, 0.8),
+        ('pos_test_edges.tsv', True, True, 0.1),
+        ('pos_valid_edges.tsv', True, True, 0.1),
+        ('pos_valid_edges.tsv', False, False, NaN),
+        ('neg_train_edges.tsv', True, True, 0.8),
+        ('neg_test_edges.tsv', True, True, 0.1),
+        ('neg_valid_edges.tsv', True, True, 0.1),
+        ('neg_valid_edges.tsv', False, False, NaN),
     ])
-    def test_make_edges_check_output_files(self, output_file):
+    def test_make_edges_check_output_files(self, output_file: str,
+                                           make_validation: bool,
+                                           file_should_exist: bool,
+                                           expected_fract: float):
         me_output_dir = tempfile.mkdtemp()
+        output_file_with_path = os.path.join(me_output_dir, output_file)
+        input_edges = tsv_to_df(self.edges_file)
+        num_input_edges = input_edges.shape[0]
         make_edges(nodes=self.nodes_file, edges=self.edges_file,
-                   output_dir=me_output_dir, train_fraction=0.8, validation=False,
-                   min_degree=1)
-        self.assertTrue(os.path.isfile(output_file))
-
-    @parameterized.expand([
-        'pos_valid_edges.tsv', 'neg_valid.tsv'
-    ])
-    def test_make_edges_check_validation_output_files(self, output_file):
-        me_output_dir = tempfile.mkdtemp()
-        args = {'nodes': self.nodes_file, 'edges': self.edges_file,
-                'output_dir': me_output_dir, 'train_fraction': 0.8,
-                'validation': False, 'min_degree': 1}
-        make_edges(*args)
-        self.assertTrue(not os.path.isfile(output_file))
-        args['validation'] = True
-        make_edges(*args)
-        self.assertTrue(os.path.isfile(output_file))
+                   output_dir=me_output_dir, train_fraction=0.8,
+                   validation=make_validation, min_degree=1)
+        if file_should_exist:
+            self.assertTrue(os.path.isfile(output_file_with_path))
+            new_edges_df = tsv_to_df(output_file_with_path)
+            # make sure we get expected
+            self.assertAlmostEqual(new_edges_df.shape[0],
+                                   num_input_edges * expected_fract, 1)
+            # should also have subject and object column
+            self.assertTrue('subject' in new_edges_df)
+            self.assertTrue('object' in new_edges_df)
+        else:
+            self.assertTrue(not os.path.isfile(output_file_with_path))
 
     #
     # positive edge tests
