@@ -118,13 +118,14 @@ def edges(*args, **kwargs) -> None:
     Given a graph (from formatted node and edge TSVs), output positive edges and negative
     edges for use in machine learning.
 
-    To generate positive edges: a set of test (and optionally validation) positive edges
-    equal in number to [train_fraction * number of edges in input graph] are randomly
-    selected from the edges in the input graph, such that both nodes participating in
-    the edge have a degree greater than min_degree (to avoid creating disconnected
-    components). These edges are emitting as positive test [and optionally positive
-    validation] nodes. These edges are then removed from the edges from the input graph
-    and these are the training edges.
+    To generate positive edges: a set of test positive edges equal in number to
+    [(1 - train_fraction) * number of edges in input graph] are randomly selected from
+    the edges in the input graph, such that both nodes participating in the edge have a
+    degree greater than min_degree (to avoid creating disconnected components). These
+    edges are emitting as positive test edges. (If -v == true, the test positive edges
+    are divided equally to yield test and validation positive edges.) These edges are
+    then removed from the edges of the input graph, and these are emitted as the
+    training edges.
 
     Negative edges are selected by randomly selecting pairs of nodes that are not
     connected by an edge in the input graph. The number of negative edges emitted is
