@@ -32,14 +32,4 @@ class TestRun(TestCase):
             self.assertNotEqual(result.exit_code, 0)
             self.assertRegexpMatches(result.output, "does not exist")
 
-    @skip("to be refactored")
-    def test_query_command(self):
-        result = self.runner.invoke(cli=query, args=['-q', 'TargetCandidates'])
-        self.assertEqual(result.exit_code, 0)
 
-    def test_edges_command(self):
-        result = self.runner.invoke(cli=edges, args=[
-             '-n', 'resources/edges/small_graph_nodes.tsv',
-             '-e', 'resources/edges/small_graph_edges.tsv'],
-            catch_exceptions=False)
-        self.assertEqual(result.exit_code, 0)
