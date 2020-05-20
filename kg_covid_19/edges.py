@@ -34,7 +34,6 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     logging.info("Loading edge file %s" % edges)
     edges_df: pd.DataFrame = tsv_to_df(edges, usecols=['subject', 'object', 'relation',
                                                        'edge_label'])
-
     logging.info("Loading node file %s" % nodes)
     nodes_df: pd.DataFrame = tsv_to_df(nodes)
 
@@ -45,10 +44,7 @@ def make_edges(nodes: str, edges: str, output_dir: str,
 
     os.makedirs(output_dir, exist_ok=True)
 
-    neg_edges_df: pd.DataFrame = \
-        make_negative_edges(nodes_df, edges_df)
-
-    # make positive edges and new graph with those edges removed
+    # make positive edges
     pos_train_edges: pd.DataFrame
     pos_test_edges: pd.DataFrame
     pos_train_edges, pos_test_edges = \
@@ -57,7 +53,10 @@ def make_edges(nodes: str, edges: str, output_dir: str,
                             train_fraction=train_fraction,
                             min_degree=min_degree)
 
-    # write out new graph
+    # make negative edges
+    neg_edges_df: pd.DataFrame = make_negative_edges(nodes_df, edges_df)
+
+    # write out positive edges
     df_to_tsv(pos_train_edges, pos_train_edges_outfile)
     df_to_tsv(pos_test_edges, pos_train_nodes_outfile)
 
