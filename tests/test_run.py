@@ -37,11 +37,9 @@ class TestRun(TestCase):
         result = self.runner.invoke(cli=query, args=['-q', 'TargetCandidates'])
         self.assertEqual(result.exit_code, 0)
 
-    @skip("skipping for now")
     def test_edges_command(self):
         result = self.runner.invoke(cli=edges, args=[
-             '-n', '100',
-             '-d', 'tests/resources/edges/small_graph_nodes.tsv',
-             '-e', 'tests/resources/edges/small_graph_edges.tsv'],
+             '-n', 'resources/edges/small_graph_nodes.tsv',
+             '-e', 'resources/edges/small_graph_edges.tsv'],
             catch_exceptions=False)
         self.assertEqual(result.exit_code, 0)
