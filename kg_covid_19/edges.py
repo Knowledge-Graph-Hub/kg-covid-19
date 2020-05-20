@@ -84,8 +84,11 @@ def make_edges(nodes: str, edges: str, output_dir: str,
     #
     neg_train_edges_outfile = os.path.join(output_dir, "neg_train_edges.tsv")
     neg_test_edges_outfile = os.path.join(output_dir, "neg_test_edges.tsv")
+    neg_valid_edges_outfile = os.path.join(output_dir, "neg_valid_edges.tsv")
     df_to_tsv(df=neg_train_edges, outfile=neg_train_edges_outfile)
     df_to_tsv(df=neg_test_edges, outfile=neg_test_edges_outfile)
+    if validation:
+        df_to_tsv(df=neg_valid_edges, outfile=neg_valid_edges_outfile)
 
 
 def df_to_tsv(df: pd.DataFrame, outfile: str, sep="\t", index=False) -> None:
