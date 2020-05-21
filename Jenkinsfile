@@ -127,7 +127,7 @@ pipeline {
                         )
                         sh 'sbt stage'
                         sh 'pigz -d ../merged-kg.nt.gz'
-                        sh 'export JAVA_OPTS=-Xmx32G && ../target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=merged-kg.jnl --use-ontology-graph=true ../merged-kg.nt'
+                        sh 'export JAVA_OPTS=-Xmx128G && ../target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=merged-kg.jnl --use-ontology-graph=true ../merged-kg.nt'
                         sh 'pigz merged-kg.jnl'
                         sh 'pigz ../merged-kg.nt.gz'
                 }
