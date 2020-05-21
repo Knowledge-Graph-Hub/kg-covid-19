@@ -109,7 +109,6 @@ pipeline {
                 }
             }
         }
-
         stage('Convert to RDF') {
             steps {
                 dir('./gitrepo') {
@@ -145,7 +144,8 @@ pipeline {
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
-                                sh 'cd config; s3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.jnl.gz s3://kg-hub-public-data/kg-covid-19.jnl.gz'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.jnl.gz s3://kg-hub-public-data/kg-covid-19.jnl.gz'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put *_stats.yaml s3://kg-hub-public-data/'
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/[artifact name]
                             }
