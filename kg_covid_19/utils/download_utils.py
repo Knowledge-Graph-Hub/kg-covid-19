@@ -42,6 +42,8 @@ def download_from_yaml(yaml_file: str, output_dir: str,
                 if 'local_name' in item
                 else item['url'].split("/")[-1]
             )
+            logging.info("Retrieving %s from %s" % (outfile, item['url']))
+
             if path.exists(outfile):
                 if ignore_cache:
                     logging.info("Deleting cached version of {}".format(outfile))
