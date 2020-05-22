@@ -2,7 +2,6 @@ import csv
 import logging
 import os
 import re
-import tarfile
 from typing import List, Union
 
 from tqdm import tqdm  # type: ignore
@@ -135,6 +134,8 @@ class TargetCandidates(Query):
 
         candidate_entries: list = []
         rows = nodes_df[nodes_df[taxid_col] == taxon_id]
+        rows = rows.drop_duplicates()
+        rows = rows.sort_values(by=['id'])
         for _, row in rows.iterrows():
             if row[id_col] not in existing_ids:
                 candidate_entries.append(['V', row[id_col], row[name_col], 1,
