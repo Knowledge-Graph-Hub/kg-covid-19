@@ -107,7 +107,7 @@
 # IntAct - CoV protein -> human protein interaction data
 #
 -
-  url: https://t.co/OUGKWbpQHG?amp=1
+  url: ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi30/datasets/Coronavirus.zip
   local_name: intact_coronavirus.zip
 
 #

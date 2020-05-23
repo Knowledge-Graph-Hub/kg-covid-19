@@ -2,7 +2,6 @@ import csv
 import logging
 import os
 import re
-import tarfile
 from typing import List, Union
 
 from tqdm import tqdm  # type: ignore
@@ -95,8 +94,7 @@ class TargetCandidates(Query):
         # append list of proteins that interact with SARS-CoV-2 according to IntAct
         logging.info("adding human proteins that interact with SARS-CoV-2 proteins" +
                      "according to IntAct")
-        candidates.extend(
-        self.sars_cov2_human_interactors_to_candidate_entries(
+        interactors = self.sars_cov2_human_interactors_to_candidate_entries(
                             sars_cov2_ids=all_sars_cov2_ids,
                             provided_by='intact',
                             edge_df=intact_edges_df,
@@ -107,7 +105,15 @@ class TargetCandidates(Query):
                             name_col='name',
                             confidence_score=0.75,
                             comments='inferred from intact')
-        )
+        current_ids = [c[1] for c in candidates]
+
+        # add interactors not already in our list
+        new_interactors: list = []
+        for interactor in interactors:
+            if interactor[1] not in current_ids:
+                new_interactors.append(interactor)
+
+        candidates.extend(new_interactors)
 
         os.makedirs(self.output_dir, exist_ok=True)
         with open(os.path.join(self.output_dir, self.outfile_name), 'w', newline="") as out:
@@ -135,6 +141,8 @@ class TargetCandidates(Query):
 
         candidate_entries: list = []
         rows = nodes_df[nodes_df[taxid_col] == taxon_id]
+        rows = rows.drop_duplicates()
+        rows = rows.sort_values(by=['id'])
         for _, row in rows.iterrows():
             if row[id_col] not in existing_ids:
                 candidate_entries.append(['V', row[id_col], row[name_col], 1,
