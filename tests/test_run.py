@@ -2,7 +2,7 @@ from unittest import TestCase, skip
 from click.testing import CliRunner
 from unittest import mock
 
-from run import download, transform, load
+from run import download, transform, load, edges, query
 
 
 class TestRun(TestCase):
@@ -31,4 +31,5 @@ class TestRun(TestCase):
                                         )
             self.assertNotEqual(result.exit_code, 0)
             self.assertRegexpMatches(result.output, "does not exist")
+
 
