@@ -24,7 +24,7 @@ How do I use this package?
 
     python run.py download
     python run.py transform
-    python run.py load
+    python run.py merge
 
 
 Tests Coverage
