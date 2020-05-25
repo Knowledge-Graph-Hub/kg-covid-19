@@ -2,7 +2,7 @@ from unittest import TestCase, skip
 from click.testing import CliRunner
 from unittest import mock
 
-from run import download, transform, load, edges, query
+from run import download, transform, merge, edges, query
 
 
 class TestRun(TestCase):
@@ -25,7 +25,7 @@ class TestRun(TestCase):
     def test_merge_missing_file_error(self):
         with self.assertRaises(FileNotFoundError) as context:
             result = self.runner.invoke(catch_exceptions=False,
-                                        cli=load,
+                                        cli=merge,
                                         args=['-y',
                                               'tests/resources/merge_MISSING_FILE.yaml']
                                         )
