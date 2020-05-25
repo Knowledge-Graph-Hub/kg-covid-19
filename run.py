@@ -7,7 +7,7 @@ import click
 from kg_covid_19 import download as kg_download
 from kg_covid_19 import transform as kg_transform
 from kg_covid_19.edges import make_edges
-from kg_covid_19.load_utils.merge_kg import load_and_merge
+from kg_covid_19.merge_utils.merge_kg import load_and_merge
 from kg_covid_19.query import QUERIES, run_query
 from kg_covid_19.transform import DATA_SOURCES
 
@@ -69,7 +69,7 @@ def transform(*args, **kwargs) -> None:
 
 @cli.command()
 @click.option('yaml', '-y', default="merge.yaml", type=click.Path(exists=True))
-def load(yaml: str) -> None:
+def merge(yaml: str) -> None:
     """Use KGX to load subgraphs to create a merged graph.
 
     Args:
