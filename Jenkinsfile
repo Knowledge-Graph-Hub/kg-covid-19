@@ -80,16 +80,7 @@ pipeline {
                         def run_py_transform = sh(
                             script: '. venv/bin/activate && python3.7 run.py transform', returnStatus: true
                         )
-                        if (run_py_transform == 0) { // upload transformed to s3 if we're on correct branch
-                            if (env.BRANCH_NAME != 'master') {
-                                echo "Will not push if not on correct branch."
-                            } else {
-                                withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
-                                    sh 'rm -fr data/transformed/.gitkeep'
-                                    sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/transformed s3://kg-hub-public-data/'
-                                }
-                            }
-                        } else { // 'run.py transform' failed - let's try to download last good copy of transformed/ from s3 to data/
+                        if (run_py_transform != 0) { // 'run.py transform' failed - let's try to download last good copy of transformed/ from s3 to data/
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                                 sh 'rm -fr data/transformed || true;'
                                 sh 'mkdir -p data/transformed || true'
@@ -142,6 +133,8 @@ pipeline {
                             echo "Will not push if not on correct branch."
                         } else {
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                                sh 'rm -fr data/transformed/.gitkeep'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/transformed s3://kg-hub-public-data/'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.jnl.gz s3://kg-hub-public-data/kg-covid-19.jnl.gz'
