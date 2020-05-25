@@ -101,10 +101,10 @@ pipeline {
             }
         }
 
-        stage('Load') {
+        stage('Merge') {
             steps {
                 dir('./gitrepo') {
-                    sh '. venv/bin/activate && python3.7 run.py load'
+                    sh '. venv/bin/activate && python3.7 run.py merge'
                     sh 'pigz merged-kg.tar'
                 }
             }
