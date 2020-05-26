@@ -30,6 +30,7 @@ class DrugCentralTransform(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
         source_name = "drug_central"
         super().__init__(source_name, input_dir, output_dir)  # set some variables
+        self.node_header = ['id', 'name', 'category', 'tclin', 'tchem']
 
     def run(self, data_file: Optional[str] = None, species: str = "Homo sapiens") -> None:
         """Method is called and performs needed transformations to process the Drug
@@ -53,8 +54,8 @@ class DrugCentralTransform(Transform):
         tempdir = tempfile.mkdtemp()
         (tclin_file, tchem_file) = unzip_and_get_tclin_tchem(tclin_chem_zip_file, tempdir)
 
-        tclin_dict: dict = tclin_to_dict(tclin_file)
-        tclin_dict: dict = tchem_to_dict(tchem_file)
+        tclin_dict: dict = tsv_to_dict(tclin_file, 'uniprot')
+        tchem_dict: dict = tsv_to_dict(tchem_file, 'uniprot')
 
         with open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge, \
@@ -90,15 +91,22 @@ class DrugCentralTransform(Transform):
                                      header=self.node_header,
                                      data=[drug_id,
                                            items_dict['DRUG_NAME'],
-                                           drug_node_type])
+                                           drug_node_type,
+                                           str(False),
+                                           str(False)])
 
                 for gene_id in gene_ids:
                     gene_id = gene_curie_prefix + gene_id
+                    is_tclin = True if gene_ids[0] in tclin_dict else False
+                    is_tchem = True if gene_ids[0] in tchem_dict else False
+
                     write_node_edge_item(fh=node,
                                          header=self.node_header,
                                          data=[gene_id,
                                                items_dict['GENE'],
-                                               gene_node_type])
+                                               gene_node_type,
+                                               str(is_tclin),
+                                               str(is_tchem)])
 
                     # WRITE EDGES
                     # ['subject', 'edge_label', 'object', 'relation', 'provided_by',
