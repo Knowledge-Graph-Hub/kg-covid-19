@@ -96,15 +96,8 @@ pipeline {
             steps {
                 dir('./gitrepo') {
                     sh '. venv/bin/activate && python3.7 run.py merge'
-                    sh 'pigz merged-kg.tar'
-                }
-            }
-        }
-        stage('Convert to RDF') {
-            steps {
-                dir('./gitrepo') {
-                    sh '. venv/bin/activate && kgx transform --input-type tsv --output-type nt -o ./merged-kg.nt merged-kg.tar.gz'
-                    sh 'pigz merged-kg.nt'
+                    sh 'pigz data/merged/merged-kg.tar'
+                    sh 'pigz data/merged/merged-kg.nt'
                 }
             }
         }
@@ -117,10 +110,10 @@ pipeline {
                                 branch: 'master'
                         )
                         sh 'sbt stage'
-                        sh 'pigz -d ../merged-kg.nt.gz'
+                        sh 'pigz -d ../data/merged/merged-kg.nt.gz'
                         sh 'export JAVA_OPTS=-Xmx128G && ./target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=../merged-kg.jnl --use-ontology-graph=true ../merged-kg.nt'
                         sh 'pigz ../merged-kg.jnl'
-                        sh 'pigz ../merged-kg.nt'
+                        sh 'pigz ../data/merged/merged-kg.nt'
                 }
             }
         }
@@ -135,8 +128,8 @@ pipeline {
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
                                 sh 'rm -fr data/transformed/.gitkeep'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/transformed s3://kg-hub-public-data/'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put data/merged/merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put data/merged/merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.jnl.gz s3://kg-hub-public-data/kg-covid-19.jnl.gz'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put *_stats.yaml s3://kg-hub-public-data/'
                                 // Should now appear at:
