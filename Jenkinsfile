@@ -157,6 +157,7 @@ pipeline {
                 retry(3){
                     sh 'ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.local-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=bbop --extra-vars="endpoint=internal"'
                 }
+            }
         }
 
     }
