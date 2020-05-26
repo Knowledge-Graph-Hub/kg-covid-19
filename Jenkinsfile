@@ -146,15 +146,17 @@ pipeline {
             when { anyOf { branch 'master' } }
             steps {
 
-            git([branch: 'master',
-                 credentialsId: 'justaddcoffee_github_api_token_username_pw',
-                 url: 'https://github.com/geneontology/operations.git'])
-            dir('./ansible') {
+                git([branch: 'master',
+                     credentialsId: 'justaddcoffee_github_api_token_username_pw',
+                     url: 'https://github.com/geneontology/operations.git'])
 
-                withCredentials([file(credentialsId: 'ansible-bbop-local-slave', variable: 'DEPLOY_LOCAL_IDENTITY')]) {
-                    echo 'Push master out to public Blazegraph'
-                    retry(3){
-                        sh 'ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.local-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=bbop --extra-vars="endpoint=internal"'
+                dir('./ansible') {
+
+                    withCredentials([file(credentialsId: 'ansible-bbop-local-slave', variable: 'DEPLOY_LOCAL_IDENTITY')]) {
+                        echo 'Push master out to public Blazegraph'
+                        retry(3){
+                            sh 'ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.local-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=bbop --extra-vars="endpoint=internal"'
+                        }
                     }
                 }
 
