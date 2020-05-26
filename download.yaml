@@ -30,6 +30,9 @@
   # drug - target interactions from Drug Central
   url: http://unmtid-shinyapps.net/download/drug.target.interaction.tsv.gz
   local_name: drug.target.interaction.tsv.gz
+-
+  url: http://unmtid-shinyapps.net/download/tcrd.zip
+  local_name: tcrd.zip
 
 #
 # PPI from STRING DB
