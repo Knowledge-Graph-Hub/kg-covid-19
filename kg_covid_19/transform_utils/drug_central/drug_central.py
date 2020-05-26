@@ -135,26 +135,26 @@ def tsv_to_dict(input_file: str, col_for_key: str) -> dict:
 def unzip_and_get_tclin_tchem(zip_file: str, output_dir: str) -> List[str]:
     unzip_to_tempdir(zip_file, output_dir)
     # get tclin filename
-    tclin_file = \
+    tclin_files = \
         [f for f in os.listdir(output_dir) if re.match(r'tclin_.*\.tsv', f)]
-    if len(tclin_file) > 1:
+    if len(tclin_files) > 1:
         raise RuntimeError("Found more than one tclin file:\n%s" %
-                           "\n".join(tclin_file))
-    elif len(tclin_file) < 1:
+                           "\n".join(tclin_files))
+    elif len(tclin_files) < 1:
         raise RuntimeError("Couldn't find tclin file in zipfile %s" % zip_file)
     else:
-        tclin_file = os.path.join(output_dir, tclin_file[0])
+        tclin_file: str = os.path.join(output_dir, tclin_files[0])
 
     # get tchem filename
-    tchem_file = \
+    tchem_files = \
         [f for f in os.listdir(output_dir) if re.match(r'tchem_.*\.tsv', f)]
-    if len(tchem_file) > 1:
+    if len(tchem_files) > 1:
         raise RuntimeError("Found more than one tchem file:\n%s" %
-                           "\n".join(tchem_file))
-    elif len(tchem_file) < 1:
+                           "\n".join(tchem_files))
+    elif len(tchem_files) < 1:
         raise RuntimeError("Couldn't find tchem file in zipfile %s" % zip_file)
     else:
-        tchem_file = os.path.join(output_dir, tchem_file[0])
+        tchem_file: str = os.path.join(output_dir, tchem_files[0])
 
     return [tclin_file, tchem_file]
 
