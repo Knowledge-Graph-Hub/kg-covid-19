@@ -54,7 +54,6 @@ class TestDrugCentral(unittest.TestCase):
         self.assertTrue(sub_key in ret_val.get(test_key))
         self.assertEqual(ret_val[test_key][sub_key], test_val)
 
-
     def test_unzip_and_get_tclin_tchem(self) -> None:
         zip_file = "tests/resources/drug_central/test.zip"
         tempdir = tempfile.mkdtemp()
