@@ -58,10 +58,10 @@ target:
 destination:
    merged-kg-tsv:
       type: tsv
-      filename: merged-kg
+      filename: data/merged/merged-kg
    merged-kg-nt:
       type: nt
-      filename: merged-kg.nt
+      filename: data/merged/merged-kg.nt
 #   merged-kg-neo4j:
 #      type: neo4j
 #      uri: http://localhost:8484
