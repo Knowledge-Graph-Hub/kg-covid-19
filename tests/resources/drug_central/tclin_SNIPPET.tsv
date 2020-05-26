@@ -1,0 +1,3 @@
+uniprot	swissprot	drug_name	act_value	act_type	action_type	source_name	reference	smiles	ChEMBL_Id
+P19838	NFKB1_HUMAN	cepharanthine			INHIBITOR	SCIENTIFIC LITERATURE	http://www.ncbi.nlm.nih.gov/pubmed/31132753	[H][C@]12CC3=CC(OC4=CC=C(C[C@@H]5N(C)CCC6=CC7=C(OCO7)C(OC7=C(OC)C=C(CCN1C)C2=C7)=C56)C=C4)=C(OC)C=C3	CHEMBL449782
+Q13131	AAPK1_HUMAN	cepharanthine			INHIBITOR	SCIENTIFIC LITERATURE	http://www.ncbi.nlm.nih.gov/pubmed/31132753	[H][C@]12CC3=CC(OC4=CC=C(C[C@@H]5N(C)CCC6=CC7=C(OCO7)C(OC7=C(OC)C=C(CCN1C)C2=C7)=C56)C=C4)=C(OC)C=C3	CHEMBL449782

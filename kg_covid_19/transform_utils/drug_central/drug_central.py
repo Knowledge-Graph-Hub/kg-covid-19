@@ -1,16 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-
+import csv
 import gzip
 import logging
 import os
+import re
+import tempfile
+from collections import defaultdict
 
 from typing import Dict, List, Optional
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, \
-    get_item_by_priority, ItemInDictNotFound, parse_header, data_to_dict
+    get_item_by_priority, ItemInDictNotFound, parse_header, data_to_dict, \
+    unzip_to_tempdir
 
 """
 Ingest drug - drug target interactions from Drug Central
@@ -35,6 +38,7 @@ class DrugCentralTransform(Transform):
 
         interactions_file = os.path.join(self.input_base_dir,
                                          "drug.target.interaction.tsv.gz")
+        tclin_chem_zip_file = os.path.join(self.input_base_dir, "tcrd.zip")
         os.makedirs(self.output_dir, exist_ok=True)
         drug_node_type = "biolink:Drug"
         gene_curie_prefix = "UniProtKB:"
@@ -44,6 +48,13 @@ class DrugCentralTransform(Transform):
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'provided_by', 'comment']
+
+        # unzip tcrd.zip and get tchem and tclin filenames
+        tempdir = tempfile.mkdtemp()
+        (tclin_file, tchem_file) = unzip_and_get_tclin_tchem(tclin_chem_zip_file, tempdir)
+
+        tclin_dict: dict = tclin_to_dict(tclin_file)
+        tclin_dict: dict = tchem_to_dict(tchem_file)
 
         with open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge, \
@@ -102,6 +113,42 @@ class DrugCentralTransform(Transform):
                                                items_dict['ACT_COMMENT']])
 
         return None
+
+
+def tsv_to_dict(input_file: str, col_for_key: str) -> dict:
+    this_dict: dict = defaultdict(list)
+    with open(input_file) as file:
+        reader = csv.DictReader(file, delimiter='\t')
+        for row in reader:
+            this_dict[row[col_for_key]] = row
+    return this_dict
+
+
+def unzip_and_get_tclin_tchem(zip_file: str, output_dir: str) -> List[str]:
+    unzip_to_tempdir(zip_file, output_dir)
+    # get tclin filename
+    tclin_file = \
+        [f for f in os.listdir(output_dir) if re.match(r'tclin_.*\.tsv', f)]
+    if len(tclin_file) > 1:
+        raise RuntimeError("Found more than one tclin file:\n%s" %
+                           "\n".join(tclin_file))
+    elif len(tclin_file) < 1:
+        raise RuntimeError("Couldn't find tclin file in zipfile %s" % zip_file)
+    else:
+        tclin_file = os.path.join(output_dir, tclin_file[0])
+
+    # get tchem filename
+    tchem_file = \
+        [f for f in os.listdir(output_dir) if re.match(r'tchem_.*\.tsv', f)]
+    if len(tchem_file) > 1:
+        raise RuntimeError("Found more than one tchem file:\n%s" %
+                           "\n".join(tchem_file))
+    elif len(tchem_file) < 1:
+        raise RuntimeError("Couldn't find tchem file in zipfile %s" % zip_file)
+    else:
+        tchem_file = os.path.join(output_dir, tchem_file[0])
+
+    return [tclin_file, tchem_file]
 
 
 def parse_drug_central_line(this_line: str, header_items: List) -> Dict:
