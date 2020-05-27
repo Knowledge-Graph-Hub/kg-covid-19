@@ -76,6 +76,10 @@
   url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/sentence-co-occurrence-CORD-19/1.2/cv19_scc_1_2.zip
   local_name: cv19_scc_1_2.zip
 
+-
+  url: https://gist.githubusercontent.com/deepakunni3/e4490cfb8262e8928944047140856fce/raw/72f617f6726f0811b3da4d5c11ab1677af7ee5f4/wikidata_country_codes.tsv
+  local_name: wikidata_country_codes.tsv
+
 #
 # PharmGKB - drug -> drug target info, and gene id mappings
 #
