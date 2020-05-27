@@ -205,12 +205,15 @@ class ScibiteCordTransform(Transform):
         if not pd.isna(record['entity_uris']):
             terms.update(record['entity_uris'].split('|'))
             # add a biolink:Publication for each paper
+            if paper_id.endswith('.xml'):
+                paper_id = paper_id.replace('.xml', '')
+            paper_curie = f"CORD:{paper_id}"
             if paper_id not in self.seen:
                 write_node_edge_item(
                     fh=node_handle,
                     header=self.node_header,
                     data=[
-                        f"CORD:{paper_id}",
+                        paper_curie,
                         "",
                         "biolink:Publication",
                         ""
@@ -234,43 +237,62 @@ class ScibiteCordTransform(Transform):
                     )
                     self.seen.add(curie)
 
-            information_entity = uuid.uuid1()
-            write_node_edge_item(
-                fh=node_handle,
-                header=self.node_header,
-                data=[
-                    f"{uuid.uuid1()}",
-                    "",
-                    "biolink:InformationContentEntity",
-                    ""
-                ]
-            )
+                    # simplified generation of edges between OntologyClass and the publication where
+                    # OntologyClass -> correlated_with -> Publication
+                    # with the edge having relation RO:0002610
+                    write_node_edge_item(
+                        fh=edge_handle,
+                        header=self.edge_header,
+                        data=[
+                            f"{curie}",
+                            "biolink:correlated_with",
+                            f"{paper_curie}",
+                            f"RO:0002610", # 'correlated with'
+                            f"{self.source_name} co-occurrences"
+                        ]
+                    )
+
+            # This is an earlier style of modeling that involves an InformationContentEntity for every instance of
+            # co-occurrence between a Publication and a set of OntologyClass
+            #
+            # information_entity = uuid.uuid1()
+            # write_node_edge_item(
+            #     fh=node_handle,
+            #     header=self.node_header,
+            #     data=[
+            #         f"{uuid.uuid1()}",
+            #         "",
+            #         "biolink:InformationContentEntity",
+            #         ""
+            #     ]
+            # )
             # add has_annotation edge between co-occurrence entity and publication
-            write_node_edge_item(
-                fh=edge_handle,
-                header=self.edge_header,
-                data=[
-                    f"{information_entity}",
-                    "biolink:related_to",
-                    f"{record['document_id']}",
-                    "SIO:000255", # 'has annotation'
-                    f"{self.source_name}"
-                ]
-            )
-            for t in terms:
-                curie = self.contract_uri(t)
-                # add has_member edges between co-occurrence entity and each term
-                write_node_edge_item(
-                    fh=edge_handle,
-                    header=self.edge_header,
-                    data=[
-                        f"{information_entity}",
-                        "biolink:related_to",
-                        f"{curie}",
-                        f"SIO:000059", # 'has member'
-                        f"{self.source_name}"
-                    ]
-                )
+            # write_node_edge_item(
+            #     fh=edge_handle,
+            #     header=self.edge_header,
+            #     data=[
+            #         f"{information_entity}",
+            #         "biolink:related_to",
+            #         f"{record['document_id']}",
+            #         "SIO:000255", # 'has annotation'
+            #         f"{self.source_name}"
+            #     ]
+            # )
+            # for t in terms:
+            #     curie = self.contract_uri(t)
+            #     # add has_member edges between co-occurrence entity and each term
+            #     write_node_edge_item(
+            #         fh=edge_handle,
+            #         header=self.edge_header,
+            #         data=[
+            #             f"{information_entity}",
+            #             "biolink:related_to",
+            #             f"{curie}",
+            #             f"SIO:000059", # 'has member'
+            #             f"{self.source_name}"
+            #         ]
+            #     )
+
 
     def extract_termite_hits(self, data: Dict) -> Set:
         """Parse term-cooccurrences.
