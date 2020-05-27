@@ -447,12 +447,15 @@ class ScibiteCordTransform(Transform):
 
     def load_country_code(self, input_dir: str, output_dir: str) -> None:
         file_path = os.path.join(input_dir, 'wikidata_country_codes.tsv')
-        with open(file_path, 'r') as FH:
-            for line in FH:
-                if line.startswith('item'):
-                    continue
-                records = line.rstrip().split('\t')
-                self.country_code_map[records[1]] = (records[0], records[2])
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as FH:
+                for line in FH:
+                    if line.startswith('item'):
+                        continue
+                    records = line.rstrip().split('\t')
+                    self.country_code_map[records[1]] = (records[0], records[2])
+        else:
+            print(f"{file_path} not found. Failed to preload Wikidata country codes")
 
     @staticmethod
     def get_identifier_by_prefix(record, prefix):
