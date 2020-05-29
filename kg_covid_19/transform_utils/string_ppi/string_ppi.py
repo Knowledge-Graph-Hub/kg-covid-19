@@ -157,7 +157,6 @@ class StringTransform(Transform):
                 for protein_name in ('protein1', 'protein2'):
                     protein = get_item_by_priority(items_dict, [protein_name])
                     protein = '.'.join(protein.split('.')[1:])
-                    protein = f"ENSEMBL:{protein}"
                     proteins.append(protein)
                     if protein in self.protein_gene_map:
                         gene = self.protein_gene_map[protein]
@@ -182,7 +181,7 @@ class StringTransform(Transform):
                                 data=[
                                     ensemble_gene,
                                     "biolink:has_gene_product",
-                                    protein,
+                                    f"ENSEMBL:{protein}",
                                     "RO:0002205",
                                     "NCBI",
                                 ] + extra_header
@@ -202,7 +201,7 @@ class StringTransform(Transform):
                 write_node_edge_item(
                     fh=edge,
                     header=self.edge_header,
-                    data=[proteins[0], edge_label, proteins[1],
+                    data=[f"ENSEMBL:{proteins[0]}", edge_label, f"ENSEMBL:{proteins[1]}",
                           relation, "STRING", items_dict['combined_score']] + [
                         items_dict.get(header, "")
                         for header in edge_additional_headers
