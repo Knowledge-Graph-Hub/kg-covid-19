@@ -3,7 +3,8 @@ import tempfile
 import unittest
 
 from kg_covid_19.transform_utils.drug_central.drug_central import \
-    parse_drug_central_line, unzip_and_get_tclin_tchem, tsv_to_dict
+    parse_drug_central_line, unzip_and_get_tclin_tchem, tsv_to_dict, \
+    get_pub_info_from_dict
 from kg_covid_19.utils.transform_utils import parse_header
 from parameterized import parameterized
 
@@ -63,3 +64,28 @@ class TestDrugCentral(unittest.TestCase):
         self.assertEqual(tclin, os.path.join(tempdir, 'tclin_05122020.tsv'))
         self.assertEqual(tchem, os.path.join(tempdir, 'tchem_drugs_05122020.tsv'))
 
+    @parameterized.expand([
+    ('', ''),
+    ({'ACT_SOURCE_URL': '',
+     'MOA_SOURCE_URL': 'https://www.ebi.ac.uk/chembl/compound/inspect/CHEMBL1200749'},
+     ''
+     ),
+    ({'ACT_SOURCE_URL': 'https://www.ebi.ac.uk/chembl/compound/inspect/CHEMBL1200749',
+     'MOA_SOURCE_URL': ''},
+     ''
+     ),
+    ({'ACT_SOURCE_URL': 'https://www.ebi.ac.uk/chembl/compound/inspect/CHEMBL1200749',
+     'MOA_SOURCE_URL': 'https://www.ebi.ac.uk/chembl/compound/inspect/CHEMBL1200749'},
+     ''
+     ),
+    ({'ACT_SOURCE_URL': 'http://www.ncbi.nlm.nih.gov/pubmed/17275317',
+     'MOA_SOURCE_URL': 'https://www.ebi.ac.uk/chembl/compound/inspect/CHEMBL1200749'},
+     'PMID:17275317'
+     ),
+    ({'ACT_SOURCE_URL': 'http://www.ncbi.nlm.nih.gov/pubmed/17275317',
+      'MOA_SOURCE_URL': 'http://www.ncbi.nlm.nih.gov/pubmed/3207986'},
+     'PMID:17275317|PMID:3207986'
+     ),
+    ])
+    def test_get_pub_info_from_dict(self, this_dict, expected_pub_info) -> None:
+        self.assertEqual(expected_pub_info, get_pub_info_from_dict(this_dict))

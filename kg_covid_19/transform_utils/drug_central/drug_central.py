@@ -48,7 +48,7 @@ class DrugCentralTransform(Transform):
         drug_gene_edge_label = "biolink:interacts_with"
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
-                            'provided_by', 'comment']
+                            'provided_by', 'publication', 'comment']
 
         # unzip tcrd.zip and get tchem and tclin filenames
         tempdir = tempfile.mkdtemp()
@@ -118,9 +118,26 @@ class DrugCentralTransform(Transform):
                                                gene_id,
                                                drug_gene_edge_relation,
                                                self.source_name,
+                                               get_pub_info_from_dict(items_dict),
                                                items_dict['ACT_COMMENT']])
 
         return None
+
+
+def get_pub_info_from_dict(items_dict,
+                           pubmed_prefix="PMID",
+                           uri_match='http://www.ncbi.nlm.nih.gov/pubmed/'
+                           ) -> str:
+    pubs = []
+    if 'ACT_SOURCE_URL' in items_dict and re.match(uri_match,
+                                                   items_dict['ACT_SOURCE_URL']):
+        pubs.append(
+            items_dict['ACT_SOURCE_URL'].replace(uri_match, pubmed_prefix + ":"))
+    if 'MOA_SOURCE_URL' in items_dict and re.match(uri_match,
+                                                   items_dict['MOA_SOURCE_URL']):
+        pubs.append(
+            items_dict['MOA_SOURCE_URL'].replace(uri_match, pubmed_prefix + ":"))
+    return "|".join(pubs)
 
 
 def tsv_to_dict(input_file: str, col_for_key: str) -> dict:
