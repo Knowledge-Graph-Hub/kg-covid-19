@@ -1,9 +1,7 @@
-import os
-import tempfile
 import unittest
 
 from kg_covid_19.transform_utils.drug_central.drug_central import \
-    parse_drug_central_line, unzip_and_get_tclin_tchem, tsv_to_dict
+    parse_drug_central_line
 from kg_covid_19.utils.transform_utils import parse_header
 from parameterized import parameterized
 
@@ -41,25 +39,4 @@ class TestDrugCentral(unittest.TestCase):
         self.assertTrue(key in parsed)
         self.assertEqual(value, parsed[key])
 
-    @parameterized.expand([
-    ('tclin', 'tests/resources/drug_central/tclin_SNIPPET.tsv', 2, 'Q13131', 'drug_name', 'cepharanthine'),
-    ('tchem', 'tests/resources/drug_central/tchem_SNIPPET.tsv', 2, 'P21917', 'drug_name', 'brexpiprazole'),
-    ])
-    def test_tsv_to_dict(self, name, file, expected_rows, test_key, sub_key, test_val) -> None:
-        ret_val = tsv_to_dict(file, 'uniprot')
-        self.assertTrue(isinstance(ret_val, dict))
-        self.assertEqual(len(ret_val), expected_rows)
-        self.assertTrue(isinstance(ret_val, dict))
-        self.assertTrue(test_key in ret_val)
-        self.assertTrue(sub_key in ret_val.get(test_key))
-        self.assertEqual(ret_val[test_key][sub_key], test_val)
-
-    def test_unzip_and_get_tclin_tchem(self) -> None:
-        zip_file = "tests/resources/drug_central/test.zip"
-        tempdir = tempfile.mkdtemp()
-        (tclin, tchem) = unzip_and_get_tclin_tchem(zip_file, tempdir)
-        self.assertTrue(isinstance(tclin, str))
-        self.assertTrue(isinstance(tchem, str))
-        self.assertEqual(tclin, os.path.join(tempdir, 'tclin_05122020.tsv'))
-        self.assertEqual(tchem, os.path.join(tempdir, 'tchem_drugs_05122020.tsv'))
 
