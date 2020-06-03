@@ -5,8 +5,6 @@ import logging
 import zipfile
 from typing import Any, Dict, List, Union, TextIO
 from tqdm import tqdm  # type: ignore
-from typing.io import IO
-
 
 class TransformError(Exception):
     """Base class for other exceptions"""
