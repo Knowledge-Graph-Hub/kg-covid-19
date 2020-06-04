@@ -5,27 +5,9 @@ kg-covid-19
 
 KG hub to produce a knowledge graph for COVID-19 and SARS-COV-2
 
-See the `repository's wiki for more details <https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki>`_.
-
-How do I install this package?
+Documentation
 ----------------------------------------------
-
-.. code:: shell
-
-    git clone https://github.com/Knowledge-Graph-Hub/kg-covid-19
-    cd kg-covid-19
-    pip install .
-    pip install -r requirements.txt
-
-How do I use this package?
-----------------------------------------------
-
-.. code:: shell
-
-    python run.py download
-    python run.py transform
-    python run.py merge
-
+See the `repository's wiki for information about this project <https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki>`_.
 
 Tests Coverage
 ----------------------------------------------
