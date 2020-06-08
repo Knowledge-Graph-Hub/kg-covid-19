@@ -270,17 +270,19 @@ class ScibiteCordTransform(Transform):
                     # simplified generation of edges between OntologyClass and the publication where
                     # OntologyClass -> correlated_with -> Publication
                     # with the edge having relation RO:0002610
-                    write_node_edge_item(
-                        fh=edge_handle,
-                        header=self.edge_header,
-                        data=[
-                            f"{curie}",
-                            "biolink:correlated_with",
-                            f"{paper_curie}",
-                            f"RO:0002610", # 'correlated with'
-                            f"{self.source_name} co-occurrences"
-                        ]
-                    )
+                    if (curie, paper_curie) not in self.seen:
+                        write_node_edge_item(
+                            fh=edge_handle,
+                            header=self.edge_header,
+                            data=[
+                                f"{curie}",
+                                "biolink:correlated_with",
+                                f"{paper_curie}",
+                                f"RO:0002610", # 'correlated with'
+                                f"{self.source_name} co-occurrences"
+                            ]
+                        )
+                        self.seen.add((curie, paper_curie))
 
             # This is an earlier style of modeling that involves an InformationContentEntity for every instance of
             # co-occurrence between a Publication and a set of OntologyClass
