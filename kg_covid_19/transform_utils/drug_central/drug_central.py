@@ -21,7 +21,7 @@ Ingest drug - drug target interactions from Drug Central
 Essentially just ingests and transforms this file:
 http://unmtid-shinyapps.net/download/drug.target.interaction.tsv.gz
 
-And extracts Drug -> Gene interactions
+And extracts Drug -> Protein interactions
 """
 
 
@@ -42,11 +42,11 @@ class DrugCentralTransform(Transform):
         tclin_chem_zip_file = os.path.join(self.input_base_dir, "tcrd.zip")
         os.makedirs(self.output_dir, exist_ok=True)
         drug_node_type = "biolink:Drug"
-        gene_curie_prefix = "UniProtKB:"
+        uniprot_curie_prefix = "UniProtKB:"
         drug_curie_prefix = "DrugCentral:"
-        gene_node_type = "biolink:Gene"
-        drug_gene_edge_label = "biolink:interacts_with"
-        drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
+        protein_node_type = "biolink:Protein"
+        drug_protein_edge_label = "biolink:molecularly_interacts_with"
+        drug_protein_edge_relation = "RO:0002436"  # molecularly interacts with
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'provided_by', 'comment']
 
@@ -65,10 +65,13 @@ class DrugCentralTransform(Transform):
                 if 'ORGANISM' not in items_dict or items_dict['ORGANISM'] != species:
                     continue
 
-                # get gene ID
+                # get protein ID
                 try:
-                    gene_id_string = get_item_by_priority(items_dict, ['ACCESSION'])
-                    gene_ids = gene_id_string.split('|')
+                    protein_ids_string = get_item_by_priority(items_dict, ['ACCESSION'])
+                    protein_ids = protein_ids_string.split('|')
+
+                    if items_dict['DRUG_NAME'] == 'acetyldigitoxin':
+                        pass
                 except ItemInDictNotFound:
                     # lines with no ACCESSION entry only contain drug info, no target
                     # info - not ingesting these
@@ -87,14 +90,14 @@ class DrugCentralTransform(Transform):
                                            drug_node_type,
                                            ''])
 
-                for gene_id in gene_ids:
-                    gene_id = gene_curie_prefix + gene_id
+                for protein_id in protein_ids:
+                    protein_id = uniprot_curie_prefix + protein_id
 
                     write_node_edge_item(fh=node,
                                          header=self.node_header,
-                                         data=[gene_id,
+                                         data=[protein_id,
                                                items_dict['GENE'],
-                                               gene_node_type,
+                                               protein_node_type,
                                                items_dict['TDL']])
 
                     # WRITE EDGES
@@ -103,9 +106,9 @@ class DrugCentralTransform(Transform):
                     write_node_edge_item(fh=edge,
                                          header=self.edge_header,
                                          data=[drug_id,
-                                               drug_gene_edge_label,
-                                               gene_id,
-                                               drug_gene_edge_relation,
+                                               drug_protein_edge_label,
+                                               protein_id,
+                                               drug_protein_edge_relation,
                                                self.source_name,
                                                items_dict['ACT_COMMENT']])
 
