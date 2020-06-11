@@ -8,7 +8,7 @@ from kg_covid_19 import download as kg_download
 from kg_covid_19 import transform as kg_transform
 from kg_covid_19.edges import make_edges
 from kg_covid_19.merge_utils.merge_kg import load_and_merge
-from kg_covid_19.query import QUERIES, run_query
+from kg_covid_19.query import run_query
 from kg_covid_19.transform import DATA_SOURCES
 
 
@@ -84,24 +84,23 @@ def merge(yaml: str) -> None:
 
 
 @cli.command()
-@click.option("query", "-q", required=True, default=None, multiple=False,
-              type=click.Choice(QUERIES.keys()))
-@click.option("input_dir", "-i", default="data/")
+@click.option("query", "-q", required=True, default=None, multiple=False)
+@click.option("endpoint", "-o",
+              default="http://kg-hub-rdf.berkeleybop.io/blazegraph/#query")
 @click.option("output_dir", "-o", default="data/queries/")
-def query(query: str, input_dir: str, output_dir: str) -> None:
+def query(query: str, endpoint: str, output_dir: str) -> None:
     """Perform a query of knowledge graph using a class contained in query_utils
 
     Args:
-        query: A query class containing instructions for performing a query
-        input_dir: Directory where any input files required to execute query are
-            located (typically 'data', where transformed and merged graph files are)
+        query: A YAML file containing a SPARQL query
+        endpoint: A SPARQL endpoint for the query
         output_dir: Directory to output results of query
 
     Returns:
         None.
 
     """
-    run_query(query=query, input_dir=input_dir, output_dir=output_dir)
+    run_query(query=query, endpoint=endpoint)
 
 
 @cli.command()
