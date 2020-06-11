@@ -1,10 +1,7 @@
 import logging
 
-from kg_covid_19.query_utils.target_candidates.target_candidates \
-    import TargetCandidates
-
 QUERIES = {
-    'TargetCandidates': TargetCandidates
+    'TargetCandidates': ''
 }
 
 

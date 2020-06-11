@@ -2,8 +2,6 @@ from unittest import TestCase
 
 import pandas as pd
 
-from kg_covid_19.query_utils.target_candidates.target_candidates import TargetCandidates
-
 
 class TestTargetCandidates(TestCase):
     def setUp(self) -> None:
