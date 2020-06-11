@@ -21,7 +21,7 @@ class SARSCoV2GeneAnnot(Transform):
         source_name = "sars_cov_2_gene_annot"
         super().__init__(source_name, input_dir, output_dir)
 
-        self.node_header = ['id', 'name', 'category', 'synonym', 'taxon']
+        self.node_header = ['id', 'name', 'category', 'synonym', 'in_taxon']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'provided_by', 'DB_References', 'ECO_code', 'With',
                             'Interacting_taxon_ID',
@@ -29,7 +29,7 @@ class SARSCoV2GeneAnnot(Transform):
                             'Annotation_Properties']
 
         self.protein_node_type = "biolink:Protein"
-        self.ncbi_taxon_prefix = "NCBITaxon:"
+        self.ncbi_taxon_prefix = "NCBITaxon"
 
         # translate edge labels to RO term, for the 'relation' column in edge
         self.edge_label_prefix = "biolink:"  # prepend to edge label
@@ -88,6 +88,8 @@ class SARSCoV2GeneAnnot(Transform):
                 item = get_item_by_priority(rec, [key])
                 if type(item) is list:
                     item = item[0]
+                if key == 'Interacting_taxon_ID':
+                    item = ":".join([self.ncbi_taxon_prefix, item])
             except (ItemInDictNotFound, IndexError):
                 item = ''
             edge_data.append(item)
@@ -109,7 +111,7 @@ class SARSCoV2GeneAnnot(Transform):
         :param rec: record from gpi iterator
         :return: list of node items, one for each thing in self.node_header
         """
-        # ['id', 'name', 'category', 'synonym', 'taxon']
+        # ['id', 'name', 'category', 'synonym', 'in_taxon']
         id: str = self._rec_to_id(rec)
 
         try:
@@ -127,6 +129,8 @@ class SARSCoV2GeneAnnot(Transform):
         except (IndexError, ItemInDictNotFound):
             synonym = ''
         taxon = get_item_by_priority(rec, ['Taxon'])
+        taxon = ":".join([self.ncbi_taxon_prefix, taxon.split(":")[1]])
+
         return [id, name, category, synonym, taxon]
 
 
