@@ -100,7 +100,11 @@ def query(query: str, endpoint: str, output_dir: str) -> None:
         None.
 
     """
-    run_query(query=query, endpoint=endpoint)
+    result_dict = run_query(query=query, endpoint=endpoint)
+
+    for row in result_dict['results']['bindings']:
+        for col in result_dict['head']['vars']:
+            print(str(row[col]['value']))
 
 
 @cli.command()
