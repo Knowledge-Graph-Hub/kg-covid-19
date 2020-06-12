@@ -44,7 +44,7 @@ class TestPharmGKB(TestCase):
         node = self.sc2ga.gpi_to_gene_node_data(item)
         self.assertEqual(len(self.sc2ga.node_header), len(node))
         self.assertEqual(node,
-                         ['UniProtKB:P0DTD2', 'Protein 9b', 'biolink:Protein', '', 'taxon:2697049', 'sars_cov_2_gene_annot'])
+                         ['UniProtKB:P0DTD2', 'Protein 9b', 'biolink:Protein', '', 'NCBITaxon:2697049', 'sars_cov_2_gene_annot'])
 
     def test_gpa_to_edge_data(self):
         gpa_iter = _gpa11iterator(self.gpa_fh)
