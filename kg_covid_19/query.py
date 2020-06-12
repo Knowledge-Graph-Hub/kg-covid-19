@@ -1,3 +1,5 @@
+import logging
+
 import yaml
 from SPARQLWrapper import SPARQLWrapper, JSON, XML, TURTLE, N3, RDF, RDFXML, CSV, TSV
 
@@ -22,5 +24,13 @@ def result_dict_to_tsv(result_dict: dict, outfile: str) -> None:
         for row in result_dict['results']['bindings']:
             row_items = []
             for col in result_dict['head']['vars']:
-                row_items.append(row[col]['value'])
-            f.write("\t".join(row_items) + "\n")
+                try:
+                    row_items.append(row[col]['value'])
+                except KeyError:
+                    logging.error('Problem retrieving result for col %s in row %s' %
+                                  (col, "\t".join(row)))
+                    row_items.append('ERROR')
+            try:
+                f.write("\t".join(row_items) + "\n")
+            except:
+                pass
