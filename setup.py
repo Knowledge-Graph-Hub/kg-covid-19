@@ -68,7 +68,8 @@ setup(
         'compress_json',
         'click',
         'pyyaml',
-        'bmt'
+        'bmt',
+        'SPARQLWrapper'
     ],
     extras_require=extras,
 )
