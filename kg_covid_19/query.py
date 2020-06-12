@@ -1,16 +1,17 @@
-from SPARQLWrapper import SPARQLWrapper, JSON
+import yaml
+from SPARQLWrapper import SPARQLWrapper, JSON, XML, TURTLE, N3, RDF, RDFXML, CSV, TSV
 
 
-def run_query(query: str, endpoint: str) \
+def run_query(query: str, endpoint: str, return_format=JSON) \
         -> dict:  # for lack of a better way to type json
-    sparql = SPARQLWrapper("http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql")
-    sparql.setQuery("""
-      SELECT (COUNT(?v2) AS ?v1) ?v0 
-      WHERE {
-        ?v2 <https://w3id.org/biolink/vocab/category> ?v0
-      } GROUP BY ?v0
-    """)
-    sparql.setReturnFormat(JSON)
+    sparql = SPARQLWrapper(endpoint)
+    sparql.setQuery(query)
+    sparql.setReturnFormat(return_format)
     results = sparql.query().convert()
 
     return results
+
+
+def parse_query_yaml(yaml_file) -> dict:
+    return yaml.load(open(yaml_file))
+
