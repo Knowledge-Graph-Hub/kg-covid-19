@@ -8,7 +8,7 @@ from kg_covid_19 import download as kg_download
 from kg_covid_19 import transform as kg_transform
 from kg_covid_19.edges import make_edges
 from kg_covid_19.merge_utils.merge_kg import load_and_merge
-from kg_covid_19.query import run_query
+from kg_covid_19.query import run_query, parse_query_yaml
 from kg_covid_19.transform import DATA_SOURCES
 
 
@@ -84,23 +84,33 @@ def merge(yaml: str) -> None:
 
 
 @cli.command()
-@click.option("query", "-q", required=True, default=None, multiple=False)
-@click.option("endpoint", "-o",
-              default="http://kg-hub-rdf.berkeleybop.io/blazegraph/#query")
+@click.option("yaml", "-y", required=False, default=None, multiple=False)
 @click.option("output_dir", "-o", default="data/queries/")
-def query(query: str, endpoint: str, output_dir: str) -> None:
+def query(yaml: str, output_dir: str) -> None:
     """Perform a query of knowledge graph using a class contained in query_utils
 
     Args:
-        query: A YAML file containing a SPARQL query
-        endpoint: A SPARQL endpoint for the query
+        yaml: A YAML file containing a SPARQL query, in this format:
+                title:
+                "Short name for this query"
+                description:
+                "What does this query do"
+                endpoint:
+                "http://kg-hub-rdf.berkeleybop.io/blazegraph/#query"
+                query: >
+                  SELECT (COUNT(?v2) AS ?v1) ?v0
+                  WHERE {
+                    ?v2 <https://w3id.org/biolink/vocab/category> ?v0
+                  } GROUP BY ?v0
         output_dir: Directory to output results of query
 
     Returns:
         None.
 
     """
-    result_dict = run_query(query=query, endpoint=endpoint)
+
+    query = parse_query_yaml(yaml)
+    result_dict = run_query(query=query.string, endpoint=query.endpoint)
 
     for row in result_dict['results']['bindings']:
         for col in result_dict['head']['vars']:
