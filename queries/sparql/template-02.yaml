@@ -3,7 +3,7 @@ title:
 description:
   "Get info about SARS-CoV-2 proteins in the graph"
 endpoint:
-  "http://kg-hub-rdf.berkeleybop.io/blazegraph/#query"
+  "http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql"
 query: >
   prefix owl: <http://www.w3.org/2002/07/owl#>
   prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
