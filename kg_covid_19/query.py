@@ -1,7 +1,7 @@
 import logging
 
 import yaml
-from SPARQLWrapper import SPARQLWrapper, JSON, XML, TURTLE, N3, RDF, RDFXML, CSV, TSV
+from SPARQLWrapper import SPARQLWrapper, JSON, XML, TURTLE, N3, RDF, RDFXML, CSV, TSV  # type: ignore
 
 
 def run_query(query: str, endpoint: str, return_format=JSON) -> dict:
