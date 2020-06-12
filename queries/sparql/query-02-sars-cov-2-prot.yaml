@@ -1,0 +1,17 @@
+title:
+  "Get SARS-CoV-2 proteins"
+description:
+  "Get info about SARS-CoV-2 proteins in the graph"
+endpoint:
+  "http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql"
+query: >
+  prefix owl: <http://www.w3.org/2002/07/owl#>
+  prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  prefix bl: <https://w3id.org/biolink/vocab/>
+  SELECT ?protein ?p ?v WHERE
+  {
+  ?protein bl:category bl:Protein; <https://www.example.org/UNKNOWN/ncbi_taxid> ?ncbitaxonid;
+   ?p ?v .
+   FILTER(?ncbitaxonid="2697049")
+  }
