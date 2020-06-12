@@ -3,7 +3,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON, XML, TURTLE, N3, RDF, RDFXML, CSV
 
 
 def run_query(query: str, endpoint: str, return_format=JSON) \
-        -> dict:  # for lack of a better way to type json
+        -> dict:
     sparql = SPARQLWrapper(endpoint)
     sparql.setQuery(query)
     sparql.setReturnFormat(return_format)
