@@ -52,7 +52,7 @@ class ScibiteCordTransform(Transform):
         else:
             data_files.append(data_file)
 
-        self.node_header = ['id', 'name', 'category', 'description']
+        self.node_header = ['id', 'name', 'category', 'description', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by']
         node_handle = open(self.output_node_file, 'w')
         edge_handle = open(self.output_edge_file, 'w')
@@ -137,7 +137,8 @@ class ScibiteCordTransform(Transform):
                 f"CORD:{paper_id}",
                 f"{title}",
                 "biolink:Publication",
-                ""
+                "",
+                self.source_name
             ]
         )
         self.seen.add(paper_id)
@@ -167,7 +168,8 @@ class ScibiteCordTransform(Transform):
                         f"{curie}",
                         name if isinstance(name, str) else "",
                         category,
-                        ""
+                        "",
+                        self.source_name
                     ]
                 )
                 self.seen.add(curie)
@@ -232,7 +234,8 @@ class ScibiteCordTransform(Transform):
                         paper_curie,
                         "",
                         "biolink:Publication",
-                        ""
+                        "",
+                        f"{self.source_name} co-occurrences"
                     ]
                 )
                 self.seen.add(paper_id)
@@ -262,7 +265,8 @@ class ScibiteCordTransform(Transform):
                             f"{curie}",
                             name if isinstance(name, str) else "",
                             category,
-                            ""
+                            "",
+                            f"{self.source_name} co-occurrences"
                         ]
                     )
                     self.seen.add(curie)

@@ -172,7 +172,8 @@ class StringTransform(Transform):
                                     gene_informations['symbol'],
                                     'biolink:Gene',
                                     gene_informations['description'],
-                                    f"NCBIGene:{self.ensembl2ncbi_map[gene]}"
+                                    f"NCBIGene:{self.ensembl2ncbi_map[gene]}",
+                                    self.source_name
                                 ]
                             )
                             write_node_edge_item(
@@ -194,7 +195,7 @@ class StringTransform(Transform):
                                 fh=node,
                                 header=self.node_header,
                                 data=[f"ENSEMBL:{protein}", "",
-                                      protein_node_type, "", ""]
+                                      protein_node_type, "", "", self.source_name]
                             )
 
                 # write edge data

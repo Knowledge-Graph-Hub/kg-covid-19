@@ -30,7 +30,6 @@ class TTDTransform(Transform):
         super().__init__(source_name, input_dir, output_dir)
 
     def run(self, data_file: Optional[str] = None):
-        self.node_header.append("TTD_ID") # append ttd id for drug targets and drugs
         ttd_file_name = os.path.join(self.input_base_dir,
                                      "P1-01-TTD_target_download.txt")
         ttd_data = self.parse_ttd_file(ttd_file_name)
@@ -40,7 +39,7 @@ class TTDTransform(Transform):
         drug_gene_edge_label = "biolink:interacts_with"
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
         uniprot_curie_prefix = "UniProtKB:"
-
+        self.node_header = ['id', 'name', 'category', 'TTD_ID', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'provided_by', 'target_type']
 
@@ -80,8 +79,8 @@ class TTDTransform(Transform):
                                          data=[this_id,
                                                gene_name,
                                                gene_node_type,
-                                               target_id
-                                               ])
+                                               target_id,
+                                               self.source_name])
 
                 # for each drug in DRUGINFO:
                 for this_drug in data['DRUGINFO']:
@@ -94,8 +93,8 @@ class TTDTransform(Transform):
                                          data=[this_drug_curie,
                                                this_drug[1],
                                                drug_node_type,
-                                               this_drug[0]
-                                               ])
+                                               this_drug[0],
+                                               self.source_name])
 
                     #
                     # make edges for target gene ids <-> drug

@@ -30,7 +30,7 @@ class DrugCentralTransform(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
         source_name = "drug_central"
         super().__init__(source_name, input_dir, output_dir)  # set some variables
-        self.node_header = ['id', 'name', 'category', 'tclin', 'tchem']
+        self.node_header = ['id', 'name', 'category', 'tclin', 'tchem', 'provided_by']
 
     def run(self, data_file: Optional[str] = None, species: str = "Homo sapiens") -> None:
         """Method is called and performs needed transformations to process the Drug
@@ -93,7 +93,8 @@ class DrugCentralTransform(Transform):
                                            items_dict['DRUG_NAME'],
                                            drug_node_type,
                                            str(False),
-                                           str(False)])
+                                           str(False),
+                                           self.source_name])
 
                 for gene_id in gene_ids:
                     gene_id = gene_curie_prefix + gene_id
@@ -106,7 +107,8 @@ class DrugCentralTransform(Transform):
                                                items_dict['GENE'],
                                                gene_node_type,
                                                str(is_tclin),
-                                               str(is_tchem)])
+                                               str(is_tchem),
+                                               self.source_name])
 
                     # WRITE EDGES
                     # ['subject', 'edge_label', 'object', 'relation', 'provided_by',

@@ -33,19 +33,20 @@ class OntologyTransform(Transform):
         if data_file:
             k = data_file.split('.')[0]
             data_file = os.path.join(self.input_base_dir, data_file)
-            self.parse(k, data_file)
+            self.parse(k, data_file, k)
         else:
             # load all ontologies
             for k in ONTOLOGIES.keys():
                 data_file = os.path.join(self.input_base_dir, ONTOLOGIES[k])
-                self.parse(k, data_file)
+                self.parse(k, data_file, k)
 
-    def parse(self, name: str, data_file: str) -> None:
+    def parse(self, name: str, data_file: str, source: str) -> None:
         """Processes the data_file.
 
         Args:
             name: Name of the ontology
             data_file: data file to parse
+            source: Source name
 
         Returns:
              None.
@@ -53,6 +54,6 @@ class OntologyTransform(Transform):
         """
         logging.info(f"Parsing {data_file}")
         transformer = ObographJsonTransformer()
-        transformer.parse(data_file)
+        transformer.parse(data_file, provided_by=source)
         output_transformer = PandasTransformer(transformer.graph)
         output_transformer.save(filename=os.path.join(self.output_dir, f'{name}'), extension='tsv', mode=None)
