@@ -34,7 +34,7 @@ class ZhouTransform(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
         source_name = "zhou_host_proteins"
         super().__init__(source_name, input_dir, output_dir)
-        self.node_header = ['id', 'name', 'category']
+        self.node_header = ['id', 'name', 'category', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'provided_by', 'publication']
 
@@ -98,13 +98,15 @@ class ZhouTransform(Transform):
                 write_node_edge_item(fh=node, header=self.node_header,
                                      data=[gene_curie_prefix + row['Host Gene ID'],
                                            row['Host Protein'],
-                                           gene_node_type])
+                                           gene_node_type,
+                                           self.source_name])
 
                 # host gene
                 write_node_edge_item(fh=node, header=self.node_header,
                                      data=[corona_curie,
                                            row['Coronavirus'],
-                                           virus_node_type])
+                                           virus_node_type,
+                                           self.source_name])
 
                 # WRITE EDGES
                 write_node_edge_item(fh=edge, header=self.edge_header,

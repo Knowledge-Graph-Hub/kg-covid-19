@@ -58,7 +58,7 @@ class IntAct(Transform):
         self.pubmed_curie_prefix = 'PMID:'
         self.ppi_edge_label = 'biolink:interacts_with'
         self.ppi_ro_relation = 'RO:0002437'
-        self.node_header = ['id', 'name', 'category', 'ncbi_taxid']
+        self.node_header = ['id', 'name', 'category', 'ncbi_taxid', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by',
                             'publication', 'num_participants', 'association_type',
                             'detection_method',  'subj_exp_role', 'obj_exp_role']
@@ -269,7 +269,7 @@ class IntAct(Transform):
             logging.warning(
                 "Problem parsing name in xref interaction %s" % e)
 
-        return [interactor_id, [this_id, name, category, tax_id]]
+        return [interactor_id, [this_id, name, category, tax_id, self.source_name]]
 
     def parse_experiment_info(self, xmldoc: object) -> Dict[int, str]:
         """Extract info about experiment from miXML doc
