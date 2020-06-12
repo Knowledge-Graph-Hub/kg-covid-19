@@ -83,34 +83,27 @@ def merge(yaml: str) -> None:
 
 
 @cli.command()
-@click.option("yaml", "-y", required=False, default=None, multiple=False)
+@click.option("yaml", "-y", required=True, default=None, multiple=False)
 @click.option("output_dir", "-o", default="data/queries/")
-def query(yaml: str, output_dir: str) -> None:
+def query(yaml: str, output_dir: str,
+          query_key: str='query', endpoint_key: str='endpoint',
+          outfile_ext: str=".tsv") -> None:
     """Perform a query of knowledge graph using a class contained in query_utils
 
     Args:
-        yaml: A YAML file containing a SPARQL query, in this format:
-                title:
-                "Short name for this query"
-                description:
-                "What does this query do"
-                endpoint:
-                "http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql"
-                query: >
-                  SELECT (COUNT(?v2) AS ?v1) ?v0
-                  WHERE {
-                    ?v2 <https://w3id.org/biolink/vocab/category> ?v0
-                  } GROUP BY ?v0
+        yaml: A YAML file containing a SPARQL query (see queries/sparql/ for examples)
         output_dir: Directory to output results of query
-
+        query_key: the key in the yaml file containing the query string
+        endpoint_key: the key in the yaml file containing the sparql endpoint URL
+        outfile_ext: file extension for output file [.tsv]
     Returns:
         None.
 
     """
-
     query = parse_query_yaml(yaml)
-    result_dict = run_query(query=query['query'], endpoint=query['endpoint'])
-    outfile = os.path.join(output_dir, yaml)
+    result_dict = run_query(query=query[query_key], endpoint=query[endpoint_key])
+    outfile = os.path.join(output_dir, os.path.splitext(os.path.basename(yaml))[0] +
+                           outfile_ext)
     result_dict_to_tsv(result_dict, outfile)
 
 
