@@ -14,3 +14,13 @@ def run_query(query: str, endpoint: str, return_format=JSON) -> dict:
 def parse_query_yaml(yaml_file) -> dict:
     return yaml.load(open(yaml_file))
 
+
+def result_dict_to_tsv(result_dict: dict, outfile: str) -> None:
+    with open(outfile, 'wt') as f:
+        # header
+        f.write("\t".join(result_dict['head']['vars']) + "\n")
+        for row in result_dict['results']['bindings']:
+            row_items = []
+            for col in result_dict['head']['vars']:
+                row_items.append(row[col]['value'])
+            f.write("\t".join(row_items) + "\n")

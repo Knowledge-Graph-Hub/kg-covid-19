@@ -32,7 +32,8 @@ test_deps = [
     'coveralls',
     'validate_version_code',
     'codacy-coverage',
-    'parameterized'
+    'parameterized',
+    'pickle'
 ]
 
 extras = {
