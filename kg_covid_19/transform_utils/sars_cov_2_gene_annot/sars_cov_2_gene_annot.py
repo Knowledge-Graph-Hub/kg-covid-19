@@ -21,7 +21,8 @@ class SARSCoV2GeneAnnot(Transform):
         source_name = "sars_cov_2_gene_annot"
         super().__init__(source_name, input_dir, output_dir)
 
-        self.node_header = ['id', 'name', 'category', 'synonym', 'in_taxon', 'provided_by']
+        self.node_header = ['id', 'name', 'category', 'full_name', 'synonym',
+                            'in_taxon', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'provided_by', 'DB_References', 'ECO_code', 'With',
                             'Interacting_taxon_ID',
@@ -111,26 +112,41 @@ class SARSCoV2GeneAnnot(Transform):
         :param rec: record from gpi iterator
         :return: list of node items, one for each thing in self.node_header
         """
-        # ['id', 'name', 'category', 'synonym', 'in_taxon']
+        # ['id', 'name', 'category', 'full_name', 'synonym', 'in_taxon', 'provided_by']
         id: str = self._rec_to_id(rec)
 
         try:
             name_list = get_item_by_priority(rec, ['DB_Object_Name'])
             if name_list is not None and len(name_list) > 0:
-                name = name_list[0]
+                full_name = name_list[0]
+                if len(name_list) > 1:
+                    logging.warning(
+                        "Found >1 DB_Object_Name in rec, using the first one")
+            else:
+                full_name = ''
+        except (IndexError, ItemInDictNotFound):
+            full_name = ''
+
+        try:
+            symbol_list = get_item_by_priority(rec, ['DB_Object_Symbol'])
+            if symbol_list is not None and len(symbol_list) > 0:
+                name = symbol_list[0]
+                if len(symbol_list) > 1:
+                    logging.warning(
+                        "Found >1 DB_Object_Symbol in rec, using the first one")
             else:
                 name = ''
         except (IndexError, ItemInDictNotFound):
-            name = ''
+            full_name = ''
 
         category = self.protein_node_type
         try:
-            synonym = get_item_by_priority(rec, ['DB_Object_Synonym'])[0]
+            synonym = get_item_by_priority(rec, ['DB_Object_Synonym'])
         except (IndexError, ItemInDictNotFound):
             synonym = ''
         taxon = get_item_by_priority(rec, ['Taxon'])
         taxon = ":".join([self.ncbi_taxon_prefix, taxon.split(":")[1]])
-        return [id, name, category, synonym, taxon, self.source_name]
+        return [id, name, category, full_name, synonym, taxon, self.source_name]
 
 
 def _gpi12iterator(handle: TextIO) -> Generator:
