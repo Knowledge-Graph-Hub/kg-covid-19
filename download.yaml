@@ -54,6 +54,13 @@
   url: https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz
   local_name: gene_info.gz
 
+-
+  # this is to make bl:xrefs from ENSP protein ids to UniprotKB ids (issue #235)
+  # to be ID mapped in merge step
+  # nb: we are also downloading and using this file for the TTD transform
+  url: ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/by_organism/HUMAN_9606_idmapping.dat.gz
+  local_name: HUMAN_9606_idmapping.dat.gz
+
 #
 # TTD - Therapeutic Targets Database
 # drug targets, and associated data for each (drugs, ids, etc)
