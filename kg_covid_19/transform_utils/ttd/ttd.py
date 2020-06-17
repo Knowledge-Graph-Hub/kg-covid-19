@@ -34,7 +34,7 @@ class TTDTransform(Transform):
                                      "P1-01-TTD_target_download.txt")
         ttd_data = self.parse_ttd_file(ttd_file_name)
         gene_node_type = "biolink:Protein"
-        drug_id_prefix = "TTD:"
+        drug_id_prefix = "ttd.drug:"
         drug_node_type = "biolink:Drug"
         drug_gene_edge_label = "biolink:interacts_with"
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
