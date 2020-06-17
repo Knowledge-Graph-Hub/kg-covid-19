@@ -18,16 +18,15 @@ GitHub Issue: https://github.com/kg-emerging-viruses/kg-emerging-viruses/issues/
 Write node and edge headers that look something like:
 
 Node: 
-id  name    category
-protein:1234    TBX4    Protein 
+id  name    category    xrefs   provided_by
+protein:1234    TBX4    biolink:Protein UniprotKB:123456    STRING 
+
+xrefs contains the UniprotKB id for the protein, if available
 
 Edge: 
 subject edge_label  object  relation
 protein:1234    interacts_with  protein:4567    RO:0002434
 
-Also write edges that create xrefs between ENSP ids and UniprotKB IDs, like so:
-subject edge_label  object  relation
-protein:1234    bl:xrefs  protein:4567    RO:0002434
 
 """
 
@@ -188,6 +187,7 @@ class StringTransform(Transform):
                                     'biolink:Gene',
                                     gene_informations['description'],
                                     f"NCBIGene:{self.ensembl2ncbi_map[gene]}",
+                                    "",
                                     self.source_name
                                 ]
                             )
@@ -206,32 +206,25 @@ class StringTransform(Transform):
                     # write node data
                     if protein not in seen_proteins:
                         seen_proteins.add(protein)
+
+                        # if we have an equivalent Uniprot ID for this Ensembl protein
+                        # ID make an xref edge, and a node for the Uniprot ID
+                        uniprot_curie = ''
+                        if protein in string_to_uniprot_id_map:
+                            uniprot_curie = \
+                                f"UniprotKB:{string_to_uniprot_id_map[protein]}"
+
                         write_node_edge_item(
                             fh=node,
                             header=self.node_header,
                             data=[f"ENSEMBL:{protein}", "",
-                                  protein_node_type, "", "", self.source_name]
+                                  protein_node_type,
+                                  "",
+                                  "",
+                                  uniprot_curie,  # xref
+                                  self.source_name]
                         )
 
-                        # if we have an equivalent Uniprot ID for this Ensembl protein
-                        # ID make an xref edge, and a node for the Uniprot ID
-                        if protein in string_to_uniprot_id_map:
-                            uniprot_curie = \
-                                f"UniprotKB:{string_to_uniprot_id_map[protein]}"
-                            write_node_edge_item(
-                                fh=node,
-                                header=self.node_header,
-                                data=[uniprot_curie, "",
-                                      protein_node_type, "", "", self.source_name])
-                            write_node_edge_item(
-                                fh=edge,
-                                header=self.edge_header,
-                                data=[f"ENSEMBL:{protein}",
-                                      "biolink:xrefs",
-                                      uniprot_curie,
-                                      "biolink:xrefs",
-                                      "uniprot",
-                                      ] + self.extra_header)
 
                 # write edge data
                 write_node_edge_item(

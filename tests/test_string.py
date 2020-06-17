@@ -56,23 +56,26 @@ class TestString(TestCase):
         node_file = os.path.join(self.string_output_dir, "nodes.tsv")
         self.assertTrue(os.path.isfile(node_file))
         node_df = pd.read_csv(node_file, sep="\t", header=0)
-        self.assertEqual((11, 6), node_df.shape)
-        self.assertEqual(['id', 'name', 'category', 'description', 'alias',
+        self.assertEqual((10, 7), node_df.shape)
+        self.assertEqual(['id', 'name', 'category', 'description', 'alias', 'xrefs',
                           'provided_by'], list(node_df.columns))
-        self.assertCountEqual(['UniprotKB:P84085', 'ENSEMBL:ENSP00000000233',
+        self.assertCountEqual(['ENSEMBL:ENSP00000000233',
                               'ENSEMBL:ENSP00000272298', 'ENSEMBL:ENSP00000253401',
                               'ENSEMBL:ENSP00000401445', 'ENSEMBL:ENSP00000418915',
                               'ENSEMBL:ENSP00000327801', 'ENSEMBL:ENSP00000466298',
                               'ENSEMBL:ENSP00000232564', 'ENSEMBL:ENSP00000393379',
                               'ENSEMBL:ENSP00000371253'],
                              list(node_df.id.unique()))
+        self.assertCountEqual('UniprotKB:P84085',
+                              node_df.loc[node_df['id'] ==
+                                          'ENSEMBL:ENSP00000000233'].xrefs.item())
 
     def test_edges_file(self):
         self.string.run()
         edge_file = os.path.join(self.string_output_dir, "edges.tsv")
         self.assertTrue(os.path.isfile(edge_file))
         edge_df = pd.read_csv(edge_file, sep="\t", header=0)
-        self.assertEqual((10, 19), edge_df.shape)
+        self.assertEqual((9, 19), edge_df.shape)
         self.assertEqual(['subject', 'edge_label', 'object', 'relation', 'provided_by',
                           'combined_score', 'neighborhood', 'neighborhood_transferred',
                           'fusion', 'cooccurence', 'homology', 'coexpression',
