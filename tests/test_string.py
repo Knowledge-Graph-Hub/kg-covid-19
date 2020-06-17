@@ -59,7 +59,7 @@ class TestString(TestCase):
         self.assertEqual((11, 6), node_df.shape)
         self.assertEqual(['id', 'name', 'category', 'description', 'alias',
                           'provided_by'], list(node_df.columns))
-        self.assertListEqual(['UniprotKB:P84085', 'ENSEMBL:ENSP00000000233',
+        self.assertCountEqual(['UniprotKB:P84085', 'ENSEMBL:ENSP00000000233',
                               'ENSEMBL:ENSP00000272298', 'ENSEMBL:ENSP00000253401',
                               'ENSEMBL:ENSP00000401445', 'ENSEMBL:ENSP00000418915',
                               'ENSEMBL:ENSP00000327801', 'ENSEMBL:ENSP00000466298',
