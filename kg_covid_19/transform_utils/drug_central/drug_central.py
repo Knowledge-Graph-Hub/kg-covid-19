@@ -32,12 +32,14 @@ class DrugCentralTransform(Transform):
         super().__init__(source_name, input_dir, output_dir)  # set some variables
         self.node_header = ['id', 'name', 'category', 'TDL', 'provided_by']
 
-    def run(self, data_file: str = "drug.target.interaction.tsv.gz",
+    def run(self, data_file: Optional[str] = None,
             species: str = "Homo sapiens") -> None:
         """Method is called and performs needed transformations to process the Drug
         Central data, additional information
         on this data can be found in the comment at the top of this script"""
 
+        if data_file is None:
+            data_file = "drug.target.interaction.tsv.gz"
         interactions_file = os.path.join(self.input_base_dir,
                                          data_file)
         os.makedirs(self.output_dir, exist_ok=True)
