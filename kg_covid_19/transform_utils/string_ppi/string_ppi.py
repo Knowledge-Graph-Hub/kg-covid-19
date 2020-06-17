@@ -245,7 +245,6 @@ class StringTransform(Transform):
                 )
 
 
-
 def parse_stringdb_interactions(this_line: str, header_items: List) -> Dict:
     """Methods processes a line of text from Drug Central.
 

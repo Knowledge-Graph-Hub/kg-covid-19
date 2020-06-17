@@ -1,5 +1,6 @@
 import os
 import tempfile
+import pandas as pd
 from unittest import TestCase, skip
 
 from parameterized import parameterized
@@ -9,15 +10,11 @@ from kg_covid_19.transform_utils.string_ppi import StringTransform
 
 class TestString(TestCase):
     """Tests the string ingest"""
-    @classmethod
-    def setUpClass(cls) -> None:
-        cls.input_dir = "tests/resources/string/"
-        cls.output_dir = tempfile.gettempdir()
-        cls.string_output_dir = os.path.join(cls.output_dir, "STRING")
-        cls.string = StringTransform(cls.input_dir, cls.output_dir)
-
     def setUp(self) -> None:
-        pass
+        self.input_dir = "tests/resources/string/"
+        self.output_dir = tempfile.gettempdir()
+        self.string_output_dir = os.path.join(self.output_dir, "STRING")
+        self.string = StringTransform(self.input_dir, self.output_dir)
 
     @parameterized.expand([
     ['ensembl2ncbi_map', dict, 'ENSG00000121410', 1],
@@ -53,7 +50,32 @@ class TestString(TestCase):
         self.assertTrue(isinstance(self.string.run, object))
         self.string.run()
         self.assertTrue(os.path.isdir(self.string_output_dir))
-        self.assertTrue(
-            os.path.isfile(os.path.join(self.string_output_dir, "nodes.tsv")))
-        self.assertTrue(
-            os.path.isfile(os.path.join(self.string_output_dir, "edges.tsv")))
+
+    def test_nodes_file(self):
+        self.string.run()
+        node_file = os.path.join(self.string_output_dir, "nodes.tsv")
+        self.assertTrue(os.path.isfile(node_file))
+        node_df = pd.read_csv(node_file, sep="\t", header=0)
+        self.assertEqual((10, 6), node_df.shape)
+        self.assertEqual(['id', 'name', 'category', 'description', 'alias',
+                          'provided_by'], list(node_df.columns))
+        self.assertListEqual(['ENSEMBL:ENSP00000000233', 'ENSEMBL:ENSP00000272298',
+                              'ENSEMBL:ENSP00000253401', 'ENSEMBL:ENSP00000401445',
+                              'ENSEMBL:ENSP00000418915', 'ENSEMBL:ENSP00000327801',
+                              'ENSEMBL:ENSP00000466298', 'ENSEMBL:ENSP00000232564',
+                              'ENSEMBL:ENSP00000393379', 'ENSEMBL:ENSP00000371253'],
+                             list(node_df.id.unique()))
+
+    def test_edges_file(self):
+        self.string.run()
+        edge_file = os.path.join(self.string_output_dir, "edges.tsv")
+        self.assertTrue(os.path.isfile(edge_file))
+        edge_df = pd.read_csv(edge_file, sep="\t", header=0)
+        self.assertEqual((9, 19), edge_df.shape)
+        self.assertEqual(['subject', 'edge_label', 'object', 'relation', 'provided_by',
+                          'combined_score', 'neighborhood', 'neighborhood_transferred',
+                          'fusion', 'cooccurence', 'homology', 'coexpression',
+                          'coexpression_transferred', 'experiments',
+                          'experiments_transferred', 'database', 'database_transferred',
+                          'textmining', 'textmining_transferred', ],
+                         list(edge_df.columns))
