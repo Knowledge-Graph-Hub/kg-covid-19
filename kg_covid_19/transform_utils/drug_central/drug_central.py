@@ -30,7 +30,7 @@ class DrugCentralTransform(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
         source_name = "drug_central"
         super().__init__(source_name, input_dir, output_dir)  # set some variables
-        self.node_header = ['id', 'name', 'category', 'TDL']
+        self.node_header = ['id', 'name', 'category', 'TDL', 'provided_by']
 
     def run(self, data_file: Optional[str] = None, species: str = "Homo sapiens") -> None:
         """Method is called and performs needed transformations to process the Drug
@@ -39,7 +39,6 @@ class DrugCentralTransform(Transform):
 
         interactions_file = os.path.join(self.input_base_dir,
                                          "drug.target.interaction.tsv.gz")
-        tclin_chem_zip_file = os.path.join(self.input_base_dir, "tcrd.zip")
         os.makedirs(self.output_dir, exist_ok=True)
         drug_node_type = "biolink:Drug"
         uniprot_curie_prefix = "UniProtKB:"
@@ -82,13 +81,13 @@ class DrugCentralTransform(Transform):
                                                                    ['STRUCT_ID'])
 
                 # WRITE NODES
-                # drug - ['id', 'name', 'category']
                 write_node_edge_item(fh=node,
                                      header=self.node_header,
                                      data=[drug_id,
                                            items_dict['DRUG_NAME'],
                                            drug_node_type,
-                                           ''])
+                                           '',  # TDL (not applicable for drugs)
+                                           self.source_name])
 
                 for protein_id in protein_ids:
                     protein_id = uniprot_curie_prefix + protein_id
@@ -98,11 +97,10 @@ class DrugCentralTransform(Transform):
                                          data=[protein_id,
                                                items_dict['GENE'],
                                                protein_node_type,
-                                               items_dict['TDL']])
+                                               items_dict['TDL'],
+                                               self.source_name])
 
                     # WRITE EDGES
-                    # ['subject', 'edge_label', 'object', 'relation', 'provided_by',
-                    # 'comment']
                     write_node_edge_item(fh=edge,
                                          header=self.edge_header,
                                          data=[drug_id,

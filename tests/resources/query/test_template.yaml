@@ -1,0 +1,11 @@
+title:
+  "some title"
+description:
+  "what is it"
+endpoint:
+  "http://zombo.com"
+query: >
+  SELECT (COUNT(?v2) AS ?v1) ?v0
+  WHERE {
+    ?v2 <https://w3id.org/biolink/vocab/category> ?v0
+  } GROUP BY ?v0

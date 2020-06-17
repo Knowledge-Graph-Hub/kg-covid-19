@@ -52,7 +52,7 @@ class ScibiteCordTransform(Transform):
         else:
             data_files.append(data_file)
 
-        self.node_header = ['id', 'name', 'category', 'description']
+        self.node_header = ['id', 'name', 'category', 'description', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by']
         node_handle = open(self.output_node_file, 'w')
         edge_handle = open(self.output_edge_file, 'w')
@@ -137,7 +137,8 @@ class ScibiteCordTransform(Transform):
                 f"CORD:{paper_id}",
                 f"{title}",
                 "biolink:Publication",
-                ""
+                "",
+                self.source_name
             ]
         )
         self.seen.add(paper_id)
@@ -167,7 +168,8 @@ class ScibiteCordTransform(Transform):
                         f"{curie}",
                         name if isinstance(name, str) else "",
                         category,
-                        ""
+                        "",
+                        self.source_name
                     ]
                 )
                 self.seen.add(curie)
@@ -232,7 +234,8 @@ class ScibiteCordTransform(Transform):
                         paper_curie,
                         "",
                         "biolink:Publication",
-                        ""
+                        "",
+                        f"{self.source_name} co-occurrences"
                     ]
                 )
                 self.seen.add(paper_id)
@@ -262,7 +265,8 @@ class ScibiteCordTransform(Transform):
                             f"{curie}",
                             name if isinstance(name, str) else "",
                             category,
-                            ""
+                            "",
+                            f"{self.source_name} co-occurrences"
                         ]
                     )
                     self.seen.add(curie)
@@ -270,17 +274,19 @@ class ScibiteCordTransform(Transform):
                     # simplified generation of edges between OntologyClass and the publication where
                     # OntologyClass -> correlated_with -> Publication
                     # with the edge having relation RO:0002610
-                    write_node_edge_item(
-                        fh=edge_handle,
-                        header=self.edge_header,
-                        data=[
-                            f"{curie}",
-                            "biolink:correlated_with",
-                            f"{paper_curie}",
-                            f"RO:0002610", # 'correlated with'
-                            f"{self.source_name} co-occurrences"
-                        ]
-                    )
+                    if (curie, paper_curie) not in self.seen:
+                        write_node_edge_item(
+                            fh=edge_handle,
+                            header=self.edge_header,
+                            data=[
+                                f"{curie}",
+                                "biolink:correlated_with",
+                                f"{paper_curie}",
+                                f"RO:0002610", # 'correlated with'
+                                f"{self.source_name} co-occurrences"
+                            ]
+                        )
+                        self.seen.add((curie, paper_curie))
 
             # This is an earlier style of modeling that involves an InformationContentEntity for every instance of
             # co-occurrence between a Publication and a set of OntologyClass

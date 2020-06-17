@@ -95,6 +95,7 @@ def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
         raise ItemInDictNotFound("Can't find item in items_dict {}".format(items_dict))
     return value
 
+
 def data_to_dict(these_keys, these_values) -> dict:
     """Zip up two lists to make a dict
 
@@ -103,6 +104,7 @@ def data_to_dict(these_keys, these_values) -> dict:
     :return: dictionary
     """
     return dict(zip(these_keys, these_values))
+
 
 def uniprot_make_name_to_id_mapping(dat_gz_file: str) -> dict:
     """Given a Uniprot dat.gz file, like this:
