@@ -2,7 +2,7 @@ import gzip
 import logging
 import os
 import compress_json  # type: ignore
-from typing import Dict, List, Any, Set, Optional
+from typing import Dict, List, Any, Set, Optional, IO
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, \
@@ -151,7 +151,7 @@ class StringTransform(Transform):
 
         # Required to align the node edge header of the gene
         # with the default header
-        extra_header = [""]*(len(edge_additional_headers)+1)
+        self.extra_header = [""]*(len(edge_additional_headers)+1)
 
         # make string ENSP to Uniprot id mapping dict
         string_to_uniprot_id_map = uniprot_make_name_to_id_mapping(
@@ -172,21 +172,6 @@ class StringTransform(Transform):
                     nat_string_id = get_item_by_priority(items_dict, [protein_name])
                     protein = '.'.join(nat_string_id.split('.')[1:])
                     proteins.append(protein)
-
-                    if nat_string_id in string_to_uniprot_id_map:
-                        make_xref_node_and_edge_entries(protein,
-                                                        string_to_uniprot_id_map)
-
-                        write_node_edge_item(
-                            fh=edge,
-                            header=self.edge_header,
-                            data=[f"ENSEMBL:{protein}",
-                                  "biolink:xrefs",
-                                  f"UniprotKB:{string_to_uniprot_id_map[nat_string_id]}",
-                                  "biolink:xrefs",
-                                  "uniprot",
-                                  ] + extra_header
-                        )
 
                     if protein in self.protein_gene_map:
                         gene = self.protein_gene_map[protein]
@@ -215,7 +200,7 @@ class StringTransform(Transform):
                                     f"ENSEMBL:{protein}",
                                     "RO:0002205",
                                     "NCBI",
-                                ] + extra_header
+                                ] + self.extra_header
                             )
 
                         # write node data
@@ -238,6 +223,26 @@ class StringTransform(Transform):
                         for header in edge_additional_headers
                     ]
                 )
+
+                # if we have an equivalent Uniprot ID for this Ensembl protein ID
+                # make an xref edge, and a node for the Uniprot ID
+                if nat_string_id in string_to_uniprot_id_map:
+                    uniprot_curie = \
+                        f"UniprotKB:{string_to_uniprot_id_map[nat_string_id]}"
+                    write_node_edge_item(
+                        fh=node,
+                        header=self.node_header,
+                        data=[uniprot_curie, "",
+                              protein_node_type, "", "", self.source_name])
+                    write_node_edge_item(
+                        fh=edge,
+                        header=self.edge_header,
+                        data=[f"ENSEMBL:{protein}",
+                              "biolink:xrefs",
+                              uniprot_curie,
+                              "biolink:xrefs",
+                              "uniprot",
+                              ] + self.extra_header)
 
 
 def parse_stringdb_interactions(this_line: str, header_items: List) -> Dict:
@@ -271,25 +276,3 @@ def parse_header(header_string: str, sep: str = ' ') -> List:
 
     return [i.replace('"', '') for i in header]
 
-
-def make_xref_node_and_edge_entries(protein_id: str,
-                                    string_to_uniprot_id_map: dict,
-                                    ensembl_prefix: str = "ENSEMBL",
-                                    xref_edge_label: str = "biolink:xrefs",
-                                    uniprot_prefix: str = "UniprotKB",
-                                    relation_term: str = "biolink:xrefs",
-                                    source_field: str = "uniprot"):
-    """Given a STRING-style ENSEMBL protein ID and a map to Uniprot ID map, make a new
-    node for the Uniprot ID, and an edge asserting a xref between the ENSEMBL ID and the
-    Uniprot ID
-
-    :param protein_id:
-    :param string_to_uniprot_id_map:
-    :param ensembl_prefix:
-    :param xref_edge_label:
-    :param uniprot_prefix:
-    :param relation_term:
-    :param source_field:
-    :return: None
-    """
-    pass
