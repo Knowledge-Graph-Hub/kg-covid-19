@@ -66,21 +66,21 @@ class DrugCentralTransform(Transform):
 
                 # get protein ID
                 try:
-                    protein_ids_string = get_item_by_priority(items_dict, ['ACCESSION'])
-                    protein_ids = protein_ids_string.split('|')
+                    protein_dict = items_dict_to_protein_data_dict(items_dict)
 
-                    if items_dict['DRUG_NAME'] == 'acetyldigitoxin':
-                        pass
                 except ItemInDictNotFound:
                     # lines with no ACCESSION entry only contain drug info, no target
                     # info - not ingesting these
+                    continue
+                except ValueError:
+                    logging.error("Value error while parsing line")
                     continue
 
                 # get drug ID
                 drug_id = drug_curie_prefix + get_item_by_priority(items_dict,
                                                                    ['STRUCT_ID'])
 
-                # WRITE NODES
+                # Write drug node
                 write_node_edge_item(fh=node,
                                      header=self.node_header,
                                      data=[drug_id,
@@ -89,15 +89,15 @@ class DrugCentralTransform(Transform):
                                            '',  # TDL (not applicable for drugs)
                                            self.source_name])
 
-                for protein_id in protein_ids:
-                    protein_id = uniprot_curie_prefix + protein_id
+                for key, (uniprot_id, name, tdl) in protein_dict.items():
+                    protein_id = uniprot_curie_prefix + uniprot_id
 
                     write_node_edge_item(fh=node,
                                          header=self.node_header,
                                          data=[protein_id,
-                                               items_dict['GENE'],
+                                               name,
                                                protein_node_type,
-                                               items_dict['TDL'],
+                                               tdl,
                                                self.source_name])
 
                     # WRITE EDGES
@@ -130,3 +130,29 @@ def parse_drug_central_line(this_line: str, header_items: List) -> Dict:
 
     return item_dict
 
+
+def items_dict_to_protein_data_dict(items_dict: dict) -> dict:
+    """Given a parsed line from parse_drug_central_line, split up pipe-separated entries
+    for several related proteins and their names and TDL info into separate protein
+    entries
+
+    :param items_dict: dictionary of data from a line, output by parse_drug_central_line
+    :return: a dict with information about each protein
+    """
+    protein_ids_string = get_item_by_priority(items_dict, ['ACCESSION'])
+    protein_ids = protein_ids_string.split('|')
+    gene_name = get_item_by_priority(items_dict, ['GENE']).split('|')
+    TDL_values = get_item_by_priority(items_dict, ['TDL']).split('|')
+
+    if len(protein_ids) != len(gene_name):
+        logging.warning("Didn't get the same number of entries for protein_ids and gene_ids")
+        gene_name = [''] * len(protein_ids)
+
+    if len(protein_ids) != len(TDL_values):
+        # this happens - repeat TDL designation for all protein IDs
+        TDL_values = TDL_values * len(protein_ids)
+
+    protein_dict = defaultdict(list)
+    for i in range(len(protein_ids)):
+        protein_dict[protein_ids[i]] = [protein_ids[i], gene_name[i], TDL_values[i]]
+    return protein_dict
