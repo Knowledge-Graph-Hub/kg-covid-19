@@ -203,35 +203,35 @@ class StringTransform(Transform):
                                 ] + self.extra_header
                             )
 
-                        # write node data
-                        if protein not in seen_proteins:
-                            seen_proteins.add(protein)
-                            write_node_edge_item(
-                                fh=node,
-                                header=self.node_header,
-                                data=[f"ENSEMBL:{protein}", "",
-                                      protein_node_type, "", "", self.source_name]
-                            )
-
-                    # if we have an equivalent Uniprot ID for this Ensembl protein
-                    # ID make an xref edge, and a node for the Uniprot ID
-                    if nat_string_id in string_to_uniprot_id_map:
-                        uniprot_curie = \
-                            f"UniprotKB:{string_to_uniprot_id_map[nat_string_id]}"
+                    # write node data
+                    if protein not in seen_proteins:
+                        seen_proteins.add(protein)
                         write_node_edge_item(
                             fh=node,
                             header=self.node_header,
-                            data=[uniprot_curie, "",
-                                  protein_node_type, "", "", self.source_name])
-                        write_node_edge_item(
-                            fh=edge,
-                            header=self.edge_header,
-                            data=[f"ENSEMBL:{protein}",
-                                  "biolink:xrefs",
-                                  uniprot_curie,
-                                  "biolink:xrefs",
-                                  "uniprot",
-                                  ] + self.extra_header)
+                            data=[f"ENSEMBL:{protein}", "",
+                                  protein_node_type, "", "", self.source_name]
+                        )
+
+                        # if we have an equivalent Uniprot ID for this Ensembl protein
+                        # ID make an xref edge, and a node for the Uniprot ID
+                        if protein in string_to_uniprot_id_map:
+                            uniprot_curie = \
+                                f"UniprotKB:{string_to_uniprot_id_map[protein]}"
+                            write_node_edge_item(
+                                fh=node,
+                                header=self.node_header,
+                                data=[uniprot_curie, "",
+                                      protein_node_type, "", "", self.source_name])
+                            write_node_edge_item(
+                                fh=edge,
+                                header=self.edge_header,
+                                data=[f"ENSEMBL:{protein}",
+                                      "biolink:xrefs",
+                                      uniprot_curie,
+                                      "biolink:xrefs",
+                                      "uniprot",
+                                      ] + self.extra_header)
 
                 # write edge data
                 write_node_edge_item(
