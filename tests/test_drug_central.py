@@ -58,7 +58,7 @@ class TestDrugCentral(unittest.TestCase):
         node_file = os.path.join(self.dc_output_dir, "nodes.tsv")
         self.assertTrue(os.path.isfile(node_file))
         node_df = pd.read_csv(node_file, sep="\t", header=0)
-        self.assertEqual((35, 5), node_df.shape)
+        self.assertEqual((23, 5), node_df.shape)
         self.assertEqual(['id', 'name', 'category', 'TDL', 'provided_by'],
                          list(node_df.columns))
         self.assertListEqual(['DrugCentral:4', 'UniProtKB:P35499', 'UniProtKB:P10635',
@@ -70,6 +70,14 @@ class TestDrugCentral(unittest.TestCase):
                               'UniProtKB:Q05586', 'UniProtKB:Q12879', 'UniProtKB:Q13224',
                               'UniProtKB:Q14957', 'UniProtKB:Q8TCU5'],
                               list(node_df.id.unique()))
+
+    def test_nodes_are_not_repeated(self):
+        self.drug_central.run(data_file='drug.target.interaction_SNIPPET.tsv.gz')
+        node_file = os.path.join(self.dc_output_dir, "nodes.tsv")
+        node_df = pd.read_csv(node_file, sep="\t", header=0)
+        nodes = list(node_df.id)
+        unique_nodes = list(set(nodes))
+        self.assertCountEqual(nodes, unique_nodes)
 
     def test_edges_file(self):
         self.drug_central.run(data_file='drug.target.interaction_SNIPPET.tsv.gz')

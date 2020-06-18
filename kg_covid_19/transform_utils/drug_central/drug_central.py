@@ -61,6 +61,9 @@ class DrugCentralTransform(Transform):
 
             header_items = parse_header(interactions.readline())
 
+            seen_proteins: dict = defaultdict(int)
+            seen_drugs: dict = defaultdict(int)
+
             for line in interactions:
                 items_dict = parse_drug_central_line(line, header_items)
 
@@ -84,24 +87,28 @@ class DrugCentralTransform(Transform):
                                                                    ['STRUCT_ID'])
 
                 # Write drug node
-                write_node_edge_item(fh=node,
-                                     header=self.node_header,
-                                     data=[drug_id,
-                                           items_dict['DRUG_NAME'],
-                                           drug_node_type,
-                                           '',  # TDL (not applicable for drugs)
-                                           self.source_name])
+                if drug_id not in seen_drugs:
+                    write_node_edge_item(fh=node,
+                                         header=self.node_header,
+                                         data=[drug_id,
+                                               items_dict['DRUG_NAME'],
+                                               drug_node_type,
+                                               '',  # TDL (not applicable for drugs)
+                                               self.source_name])
+                    seen_drugs[drug_id] += 1
 
                 for key, (uniprot_id, name, tdl) in protein_dict.items():
                     protein_id = uniprot_curie_prefix + uniprot_id
 
-                    write_node_edge_item(fh=node,
-                                         header=self.node_header,
-                                         data=[protein_id,
-                                               name,
-                                               protein_node_type,
-                                               tdl,
-                                               self.source_name])
+                    if protein_id not in seen_proteins:
+                        write_node_edge_item(fh=node,
+                                             header=self.node_header,
+                                             data=[protein_id,
+                                                   name,
+                                                   protein_node_type,
+                                                   tdl,
+                                                   self.source_name])
+                        seen_proteins[protein_id] += 1
 
                     # WRITE EDGES
                     write_node_edge_item(fh=edge,
