@@ -4,5 +4,6 @@
     "category",
     "description",
     "alias",
+    "xrefs",
     "provided_by"
 ]
