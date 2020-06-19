@@ -21,7 +21,7 @@ Ingest drug - drug target interactions from Drug Central
 Essentially just ingests and transforms this file:
 http://unmtid-shinyapps.net/download/drug.target.interaction.tsv.gz
 
-And extracts Drug -> Gene interactions
+And extracts Drug -> Protein interactions
 """
 
 
@@ -30,32 +30,27 @@ class DrugCentralTransform(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
         source_name = "drug_central"
         super().__init__(source_name, input_dir, output_dir)  # set some variables
-        self.node_header = ['id', 'name', 'category', 'tclin', 'tchem', 'provided_by']
+        self.node_header = ['id', 'name', 'category', 'TDL', 'provided_by']
 
-    def run(self, data_file: Optional[str] = None, species: str = "Homo sapiens") -> None:
+    def run(self, data_file: Optional[str] = None,
+            species: str = "Homo sapiens") -> None:
         """Method is called and performs needed transformations to process the Drug
         Central data, additional information
         on this data can be found in the comment at the top of this script"""
 
+        if data_file is None:
+            data_file = "drug.target.interaction.tsv.gz"
         interactions_file = os.path.join(self.input_base_dir,
-                                         "drug.target.interaction.tsv.gz")
-        tclin_chem_zip_file = os.path.join(self.input_base_dir, "tcrd.zip")
+                                         data_file)
         os.makedirs(self.output_dir, exist_ok=True)
         drug_node_type = "biolink:Drug"
-        gene_curie_prefix = "UniProtKB:"
+        uniprot_curie_prefix = "UniProtKB:"
         drug_curie_prefix = "DrugCentral:"
-        gene_node_type = "biolink:Gene"
-        drug_gene_edge_label = "biolink:interacts_with"
-        drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
+        protein_node_type = "biolink:Protein"
+        drug_protein_edge_label = "biolink:molecularly_interacts_with"
+        drug_protein_edge_relation = "RO:0002436"  # molecularly interacts with
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'provided_by', 'comment']
-
-        # unzip tcrd.zip and get tchem and tclin filenames
-        tempdir = tempfile.mkdtemp()
-        (tclin_file, tchem_file) = unzip_and_get_tclin_tchem(tclin_chem_zip_file, tempdir)
-
-        tclin_dict: dict = tsv_to_dict(tclin_file, 'uniprot')
-        tchem_dict: dict = tsv_to_dict(tchem_file, 'uniprot')
 
         with open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge, \
@@ -66,99 +61,66 @@ class DrugCentralTransform(Transform):
 
             header_items = parse_header(interactions.readline())
 
+            seen_proteins: dict = defaultdict(int)
+            seen_drugs: dict = defaultdict(int)
+
             for line in interactions:
                 items_dict = parse_drug_central_line(line, header_items)
 
                 if 'ORGANISM' not in items_dict or items_dict['ORGANISM'] != species:
                     continue
 
-                # get gene ID
+                # get protein ID
                 try:
-                    gene_id_string = get_item_by_priority(items_dict, ['ACCESSION'])
-                    gene_ids = gene_id_string.split('|')
+                    protein_dict = items_dict_to_protein_data_dict(items_dict)
+
                 except ItemInDictNotFound:
                     # lines with no ACCESSION entry only contain drug info, no target
                     # info - not ingesting these
+                    continue
+                except ValueError:
+                    logging.error("Value error while parsing line")
                     continue
 
                 # get drug ID
                 drug_id = drug_curie_prefix + get_item_by_priority(items_dict,
                                                                    ['STRUCT_ID'])
 
-                # WRITE NODES
-                # drug - ['id', 'name', 'category']
-                write_node_edge_item(fh=node,
-                                     header=self.node_header,
-                                     data=[drug_id,
-                                           items_dict['DRUG_NAME'],
-                                           drug_node_type,
-                                           str(False),
-                                           str(False),
-                                           self.source_name])
-
-                for gene_id in gene_ids:
-                    gene_id = gene_curie_prefix + gene_id
-                    is_tclin = True if gene_ids[0] in tclin_dict else False
-                    is_tchem = True if gene_ids[0] in tchem_dict else False
-
+                # Write drug node
+                if drug_id not in seen_drugs:
                     write_node_edge_item(fh=node,
                                          header=self.node_header,
-                                         data=[gene_id,
-                                               items_dict['GENE'],
-                                               gene_node_type,
-                                               str(is_tclin),
-                                               str(is_tchem),
+                                         data=[drug_id,
+                                               items_dict['DRUG_NAME'],
+                                               drug_node_type,
+                                               '',  # TDL (not applicable for drugs)
                                                self.source_name])
+                    seen_drugs[drug_id] += 1
+
+                for key, (uniprot_id, name, tdl) in protein_dict.items():
+                    protein_id = uniprot_curie_prefix + uniprot_id
+
+                    if protein_id not in seen_proteins:
+                        write_node_edge_item(fh=node,
+                                             header=self.node_header,
+                                             data=[protein_id,
+                                                   name,
+                                                   protein_node_type,
+                                                   tdl,
+                                                   self.source_name])
+                        seen_proteins[protein_id] += 1
 
                     # WRITE EDGES
-                    # ['subject', 'edge_label', 'object', 'relation', 'provided_by',
-                    # 'comment']
                     write_node_edge_item(fh=edge,
                                          header=self.edge_header,
                                          data=[drug_id,
-                                               drug_gene_edge_label,
-                                               gene_id,
-                                               drug_gene_edge_relation,
+                                               drug_protein_edge_label,
+                                               protein_id,
+                                               drug_protein_edge_relation,
                                                self.source_name,
                                                items_dict['ACT_COMMENT']])
 
         return None
-
-
-def tsv_to_dict(input_file: str, col_for_key: str) -> dict:
-    this_dict: dict = defaultdict(list)
-    with open(input_file) as file:
-        reader = csv.DictReader(file, delimiter='\t')
-        for row in reader:
-            this_dict[row[col_for_key]] = row
-    return this_dict
-
-
-def unzip_and_get_tclin_tchem(zip_file: str, output_dir: str) -> List[str]:
-    unzip_to_tempdir(zip_file, output_dir)
-    # get tclin filename
-    tclin_files = \
-        [f for f in os.listdir(output_dir) if re.match(r'tclin_.*\.tsv', f)]
-    if len(tclin_files) > 1:
-        raise RuntimeError("Found more than one tclin file:\n%s" %
-                           "\n".join(tclin_files))
-    elif len(tclin_files) < 1:
-        raise RuntimeError("Couldn't find tclin file in zipfile %s" % zip_file)
-    else:
-        tclin_file: str = os.path.join(output_dir, tclin_files[0])
-
-    # get tchem filename
-    tchem_files = \
-        [f for f in os.listdir(output_dir) if re.match(r'tchem_.*\.tsv', f)]
-    if len(tchem_files) > 1:
-        raise RuntimeError("Found more than one tchem file:\n%s" %
-                           "\n".join(tchem_files))
-    elif len(tchem_files) < 1:
-        raise RuntimeError("Couldn't find tchem file in zipfile %s" % zip_file)
-    else:
-        tchem_file: str = os.path.join(output_dir, tchem_files[0])
-
-    return [tclin_file, tchem_file]
 
 
 def parse_drug_central_line(this_line: str, header_items: List) -> Dict:
@@ -178,3 +140,29 @@ def parse_drug_central_line(this_line: str, header_items: List) -> Dict:
 
     return item_dict
 
+
+def items_dict_to_protein_data_dict(items_dict: dict) -> dict:
+    """Given a parsed line from parse_drug_central_line, split up pipe-separated entries
+    for several related proteins and their names and TDL info into separate protein
+    entries
+
+    :param items_dict: dictionary of data from a line, output by parse_drug_central_line
+    :return: a dict with information about each protein
+    """
+    protein_ids_string = get_item_by_priority(items_dict, ['ACCESSION'])
+    protein_ids = protein_ids_string.split('|')
+    gene_name = get_item_by_priority(items_dict, ['GENE']).split('|')
+    TDL_values = get_item_by_priority(items_dict, ['TDL']).split('|')
+
+    if len(protein_ids) != len(gene_name):
+        logging.warning("Didn't get the same number of entries for protein_ids and gene_ids")
+        gene_name = [''] * len(protein_ids)
+
+    if len(protein_ids) != len(TDL_values):
+        # this happens - repeat TDL designation for all protein IDs
+        TDL_values = TDL_values * len(protein_ids)
+
+    protein_dict = defaultdict(list)
+    for i in range(len(protein_ids)):
+        protein_dict[protein_ids[i]] = [protein_ids[i], gene_name[i], TDL_values[i]]
+    return protein_dict

@@ -1,9 +1,10 @@
 import os
 import tempfile
 import unittest
-
+import pandas as pd
+from kg_covid_19.transform_utils.drug_central import DrugCentralTransform
 from kg_covid_19.transform_utils.drug_central.drug_central import \
-    parse_drug_central_line, unzip_and_get_tclin_tchem, tsv_to_dict
+    parse_drug_central_line
 from kg_covid_19.utils.transform_utils import parse_header
 from parameterized import parameterized
 
@@ -13,6 +14,12 @@ class TestDrugCentral(unittest.TestCase):
     def setUp(self) -> None:
         self.dti_fh = open(
             'tests/resources/drug_central/drug.target.interaction_SNIPPET.tsv', 'rt')
+        self.input_dir = \
+            'tests/resources/drug_central/'
+        self.output_dir = tempfile.gettempdir()
+        self.dc_output_dir = os.path.join(self.output_dir, "drug_central")
+        self.drug_central = DrugCentralTransform(input_dir=self.input_dir,
+                                                 output_dir=self.output_dir)
 
     @parameterized.expand([
      ('STRUCT_ID', '4'),
@@ -41,25 +48,43 @@ class TestDrugCentral(unittest.TestCase):
         self.assertTrue(key in parsed)
         self.assertEqual(value, parsed[key])
 
-    @parameterized.expand([
-    ('tclin', 'tests/resources/drug_central/tclin_SNIPPET.tsv', 2, 'Q13131', 'drug_name', 'cepharanthine'),
-    ('tchem', 'tests/resources/drug_central/tchem_SNIPPET.tsv', 2, 'P21917', 'drug_name', 'brexpiprazole'),
-    ])
-    def test_tsv_to_dict(self, name, file, expected_rows, test_key, sub_key, test_val) -> None:
-        ret_val = tsv_to_dict(file, 'uniprot')
-        self.assertTrue(isinstance(ret_val, dict))
-        self.assertEqual(len(ret_val), expected_rows)
-        self.assertTrue(isinstance(ret_val, dict))
-        self.assertTrue(test_key in ret_val)
-        self.assertTrue(sub_key in ret_val.get(test_key))
-        self.assertEqual(ret_val[test_key][sub_key], test_val)
+    def test_run(self):
+        self.assertTrue(isinstance(self.drug_central.run, object))
+        self.drug_central.run(data_file='drug.target.interaction_SNIPPET.tsv.gz')
+        self.assertTrue(os.path.isdir(self.dc_output_dir))
 
-    def test_unzip_and_get_tclin_tchem(self) -> None:
-        zip_file = "tests/resources/drug_central/test.zip"
-        tempdir = tempfile.mkdtemp()
-        (tclin, tchem) = unzip_and_get_tclin_tchem(zip_file, tempdir)
-        self.assertTrue(isinstance(tclin, str))
-        self.assertTrue(isinstance(tchem, str))
-        self.assertEqual(tclin, os.path.join(tempdir, 'tclin_05122020.tsv'))
-        self.assertEqual(tchem, os.path.join(tempdir, 'tchem_drugs_05122020.tsv'))
+    def test_nodes_file(self):
+        self.drug_central.run(data_file='drug.target.interaction_SNIPPET.tsv.gz')
+        node_file = os.path.join(self.dc_output_dir, "nodes.tsv")
+        self.assertTrue(os.path.isfile(node_file))
+        node_df = pd.read_csv(node_file, sep="\t", header=0)
+        self.assertEqual((23, 5), node_df.shape)
+        self.assertEqual(['id', 'name', 'category', 'TDL', 'provided_by'],
+                         list(node_df.columns))
+        self.assertListEqual(['DrugCentral:4', 'UniProtKB:P35499', 'UniProtKB:P10635',
+                              'UniProtKB:Q12809', 'UniProtKB:Q9UK17', 'UniProtKB:P34995',
+                              'UniProtKB:P35498', 'UniProtKB:P22460', 'UniProtKB:P46098',
+                              'DrugCentral:5', 'UniProtKB:Q01668', 'UniProtKB:Q13936',
+                              'DrugCentral:6', 'UniProtKB:O15554', 'UniProtKB:O60840',
+                              'DrugCentral:38', 'UniProtKB:O15399', 'UniProtKB:O60391',
+                              'UniProtKB:Q05586', 'UniProtKB:Q12879', 'UniProtKB:Q13224',
+                              'UniProtKB:Q14957', 'UniProtKB:Q8TCU5'],
+                              list(node_df.id.unique()))
 
+    def test_nodes_are_not_repeated(self):
+        self.drug_central.run(data_file='drug.target.interaction_SNIPPET.tsv.gz')
+        node_file = os.path.join(self.dc_output_dir, "nodes.tsv")
+        node_df = pd.read_csv(node_file, sep="\t", header=0)
+        nodes = list(node_df.id)
+        unique_nodes = list(set(nodes))
+        self.assertCountEqual(nodes, unique_nodes)
+
+    def test_edges_file(self):
+        self.drug_central.run(data_file='drug.target.interaction_SNIPPET.tsv.gz')
+        edge_file = os.path.join(self.dc_output_dir, "edges.tsv")
+        self.assertTrue(os.path.isfile(edge_file))
+        edge_df = pd.read_csv(edge_file, sep="\t", header=0)
+        self.assertEqual((21, 6), edge_df.shape)
+        self.assertEqual(['subject', 'edge_label', 'object', 'relation', 'provided_by',
+                          'comment'],
+                         list(edge_df.columns))

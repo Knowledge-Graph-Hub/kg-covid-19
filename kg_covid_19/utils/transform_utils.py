@@ -3,7 +3,7 @@
 import gzip
 import logging
 import zipfile
-from typing import Any, Dict, List, Union, TextIO
+from typing import Any, Dict, List, Union
 from tqdm import tqdm  # type: ignore
 
 
@@ -63,23 +63,15 @@ def get_header_items(table_data: Any) -> List:
     return header_items
 
 
-def write_node_edge_item(fh: TextIO, header: List, data: List, sep: str = '\t',
-                         sanitize_sep_char=True):
+def write_node_edge_item(fh: Any, header: List, data: List, sep: str = '\t'):
     """Write out a single line for a node or an edge in *.tsv
     :param fh: file handle of node or edge file
     :param header: list of header items
     :param data: data for line to write out
     :param sep: separator [\t]
-    :param sanitize_sep_char: replace sep character in data with hex
-    present in `data`
     """
     if len(header) != len(data):
         raise Exception('Header and data are not the same length.')
-
-    if sanitize_sep_char:
-        for i in range(len(data)):
-            data[i] = data[i].replace(sep, hex(ord(sep)))
-
     try:
         fh.write(sep.join(data) + "\n")
     except IOError:
