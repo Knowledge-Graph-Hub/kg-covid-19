@@ -40,6 +40,11 @@ target:
       filename:
          - data/transformed/intact/nodes.tsv
          - data/transformed/intact/edges.tsv
+   chembl:
+      type: tsv
+      filename:
+         - data/transformed/ontologies/mondo_nodes.tsv
+         - data/transformed/ontologies/mondo_edges.tsv
    gene-ontology:
       type: tsv
       filename:
