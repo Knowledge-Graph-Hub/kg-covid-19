@@ -43,8 +43,8 @@ target:
    chembl:
       type: tsv
       filename:
-         - data/transformed/ontologies/mondo_nodes.tsv
-         - data/transformed/ontologies/mondo_edges.tsv
+         - data/transformed/ChEMBL/nodes.tsv
+         - data/transformed/ChEMBL/edges.tsv
    gene-ontology:
       type: tsv
       filename:
