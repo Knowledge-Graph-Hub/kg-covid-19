@@ -19,7 +19,7 @@ class ChemblTransform(Transform):
     """
 
     def __init__(self, input_dir: str = None, output_dir: str = None):
-        source_name = 'ChEMBL'
+        source_name = 'ChEMBL SARS-CoV-2 subset'
         super().__init__(source_name, input_dir, output_dir)
         self._end = None
         self._node_header = set()
@@ -38,8 +38,8 @@ class ChemblTransform(Transform):
             None.
 
         """
-        self.node_header = ['id', 'category']
-        self.edge_header = ['id', 'subject', 'edge_label', 'object', 'relation']
+        self.node_header = ['id', 'category', 'provided_by']
+        self.edge_header = ['id', 'subject', 'edge_label', 'object', 'relation', 'provided_by']
 
         # ChEMBL molecules
         data = self.get_chembl_molecules()
@@ -135,6 +135,7 @@ class ChemblTransform(Transform):
             edge_properties['assay'] = f"CHEMBL.ASSAY:{edge_properties['assay']}"
             if edge_properties['uo_units']:
                 edge_properties['uo_units'] = edge_properties['uo_units'].replace('_', ':')
+            edge_properties['provided_by'] = self.source_name
             edges.append(edge_properties)
         return edges
 
@@ -157,6 +158,7 @@ class ChemblTransform(Transform):
             node_properties = self.parse_doc_fields(record['_source'], allowed_properties, remap)
             node_properties['category'] = '|'.join(node_category)
             node_properties['id'] = f"CHEMBL.COMPOUND:{molecule_id}"
+            node_properties['provided_by'] = self.source_name
             nodes.append(node_properties)
         return nodes
 
@@ -186,6 +188,7 @@ class ChemblTransform(Transform):
             node_properties['node_type'] = node_type
             if node_properties['bao_format']:
                 node_properties['bao_format'] = node_properties['bao_format'].replace('_', ':')
+            node_properties['provided_by'] = self.source_name
             nodes.append(node_properties)
         return nodes
 
@@ -210,6 +213,7 @@ class ChemblTransform(Transform):
             else:
                 node_properties['id'] = f"CHEMBL.DOCUMENT:{document_id}"
             node_properties['category'] = '|'.join(node_category)
+            node_properties['provided_by'] = self.source_name
             nodes.append(node_properties)
         return nodes
 
