@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import time
-from typing import Optional
+from typing import Optional, Set, Dict
 
 import compress_json
 from requests import HTTPError
@@ -22,8 +22,8 @@ class ChemblTransform(Transform):
         source_name = 'ChEMBL SARS-CoV-2 subset'
         super().__init__(source_name, input_dir, output_dir)
         self._end = None
-        self._node_header = set()
-        self._edge_header = set()
+        self._node_header: Set = set()
+        self._edge_header: Set = set()
 
     def run(self, data_file: Optional[str] = None) -> None:
         """Method is called and performs needed transformations to process
@@ -229,7 +229,7 @@ class ChemblTransform(Transform):
             A dict of properties
 
         """
-        properties = {}
+        properties: Dict = {}
 
         def update_properties(key, value):
             """update properties dictionary in a
