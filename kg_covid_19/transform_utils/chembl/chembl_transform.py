@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import time
-from typing import Optional, Set, Dict
+from typing import Optional, Set, Dict, List
 
 import compress_json
 from requests import HTTPError
@@ -92,8 +92,9 @@ class ChemblTransform(Transform):
                 data=[e[x] if x in e else '' for x in sorted(self.edge_header)]
             )
 
-    def parse_chembl_activity(self, data):
-        """
+    def parse_chembl_activity(self, data: List):
+        """Parse ChEMBL Activity records.
+
         An activity document links 4 entities,
             - assay
             - document
@@ -106,6 +107,12 @@ class ChemblTransform(Transform):
         that references the publication and assay, respectively.
         The edge will also have measurements as edge properties that describe the
         activity/interaction further.
+
+        Args:
+            data: A list of ChEMBL Activity records
+
+        Returns:
+            A list
 
         """
         edge_label = 'biolink:interacts_with'
@@ -139,7 +146,15 @@ class ChemblTransform(Transform):
             edges.append(edge_properties)
         return edges
 
-    def parse_chembl_molecules(self, data):
+    def parse_chembl_molecules(self, data: List):
+        """Parse ChEMBL Molecule records.
+
+        Args:
+            data: A list of ChEMBL Molecule records
+
+        Returns:
+            A list
+        """
         node_category = ['biolink:ChemicalSubstance']
         allowed_properties = {
             'molecule_type', 'polymer_flag', 'inorganic_flag', 'natural_product',
@@ -162,7 +177,15 @@ class ChemblTransform(Transform):
             nodes.append(node_properties)
         return nodes
 
-    def parse_chembl_assay(self, data):
+    def parse_chembl_assay(self, data: List):
+        """Parse ChEMBL Assay records.
+
+        Args:
+            data: A list of ChEMBL Assay records
+
+        Returns:
+            A list
+        """
         node_category = ['biolink:Assay']
         node_type = 'SIO:001007'
         allowed_properties = {
@@ -192,8 +215,14 @@ class ChemblTransform(Transform):
             nodes.append(node_properties)
         return nodes
 
-    def parse_chembl_document(self, data):
-        """
+    def parse_chembl_document(self, data: List):
+        """Parse ChEMBL Document records.
+
+        Args:
+            data: A list of ChEMBL Document records
+
+        Returns:
+            A list
         """
         node_category = ['biolink:Publication']
         allowed_properties = {
