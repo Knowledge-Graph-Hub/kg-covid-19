@@ -1,15 +1,11 @@
 import json
-import logging
-import os
 import time
+import requests
+import compress_json  # type: ignore
 from typing import Optional, Set, Dict, List
-
-import compress_json
 from requests import HTTPError
 
 from kg_covid_19.transform_utils.transform import Transform
-import requests
-
 from kg_covid_19.utils import write_node_edge_item
 
 
@@ -228,7 +224,7 @@ class ChemblTransform(Transform):
         allowed_properties = {
             'title', 'pubmed_id', 'doi'
         }
-        remap = {}
+        remap: Dict = {}
         self._node_header.update([remap[x] if x in remap else x for x in allowed_properties])
 
         nodes = []
