@@ -102,7 +102,7 @@ class ChemblTransform(Transform):
 
         Each of the activity document will be converted to an edge that links
         a molecule to a target with biolink:interacts_with edge_label.
-        The edge itself will have additional properties like 'evidence' and 'assay'
+        The edge itself will have additional properties like 'publications' and 'assay'
         that references the publication and assay, respectively.
         The edge will also have measurements as edge properties that describe the
         activity/interaction further.
