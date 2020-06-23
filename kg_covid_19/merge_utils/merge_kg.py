@@ -5,7 +5,7 @@ import yaml
 import networkx as nx
 from kgx import NeoTransformer
 from kgx.cli.utils import get_file_types, get_transformer
-from kgx.operations.graph_merge import GraphMerge
+from kgx.operations.graph_merge import merge_all_graphs
 from kgx.operations.summarize_graph import generate_graph_stats
 
 
@@ -34,7 +34,6 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
         networkx.MultiDiGraph: The merged graph.
 
     """
-    gm = GraphMerge()
     config = parse_load_config(yaml_file)
     transformers: List = []
 
@@ -55,6 +54,17 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
         if target['type'] in get_file_types():
             # loading from a file
             transformer = get_transformer(target['type'])()
+            if target['type'] in {'tsv', 'neo4j'}:
+                if 'filters' in target:
+                    filters = target['filters']
+                    node_filters = filters['node_filters'] if 'node_filters' in filters else {}
+                    edge_filters = filters['edge_filters'] if 'edge_filters' in filters else {}
+                    for k, v in node_filters.items():
+                        transformer.set_node_filter(k, set(v))
+                    for k, v in edge_filters.items():
+                        transformer.set_edge_filter(k, set(v))
+                    logging.info(f"with node filters: {node_filters}")
+                    logging.info(f"with edge filters: {edge_filters}")
             for f in target['filename']:
                 transformer.parse(f, input_format='tsv')
                 transformer.graph.name = key
@@ -70,7 +80,7 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
         generate_graph_stats(transformer.graph, key, stats_filename)
 
     # merge all subgraphs into a single graph
-    merged_graph = gm.merge_all_graphs([x.graph for x in transformers])
+    merged_graph = merge_all_graphs([x.graph for x in transformers])
     merged_graph.name = 'merged_graph'
     generate_graph_stats(merged_graph, merged_graph.name, f"merged_graph_stats.yaml")
 
