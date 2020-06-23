@@ -14,6 +14,7 @@ How do I install this package?
 
     git clone https://github.com/Knowledge-Graph-Hub/kg-covid-19
     cd kg-covid-19
+    which python3.7 # python3.7 is required
     pip install .
     pip install -r requirements.txt
 
