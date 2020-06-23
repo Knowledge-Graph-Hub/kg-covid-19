@@ -30,6 +30,13 @@ target:
             edge_label:
                - biolink:interacts_with
                - biolink:has_gene_product
+      operations:
+         - name: kgx.utils.graph_utils.remap_node_identifier
+           args:
+            category: biolink:Protein
+            alternative_property: xrefs
+            prefix: UniProtKB
+
    ttd:
       type: tsv
       filename:
