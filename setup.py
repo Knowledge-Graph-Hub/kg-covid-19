@@ -47,13 +47,14 @@ setup(
     url='https://github.com/justaddcoffee/kg-emerging-viruses',
     author='justaddcoffee+github@gmail.com',
     author_email='Justin Reese',
+    python_requires='>=3.7',
 
     # choose your license
-    license='MIT',
+    license='BSD-3',
     include_package_data=True,
     classifiers=[
-        'Development Status :: 3 - Alpha',
-        'License :: OSI Approved :: MIT License',
+        'Development Status :: 3 - Beta',
+        'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 3'
     ],
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
