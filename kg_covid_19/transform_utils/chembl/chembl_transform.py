@@ -1,4 +1,5 @@
 import json
+import os
 import time
 import requests
 import compress_json  # type: ignore
@@ -318,9 +319,11 @@ class ChemblTransform(Transform):
         url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_activity/_search'
         query_data = compress_json.local_load('chembl_activity_query.json')
         query_end = self.estimate_records(url, query_data, start, end)
+        output = open(os.path.join(self.input_base_dir, 'chembl_activity_records.json'), 'w')
         activities = []
         for i in range(start, query_end, step):
             activities.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
+        json.dump(activities, output)
         return activities
 
     def get_chembl_molecules(self, start=0, end=100000, step=10000):
@@ -337,9 +340,11 @@ class ChemblTransform(Transform):
         url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_molecule/_search'
         query_data = compress_json.local_load('chembl_molecule_query.json')
         query_end = self.estimate_records(url, query_data, start, end)
+        output = open(os.path.join(self.input_base_dir, 'chembl_molecule_records.json'), 'w')
         molecules = []
         for i in range(start, query_end, step):
             molecules.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
+        json.dump(molecules, output)
         return molecules
 
     def get_chembl_documents(self, start=0, end=100000, step=10000):
@@ -356,9 +361,11 @@ class ChemblTransform(Transform):
         url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_document/_search'
         query_data = compress_json.local_load('chembl_document_query.json')
         query_end = self.estimate_records(url, query_data, start, end)
+        output = open(os.path.join(self.input_base_dir, 'chembl_document_records.json'), 'w')
         documents = []
         for i in range(start, query_end, step):
             documents.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
+        json.dump(documents, output)
         return documents
 
     def get_chembl_assays(self, start=0, end=100000, step=10000):
@@ -375,9 +382,11 @@ class ChemblTransform(Transform):
         url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_assay/_search'
         query_data = compress_json.local_load('chembl_assay_query.json')
         query_end = self.estimate_records(url, query_data, start, end)
+        output = open(os.path.join(self.input_base_dir, 'chembl_assay_records.json'), 'w')
         assays = []
         for i in range(start, query_end, step):
             assays.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
+        json.dump(assays, output)
         return assays
 
     def estimate_records(self, url, data, start, end):
