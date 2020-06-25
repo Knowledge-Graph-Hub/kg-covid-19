@@ -1,0 +1,62 @@
+{
+  "_source": [
+    "molecule_chembl_id",
+    "_metadata.parent_molecule_data.compound_key",
+    "standard_type",
+    "standard_relation",
+    "standard_value",
+    "standard_units",
+    "pchembl_value",
+    "activity_comment",
+    "assay_chembl_id",
+    "assay_description",
+    "bao_label",
+    "_metadata.assay_data.assay_organism",
+    "target_chembl_id",
+    "target_pref_name",
+    "target_organism",
+    "_metadata.target_data.target_type",
+    "document_chembl_id",
+    "_metadata.source.src_description",
+    "_metadata.assay_data.cell_chembl_id",
+    "molecule_pref_name",
+    "_metadata.parent_molecule_data.max_phase",
+    "_metadata.parent_molecule_data.full_mwt",
+    "_metadata.parent_molecule_data.num_ro5_violations",
+    "_metadata.parent_molecule_data.alogp",
+    "canonical_smiles",
+    "data_validity_comment",
+    "uo_units",
+    "ligand_efficiency.bei",
+    "ligand_efficiency.le",
+    "ligand_efficiency.lle",
+    "ligand_efficiency.sei",
+    "potential_duplicate",
+    "assay_type",
+    "bao_format",
+    "_metadata.assay_data.tissue_chembl_id",
+    "_metadata.assay_data.assay_tissue",
+    "_metadata.assay_data.assay_cell_type",
+    "_metadata.assay_data.assay_subcellular_fraction",
+    "src_id",
+    "document_journal",
+    "document_year",
+    "_metadata.parent_molecule_data.image_file",
+    "activity_id"
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "analyze_wildcard": true,
+            "query": "src_id:52"
+          }
+        }
+      ],
+      "filter": []
+    }
+  },
+  "track_total_hits": true,
+  "sort": []
+}

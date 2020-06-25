@@ -1,0 +1,37 @@
+{
+  "_source": [
+    "document_chembl_id",
+    "journal_full_title",
+    "_metadata.source",
+    "title",
+    "pubmed_id",
+    "doi",
+    "patent_id",
+    "authors",
+    "year",
+    "volume",
+    "issue",
+    "first_page",
+    "last_page",
+    "_metadata.related_activities.count",
+    "src_id",
+    "abstract",
+    "_metadata.related_compounds.count",
+    "_metadata.related_targets.count"
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "query_string": {
+            "analyze_wildcard": true,
+            "query": "_metadata.source.src_id:52 AND NOT document_chembl_id:CHEMBL4303081"
+          }
+        }
+      ],
+      "filter": []
+    }
+  },
+  "track_total_hits": true,
+  "sort": []
+}
