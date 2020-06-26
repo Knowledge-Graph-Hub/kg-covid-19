@@ -48,6 +48,6 @@ UniProtKB	P0DTD1-PRO_0000449630	nsp13	Helicase	nsp13|Hel|P0DTD1(5325-5925)	prote
 UniProtKB	P0DTD1-PRO_0000449631	nsp14	Proofreading exoribonuclease	nsp14|ExoN|P0DTD1(5926-6452)	protein	taxon:2697049	UniProtKB:P0DTD1
 UniProtKB	P0DTD1-PRO_0000449632	nsp15	Uridylate-specific endoribonuclease	nsp15|P0DTD1(6453-6798)	protein	taxon:2697049	UniProtKB:P0DTD1
 UniProtKB	P0DTD1-PRO_0000449633	nsp16	2'-O-methyltransferase	nsp16|P0DTD1(6799-7096)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD2	P0DTD2	Protein 9b	ORF9b	protein	taxon:2697049	
+UniProtKB	P0DTD2	ORF9b	accessory protein 9b	ORF9b|ORF-9b	protein	taxon:2697049	
 UniProtKB	P0DTD3	ORF14	Uncharacterized protein 14	ORF14	protein	taxon:2697049	
-UniProtKB	P0DTD8	P0DTD8	Protein non-structural 7b	ORF7b	protein	taxon:2697049	
+UniProtKB	P0DTD8	ORF7b	Accessory protein 7b	ORF7b|ns7b	protein	taxon:2697049	
