@@ -27,7 +27,7 @@ UniProtKB	P0DTC2-PRO_0000449648	S(686-1273)	Spike protein S2	P0DTC2(686-1273)|S|
 UniProtKB	P0DTC2-PRO_0000449649	S(816-1273)	Spike protein S2'	P0DTC2(816-1273)|S|2	protein	taxon:2697049	UniProtKB:P0DTC2
 UniProtKB	P0DTC3	ORF3a	ORF3a protein	ORF3a|3a	protein	taxon:2697049	
 UniProtKB	P0DTC4	E protein	Envelope small membrane protein	E|4|E protein	protein	taxon:2697049	
-UniProtKB	P0DTC5	P0DTC5	Membrane protein		protein	taxon:2697049	
+UniProtKB	P0DTC5	M protein	Membrane protein		protein	taxon:2697049	
 UniProtKB	P0DTC6	ORF6	Non-structural protein 6	ORF6	protein	taxon:2697049	
 UniProtKB	P0DTC7	ORF7a	ORF7a protein	ORF7a|7a	protein	taxon:2697049	
 UniProtKB	P0DTC8	ORF8	ORF8	ns8	protein	taxon:2697049	
