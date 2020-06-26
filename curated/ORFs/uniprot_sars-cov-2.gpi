@@ -31,7 +31,7 @@ UniProtKB	P0DTC5	M protein	Membrane protein		protein	taxon:2697049
 UniProtKB	P0DTC6	ORF6	ORF6	ORF6|accessory protein 6|ns6|X3	protein	taxon:2697049	
 UniProtKB	P0DTC7	ORF7a	ORF7a protein	ORF7a|7a	protein	taxon:2697049	
 UniProtKB	P0DTC8	ORF8	ORF8	ns8	protein	taxon:2697049	
-UniProtKB	P0DTC9	N	Nucleoprotein	NC|Protein N|P0DTC9(1-419)|N	protein	taxon:2697049	
+UniProtKB	P0DTC9	N protein	Nucleoprotein	NC|Protein N|P0DTC9(1-419)|N	protein	taxon:2697049	
 UniProtKB	P0DTD1	pp1ab	Replicase polyprotein 1ab	rep|1a-1b|ORF1ab	protein	taxon:2697049	
 UniProtKB	P0DTD1-PRO_0000449619	nsp1	Host translation inhibitor nsp1	nsp1|P0DTD1(1-180)	protein	taxon:2697049	UniProtKB:P0DTD1
 UniProtKB	P0DTD1-PRO_0000449620	nsp2	Non-structural protein 2	nsp2|P0DTD1(181-818)	protein	taxon:2697049	UniProtKB:P0DTD1
