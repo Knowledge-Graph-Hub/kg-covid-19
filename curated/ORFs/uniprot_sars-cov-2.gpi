@@ -19,7 +19,7 @@
 !							
 !Generated: 2020-06-10 13:25							
 !							
-UniProtKB	P0DTC1	P0DTC1	Replicase polyprotein 1a	ORF1a	protein	taxon:2697049	
+UniProtKB	P0DTC1	pp1a	Replicase polyprotein 1a	ORF1a|1a|pp1a	protein	taxon:2697049	
 UniProtKB	P0DTC1-PRO_0000449645	nsp11	Non-structural protein 11	nsp11|P0DTC1(4393-4405)	protein	taxon:2697049	UniProtKB:P0DTC1
 UniProtKB	P0DTC2	S protein	Spike glycoprotein	S|2|S protein	protein	taxon:2697049	
 UniProtKB	P0DTC2-PRO_0000449647	S(13-685)	Spike protein S1	P0DTC2(13-685)|S|2	protein	taxon:2697049	UniProtKB:P0DTC2
@@ -32,7 +32,7 @@ UniProtKB	P0DTC6	ORF6	Non-structural protein 6	ORF6	protein	taxon:2697049
 UniProtKB	P0DTC7	ORF7a	ORF7a protein	ORF7a|7a	protein	taxon:2697049	
 UniProtKB	P0DTC8	P0DTC8	Non-structural protein 8	nsp8	protein	taxon:2697049	
 UniProtKB	P0DTC9	N	Nucleoprotein	NC|Protein N|P0DTC9(1-419)|N	protein	taxon:2697049	
-UniProtKB	P0DTD1	rep	Replicase polyprotein 1ab	rep|1a-1b|ORF1ab	protein	taxon:2697049	
+UniProtKB	P0DTD1	pp1ab	Replicase polyprotein 1ab	rep|1a-1b|ORF1ab	protein	taxon:2697049	
 UniProtKB	P0DTD1-PRO_0000449619	nsp1	Host translation inhibitor nsp1	nsp1|P0DTD1(1-180)	protein	taxon:2697049	UniProtKB:P0DTD1
 UniProtKB	P0DTD1-PRO_0000449620	nsp2	Non-structural protein 2	nsp2|P0DTD1(181-818)	protein	taxon:2697049	UniProtKB:P0DTD1
 UniProtKB	P0DTD1-PRO_0000449621	nsp3	Non-structural protein 3	nsp3|PL-PRO|P0DTD1(819-2763)	protein	taxon:2697049	UniProtKB:P0DTD1
