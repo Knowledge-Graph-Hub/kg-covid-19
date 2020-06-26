@@ -20,16 +20,6 @@
 !Generated: 2020-06-10 13:25							
 !							
 UniProtKB	P0DTC1	P0DTC1	Replicase polyprotein 1a	ORF1a	protein	taxon:2697049	
-UniProtKB	P0DTC1-PRO_0000449635	nsp1	Non-structural protein 1	nsp1|P0DTC1(1-180)	protein	taxon:2697049	UniProtKB:P0DTC1
-UniProtKB	P0DTC1-PRO_0000449636	nsp2	Non-structural protein 2	nsp2|P0DTC1(181-818)	protein	taxon:2697049	UniProtKB:P0DTC1
-UniProtKB	P0DTC1-PRO_0000449637	nsp3	Non-structural protein 3	nsp3|PL-PRO|P0DTC1(819-2763)	protein	taxon:2697049	UniProtKB:P0DTC1
-UniProtKB	P0DTC1-PRO_0000449638	nsp4	Non-structural protein 4	nsp4|P0DTC1(2764-3263)	protein	taxon:2697049	UniProtKB:P0DTC1
-UniProtKB	P0DTC1-PRO_0000449639	nsp5	3C-like proteinase	nsp5|3CL-PRO|3CLp|Mpro|P0DTC1(3264-3569)	protein	taxon:2697049	UniProtKB:P0DTC1
-UniProtKB	P0DTC1-PRO_0000449640	nsp6	Non-structural protein 6	nsp6|P0DTC1(3570-3859)	protein	taxon:2697049	UniProtKB:P0DTC1
-UniProtKB	P0DTC1-PRO_0000449641	nsp7	Non-structural protein 7	nsp7|P0DTC1(3860-3942)	protein	taxon:2697049	UniProtKB:P0DTC1
-UniProtKB	P0DTC1-PRO_0000449642	nsp8	Non-structural protein 8	nsp8|P0DTC1(3943-4140)	protein	taxon:2697049	UniProtKB:P0DTC1
-UniProtKB	P0DTC1-PRO_0000449643	nsp9	Non-structural protein 9	nsp9|P0DTC1(4141-4253)	protein	taxon:2697049	UniProtKB:P0DTC1
-UniProtKB	P0DTC1-PRO_0000449644	nsp10	Non-structural protein 10	nsp10|GFL|P0DTC1(4254-4392)	protein	taxon:2697049	UniProtKB:P0DTC1
 UniProtKB	P0DTC1-PRO_0000449645	nsp11	Non-structural protein 11	nsp11|P0DTC1(4393-4405)	protein	taxon:2697049	UniProtKB:P0DTC1
 UniProtKB	P0DTC2	S protein	Spike glycoprotein	S|2|S protein	protein	taxon:2697049	
 UniProtKB	P0DTC2-PRO_0000449646	S(13-1273)	Spike glycoprotein	P0DTC2(13-1273)|S|2|S protein	protein	taxon:2697049	UniProtKB:P0DTC2
