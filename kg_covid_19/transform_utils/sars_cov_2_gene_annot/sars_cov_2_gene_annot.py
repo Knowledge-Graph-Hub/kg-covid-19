@@ -4,7 +4,7 @@ import logging
 import os
 from typing import Generator, TextIO, List, Optional
 
-from kg_covid_19.utils.transform_utils import get_item_by_priority, ItemInDictNotFound, guess_category
+from kg_covid_19.utils.transform_utils import get_item_by_priority, ItemInDictNotFound, guess_bl_category
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
@@ -66,12 +66,12 @@ class SARSCoV2GeneAnnot(Transform):
                     edge_data = self.gpa_to_edge_data(rec)
                     subject_node = edge_data[0]
                     if subject_node not in seen:
-                        subject_node_data = [subject_node, guess_category(subject_node)] + [""] * 4 + [self.source_name]
+                        subject_node_data = [subject_node, guess_bl_category(subject_node)] + [""] * 4 + [self.source_name]
                         write_node_edge_item(node, self.node_header, subject_node_data)
                         seen.add(subject_node)
                     object_node = edge_data[2]
                     if object_node not in seen:
-                        object_node_data = [object_node, guess_category(object_node)] + [""] * 4 + [self.source_name]
+                        object_node_data = [object_node, guess_bl_category(object_node)] + [""] * 4 + [self.source_name]
                         write_node_edge_item(node, self.node_header, object_node_data)
                         seen.add(object_node)
 

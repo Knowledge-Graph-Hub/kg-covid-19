@@ -156,7 +156,7 @@ def unzip_to_tempdir(zip_file_name: str, tempdir: str) -> None:
         z.extractall(tempdir)
 
 
-def guess_category(identifier: str):
+def guess_bl_category(identifier: str) -> str:
     """Guess category for a given identifier.
 
     Note: This is a temporary solution and should not be used long term.
