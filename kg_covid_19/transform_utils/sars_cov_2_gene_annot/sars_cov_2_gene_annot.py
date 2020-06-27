@@ -54,15 +54,27 @@ class SARSCoV2GeneAnnot(Transform):
             # write headers
             node.write("\t".join(self.node_header) + "\n")
             edge.write("\t".join(self.edge_header) + "\n")
-
+            seen = set()
             with open(gpi_file, 'r') as gpi_fh:
                 for rec in _gpi12iterator(gpi_fh):
                     node_data = self.gpi_to_gene_node_data(rec)
+                    seen.add(node_data[0])
                     write_node_edge_item(node, self.node_header, node_data)
 
             with open(gpa_file, 'r') as gpa_fh:
                 for rec in _gpa11iterator(gpa_fh):
                     edge_data = self.gpa_to_edge_data(rec)
+                    subject_node = edge_data[0]
+                    if subject_node not in seen:
+                        subject_node_data = [subject_node] + [""] * 5 + [self.source_name]
+                        write_node_edge_item(node, self.node_header, subject_node_data)
+                        seen.add(subject_node)
+                    object_node = edge_data[2]
+                    if object_node not in seen:
+                        object_node_data = [object_node] + [""] * 5 + [self.source_name]
+                        write_node_edge_item(node, self.node_header, object_node_data)
+                        seen.add(object_node)
+
                     write_node_edge_item(edge, self.edge_header, edge_data)
 
     def gpa_to_edge_data(self, rec: dict) -> list:
