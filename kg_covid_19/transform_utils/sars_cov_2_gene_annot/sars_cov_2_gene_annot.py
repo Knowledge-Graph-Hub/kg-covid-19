@@ -66,16 +66,29 @@ class SARSCoV2GeneAnnot(Transform):
                     edge_data = self.gpa_to_edge_data(rec)
                     subject_node = edge_data[0]
                     if subject_node not in seen:
-                        subject_node_data = [subject_node] + [""] * 5 + [self.source_name]
+                        subject_node_data = [subject_node, self.guess_category(subject_node)] + [""] * 4 + [self.source_name]
                         write_node_edge_item(node, self.node_header, subject_node_data)
                         seen.add(subject_node)
                     object_node = edge_data[2]
                     if object_node not in seen:
-                        object_node_data = [object_node] + [""] * 5 + [self.source_name]
+                        object_node_data = [object_node, self.guess_category(object_node)] + [""] * 4 + [self.source_name]
                         write_node_edge_item(node, self.node_header, object_node_data)
                         seen.add(object_node)
 
                     write_node_edge_item(edge, self.edge_header, edge_data)
+
+    def guess_category(self, identifier):
+        """Guess category for a given identifier.
+
+        """
+        prefix = identifier.split(':')[0]
+        if prefix in {'UniProtKB', 'ComplexPortal'}:
+            category = 'biolink:Protein'
+        elif prefix in {'GO'}:
+            category = 'biolink:OntologyClass'
+        else:
+            category = 'biolink:NamedThing'
+        return category
 
     def gpa_to_edge_data(self, rec: dict) -> list:
         """given a parsed gpa entry, return an edge with the annotations
