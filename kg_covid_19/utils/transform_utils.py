@@ -154,3 +154,25 @@ def parse_header(header_string: str, sep: str = '\t') -> List:
 def unzip_to_tempdir(zip_file_name: str, tempdir: str) -> None:
     with zipfile.ZipFile(zip_file_name, 'r') as z:
         z.extractall(tempdir)
+
+
+def guess_category(identifier: str):
+    """Guess category for a given identifier.
+
+    Note: This is a temporary solution and should not be used long term.
+
+    Args:
+        identifier: A CURIE
+
+    Returns:
+        The category for the given CURIE
+
+    """
+    prefix = identifier.split(':')[0]
+    if prefix in {'UniProtKB', 'ComplexPortal'}:
+        category = 'biolink:Protein'
+    elif prefix in {'GO'}:
+        category = 'biolink:OntologyClass'
+    else:
+        category = 'biolink:NamedThing'
+    return category
