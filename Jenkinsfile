@@ -76,18 +76,7 @@ pipeline {
         stage('Transform') {
             steps {
                 dir('./gitrepo') {
-                    script {
-                        def run_py_transform = sh(
-                            script: '. venv/bin/activate && python3.7 run.py transform', returnStatus: true
-                        )
-                        if (run_py_transform != 0) { // 'run.py transform' failed - let's try to download last good copy of transformed/ from s3 to data/
-                            withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
-                                sh 'rm -fr data/transformed || true;'
-                                sh 'mkdir -p data/transformed || true'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/transformed/ data/transformed/'
-                            }
-                        }
-                    }
+                    sh '. venv/bin/activate && python3.7 run.py transform'
                 }
             }
         }
