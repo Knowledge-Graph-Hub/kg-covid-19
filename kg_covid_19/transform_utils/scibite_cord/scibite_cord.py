@@ -55,7 +55,7 @@ class ScibiteCordTransform(Transform):
 
             data_files.append(os.path.join(self.input_base_dir, "cv19_scc_1_2.zip"))
         else:
-            data_files.append(data_files)
+            data_files.extend(data_files)
 
         self.node_header = ['id', 'name', 'category', 'description', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by']
