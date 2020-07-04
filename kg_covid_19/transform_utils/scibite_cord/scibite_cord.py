@@ -41,16 +41,21 @@ class ScibiteCordTransform(Transform):
         Args:
             data_file: data file to parse
 
+            Should be:
+            [pdf_json.zip, pmc_json.zip, cv19_scc_1_2.zip]
+
         Returns:
             None.
 
         """
         data_files = list()
         if not data_file:
-            data_files.append(os.path.join(self.input_base_dir, "CORD-19_1_4.zip"))
+            data_files.append(os.path.join(self.input_base_dir, "pdf_json.zip"))
+            data_files.append(os.path.join(self.input_base_dir, "pmc_json.zip"))
+
             data_files.append(os.path.join(self.input_base_dir, "cv19_scc_1_2.zip"))
         else:
-            data_files.append(data_file)
+            data_files.append(data_files)
 
         self.node_header = ['id', 'name', 'category', 'description', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by']
@@ -58,32 +63,37 @@ class ScibiteCordTransform(Transform):
         edge_handle = open(self.output_edge_file, 'w')
         node_handle.write("\t".join(self.node_header) + "\n")
         edge_handle.write("\t".join(self.edge_header) + "\n")
-        self.parse_annotations(node_handle, edge_handle, data_files[0])
+        self.parse_annotations(node_handle, edge_handle, data_files[0], data_files[1])
 
         node_handle = open(os.path.join(self.output_dir, "entity_cooccurrence_nodes.tsv"), 'w')
         edge_handle = open(os.path.join(self.output_dir, "entity_cooccurrence_edges.tsv"), 'w')
         node_handle.write("\t".join(self.node_header) + "\n")
         edge_handle.write("\t".join(self.edge_header) + "\n")
-        self.parse_cooccurrence(node_handle, edge_handle, data_files[1])
+        self.parse_cooccurrence(node_handle, edge_handle, data_files[2])
 
-    def parse_annotations(self, node_handle: Any, edge_handle: Any, data_file: str) -> None:
-        """Parse annotations from CORD-19_1_2.zip.
+    def parse_annotations(self, node_handle: Any, edge_handle: Any,
+                          data_file1: str,
+                          data_file2: str) -> None:
+        """Parse annotations from CORD-19_1_5.zip.
 
         Args:
             node_handle: File handle for nodes.csv.
             edge_handle: File handle for edges.csv.
-            data_file: Path to CORD-19_1_2.zip.
+            data_file1: Path to first CORD-19_1_5.zip.
+            data_file2: Path to second CORD-19_1_5.zip.
 
         Returns:
              None.
 
         """
-        with ZipFile(data_file, 'r') as ZF:
+        with ZipFile(data_file1, 'r') as ZF:
+            ZF.extractall(path=self.input_base_dir)
+        with ZipFile(data_file2, 'r') as ZF:
             ZF.extractall(path=self.input_base_dir)
 
-        subsets = ['biorxiv_medrxiv', 'comm_use_subset', 'noncomm_use_subset', 'custom_license']
+        subsets = ['pmc_json', 'pdf_json']
         for subset in subsets:
-            subset_dir = os.path.join(self.input_base_dir, 'CORD19', subset, subset)
+            subset_dir = os.path.join(self.input_base_dir, subset)
             for data_dir in os.listdir(subset_dir):
                 if os.path.isdir(os.path.join(subset_dir, data_dir)):
                     for filename in os.listdir(os.path.join(subset_dir, data_dir)):
@@ -126,8 +136,6 @@ class ScibiteCordTransform(Transform):
                 terms.update(self.extract_termite_hits(x))
 
         provided_by = f"{self.source_name}"
-        if subset:
-            provided_by += f" {subset}"
 
         # add a biolink:Publication for each paper
         write_node_edge_item(
