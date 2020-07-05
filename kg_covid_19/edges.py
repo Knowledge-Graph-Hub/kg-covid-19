@@ -32,11 +32,12 @@ def make_edges(nodes: str, edges: str, output_dir: str,
         None.
     """
     logging.info("Loading edge file %s" % edges)
+    edges_df: pd.DataFrame
     if remove_extra_cols:
-        edges_df: pd.DataFrame = tsv_to_df(edges, usecols=['subject', 'object', 'relation',
+        edges_df = tsv_to_df(edges, usecols=['subject', 'object', 'relation',
                                                        'edge_label'])
     else:
-        edges_df: pd.DataFrame = tsv_to_df(edges)
+        edges_df = tsv_to_df(edges)
     logging.info("Loading node file %s" % nodes)
     nodes_df: pd.DataFrame = tsv_to_df(nodes)
 
