@@ -5,7 +5,10 @@ kg-covid-19
 
 KG hub to produce a knowledge graph for COVID-19 and SARS-COV-2
 
-See the `repository's wiki for more details <https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki>`_.
+Documentation
+----------------------------------------------
+
+See the `repository's wiki <https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki>`_.
 
 How do I install this package?
 ----------------------------------------------
