@@ -29,8 +29,8 @@ pipeline {
                             sh 'echo "$BRANCH_NAME"'
                             sh 'cat env.txt'
                             sh 'cat branch.txt'
-                            sh 'echo $START_DAY > dow.txt'
-                            sh 'echo "$START_DAY"'
+                            sh "echo $BUILDSTARTDATE > dow.txt"
+                            sh "echo $BUILDSTARTDATE"
                         })
             }
         }
