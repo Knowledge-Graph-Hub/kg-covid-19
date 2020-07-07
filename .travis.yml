@@ -14,8 +14,8 @@ before_install:
 - pip install --upgrade pytest
 - pip install --upgrade mypy
 - pip install --upgrade pylint
-- pip install orderedset
 - pip install bmt
+- pip install --ignore-cache-dir -r requirements.txt
 - pip install -r requirements.txt
 - pip install yamllint
 install:
