@@ -6,7 +6,7 @@ from typing import Dict, List, Any, Set, Optional, IO
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import write_node_edge_item, \
-    get_item_by_priority, uniprot_make_name_to_id_mapping
+    get_item_by_priority, uniprot_make_name_to_id_mapping, collapse_uniprot_curie
 
 """
 Ingest protein-protein interactions from STRING DB.
@@ -213,6 +213,7 @@ class StringTransform(Transform):
                         if protein in string_to_uniprot_id_map:
                             uniprot_curie = \
                                 f"UniProtKB:{string_to_uniprot_id_map[protein]}"
+                            uniprot_curie = collapse_uniprot_curie(uniprot_curie)
 
                         write_node_edge_item(
                             fh=node,

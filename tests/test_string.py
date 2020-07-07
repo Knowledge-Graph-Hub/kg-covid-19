@@ -66,7 +66,7 @@ class TestString(TestCase):
                               'ENSEMBL:ENSP00000232564', 'ENSEMBL:ENSP00000393379',
                               'ENSEMBL:ENSP00000371253'],
                              list(node_df.id.unique()))
-        self.assertEqual('UniProtKB:P84085',
+        self.assertEqual('UniProtKB:P84085',  # isoform (-2) stripped off
                               node_df.loc[node_df['id'] ==
                                           'ENSEMBL:ENSP00000000233'].xrefs.item())
 
