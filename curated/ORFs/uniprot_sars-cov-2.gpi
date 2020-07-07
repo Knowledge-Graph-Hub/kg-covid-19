@@ -15,7 +15,7 @@
 !   Taxon                  required  1             13            taxon:9606							
 !   Parent_Object_ID       optional  0 or 1        -             UniProtKB:Q4VCS5							
 !   DB_Xref(s)             optional  0 or greater  -             WB:WBGene00000035							
-"!   Properties             optional  0 or greater  -             ""db_subset=Swiss-Prot|target_set=KRUK,BHFL"""							
+!   Properties             optional  0 or greater  -             "db_subset=Swiss-Prot|target_set=KRUK,BHFL"							
 !							
 !Generated: 2020-06-10 13:25							
 !							
