@@ -15,7 +15,6 @@ before_install:
 - pip install --upgrade mypy
 - pip install --upgrade pylint
 - pip install bmt
-- pip install --no-cache-dir -r requirements.txt
 - pip install -r requirements.txt
 - pip install yamllint
 install:
