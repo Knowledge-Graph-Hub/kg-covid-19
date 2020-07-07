@@ -1,53 +1,53 @@
-!gpi-version: 1.2							
-!							
-!This file contains additional information for proteins in the UniProt KnowledgeBase (UniProtKB).							
-!Protein accessions are represented in this file even if there is no associated GO annotation.							
-!							
-!Columns:							
-!							
-!   name                   required? cardinality   GAF column #  Example content							
-!   DB                     required  1             1             UniProtKB							
-!   DB_Object_ID           required  1             2/17          Q4VCS5-1							
-!   DB_Object_Symbol       required  1             3             AMOT							
-!   DB_Object_Name         optional  0 or greater  10            Angiomotin							
-!   DB_Object_Synonym(s)   optional  0 or greater  11            AMOT|KIAA1071							
-!   DB_Object_Type         required  1             12            protein							
-!   Taxon                  required  1             13            taxon:9606							
-!   Parent_Object_ID       optional  0 or 1        -             UniProtKB:Q4VCS5							
-!   DB_Xref(s)             optional  0 or greater  -             WB:WBGene00000035							
-!   Properties             optional  0 or greater  -             "db_subset=Swiss-Prot|target_set=KRUK,BHFL"							
-!							
-!Generated: 2020-06-10 13:25							
-!							
-UniProtKB	P0DTC1	pp1a	Replicase polyprotein 1a	ORF1a|1a|pp1a	protein	taxon:2697049	
-UniProtKB	P0DTC1-PRO_0000449645	nsp11	Non-structural protein 11	nsp11|P0DTC1(4393-4405)	protein	taxon:2697049	UniProtKB:P0DTC1
-UniProtKB	P0DTC2	S protein	Spike glycoprotein	S|2|S protein	protein	taxon:2697049	
-UniProtKB	P0DTC2-PRO_0000449647	S(13-685)	Spike protein S1	P0DTC2(13-685)|S|2	protein	taxon:2697049	UniProtKB:P0DTC2
-UniProtKB	P0DTC2-PRO_0000449648	S(686-1273)	Spike protein S2	P0DTC2(686-1273)|S|2	protein	taxon:2697049	UniProtKB:P0DTC2
-UniProtKB	P0DTC2-PRO_0000449649	S(816-1273)	Spike protein S2'	P0DTC2(816-1273)|S|2	protein	taxon:2697049	UniProtKB:P0DTC2
-UniProtKB	P0DTC3	ORF3a	ORF3a protein	ORF3a|3a	protein	taxon:2697049	
-UniProtKB	P0DTC4	E protein	Envelope small membrane protein	E|4|E protein	protein	taxon:2697049	
-UniProtKB	P0DTC5	M protein	Membrane protein		protein	taxon:2697049	
-UniProtKB	P0DTC6	ORF6	ORF6	ORF6|accessory protein 6|ns6|X3	protein	taxon:2697049	
-UniProtKB	P0DTC7	ORF7a	ORF7a protein	ORF7a|7a	protein	taxon:2697049	
-UniProtKB	P0DTC8	ORF8	ORF8	ns8	protein	taxon:2697049	
-UniProtKB	P0DTC9	N protein	Nucleoprotein	NC|Protein N|NPRBD|P0DTC9(1-419)|N	protein	taxon:2697049	
-UniProtKB	P0DTD1	pp1ab	Replicase polyprotein 1ab	rep|1a-1b|ORF1ab	protein	taxon:2697049	
-UniProtKB	P0DTD1-PRO_0000449619	nsp1	Host translation inhibitor nsp1	nsp1|P0DTD1(1-180)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449620	nsp2	Non-structural protein 2	nsp2|P0DTD1(181-818)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449621	nsp3	Non-structural protein 3	nsp3|ADRP|PL-PRO|PL2-PRO|Papain-like proteinase|P0DTD1(819-2763)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449622	nsp4	Non-structural protein 4	nsp4|P0DTD1(2764-3263)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449623	nsp5	3C-like proteinase	nsp5|3CL-PRO|3CLPro|3CLp|Mpro|P0DTD1(3264-3569)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449624	nsp6	Non-structural protein 6	nsp6|P0DTD1(3570-3859)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449625	nsp7	Non-structural protein 7	nsp7|P0DTD1(3860-3942)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449626	nsp8	Non-structural protein 8	nsp8|P0DTD1(3943-4140)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449627	nsp9	Non-structural protein 9	nsp9|P0DTD1(4141-4253)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449628	nsp10	Non-structural protein 10	nsp10|GFL|P0DTD1(4254-4392)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449629	nsp12	RNA-directed RNA polymerase	nsp12|Pol|RdRp|P0DTD1(4393-5324)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449630	nsp13	Helicase	nsp13|helicase|nsp13 helicase|Hel|P0DTD1(5325-5925)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449631	nsp14	Proofreading exoribonuclease	nsp14|ExoN|P0DTD1(5926-6452)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449632	nsp15	Uridylate-specific endoribonuclease	nsp15|P0DTD1(6453-6798)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD1-PRO_0000449633	nsp16	2'-O-methyltransferase	nsp16|P0DTD1(6799-7096)	protein	taxon:2697049	UniProtKB:P0DTD1
-UniProtKB	P0DTD2	ORF9b	accessory protein 9b	ORF9b|ORF-9b	protein	taxon:2697049	
-UniProtKB	P0DTD3	ORF14	Uncharacterized protein 14	ORF14	protein	taxon:2697049	
-UniProtKB	P0DTD8	ORF7b	Accessory protein 7b	ORF7b|ns7b	protein	taxon:2697049	
+!gpi-version: 1.2
+!
+!This file contains additional information for proteins in the UniProt KnowledgeBase (UniProtKB).
+!Protein accessions are represented in this file even if there is no associated GO annotation.
+!
+!Columns:
+!
+!   name                   required? cardinality   GAF column #  Example content
+!   DB                     required  1             1             UniProtKB
+!   DB_Object_ID           required  1             2/17          Q4VCS5-1
+!   DB_Object_Symbol       required  1             3             AMOT
+!   DB_Object_Name         optional  0 or greater  10            Angiomotin
+!   DB_Object_Synonym(s)   optional  0 or greater  11            AMOT|KIAA1071
+!   DB_Object_Type         required  1             12            protein
+!   Taxon                  required  1             13            taxon:9606
+!   Parent_Object_ID       optional  0 or 1        -             UniProtKB:Q4VCS5
+!   DB_Xref(s)             optional  0 or greater  -             WB:WBGene00000035
+!   Properties             optional  0 or greater  -             "db_subset=Swiss-Prot|target_set=KRUK,BHFL"
+!
+!Generated: 2020-06-10 13:25
+!
+UniProtKB	P0DTC1	pp1a	Replicase polyprotein 1a	ORF1a|1a|pp1a	protein	taxon:2697049		PR:P0DTC1-1
+UniProtKB	P0DTC1-PRO_0000449645	nsp11	Non-structural protein 11	nsp11|P0DTC1(4393-4405)	protein	taxon:2697049	UniProtKB:P0DTC1	PR:000050280
+UniProtKB	P0DTC2	S protein	Spike glycoprotein	S|2|S protein	protein	taxon:2697049		PR:P0DTC2
+UniProtKB	P0DTC2-PRO_0000449647	S(13-685)	Spike protein S1	P0DTC2(13-685)|S|2	protein	taxon:2697049	UniProtKB:P0DTC2	PR:000050267
+UniProtKB	P0DTC2-PRO_0000449648	S(686-1273)	Spike protein S2	P0DTC2(686-1273)|S|2	protein	taxon:2697049	UniProtKB:P0DTC2	PR:000050268
+UniProtKB	P0DTC2-PRO_0000449649	S(816-1273)	Spike protein S2'	P0DTC2(816-1273)|S|2	protein	taxon:2697049	UniProtKB:P0DTC2	PR:000050269
+UniProtKB	P0DTC3	ORF3a	ORF3a protein	ORF3a|3a	protein	taxon:2697049		PR:P0DTC3
+UniProtKB	P0DTC4	E protein	Envelope small membrane protein	E|4|E protein	protein	taxon:2697049		PR:P0DTC4
+UniProtKB	P0DTC5	M protein	Membrane protein		protein	taxon:2697049		PR:P0DTC5
+UniProtKB	P0DTC6	ORF6	ORF6	ORF6|accessory protein 6|ns6|X3	protein	taxon:2697049		PR:P0DTC6
+UniProtKB	P0DTC7	ORF7a	ORF7a protein	ORF7a|7a	protein	taxon:2697049		PR:P0DTC7
+UniProtKB	P0DTC8	ORF8	ORF8	ns8	protein	taxon:2697049		PR:P0DTC8
+UniProtKB	P0DTC9	N protein	Nucleoprotein	NC|Protein N|NPRBD|P0DTC9(1-419)|N	protein	taxon:2697049		PR:P0DTC9
+UniProtKB	P0DTD1	pp1ab	Replicase polyprotein 1ab	rep|1a-1b|ORF1ab	protein	taxon:2697049		PR:P0DTD1-1
+UniProtKB	P0DTD1-PRO_0000449619	nsp1	Host translation inhibitor nsp1	nsp1|P0DTD1(1-180)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050270
+UniProtKB	P0DTD1-PRO_0000449620	nsp2	Non-structural protein 2	nsp2|P0DTD1(181-818)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050271
+UniProtKB	P0DTD1-PRO_0000449621	nsp3	Non-structural protein 3	nsp3|ADRP|PL-PRO|PL2-PRO|Papain-like proteinase|P0DTD1(819-2763)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050272
+UniProtKB	P0DTD1-PRO_0000449622	nsp4	Non-structural protein 4	nsp4|P0DTD1(2764-3263)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050273
+UniProtKB	P0DTD1-PRO_0000449623	nsp5	3C-like proteinase	nsp5|3CL-PRO|3CLPro|3CLp|Mpro|P0DTD1(3264-3569)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050274
+UniProtKB	P0DTD1-PRO_0000449624	nsp6	Non-structural protein 6	nsp6|P0DTD1(3570-3859)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050275
+UniProtKB	P0DTD1-PRO_0000449625	nsp7	Non-structural protein 7	nsp7|P0DTD1(3860-3942)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050276
+UniProtKB	P0DTD1-PRO_0000449626	nsp8	Non-structural protein 8	nsp8|P0DTD1(3943-4140)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050277
+UniProtKB	P0DTD1-PRO_0000449627	nsp9	Non-structural protein 9	nsp9|P0DTD1(4141-4253)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050278
+UniProtKB	P0DTD1-PRO_0000449628	nsp10	Non-structural protein 10	nsp10|GFL|P0DTD1(4254-4392)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050279
+UniProtKB	P0DTD1-PRO_0000449629	nsp12	RNA-directed RNA polymerase	nsp12|Pol|RdRp|P0DTD1(4393-5324)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050284
+UniProtKB	P0DTD1-PRO_0000449630	nsp13	Helicase	nsp13|helicase|nsp13 helicase|Hel|P0DTD1(5325-5925)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050285
+UniProtKB	P0DTD1-PRO_0000449631	nsp14	Proofreading exoribonuclease	nsp14|ExoN|P0DTD1(5926-6452)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050286
+UniProtKB	P0DTD1-PRO_0000449632	nsp15	Uridylate-specific endoribonuclease	nsp15|P0DTD1(6453-6798)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050287
+UniProtKB	P0DTD1-PRO_0000449633	nsp16	2'-O-methyltransferase	nsp16|P0DTD1(6799-7096)	protein	taxon:2697049	UniProtKB:P0DTD1	PR:000050288
+UniProtKB	P0DTD2	ORF9b	accessory protein 9b	ORF9b|ORF-9b	protein	taxon:2697049		PR:P0DTD2
+UniProtKB	P0DTD3	ORF14	Uncharacterized protein 14	ORF14	protein	taxon:2697049		PR:P0DTD3
+UniProtKB	P0DTD8	ORF7b	Accessory protein 7b	ORF7b|ns7b	protein	taxon:2697049		PR:P0DTD8
