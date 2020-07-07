@@ -187,7 +187,6 @@ class StringTransform(Transform):
                                     'biolink:Gene',
                                     gene_informations['description'],
                                     f"NCBIGene:{self.ensembl2ncbi_map[gene]}",
-                                    "",
                                     self.source_name
                                 ]
                             )
@@ -220,7 +219,6 @@ class StringTransform(Transform):
                             header=self.node_header,
                             data=[f"ENSEMBL:{protein}", "",
                                   protein_node_type,
-                                  "",
                                   "",
                                   uniprot_curie,  # xref
                                   self.source_name]
