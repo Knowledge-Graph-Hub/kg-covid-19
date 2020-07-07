@@ -162,6 +162,7 @@ class ChemblTransform(Transform):
         remap = {
             'pref_name': 'name',
             'full_molformula': 'molecular_formula',
+            'synonyms': 'synonym'
         }
         self._node_header.update([remap[x] if x in remap else x for x in allowed_properties])
 
