@@ -19,9 +19,9 @@ Write node and edge headers that look something like:
 
 Node: 
 id  name    category    xrefs   provided_by
-protein:1234    TBX4    biolink:Protein UniprotKB:123456    STRING 
+protein:1234    TBX4    biolink:Protein UniProtKB:123456    STRING 
 
-xrefs contains the UniprotKB id for the protein, if available
+xrefs contains the UniProtKB id for the protein, if available
 
 Edge: 
 subject edge_label  object  relation
@@ -212,7 +212,7 @@ class StringTransform(Transform):
                         uniprot_curie = ''
                         if protein in string_to_uniprot_id_map:
                             uniprot_curie = \
-                                f"UniprotKB:{string_to_uniprot_id_map[protein]}"
+                                f"UniProtKB:{string_to_uniprot_id_map[protein]}"
 
                         write_node_edge_item(
                             fh=node,
