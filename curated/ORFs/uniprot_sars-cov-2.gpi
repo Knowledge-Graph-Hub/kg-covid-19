@@ -1,23 +1,48 @@
 !gpi-version: 1.2
 !
-!This file contains additional information for proteins in the UniProt KnowledgeBase (UniProtKB).
-!Protein accessions are represented in this file even if there is no associated GO annotation.
+! This file contains information about the proteome of SARS-CoV-2, in GPI format
+!
+! The file is based on information provided by UniProt, but includes additional curated information
+! 
+! The following sources were used:
+!
+!   - UniProtKB GPI file (ftp://ftp.ebi.ac.uk/pub/contrib/goa/uniprot_sars-cov-2.gpi)
+!   - SciBite CORD-19 Vocabulary (https://github.com/SciBiteLabs/CORD19)
+!   - The Protein Ontology (https://proconsortium.org/download/development/pro_sars2.gpi)
+!   - Additional knowledge about protein nomenclature acquired as part of National Lab funded SARS-CoV-2 efforts (NVBL and LDRD)
+! 
+! Some key properties:
+!   - we include an entry for each functional protein, including non-structural proteins cleaved from polypeptides
+!   - we use chain IDs of the form UniProtKB:P0DTC1-PRO_0000449645 for NSPs
+!   - we do *not* include all chain IDs; in particular:
+!      - we only use when necessary, for NSPs
+!      - NSP1-10 have duplicate entries in UniProt, there are two polyprotein entries with identical sequence prior to frameshift
+!      - we use the longer pp parent as the canonical/reference entry. This decision is synced with what IntAct uses
+! 
+! It is intended to be used for different purpose:
+!
+!   - The canonical set of annotatable function-capable entities used by the Gene Ontology project
+!   - Use in Knowledge Graphs, such as https://github.com/Knowledge-Graph-Hub/kg-covid-19/
+!   - Vocabulary for Natural Language Processing / Concept Recognition
+! 
+! The file is maintained in GitHub in this repo: https://github.com/Knowledge-Graph-Hub/kg-covid-19/
+!
+! More information on the original provenance of this file can be found at: https://github.com/geneontology/go-site/issues/1431
 !
 !Columns:
 !
 !   name                   required? cardinality   GAF column #  Example content
 !   DB                     required  1             1             UniProtKB
-!   DB_Object_ID           required  1             2/17          Q4VCS5-1
-!   DB_Object_Symbol       required  1             3             AMOT
-!   DB_Object_Name         optional  0 or greater  10            Angiomotin
-!   DB_Object_Synonym(s)   optional  0 or greater  11            AMOT|KIAA1071
+!   DB_Object_ID           required  1             2/17          P0DTC1, P0DTC1-PRO_0000449645
+!   DB_Object_Symbol       required  1             3             nsp11
+!   DB_Object_Name         optional  0 or greater  10            Non-structural protein 11
+!   DB_Object_Synonym(s)   optional  0 or greater  11            PL-PRO
 !   DB_Object_Type         required  1             12            protein
-!   Taxon                  required  1             13            taxon:9606
+!   Taxon                  required  1             13            taxon:2697049
 !   Parent_Object_ID       optional  0 or 1        -             UniProtKB:Q4VCS5
-!   DB_Xref(s)             optional  0 or greater  -             WB:WBGene00000035
-!   Properties             optional  0 or greater  -             "db_subset=Swiss-Prot|target_set=KRUK,BHFL"
+!   DB_Xref(s)             optional  0 or greater  -             PR:000050270
+!   Properties             optional  0 or greater  -             not used yet
 !
-!Generated: 2020-06-10 13:25
 !
 UniProtKB	P0DTC1	pp1a	Replicase polyprotein 1a	ORF1a|1a|pp1a|ORF1a/ClvPrd (SARS2)|ORF1a proteolytic cleavage product	protein	taxon:2697049		PR:P0DTC1-1
 UniProtKB	P0DTC1-PRO_0000449645	nsp11	Non-structural protein 11	P0DTC1(4393-4405)|rep/Clv:nsp11 (SARS2)|UniProtKB:P0DTC1, 4393-4405|nsp11 (SARS2)|PRO_0000449645|Non-structural protein 11|nsp-11|nsp11|ns11|ns-11|Severe acute respiratory syndrome (SARS) coronavirus nonstructural protein 11	protein	taxon:2697049	UniProtKB:P0DTC1	PR:000050280
