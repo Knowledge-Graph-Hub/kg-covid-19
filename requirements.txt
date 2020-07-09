@@ -1,1 +1,1 @@
-git+git://github.com/deepakunni3/kgx@kg-covid-19
+git+git://github.com/deepakunni3/kgx

@@ -4,7 +4,7 @@ import logging
 import os
 from typing import Generator, TextIO, List, Optional
 
-from kg_covid_19.utils.transform_utils import get_item_by_priority, ItemInDictNotFound
+from kg_covid_19.utils.transform_utils import get_item_by_priority, ItemInDictNotFound, guess_bl_category
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
@@ -21,7 +21,8 @@ class SARSCoV2GeneAnnot(Transform):
         source_name = "sars_cov_2_gene_annot"
         super().__init__(source_name, input_dir, output_dir)
 
-        self.node_header = ['id', 'name', 'category', 'synonym', 'taxon']
+        self.node_header = ['id', 'name', 'category', 'full_name', 'synonym',
+                            'in_taxon', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'provided_by', 'DB_References', 'ECO_code', 'With',
                             'Interacting_taxon_ID',
@@ -29,7 +30,7 @@ class SARSCoV2GeneAnnot(Transform):
                             'Annotation_Properties']
 
         self.protein_node_type = "biolink:Protein"
-        self.ncbi_taxon_prefix = "NCBITaxon:"
+        self.ncbi_taxon_prefix = "NCBITaxon"
 
         # translate edge labels to RO term, for the 'relation' column in edge
         self.edge_label_prefix = "biolink:"  # prepend to edge label
@@ -53,15 +54,27 @@ class SARSCoV2GeneAnnot(Transform):
             # write headers
             node.write("\t".join(self.node_header) + "\n")
             edge.write("\t".join(self.edge_header) + "\n")
-
+            seen = set()
             with open(gpi_file, 'r') as gpi_fh:
                 for rec in _gpi12iterator(gpi_fh):
                     node_data = self.gpi_to_gene_node_data(rec)
+                    seen.add(node_data[0])
                     write_node_edge_item(node, self.node_header, node_data)
 
             with open(gpa_file, 'r') as gpa_fh:
                 for rec in _gpa11iterator(gpa_fh):
                     edge_data = self.gpa_to_edge_data(rec)
+                    subject_node = edge_data[0]
+                    if subject_node not in seen:
+                        subject_node_data = [subject_node, guess_bl_category(subject_node)] + [""] * 4 + [self.source_name]
+                        write_node_edge_item(node, self.node_header, subject_node_data)
+                        seen.add(subject_node)
+                    object_node = edge_data[2]
+                    if object_node not in seen:
+                        object_node_data = [object_node, guess_bl_category(object_node)] + [""] * 4 + [self.source_name]
+                        write_node_edge_item(node, self.node_header, object_node_data)
+                        seen.add(object_node)
+
                     write_node_edge_item(edge, self.edge_header, edge_data)
 
     def gpa_to_edge_data(self, rec: dict) -> list:
@@ -88,6 +101,8 @@ class SARSCoV2GeneAnnot(Transform):
                 item = get_item_by_priority(rec, [key])
                 if type(item) is list:
                     item = item[0]
+                if key == 'Interacting_taxon_ID':
+                    item = ":".join([self.ncbi_taxon_prefix, item])
             except (ItemInDictNotFound, IndexError):
                 item = ''
             edge_data.append(item)
@@ -109,25 +124,41 @@ class SARSCoV2GeneAnnot(Transform):
         :param rec: record from gpi iterator
         :return: list of node items, one for each thing in self.node_header
         """
-        # ['id', 'name', 'category', 'synonym', 'taxon']
+        # ['id', 'name', 'category', 'full_name', 'synonym', 'in_taxon', 'provided_by']
         id: str = self._rec_to_id(rec)
 
         try:
             name_list = get_item_by_priority(rec, ['DB_Object_Name'])
             if name_list is not None and len(name_list) > 0:
-                name = name_list[0]
+                full_name = name_list[0]
+                if len(name_list) > 1:
+                    logging.warning(
+                        "Found >1 DB_Object_Name in rec, using the first one")
+            else:
+                full_name = ''
+        except (IndexError, ItemInDictNotFound):
+            full_name = ''
+
+        try:
+            symbol_list = get_item_by_priority(rec, ['DB_Object_Symbol'])
+            if symbol_list is not None and len(symbol_list) > 0:
+                name = symbol_list[0]
+                if len(symbol_list) > 1:
+                    logging.warning(
+                        "Found >1 DB_Object_Symbol in rec, using the first one")
             else:
                 name = ''
         except (IndexError, ItemInDictNotFound):
-            name = ''
+            full_name = ''
 
         category = self.protein_node_type
         try:
-            synonym = get_item_by_priority(rec, ['DB_Object_Synonym'])[0]
+            synonym = get_item_by_priority(rec, ['DB_Object_Synonym'])
         except (IndexError, ItemInDictNotFound):
             synonym = ''
         taxon = get_item_by_priority(rec, ['Taxon'])
-        return [id, name, category, synonym, taxon]
+        taxon = ":".join([self.ncbi_taxon_prefix, taxon.split(":")[1]])
+        return [id, name, category, full_name, synonym, taxon, self.source_name]
 
 
 def _gpi12iterator(handle: TextIO) -> Generator:

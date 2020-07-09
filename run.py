@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import logging
-from typing import List, Union
+import os
 
 import click
 from kg_covid_19 import download as kg_download
 from kg_covid_19 import transform as kg_transform
 from kg_covid_19.edges import make_edges
 from kg_covid_19.merge_utils.merge_kg import load_and_merge
-from kg_covid_19.query import QUERIES, run_query
+from kg_covid_19.query import run_query, parse_query_yaml, result_dict_to_tsv
 from kg_covid_19.transform import DATA_SOURCES
 
 
@@ -84,24 +83,28 @@ def merge(yaml: str) -> None:
 
 
 @cli.command()
-@click.option("query", "-q", required=True, default=None, multiple=False,
-              type=click.Choice(QUERIES.keys()))
-@click.option("input_dir", "-i", default="data/")
+@click.option("yaml", "-y", required=True, default=None, multiple=False)
 @click.option("output_dir", "-o", default="data/queries/")
-def query(query: str, input_dir: str, output_dir: str) -> None:
+def query(yaml: str, output_dir: str,
+          query_key: str='query', endpoint_key: str='endpoint',
+          outfile_ext: str=".tsv") -> None:
     """Perform a query of knowledge graph using a class contained in query_utils
 
     Args:
-        query: A query class containing instructions for performing a query
-        input_dir: Directory where any input files required to execute query are
-            located (typically 'data', where transformed and merged graph files are)
+        yaml: A YAML file containing a SPARQL query (see queries/sparql/ for examples)
         output_dir: Directory to output results of query
-
+        query_key: the key in the yaml file containing the query string
+        endpoint_key: the key in the yaml file containing the sparql endpoint URL
+        outfile_ext: file extension for output file [.tsv]
     Returns:
         None.
 
     """
-    run_query(query=query, input_dir=input_dir, output_dir=output_dir)
+    query = parse_query_yaml(yaml)
+    result_dict = run_query(query=query[query_key], endpoint=query[endpoint_key])
+    outfile = os.path.join(output_dir, os.path.splitext(os.path.basename(yaml))[0] +
+                           outfile_ext)
+    result_dict_to_tsv(result_dict, outfile)
 
 
 @cli.command()

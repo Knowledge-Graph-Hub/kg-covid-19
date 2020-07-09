@@ -1,12 +1,12 @@
 import gzip
+import logging
 import os
 import compress_json  # type: ignore
-from typing import Dict, List, Any, Set, Optional
+from typing import Dict, List, Any, Set, Optional, IO
 
 from kg_covid_19.transform_utils.transform import Transform
-from kg_covid_19.utils.transform_utils import write_node_edge_item, get_item_by_priority
-
-from encodeproject import download as encode_download  # type: ignore
+from kg_covid_19.utils.transform_utils import write_node_edge_item, \
+    get_item_by_priority, uniprot_make_name_to_id_mapping, collapse_uniprot_curie
 
 """
 Ingest protein-protein interactions from STRING DB.
@@ -18,17 +18,24 @@ GitHub Issue: https://github.com/kg-emerging-viruses/kg-emerging-viruses/issues/
 Write node and edge headers that look something like:
 
 Node: 
-id  name    category
-protein:1234    TBX4    Protein 
+id  name    category    xrefs   provided_by
+protein:1234    TBX4    biolink:Protein UniProtKB:123456    STRING 
+
+xrefs contains the UniProtKB id for the protein, if available
 
 Edge: 
 subject edge_label  object  relation
 protein:1234    interacts_with  protein:4567    RO:0002434
+
+
 """
 
 NCBI_FTP_URL = 'https://ftp.ncbi.nlm.nih.gov/gene/DATA/'
 PROTEIN_MAPPING_FILE = 'gene2ensembl.gz'
 GENE_INFO_FILE = 'gene_info.gz'
+
+# make name to id map for uniprot names of human proteins
+UNIPROT_ID_MAPPING = "HUMAN_9606_idmapping.dat.gz"
 
 
 class StringTransform(Transform):
@@ -43,7 +50,9 @@ class StringTransform(Transform):
         self.protein_gene_map: Dict[str, Any] = {}
         self.gene_info_map: Dict[str, Any] = {}
         self.ensembl2ncbi_map: Dict[str, Any] = {}
+        logging.info("Loading Ensembl Gene to Protein mapping")
         self.load_mapping(self.input_base_dir, self.output_dir, ['9606'])
+        logging.info("Load mappings from NCBI gene_info")
         self.load_gene_info(self.input_base_dir, self.output_dir, ['9606'])
 
     def load_mapping(self, input_dir: str, output_dir: str, species_id: List = None) -> None:
@@ -141,7 +150,11 @@ class StringTransform(Transform):
 
         # Required to align the node edge header of the gene
         # with the default header
-        extra_header = [""]*(len(edge_additional_headers)+1)
+        self.extra_header = [""]*(len(edge_additional_headers)+1)
+
+        # make string ENSP to Uniprot id mapping dict
+        string_to_uniprot_id_map = uniprot_make_name_to_id_mapping(
+            os.path.join(self.input_base_dir, UNIPROT_ID_MAPPING))
 
         with open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge, \
@@ -155,9 +168,10 @@ class StringTransform(Transform):
                 items_dict = parse_stringdb_interactions(line, header_items)
                 proteins = []
                 for protein_name in ('protein1', 'protein2'):
-                    protein = get_item_by_priority(items_dict, [protein_name])
-                    protein = '.'.join(protein.split('.')[1:])
+                    nat_string_id = get_item_by_priority(items_dict, [protein_name])
+                    protein = '.'.join(nat_string_id.split('.')[1:])
                     proteins.append(protein)
+
                     if protein in self.protein_gene_map:
                         gene = self.protein_gene_map[protein]
                         if gene not in seen_genes:
@@ -172,7 +186,8 @@ class StringTransform(Transform):
                                     gene_informations['symbol'],
                                     'biolink:Gene',
                                     gene_informations['description'],
-                                    f"NCBIGene:{self.ensembl2ncbi_map[gene]}"
+                                    f"NCBIGene:{self.ensembl2ncbi_map[gene]}",
+                                    self.source_name
                                 ]
                             )
                             write_node_edge_item(
@@ -184,18 +199,31 @@ class StringTransform(Transform):
                                     f"ENSEMBL:{protein}",
                                     "RO:0002205",
                                     "NCBI",
-                                ] + extra_header
+                                ] + self.extra_header
                             )
 
-                        # write node data
-                        if protein not in seen_proteins:
-                            seen_proteins.add(protein)
-                            write_node_edge_item(
-                                fh=node,
-                                header=self.node_header,
-                                data=[f"ENSEMBL:{protein}", "",
-                                      protein_node_type, "", ""]
-                            )
+                    # write node data
+                    if protein not in seen_proteins:
+                        seen_proteins.add(protein)
+
+                        # if we have an equivalent Uniprot ID for this Ensembl protein
+                        # ID make an xref edge, and a node for the Uniprot ID
+                        uniprot_curie = ''
+                        if protein in string_to_uniprot_id_map:
+                            uniprot_curie = \
+                                f"UniProtKB:{string_to_uniprot_id_map[protein]}"
+                            uniprot_curie = collapse_uniprot_curie(uniprot_curie)
+
+                        write_node_edge_item(
+                            fh=node,
+                            header=self.node_header,
+                            data=[f"ENSEMBL:{protein}", "",
+                                  protein_node_type,
+                                  "",
+                                  uniprot_curie,  # xref
+                                  self.source_name]
+                        )
+
 
                 # write edge data
                 write_node_edge_item(
@@ -239,3 +267,4 @@ def parse_header(header_string: str, sep: str = ' ') -> List:
     header = header_string.strip().split(sep)
 
     return [i.replace('"', '') for i in header]
+

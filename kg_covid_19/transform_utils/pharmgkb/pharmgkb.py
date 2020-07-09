@@ -27,7 +27,7 @@ class PharmGKB(Transform):
         super().__init__(source_name, input_dir, output_dir)
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'provided_by', 'evidence']
-        self.node_header = ['id', 'name', 'category']
+        self.node_header = ['id', 'name', 'category', 'provided_by']
         self.edge_of_interest = ['Gene',
                                  'Chemical']  # logic also matches 'Chemical'-'Gene'
         self.gene_node_type = "biolink:Gene"
@@ -227,7 +227,7 @@ class PharmGKB(Transform):
         :return: None
         """
         gene_id = self.get_uniprot_id(this_id=this_id)
-        data = [gene_id, name, biolink_type]
+        data = [gene_id, name, biolink_type, self.source_name]
         write_node_edge_item(fh=fh, header=self.node_header, data=data)
 
     def get_uniprot_id(self,
@@ -254,7 +254,7 @@ class PharmGKB(Transform):
         :return: None
         """
         preferred_drug_id = self.make_preferred_drug_id(chem_id, self.drug_id_map)
-        data = [preferred_drug_id, name, biolink_type]
+        data = [preferred_drug_id, name, biolink_type, self.source_name]
         write_node_edge_item(fh=fh, header=self.node_header, data=data)
 
     def parse_pharmgkb_line(self, this_line: str, header_items) -> dict:

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import gzip
 import logging
+import re
 import zipfile
 from typing import Any, Dict, List, Union
 from tqdm import tqdm  # type: ignore
@@ -95,6 +96,7 @@ def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
         raise ItemInDictNotFound("Can't find item in items_dict {}".format(items_dict))
     return value
 
+
 def data_to_dict(these_keys, these_values) -> dict:
     """Zip up two lists to make a dict
 
@@ -103,6 +105,7 @@ def data_to_dict(these_keys, these_values) -> dict:
     :return: dictionary
     """
     return dict(zip(these_keys, these_values))
+
 
 def uniprot_make_name_to_id_mapping(dat_gz_file: str) -> dict:
     """Given a Uniprot dat.gz file, like this:
@@ -152,3 +155,38 @@ def parse_header(header_string: str, sep: str = '\t') -> List:
 def unzip_to_tempdir(zip_file_name: str, tempdir: str) -> None:
     with zipfile.ZipFile(zip_file_name, 'r') as z:
         z.extractall(tempdir)
+
+
+def guess_bl_category(identifier: str) -> str:
+    """Guess category for a given identifier.
+
+    Note: This is a temporary solution and should not be used long term.
+
+    Args:
+        identifier: A CURIE
+
+    Returns:
+        The category for the given CURIE
+
+    """
+    prefix = identifier.split(':')[0]
+    if prefix in {'UniProtKB', 'ComplexPortal'}:
+        category = 'biolink:Protein'
+    elif prefix in {'GO'}:
+        category = 'biolink:OntologyClass'
+    else:
+        category = 'biolink:NamedThing'
+    return category
+
+
+def collapse_uniprot_curie(uniprot_curie: str) -> str:
+    """ Given a UniProtKB curie for an isoform such as UniprotKB:P63151-1
+    or UniprotKB:P63151-2, collapse to parent protein
+    (UniprotKB:P63151 / UniprotKB:P63151)
+
+    :param uniprot_curie:
+    :return: collapsed UniProtKB ID
+    """
+    if re.match(r'^uniprotkb:', uniprot_curie, re.IGNORECASE):
+        uniprot_curie = re.sub(r'\-\d+$', '', uniprot_curie)
+    return uniprot_curie

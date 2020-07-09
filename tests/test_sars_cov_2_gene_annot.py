@@ -9,8 +9,8 @@ from kg_covid_19.transform_utils.sars_cov_2_gene_annot.sars_cov_2_gene_annot imp
     _gpi12iterator, _gpa11iterator
 
 
-class TestPharmGKB(TestCase):
-    """Tests the ttd transform"""
+class TestSarsGeneAnnot(TestCase):
+    """Tests the SARS-CoV-2 gene annotation transform"""
 
     def setUp(self) -> None:
         self.sc2ga = SARSCoV2GeneAnnot()
@@ -43,8 +43,13 @@ class TestPharmGKB(TestCase):
         item = next(gpi_iter)
         node = self.sc2ga.gpi_to_gene_node_data(item)
         self.assertEqual(len(self.sc2ga.node_header), len(node))
-        self.assertEqual(node,
-                         ['UniProtKB:P0DTD2', 'Protein 9b', 'biolink:Protein', '', 'taxon:2697049'])
+        self.assertEqual(node, ['UniProtKB:P0DTD2',
+                                'P0DTD2',
+                                'biolink:Protein',
+                                'Protein 9b',
+                                '',
+                                'NCBITaxon:2697049',
+                                'sars_cov_2_gene_annot'])
 
     def test_gpa_to_edge_data(self):
         gpa_iter = _gpa11iterator(self.gpa_fh)

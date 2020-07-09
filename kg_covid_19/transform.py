@@ -3,6 +3,7 @@
 import logging
 from typing import List
 
+from kg_covid_19.transform_utils.chembl.chembl_transform import ChemblTransform
 from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTransform
 from kg_covid_19.transform_utils.intact.intact import IntAct
 from kg_covid_19.transform_utils.ontology import OntologyTransform
@@ -27,7 +28,8 @@ DATA_SOURCES = {
     'IntAct': IntAct,
     'GoTransform': OntologyTransform,
     'HpTransform': OntologyTransform,
-    'MondoTransform': OntologyTransform
+    'MondoTransform': OntologyTransform,
+    'ChemblTransform': ChemblTransform
 }
 
 

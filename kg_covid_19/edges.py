@@ -11,7 +11,8 @@ from tqdm import tqdm  # type: ignore
 
 def make_edges(nodes: str, edges: str, output_dir: str,
                train_fraction: float, validation: bool,
-               min_degree: int, check_disconnected_nodes: bool = False) -> None:
+               min_degree: int, check_disconnected_nodes: bool = False,
+               remove_extra_cols: bool = False) -> None:
     """Prepare positive and negative edges for testing and training (see run.py edges
     command for documentation)
 
@@ -25,12 +26,18 @@ def make_edges(nodes: str, edges: str, output_dir: str,
                         of nodes involved in the edge [2]
         :param check_disconnected_nodes: should we check for disconnected nodes (i.e.
                         nodes with degree of 0) in input graph? [False]
+        :param remove_extra_cols throw out columns other than ['subject', 'object',
+                        'relation', 'edge_label'][false]
     Returns:
         None.
     """
     logging.info("Loading edge file %s" % edges)
-    edges_df: pd.DataFrame = tsv_to_df(edges, usecols=['subject', 'object', 'relation',
+    edges_df: pd.DataFrame
+    if remove_extra_cols:
+        edges_df = tsv_to_df(edges, usecols=['subject', 'object', 'relation',
                                                        'edge_label'])
+    else:
+        edges_df = tsv_to_df(edges)
     logging.info("Loading node file %s" % nodes)
     nodes_df: pd.DataFrame = tsv_to_df(nodes)
 
