@@ -57,8 +57,10 @@ class ScibiteCordTransform(Transform):
         else:
             data_files.extend(data_files)
 
-        self.node_header = ['id', 'name', 'category', 'description', 'provided_by']
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by']
+        self.node_header = ['id', 'name', 'category', 'description']
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by',
+                            'publications']
+
         node_handle = open(self.output_node_file, 'w')
         edge_handle = open(self.output_edge_file, 'w')
         node_handle.write("\t".join(self.node_header) + "\n")
@@ -191,7 +193,8 @@ class ScibiteCordTransform(Transform):
                     f"biolink:related_to",
                     f"CORD:{paper_id}",
                     "SIO:000255",
-                    provided_by
+                    provided_by,
+                    f"CORD:{paper_id}"
                 ]
             )
 
@@ -282,6 +285,7 @@ class ScibiteCordTransform(Transform):
                     # simplified generation of edges between OntologyClass and the publication where
                     # OntologyClass -> correlated_with -> Publication
                     # with the edge having relation RO:0002610
+
                     if (curie, paper_curie) not in self.seen:
                         write_node_edge_item(
                             fh=edge_handle,
@@ -295,6 +299,19 @@ class ScibiteCordTransform(Transform):
                             ]
                         )
                         self.seen.add((curie, paper_curie))
+
+                    write_node_edge_item(
+                        fh=edge_handle,
+                        header=self.edge_header,
+                        data=[
+                            f"{curie}",
+                            "biolink:correlated_with",
+                            f"{paper_curie}",
+                            f"RO:0002610", # 'correlated with'
+                            f"{self.source_name} co-occurrences",
+                            paper_curie
+                        ]
+                    )
 
             # This is an earlier style of modeling that involves an InformationContentEntity for every instance of
             # co-occurrence between a Publication and a set of OntologyClass
