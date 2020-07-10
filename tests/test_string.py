@@ -56,8 +56,8 @@ class TestString(TestCase):
         node_file = os.path.join(self.string_output_dir, "nodes.tsv")
         self.assertTrue(os.path.isfile(node_file))
         node_df = pd.read_csv(node_file, sep="\t", header=0)
-        self.assertEqual((10, 7), node_df.shape)
-        self.assertEqual(['id', 'name', 'category', 'description', 'alias', 'xrefs',
+        self.assertEqual((10, 6), node_df.shape)
+        self.assertEqual(['id', 'name', 'category', 'description', 'xrefs',
                           'provided_by'], list(node_df.columns))
         self.assertCountEqual(['ENSEMBL:ENSP00000000233',
                               'ENSEMBL:ENSP00000272298', 'ENSEMBL:ENSP00000253401',
@@ -66,7 +66,7 @@ class TestString(TestCase):
                               'ENSEMBL:ENSP00000232564', 'ENSEMBL:ENSP00000393379',
                               'ENSEMBL:ENSP00000371253'],
                              list(node_df.id.unique()))
-        self.assertEqual('UniProtKB:P84085',
+        self.assertEqual('UniProtKB:P84085',  # isoform (-2) stripped off
                               node_df.loc[node_df['id'] ==
                                           'ENSEMBL:ENSP00000000233'].xrefs.item())
 

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import gzip
 import logging
+import re
 import zipfile
 from typing import Any, Dict, List, Union
 from tqdm import tqdm  # type: ignore
@@ -176,3 +177,16 @@ def guess_bl_category(identifier: str) -> str:
     else:
         category = 'biolink:NamedThing'
     return category
+
+
+def collapse_uniprot_curie(uniprot_curie: str) -> str:
+    """ Given a UniProtKB curie for an isoform such as UniprotKB:P63151-1
+    or UniprotKB:P63151-2, collapse to parent protein
+    (UniprotKB:P63151 / UniprotKB:P63151)
+
+    :param uniprot_curie:
+    :return: collapsed UniProtKB ID
+    """
+    if re.match(r'^uniprotkb:', uniprot_curie, re.IGNORECASE):
+        uniprot_curie = re.sub(r'\-\d+$', '', uniprot_curie)
+    return uniprot_curie

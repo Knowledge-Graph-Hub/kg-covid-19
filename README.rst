@@ -10,25 +10,6 @@ Documentation
 
 See the `repository's wiki <https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki>`_.
 
-How do I install this package?
-----------------------------------------------
-
-.. code:: shell
-
-    git clone https://github.com/Knowledge-Graph-Hub/kg-covid-19
-    cd kg-covid-19
-    pip install .
-    pip install -r requirements.txt
-
-How do I use this package?
-----------------------------------------------
-
-.. code:: shell
-
-    python run.py download
-    python run.py transform
-    python run.py merge
-
 
 Tests Coverage
 ----------------------------------------------

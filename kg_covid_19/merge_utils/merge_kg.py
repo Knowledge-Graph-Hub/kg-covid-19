@@ -81,7 +81,7 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
     # merge all subgraphs into a single graph
     merged_graph = merge_all_graphs([x.graph for x in transformers])
     merged_graph.name = 'merged_graph'
-    generate_graph_stats(merged_graph, merged_graph.name, f"merged_graph_stats.yaml")
+    generate_graph_stats(merged_graph, merged_graph.name, "merged_graph_stats.yaml", ['provided_by'], ['provided_by'])
 
     # write the merged graph
     if 'destination' in config:
@@ -96,7 +96,7 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
                 destination_transformer.save()
             elif destination['type'] in get_file_types():
                 destination_transformer = get_transformer(destination['type'])(merged_graph)
-                destination_transformer.save(destination['filename'], extension=destination['type'])
+                destination_transformer.save(destination['filename'], output_format=destination['type'])
             else:
                 logging.error("type {} not yet supported for KGX load-and-merge operation.".format(destination['type']))
 

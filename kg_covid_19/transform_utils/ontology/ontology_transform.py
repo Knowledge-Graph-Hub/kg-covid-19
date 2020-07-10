@@ -56,4 +56,4 @@ class OntologyTransform(Transform):
         transformer = ObographJsonTransformer()
         transformer.parse(data_file, provided_by=source)
         output_transformer = PandasTransformer(transformer.graph)
-        output_transformer.save(filename=os.path.join(self.output_dir, f'{name}'), extension='tsv', mode=None)
+        output_transformer.save(filename=os.path.join(self.output_dir, f'{name}'), output_format='tsv', mode=None)
