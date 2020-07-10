@@ -1,5 +1,10 @@
 pipeline {
     agent any
+
+    environment {
+        BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
+    }
+
     options {
         timestamps()
     }
@@ -24,8 +29,8 @@ pipeline {
                             sh 'echo "$BRANCH_NAME"'
                             sh 'cat env.txt'
                             sh 'cat branch.txt'
-                            sh 'echo $START_DAY > dow.txt'
-                            sh 'echo "$START_DAY"'
+                            sh "echo $BUILDSTARTDATE > dow.txt"
+                            sh "echo $BUILDSTARTDATE"
                         })
             }
         }
@@ -86,6 +91,9 @@ pipeline {
             steps {
                 dir('./gitrepo') {
                     sh '. venv/bin/activate && python3.7 run.py merge'
+                    sh 'env'
+                    sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
+                    sh 'tar -rvf data/merged/merged-kg.tar merged_graph_stats_$BUILDSTARTDATE.yaml'
                     sh 'pigz data/merged/merged-kg.tar'
                     sh 'pigz data/merged/merged-kg.nt'
                 }
