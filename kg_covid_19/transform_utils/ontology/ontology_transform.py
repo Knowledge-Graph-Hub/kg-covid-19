@@ -4,8 +4,7 @@ import tempfile
 from typing import Optional
 
 from kg_covid_19.transform_utils.transform import Transform
-from kgx import PandasTransformer, ObographJsonTransformer,\
-    RdfOwlTransformer  # type: ignore
+from kgx import PandasTransformer, ObographJsonTransformer, RdfOwlTransformer  # type: ignore
 
 from kg_covid_19.utils.transform_utils import ungzip_to_tempdir
 
@@ -51,13 +50,14 @@ class OntologyTransform(Transform):
             # load all ontologies
             for k in ONTOLOGIES.keys():
 
+                data_file = os.path.join(self.input_base_dir, ONTOLOGIES[k])
+
                 if data_file.endswith('.gz'):
                     input_format = 'rdf/xml'
                     xml_tempdir = tempfile.mkdtemp()
                     data_file = ungzip_to_tempdir(os.path.join(
                         self.input_base_dir, data_file), xml_tempdir)
 
-                data_file = os.path.join(self.input_base_dir, ONTOLOGIES[k])
                 self.parse(k, data_file, k, input_format=input_format)
 
     def parse(self, name: str, data_file: str, source: str,
@@ -80,7 +80,7 @@ class OntologyTransform(Transform):
         elif input_format == 'rdf/xml':
             transformer = RdfOwlTransformer()
         else:
-            raise ValueError("No way to parse format {}" % format)
+            raise ValueError("No way to parse format %s" % format)
         transformer.parse(data_file, provided_by=source)
         output_transformer = PandasTransformer(transformer.graph)
         output_transformer.save(filename=os.path.join(self.output_dir, f'{name}'), output_format='tsv', mode=None)
