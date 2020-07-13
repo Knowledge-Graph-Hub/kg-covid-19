@@ -29,6 +29,7 @@ DATA_SOURCES = {
     'GoTransform': OntologyTransform,
     'HpTransform': OntologyTransform,
     'MondoTransform': OntologyTransform,
+    'GoCam': OntologyTransform,
     'ChemblTransform': ChemblTransform
 }
 
