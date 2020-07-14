@@ -102,6 +102,8 @@ def query(yaml: str, output_dir: str,
     """
     query = parse_query_yaml(yaml)
     result_dict = run_query(query=query[query_key], endpoint=query[endpoint_key])
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     outfile = os.path.join(output_dir, os.path.splitext(os.path.basename(yaml))[0] +
                            outfile_ext)
     result_dict_to_tsv(result_dict, outfile)
