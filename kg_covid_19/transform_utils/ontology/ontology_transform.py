@@ -4,7 +4,7 @@ import tempfile
 from typing import Optional
 
 from kg_covid_19.transform_utils.transform import Transform
-from kgx import PandasTransformer, ObographJsonTransformer, RdfOwlTransformer  # type: ignore
+from kgx import PandasTransformer, ObographJsonTransformer, RdfTransformer  # type: ignore
 
 from kg_covid_19.utils.transform_utils import ungzip_to_tempdir
 
@@ -78,7 +78,7 @@ class OntologyTransform(Transform):
         if input_format == 'json':
             transformer = ObographJsonTransformer()
         elif input_format == 'rdf/xml':
-            transformer = RdfOwlTransformer()
+            transformer = RdfTransformer()
         else:
             raise ValueError("No way to parse format %s" % format)
         transformer.parse(data_file, provided_by=source)
