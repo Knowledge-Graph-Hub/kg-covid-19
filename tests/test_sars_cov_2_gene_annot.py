@@ -30,14 +30,14 @@ class TestSarsGeneAnnot(TestCase):
         ('DB_Object_Name', ['Protein 9b']),
         ('DB_Object_Synonym', ''),
         ('DB_Object_Type', 'protein'),
-        ('DB_Xref', 'PR:000050274|UniProtKB:P0DTD1-PRO_0000449639'),
+        ('DB_Xref', ['PR:000050272', 'UniProtKB:P0DTD1-PRO_0000449637']),
         ('Taxon', 'taxon:2697049'),
     ])
     def test_gpi12iterator_instance(self, key, value):
         gpi_iter = _gpi12iterator(self.gpi_fh)
         item = next(gpi_iter)
         self.assertTrue(key in item)
-        self.assertEqual(item[key], value)
+        self.assertEqual(value, item[key])
 
     def test_gpi_to_gene_node(self):
         gpi_iter = _gpi12iterator(self.gpi_fh)
@@ -50,6 +50,7 @@ class TestSarsGeneAnnot(TestCase):
                                 'Protein 9b',
                                 '',
                                 'NCBITaxon:2697049',
+                                'PR:000050272|UniProtKB:P0DTD1-PRO_0000449637',
                                 'sars_cov_2_gene_annot'])
 
     def test_gpa_to_edge_data(self):
