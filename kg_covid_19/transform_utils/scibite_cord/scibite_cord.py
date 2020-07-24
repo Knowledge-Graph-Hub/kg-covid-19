@@ -19,6 +19,7 @@ CUSTOM_CMAP = {
     'WD': 'http://www.wikidata.org/entity/'
 }
 
+
 class ScibiteCordTransform(Transform):
     """
     ScibiteCordTransform parses the SciBite annotations on CORD-19 dataset
@@ -94,14 +95,12 @@ class ScibiteCordTransform(Transform):
         subsets = ['pmc_json', 'pdf_json']
         for subset in subsets:
             subset_dir = os.path.join(self.input_base_dir, subset)
-            for data_dir in os.listdir(subset_dir):
-                if os.path.isdir(os.path.join(subset_dir, data_dir)):
-                    for filename in os.listdir(os.path.join(subset_dir, data_dir)):
-                        file = os.path.join(subset_dir, data_dir, filename)
-                        doc = json.load(open(file))
-                        self.parse_annotation_doc(node_handle, edge_handle, doc, subset)
+            for filename in os.listdir(subset_dir):
+                file = os.path.join(subset_dir, filename)
+                doc = json.load(open(file))
+                self.parse_annotation_doc(node_handle, edge_handle, doc)
 
-    def parse_annotation_doc(self, node_handle, edge_handle, doc: Dict, subset: str = None) -> None:
+    def parse_annotation_doc(self, node_handle, edge_handle, doc: Dict) -> None:
         """Parse a JSON document corresponding to a publication.
 
         Args:
