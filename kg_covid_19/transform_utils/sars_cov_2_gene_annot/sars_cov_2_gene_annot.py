@@ -22,7 +22,7 @@ class SARSCoV2GeneAnnot(Transform):
         super().__init__(source_name, input_dir, output_dir)
 
         self.node_header = ['id', 'name', 'category', 'full_name', 'synonym',
-                            'in_taxon', 'provided_by']
+                            'in_taxon', 'xrefs', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
                             'provided_by', 'DB_References', 'ECO_code', 'With',
                             'Interacting_taxon_ID',
@@ -66,12 +66,12 @@ class SARSCoV2GeneAnnot(Transform):
                     edge_data = self.gpa_to_edge_data(rec)
                     subject_node = edge_data[0]
                     if subject_node not in seen:
-                        subject_node_data = [subject_node, guess_bl_category(subject_node)] + [""] * 4 + [self.source_name]
+                        subject_node_data = [subject_node, guess_bl_category(subject_node)] + [""] * 5 + [self.source_name]
                         write_node_edge_item(node, self.node_header, subject_node_data)
                         seen.add(subject_node)
                     object_node = edge_data[2]
                     if object_node not in seen:
-                        object_node_data = [object_node, guess_bl_category(object_node)] + [""] * 4 + [self.source_name]
+                        object_node_data = [object_node, guess_bl_category(object_node)] + [""] * 5 + [self.source_name]
                         write_node_edge_item(node, self.node_header, object_node_data)
                         seen.add(object_node)
 
@@ -124,7 +124,7 @@ class SARSCoV2GeneAnnot(Transform):
         :param rec: record from gpi iterator
         :return: list of node items, one for each thing in self.node_header
         """
-        # ['id', 'name', 'category', 'full_name', 'synonym', 'in_taxon', 'provided_by']
+        # ['id', 'name', 'category', 'full_name', 'synonym', 'in_taxon', 'xrefs', 'provided_by']
         id: str = self._rec_to_id(rec)
 
         try:
@@ -158,7 +158,18 @@ class SARSCoV2GeneAnnot(Transform):
             synonym = ''
         taxon = get_item_by_priority(rec, ['Taxon'])
         taxon = ":".join([self.ncbi_taxon_prefix, taxon.split(":")[1]])
-        return [id, name, category, full_name, synonym, taxon, self.source_name]
+
+        xrefs = ''
+        try:
+            if rec['DB_Object_ID'] == 'UniProtKB:P0DTD1-PRO_0000449623':
+                pass
+            xrefs = get_item_by_priority(rec, ['DB_Xref'])
+            if isinstance(xrefs, list):
+                xrefs = "|".join(xrefs)
+        except (ItemInDictNotFound):
+            pass
+
+        return [id, name, category, full_name, synonym, taxon, xrefs, self.source_name]
 
 
 def _gpi12iterator(handle: TextIO) -> Generator:
