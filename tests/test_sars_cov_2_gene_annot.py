@@ -30,6 +30,7 @@ class TestSarsGeneAnnot(TestCase):
         ('DB_Object_Name', ['Protein 9b']),
         ('DB_Object_Synonym', ''),
         ('DB_Object_Type', 'protein'),
+        ('DB_Xref', 'PR:000050274|UniProtKB:P0DTD1-PRO_0000449639'),
         ('Taxon', 'taxon:2697049'),
     ])
     def test_gpi12iterator_instance(self, key, value):
