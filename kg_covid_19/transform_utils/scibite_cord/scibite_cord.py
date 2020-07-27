@@ -118,7 +118,7 @@ class ScibiteCordTransform(Transform):
         title = None
         if 'metadata' in doc:
             metadata = doc['metadata']
-            title = metadata['title'].replace('\n', ' ')
+            title = re.sub(r"[\n\t]", " ", metadata['title'])
             # extract hits from metadata
             terms.update(self.extract_termite_hits(metadata))
 
