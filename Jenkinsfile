@@ -100,6 +100,14 @@ pipeline {
             }
         }
 
+        stage('QC'){
+            steps {
+                dir('./gitrepo') {
+                    sh '. venv/bin/activate && python3.7 queries/qc/ensmallen_report.py'
+                }
+            }
+        }
+
         stage('Make blazegraph journal'){
             steps {
                 dir('./gitrepo/blazegraph') {
