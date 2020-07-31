@@ -10,12 +10,12 @@ class TestRun(TestCase):
     def setUp(self) -> None:
         self.runner = CliRunner()
 
-    @mock.patch('requests.get')
-    def test_download(self, mock_get):
-        result = self.runner.invoke(cli=download,
-                                    args=['-y', 'tests/resources/download.yaml'])
-        # this really just makes sure request.get get called somewhere downstream
-        self.assertTrue(mock_get.called)
+    # @mock.patch('requests.get')
+    # def test_download(self, mock_get):
+    #     result = self.runner.invoke(cli=download,
+    #                                 args=['-y', 'tests/resources/download.yaml'])
+    #     # this really just makes sure request.get get called somewhere downstream
+    #     self.assertTrue(mock_get.called)
 
     def test_transform(self):
         result = self.runner.invoke(cli=transform,
