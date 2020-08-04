@@ -45,7 +45,8 @@ with open(KGCOVID_syns_p, 'r') as fk:
                             pass
                             #print("found cs :" + synin+":")
                         else:
-                            print("not found in kg :" + synin+":")
+                            if  synin[0] != "(":
+                                print("not found in kg :" + synin+":")
 
 
                     break
