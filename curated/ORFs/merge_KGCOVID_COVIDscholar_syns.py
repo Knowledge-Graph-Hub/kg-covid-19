@@ -10,7 +10,7 @@ with open(KGCOVID_syns_p, 'r') as fk:
     line = fk.readline()
     while line.find("!") == 0:
         line = fk.readline()
-        print(line)
+        #print(line)
 
     countORFs = 0
     countORFs_total = 0
@@ -19,7 +19,7 @@ with open(KGCOVID_syns_p, 'r') as fk:
         line_split = line.split("\t")
         #print(len(line_split))
         cur_gene_name = line_split[2]
-        cur_syns = line_split[4].split("|")
+        cur_syns = line_split[4].replace("\n","").split("|")
         print(cur_syns)
         countORFs_total = countORFs_total + 1
         #print(cur_gene_name)
@@ -27,7 +27,7 @@ with open(KGCOVID_syns_p, 'r') as fk:
         with open(COVIDscholar_syns_p, 'r') as fc:
             linec = fc.readline()
             while linec:#and found == 0:
-                linec_split = linec.split(", ")
+                linec_split = linec.replace("\n","").split(", ")
                 #print(linec_split)
                 if cur_gene_name in linec_split:
                     #print("found")
@@ -36,16 +36,16 @@ with open(KGCOVID_syns_p, 'r') as fk:
 
                     for syn in cur_syns:
                         if syn in linec_split:
-                            print("found kg/cs: "+syn)
+                            print("found kg/cs :"+syn+":")
                         else:
-                            print("not found in cs: " + syn)
+                            print("not found in cs :" + syn+":")
 
                     for synin in linec_split:
                         if synin in cur_syns:
                             pass
-                            #print("found cs :" + synin)
+                            #print("found cs :" + synin+":")
                         else:
-                            print("not found in kg: " + synin)
+                            print("not found in kg :" + synin+":")
 
 
                     break
