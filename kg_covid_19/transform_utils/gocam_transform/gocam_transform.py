@@ -1,5 +1,4 @@
 import gzip
-import logging
 import os
 import shutil
 from typing import Optional
@@ -78,7 +77,7 @@ class GocamTransform(Transform):
             'https://w3id.org/biolink/vocab/objectActivity',
         }
 
-        logging.info(f"Parsing {data_file}")
+        print(f"Parsing {data_file}")
         transformer = RdfTransformer(curie_map=cmap)
         transformer.parse(data_file, node_property_predicates=np, input_format=input_format)
         output_transformer = PandasTransformer(transformer.graph)

@@ -48,7 +48,7 @@ class OntologyTransform(Transform):
         Returns:
              None.
         """
-        logging.info(f"Parsing {data_file}")
+        print(f"Parsing {data_file}")
         transformer = ObographJsonTransformer()
         transformer.parse(data_file, provided_by=source)
         output_transformer = PandasTransformer(transformer.graph)
