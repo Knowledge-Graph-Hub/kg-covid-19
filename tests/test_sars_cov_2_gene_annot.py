@@ -61,7 +61,7 @@ class TestSarsGeneAnnot(TestCase):
         self.assertEqual(len(self.sc2ga.edge_header), len(edge1))
         self.assertEqual(edge1,
                          ['UniProtKB:P0DTC1', 'biolink:enables', 'GO:0003723',
-                          'RO:0002327', 'sars_cov_2_gene_annot',
+                          'RO:0002327', 'sars_cov_2_gene_annot', 'biolink:Association',
                           'GO_REF:0000043', 'ECO:0000322', 'UniProtKB-KW:KW-0694', '',
                           '20200321', 'UniProt', '', 'go_evidence=IEA'])
 

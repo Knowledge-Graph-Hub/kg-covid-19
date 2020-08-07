@@ -75,8 +75,8 @@ class TestString(TestCase):
         edge_file = os.path.join(self.string_output_dir, "edges.tsv")
         self.assertTrue(os.path.isfile(edge_file))
         edge_df = pd.read_csv(edge_file, sep="\t", header=0)
-        self.assertEqual((9, 19), edge_df.shape)
-        self.assertEqual(['subject', 'edge_label', 'object', 'relation', 'provided_by',
+        self.assertEqual((9, 20), edge_df.shape)
+        self.assertEqual(['subject', 'edge_label', 'object', 'relation', 'provided_by', 'type',
                           'combined_score', 'neighborhood', 'neighborhood_transferred',
                           'fusion', 'cooccurence', 'homology', 'coexpression',
                           'coexpression_transferred', 'experiments',

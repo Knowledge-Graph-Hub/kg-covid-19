@@ -84,7 +84,8 @@ class TestDrugCentral(unittest.TestCase):
         edge_file = os.path.join(self.dc_output_dir, "edges.tsv")
         self.assertTrue(os.path.isfile(edge_file))
         edge_df = pd.read_csv(edge_file, sep="\t", header=0)
-        self.assertEqual((21, 6), edge_df.shape)
-        self.assertEqual(['subject', 'edge_label', 'object', 'relation', 'provided_by',
-                          'comment'],
-                         list(edge_df.columns))
+        self.assertEqual((21, 7), edge_df.shape)
+        self.assertEqual(
+            ['subject', 'edge_label', 'object', 'relation', 'provided_by', 'comment', 'type'],
+             list(edge_df.columns)
+        )
