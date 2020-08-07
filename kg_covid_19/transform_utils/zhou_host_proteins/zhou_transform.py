@@ -36,7 +36,7 @@ class ZhouTransform(Transform):
         super().__init__(source_name, input_dir, output_dir)
         self.node_header = ['id', 'name', 'category', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
-                            'provided_by', 'publication']
+                            'provided_by', 'type', 'publication']
 
     def run(self, data_file: Optional[str] = None):
         """Method is called and performs needed transformations to process the zhou host protein data, additional
@@ -116,6 +116,7 @@ class ZhouTransform(Transform):
                                          corona_curie,
                                          host_gene_vgene_relation,
                                          self.source_name,
+                                         'biolink:Association',
                                          pubmed_curie_prefix + row['PubMed ID']
                                      ])
 

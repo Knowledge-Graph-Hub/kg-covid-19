@@ -4,5 +4,6 @@
     "object",
     "relation",
     "provided_by",
+    "type",
     "combined_score"
 ]

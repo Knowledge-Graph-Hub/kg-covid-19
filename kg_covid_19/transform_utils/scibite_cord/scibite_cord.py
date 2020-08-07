@@ -59,7 +59,7 @@ class ScibiteCordTransform(Transform):
             data_files.extend(data_files)
 
         self.node_header = ['id', 'name', 'category', 'description', 'provided_by']
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by']
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by', 'type']
         node_handle = open(self.output_node_file, 'w')
         edge_handle = open(self.output_edge_file, 'w')
         node_handle.write("\t".join(self.node_header) + "\n")
@@ -190,7 +190,8 @@ class ScibiteCordTransform(Transform):
                     f"biolink:related_to",
                     f"CORD:{paper_id}",
                     "SIO:000255",
-                    provided_by
+                    provided_by,
+                    "biolink:Association"
                 ]
             )
 
@@ -290,7 +291,8 @@ class ScibiteCordTransform(Transform):
                                 "biolink:correlated_with",
                                 f"{paper_curie}",
                                 f"RO:0002610", # 'correlated with'
-                                f"{self.source_name} co-occurrences"
+                                f"{self.source_name} co-occurrences",
+                                "biolink:Association"
                             ]
                         )
                         self.seen.add((curie, paper_curie))

@@ -37,7 +37,7 @@ class ChemblTransform(Transform):
 
         """
         self.node_header = ['id', 'category', 'provided_by']
-        self.edge_header = ['id', 'subject', 'edge_label', 'object', 'relation', 'provided_by']
+        self.edge_header = ['id', 'subject', 'edge_label', 'object', 'relation', 'provided_by', 'type']
 
         # ChEMBL molecules
         data = self.get_chembl_molecules()
@@ -141,6 +141,7 @@ class ChemblTransform(Transform):
             if edge_properties['uo_units']:
                 edge_properties['uo_units'] = edge_properties['uo_units'].replace('_', ':')
             edge_properties['provided_by'] = f"{self.source_name} {self.subset}"
+            edge_properties['type'] = 'biolink:Association'
             edges.append(edge_properties)
         return edges
 

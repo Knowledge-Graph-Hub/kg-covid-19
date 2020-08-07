@@ -199,6 +199,7 @@ class StringTransform(Transform):
                                     f"ENSEMBL:{protein}",
                                     "RO:0002205",
                                     "NCBI",
+                                    ""
                                 ] + self.extra_header
                             )
 
@@ -221,7 +222,8 @@ class StringTransform(Transform):
                                   protein_node_type,
                                   "",
                                   uniprot_curie,  # xref
-                                  self.source_name]
+                                  self.source_name
+                                  ]
                         )
 
 
@@ -229,11 +231,15 @@ class StringTransform(Transform):
                 write_node_edge_item(
                     fh=edge,
                     header=self.edge_header,
-                    data=[f"ENSEMBL:{proteins[0]}", edge_label, f"ENSEMBL:{proteins[1]}",
-                          relation, "STRING", items_dict['combined_score']] + [
-                        items_dict.get(header, "")
-                        for header in edge_additional_headers
-                    ]
+                    data=[
+                             f"ENSEMBL:{proteins[0]}",
+                             edge_label,
+                             f"ENSEMBL:{proteins[1]}",
+                             relation,
+                             "STRING",
+                             "biolink:Association",
+                             items_dict['combined_score']
+                         ] + [items_dict.get(header, "") for header in edge_additional_headers]
                 )
 
 

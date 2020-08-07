@@ -50,7 +50,7 @@ class DrugCentralTransform(Transform):
         drug_protein_edge_label = "biolink:molecularly_interacts_with"
         drug_protein_edge_relation = "RO:0002436"  # molecularly interacts with
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
-                            'provided_by', 'comment']
+                            'provided_by', 'comment', 'type']
 
         with open(self.output_node_file, 'w') as node, \
                 open(self.output_edge_file, 'w') as edge, \
@@ -118,7 +118,8 @@ class DrugCentralTransform(Transform):
                                                protein_id,
                                                drug_protein_edge_relation,
                                                self.source_name,
-                                               items_dict['ACT_COMMENT']])
+                                               items_dict['ACT_COMMENT'],
+                                               'biolink:Association'])
 
         return None
 

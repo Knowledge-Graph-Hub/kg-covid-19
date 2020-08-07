@@ -26,7 +26,7 @@ class PharmGKB(Transform):
         source_name = "pharmgkb"
         super().__init__(source_name, input_dir, output_dir)
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
-                            'provided_by', 'evidence']
+                            'provided_by', 'type', 'evidence']
         self.node_header = ['id', 'name', 'category', 'provided_by']
         self.edge_of_interest = ['Gene',
                                  'Chemical']  # logic also matches 'Chemical'-'Gene'
@@ -205,9 +205,15 @@ class PharmGKB(Transform):
 
         preferred_drug_id = self.make_preferred_drug_id(drug_id, self.drug_id_map)
 
-        data = [preferred_drug_id, self.drug_gene_edge_label,
-                gene_id, self.drug_gene_edge_relation,
-                self.source_name, evidence]
+        data = [
+            preferred_drug_id,
+            self.drug_gene_edge_label,
+            gene_id,
+            self.drug_gene_edge_relation,
+            self.source_name,
+            'biolink:Association',
+            evidence
+        ]
 
         write_node_edge_item(fh=fh,
                              header=self.edge_header,
