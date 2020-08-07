@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 import gzip
 import logging
+import os
 import re
+import shutil
+import tempfile
 import zipfile
 from typing import Any, Dict, List, Union
 from tqdm import tqdm  # type: ignore
@@ -155,6 +158,16 @@ def parse_header(header_string: str, sep: str = '\t') -> List:
 def unzip_to_tempdir(zip_file_name: str, tempdir: str) -> None:
     with zipfile.ZipFile(zip_file_name, 'r') as z:
         z.extractall(tempdir)
+
+
+def ungzip_to_tempdir(gzipped_file: str, tempdir: str) -> str:
+    ungzipped_file = os.path.join(tempdir, os.path.basename(gzipped_file))
+    if ungzipped_file.endswith('.gz'):
+        ungzipped_file = os.path.splitext(ungzipped_file)[0]
+
+    with gzip.open(gzipped_file, 'rb') as f_in, open(ungzipped_file, 'wb') as f_out:
+        shutil.copyfileobj(f_in, f_out)
+    return ungzipped_file
 
 
 def guess_bl_category(identifier: str) -> str:

@@ -82,6 +82,11 @@ target:
       filename:
          - data/transformed/ontologies/hp_nodes.tsv
          - data/transformed/ontologies/hp_edges.tsv
+   go-cams:
+      type: tsv
+      filename:
+         - data/transformed/GOCAMs/GOCAMs_nodes.tsv
+         - data/transformed/GOCAMs/GOCAMs_edges.tsv
 destination:
    merged-kg-tsv:
       type: tsv

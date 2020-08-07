@@ -1,15 +1,17 @@
 import os
-import logging
+
 from typing import Optional
 
 from kg_covid_19.transform_utils.transform import Transform
-from kgx import PandasTransformer, ObographJsonTransformer # type: ignore
+from kgx import PandasTransformer, ObographJsonTransformer  # type: ignore
+
 
 ONTOLOGIES = {
     'HpTransform': 'hp.json',
     'GoTransform': 'go-plus.json',
-    'MondoTransform':  'mondo.json'
+    'MondoTransform':  'mondo.json',
 }
+
 
 class OntologyTransform(Transform):
     """
@@ -22,13 +24,10 @@ class OntologyTransform(Transform):
     def run(self, data_file: Optional[str] = None) -> None:
         """Method is called and performs needed transformations to process
         an ontology.
-
         Args:
             data_file: data file to parse
-
         Returns:
             None.
-
         """
         if data_file:
             k = data_file.split('.')[0]
@@ -42,17 +41,14 @@ class OntologyTransform(Transform):
 
     def parse(self, name: str, data_file: str, source: str) -> None:
         """Processes the data_file.
-
         Args:
             name: Name of the ontology
             data_file: data file to parse
             source: Source name
-
         Returns:
              None.
-
         """
-        logging.info(f"Parsing {data_file}")
+        print(f"Parsing {data_file}")
         transformer = ObographJsonTransformer()
         transformer.parse(data_file, provided_by=source)
         output_transformer = PandasTransformer(transformer.graph)

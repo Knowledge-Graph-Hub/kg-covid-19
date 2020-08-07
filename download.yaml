@@ -140,3 +140,11 @@
 -
   url: http://current.geneontology.org/ontology/extensions/go-plus.json
   local_name: go-plus.json
+
+#
+# GO-CAM
+#
+
+-
+  url: https://github.com/justaddcoffee/go-cam-models-kg-covid-19/raw/master/lifted-go-cams-20200619.xml.gz
+  local_name: lifted-go-cams-20200619.xml.gz

@@ -5,6 +5,7 @@ from typing import List
 
 from kg_covid_19.transform_utils.chembl.chembl_transform import ChemblTransform
 from kg_covid_19.transform_utils.drug_central.drug_central import DrugCentralTransform
+from kg_covid_19.transform_utils.gocam_transform.gocam_transform import GocamTransform
 from kg_covid_19.transform_utils.intact.intact import IntAct
 from kg_covid_19.transform_utils.ontology import OntologyTransform
 from kg_covid_19.transform_utils.ontology.ontology_transform import ONTOLOGIES
@@ -22,13 +23,14 @@ DATA_SOURCES = {
     'DrugCentralTransform': DrugCentralTransform,
     'TTDTransform': TTDTransform,
     'StringTransform': StringTransform,
-    'ScibiteCordTransform': ScibiteCordTransform,
+    # 'ScibiteCordTransform': ScibiteCordTransform,
     'PharmGKB': PharmGKB,
     'SARSCoV2GeneAnnot': SARSCoV2GeneAnnot,
     'IntAct': IntAct,
     'GoTransform': OntologyTransform,
     'HpTransform': OntologyTransform,
     'MondoTransform': OntologyTransform,
+    'GocamTransform': GocamTransform,
     'ChemblTransform': ChemblTransform
 }
 
