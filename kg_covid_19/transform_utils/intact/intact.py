@@ -59,7 +59,7 @@ class IntAct(Transform):
         self.ppi_edge_label = 'biolink:interacts_with'
         self.ppi_ro_relation = 'RO:0002437'
         self.node_header = ['id', 'name', 'category', 'ncbi_taxid', 'provided_by']
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by',
+        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by', 'type',
                             'publication', 'num_participants', 'association_type',
                             'detection_method',  'subj_exp_role', 'obj_exp_role']
 
@@ -188,10 +188,20 @@ class IntAct(Transform):
                                                                    nodes_dict)
                 if None not in [node1, node2]:
                     edges.append(
-                        [node1, self.ppi_edge_label, node2, self.ppi_ro_relation,
-                         self.source_name, publication, str(len(participants)),
-                         interaction_type_str, detection_method, p1_exp_role,
-                         p2_exp_role])
+                        [
+                            node1,
+                            self.ppi_edge_label, node2,
+                            self.ppi_ro_relation,
+                            self.source_name,
+                            'biolink:Association',
+                            publication,
+                            str(len(participants)),
+                            interaction_type_str,
+                            detection_method,
+                            p1_exp_role,
+                            p2_exp_role
+                        ]
+                    )
 
         return edges
 

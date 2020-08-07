@@ -41,7 +41,7 @@ class TTDTransform(Transform):
         uniprot_curie_prefix = "UniProtKB:"
         self.node_header = ['id', 'name', 'category', 'TTD_ID', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation',
-                            'provided_by', 'target_type']
+                            'provided_by', 'type', 'target_type']
 
         # make name to id map for uniprot names of human proteins
         dat_gz_id_file = os.path.join(self.input_base_dir,
@@ -110,6 +110,7 @@ class TTDTransform(Transform):
                                                    this_id,
                                                    drug_gene_edge_relation,
                                                    self.source_name,
+                                                   'biolink:Association',
                                                    targ_type])
 
     def get_uniproids(self, data: dict, name_2_id_map: dict,

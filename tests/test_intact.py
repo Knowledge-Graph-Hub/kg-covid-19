@@ -15,7 +15,7 @@ class TestIntAct(unittest.TestCase):
         self.assertEqual(self.intact.node_header,
                          ['id', 'name', 'category', 'ncbi_taxid', 'provided_by'])
         self.assertEqual(self.intact.edge_header,
-                        ['subject', 'edge_label', 'object', 'relation', 'provided_by',
+                        ['subject', 'edge_label', 'object', 'relation', 'provided_by', 'type',
                          'publication', 'num_participants', 'association_type',
                          'detection_method', 'subj_exp_role', 'obj_exp_role'])
 
@@ -35,7 +35,7 @@ class TestIntAct(unittest.TestCase):
                     ['UniProtKB:P0C6X7-PRO_0000037317', 'nsp10_cvhsa', 'biolink:RNA',
                      '694009', 'intact']],
           'edges': [['UniProtKB:P20290', 'biolink:interacts_with',
-                     'UniProtKB:P0C6X7-PRO_0000037317', 'RO:0002437', 'intact',
+                     'UniProtKB:P0C6X7-PRO_0000037317', 'RO:0002437', 'intact', 'biolink:Association',
                      'PMID:16157265', '2', 'physical association', '2 hybrid', 'prey',
                      'bait']]
          }),
@@ -47,6 +47,7 @@ class TestIntAct(unittest.TestCase):
                 'UniProtKB:P41811',
                 'RO:0002437',
                 'intact',
+                'biolink:Association',
                 'PMID:23481256',
                 '3',
                 'physical association',

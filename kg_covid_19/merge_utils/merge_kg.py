@@ -24,6 +24,24 @@ def parse_load_config(yaml_file: str) -> Dict:
         config = yaml.load(YML, Loader=yaml.FullLoader)
     return config
 
+# For NT export, any property that needs to be treated
+# as anything but xsd:string should be defined here.
+PROPERTY_TYPES = {
+    'combined_score': 'xsd:float',
+     "neighborhood": 'xsd:float',
+     "neighborhood_transferred": 'xsd:float',
+     "fusion": 'xsd:float',
+     "cooccurence": 'xsd:float',
+     "homology": 'xsd:float',
+     "coexpression": 'xsd:float',
+     "coexpression_transferred": 'xsd:float',
+     "experiments": 'xsd:float',
+     "experiments_transferred": 'xsd:float',
+     "database": 'xsd:float',
+     "database_transferred": 'xsd:float',
+     "textmining": 'xsd:float',
+     "textmining_transferred": 'xsd:float'
+}
 
 def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
     """Load and merge sources defined in the config YAML.
@@ -96,6 +114,8 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
                 destination_transformer.save()
             elif destination['type'] in get_file_types():
                 destination_transformer = get_transformer(destination['type'])(merged_graph)
+                if destination['type'] in {'nt', 'ttl'}:
+                    destination_transformer.set_property_types(PROPERTY_TYPES)
                 destination_transformer.save(destination['filename'], output_format=destination['type'])
             else:
                 logging.error("type {} not yet supported for KGX load-and-merge operation.".format(destination['type']))
