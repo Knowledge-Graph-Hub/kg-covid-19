@@ -23,7 +23,7 @@ DATA_SOURCES = {
     'DrugCentralTransform': DrugCentralTransform,
     'TTDTransform': TTDTransform,
     'StringTransform': StringTransform,
-    # 'ScibiteCordTransform': ScibiteCordTransform,
+    'ScibiteCordTransform': ScibiteCordTransform,
     'PharmGKB': PharmGKB,
     'SARSCoV2GeneAnnot': SARSCoV2GeneAnnot,
     'IntAct': IntAct,
