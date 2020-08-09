@@ -47,7 +47,7 @@ pipeline {
                     sh './venv/bin/pip install wheel'
                     sh './venv/bin/pip install bmt'
                     sh './venv/bin/pip install -r requirements.txt'
-                    sh './venv/bin/python setup.py install'
+                    sh './venv/bin/pip install .'
                 }
             }
         }
@@ -83,9 +83,7 @@ pipeline {
             steps {
                 dir('./gitrepo') {
                     sh 'env'
-                    sh '. venv/bin/activate'
-                    sh 'env'
-                    sh 'python3.7 run.py transform'
+                    sh '. venv/bin/activate && env && python3.7 run.py transform'
                 }
             }
         }
