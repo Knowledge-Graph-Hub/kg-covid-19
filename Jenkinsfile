@@ -43,7 +43,7 @@ pipeline {
                             branch: 'master'
                     )
                     sh '/usr/bin/python3.7 -m venv venv'
-                    sh '. venv/bin/activate'
+                    sh 'source venv/bin/activate'
                     sh './venv/bin/pip install wheel'
                     sh './venv/bin/pip install bmt'
                     sh './venv/bin/pip install -r requirements.txt'
@@ -57,7 +57,7 @@ pipeline {
                 dir('./gitrepo') {
                     script {
                         def run_py_dl = sh(
-                            script: '. venv/bin/activate && python3.7 run.py download', returnStatus: true
+                            script: 'source venv/bin/activate && python3.7 run.py download', returnStatus: true
                         )
                         if (run_py_dl == 0) {
                             if (env.BRANCH_NAME != 'master') { // upload raw to s3 if we're on correct branch
@@ -82,7 +82,10 @@ pipeline {
         stage('Transform') {
             steps {
                 dir('./gitrepo') {
-                    sh '. venv/bin/activate && python3.7 run.py transform'
+                    sh 'env'
+                    sh 'source venv/bin/activate'
+                    sh 'env'
+                    sh 'python3.7 run.py transform'
                 }
             }
         }
@@ -90,7 +93,7 @@ pipeline {
         stage('Merge') {
             steps {
                 dir('./gitrepo') {
-                    sh '. venv/bin/activate && python3.7 run.py merge'
+                    sh 'source venv/bin/activate && python3.7 run.py merge'
                     sh 'env'
                     sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
                     sh 'tar -rvf data/merged/merged-kg.tar merged_graph_stats_$BUILDSTARTDATE.yaml'
