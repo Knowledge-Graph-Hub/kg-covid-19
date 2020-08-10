@@ -92,8 +92,8 @@ destination:
       type: tsv
       filename: data/merged/merged-kg
    merged-kg-nt:
-      type: nt
-      filename: data/merged/merged-kg.nt
+      type: nt.gz
+      filename: data/merged/merged-kg.nt.gz
 #   merged-kg-neo4j:
 #      type: neo4j
 #      uri: http://localhost:8484

@@ -114,9 +114,10 @@ def load_and_merge(yaml_file: str) -> nx.MultiDiGraph:
                 destination_transformer.save()
             elif destination['type'] in get_file_types():
                 destination_transformer = get_transformer(destination['type'])(merged_graph)
-                if destination['type'] in {'nt', 'ttl'}:
+                mode = 'w:gz' if destination['type'] in {'tsv'} else None
+                if destination['type'] in {'nt', 'nt.gz', 'ttl'}:
                     destination_transformer.set_property_types(PROPERTY_TYPES)
-                destination_transformer.save(destination['filename'], output_format=destination['type'])
+                destination_transformer.save(destination['filename'], output_format=destination['type'], mode=mode)
             else:
                 logging.error("type {} not yet supported for KGX load-and-merge operation.".format(destination['type']))
 
