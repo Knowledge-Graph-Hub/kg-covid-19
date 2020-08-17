@@ -148,3 +148,19 @@
 -
   url: https://github.com/justaddcoffee/go-cam-models-kg-covid-19/raw/master/lifted-go-cams-20200619.xml.gz
   local_name: lifted-go-cams-20200619.xml.gz
+
+-
+#
+# Wikidata antiviral info
+#
+  title:
+    "Get counts for biolink categories"
+  description:
+    "Get counts for biolink categories"
+  endpoint:
+    "http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql"
+  query: >
+    SELECT (COUNT(?v2) AS ?v1) ?v0
+    WHERE {
+      ?v2 <https://w3id.org/biolink/vocab/category> ?v0
+    } GROUP BY ?v0
