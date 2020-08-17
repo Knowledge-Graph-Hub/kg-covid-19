@@ -151,16 +151,15 @@
 
 -
 #
-# Wikidata antiviral info
+# CAS COVID-19 Anti-Viral Candidate Compounds via Wikidata
 #
-  title:
-    "Get counts for biolink categories"
-  description:
-    "Get counts for biolink categories"
   endpoint:
-    "http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql"
+    "https://query.wikidata.org/sparql"
   query: >
-    SELECT (COUNT(?v2) AS ?v1) ?v0
-    WHERE {
-      ?v2 <https://w3id.org/biolink/vocab/category> ?v0
-    } GROUP BY ?v0
+    SELECT ?antiviral ?drugbank ?chebi WHERE {
+        ?antiviral <http://www.wikidata.org/prop/direct/P972> <http://www.wikidata.org/entity/Q90481889> .
+        ?antiviral <http://www.wikidata.org/prop/direct/P715> ?drugbank .
+        ?antiviral <http://www.wikidata.org/prop/direct/P683> ?chebi
+    }
+  local_name: wikidata_cas_antiviral.tsv
+
