@@ -34,7 +34,7 @@ def download_from_yaml(yaml_file: str, output_dir: str,
         data = yaml.load(f, Loader=yaml.FullLoader)
         for item in tqdm(data, desc="Downloading files"):
             if 'url' not in item:
-                logging.warning("Couldn't find url for source in {}".format(item))
+                logging.error("Couldn't find url for source in {}".format(item))
                 continue
             outfile = os.path.join(
                 output_dir,
