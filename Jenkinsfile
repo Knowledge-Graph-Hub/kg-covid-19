@@ -129,6 +129,8 @@ pipeline {
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put data/merged/merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.jnl.gz s3://kg-hub-public-data/kg-covid-19.jnl.gz'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put *_stats.yaml s3://kg-hub-public-data/'
+                                sh 's3cmd ls s3://kg-hub-public-data/ | grep yaml > yaml_manifests.txt'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put yaml_manifests.txt s3://kg-hub-public-data/'
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/[artifact name]
                             }
