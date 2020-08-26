@@ -46,6 +46,7 @@ pipeline {
                     sh '. venv/bin/activate'
                     sh './venv/bin/pip install wheel'
                     sh './venv/bin/pip install bmt'
+                    sh './venb/bin/pip install llvmlite==0.31.0'
                     sh './venv/bin/pip install -r requirements.txt'
                     sh './venv/bin/pip install .'
                 }
