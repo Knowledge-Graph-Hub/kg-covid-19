@@ -62,7 +62,7 @@ setup(
     # add package dependencies
     install_requires=[
         'tqdm',
-        'encodeproject',
+        'encodeproject==1.0.19',
         'tabula-py',
         'obonet',
         'wget',
