@@ -45,9 +45,9 @@ def download_from_yaml(yaml_file: str, output_dir: str,
                     logging.info("Using cached version of {}".format(outfile))
                     continue
 
-            try:
-                urllib.request.urlretrieve(item['url'], outfile)
-            except:
-                pass
+            with urllib.request.urlopen(item['url']) as response,\
+                        open(outfile, 'wb') as out_file:
+                    data = response.read()  # a `bytes` object
+                    out_file.write(data)
 
     return None
