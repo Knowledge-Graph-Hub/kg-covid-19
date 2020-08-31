@@ -52,12 +52,6 @@ def download_from_yaml(yaml_file: str, output_dir: str,
                     logging.info("Using cached version of {}".format(outfile))
                     continue
 
-            p = urlparse(item['url'], 'http')
-            if p.scheme == 'ftp':
-                logging.warning(
-                    "Using wget for downloading FTP resource {}".format(item['url']))
-                wget.download(url=item['url'], out=outfile)
-            else:
-                encode_download(url=item['url'], path=outfile)
+            wget.download(url=item['url'], out=outfile)
 
     return None
