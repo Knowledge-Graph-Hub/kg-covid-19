@@ -4,7 +4,7 @@
 
 import logging
 import os
-import wget # type: ignore
+import urllib
 import yaml
 from os import path
 from tqdm.auto import tqdm  # type: ignore
@@ -45,6 +45,9 @@ def download_from_yaml(yaml_file: str, output_dir: str,
                     logging.info("Using cached version of {}".format(outfile))
                     continue
 
-            wget.download(url=item['url'], out=outfile)
+            try:
+                urllib.request.urlretrieve(item['url'], outfile)
+            except:
+                pass
 
     return None
