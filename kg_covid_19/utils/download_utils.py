@@ -4,17 +4,10 @@
 
 import logging
 import os
-
 import wget # type: ignore
 import yaml
-
 from os import path
-
-from urllib.parse import urlparse
 from tqdm.auto import tqdm  # type: ignore
-
-from encodeproject import download as encode_download  # type: ignore
-
 
 def download_from_yaml(yaml_file: str, output_dir: str,
                        ignore_cache: bool = False) -> None:
