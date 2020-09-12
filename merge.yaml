@@ -1,7 +1,7 @@
 ---
 configuration:
   output_directory: data/merged
-  checkpoint: true
+  checkpoint: false
   property_types:
     # define the type for non-canonical node/edge properties
     combined_score: 'xsd:float'
