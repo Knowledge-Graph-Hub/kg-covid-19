@@ -68,18 +68,20 @@ def transform(*args, **kwargs) -> None:
 
 @cli.command()
 @click.option('yaml', '-y', default="merge.yaml", type=click.Path(exists=True))
-def merge(yaml: str) -> None:
+@click.option('processes', '-p', default=1, type=int)
+def merge(yaml: str, processes: int) -> None:
     """Use KGX to load subgraphs to create a merged graph.
 
     Args:
         yaml: A string pointing to a KGX compatible config YAML.
+        processes: Number of processes to use.
 
     Returns:
         None.
 
     """
 
-    load_and_merge(yaml)
+    load_and_merge(yaml, processes)
 
 
 @cli.command()
