@@ -148,14 +148,14 @@ pipeline {
                                 //
                          	    // Build the new build directory index.html
                          	    //
-				                sh 'python3 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data/$BUILDSTARTDATE --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/$BUILDSTARTDATE/ > build-index.html'
-				                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put build-index.html s3://kg-hub-public-data/$BUILDSTARTDATE/index.html'
+                                sh 'python3 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data/$BUILDSTARTDATE --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/$BUILDSTARTDATE/ > build-index.html'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put build-index.html s3://kg-hub-public-data/$BUILDSTARTDATE/index.html'
                         	    // Build the new build stats subdirectory index.html
-				                sh 'python3 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data/$BUILDSTARTDATE/stats --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/$BUILDSTARTDATE/stats/ > stats-index.html'
-				                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put stats-index.html s3://kg-hub-public-data/$BUILDSTARTDATE/stats/index.html'
+                                sh 'python3 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data/$BUILDSTARTDATE/stats --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/$BUILDSTARTDATE/stats/ > stats-index.html'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put stats-index.html s3://kg-hub-public-data/$BUILDSTARTDATE/stats/index.html'
                         	    // Build the new build transformed subdirectory index.html
-				                sh 'python3 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data/$BUILDSTARTDATE/transformed --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/$BUILDSTARTDATE/transformed/ > transformed-index.html'
-				                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put transformed-index.html s3://kg-hub-public-data/$BUILDSTARTDATE/transformed/index.html'
+                                sh 'python3 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data/$BUILDSTARTDATE/transformed --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/$BUILDSTARTDATE/transformed/ > transformed-index.html'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put transformed-index.html s3://kg-hub-public-data/$BUILDSTARTDATE/transformed/index.html'
 
                                 //
                                 // make $BUILDSTARTDATE the new current/
