@@ -44,7 +44,7 @@ pipeline {
                     )
                     sh '/usr/bin/python3.8 -m venv venv'
                     sh '. venv/bin/activate'
-                    sh './venv/bin/pip install networkx pandas ordered_set requests pyyaml stringcase biolinkml bmt cachetools pystache neo4jrestclient validators'
+                    sh './venv/bin/pip install networkx pandas ordered_set requests pyyaml stringcase biolinkml bmt==1.5.8 cachetools pystache neo4jrestclient validators'
                     sh './venv/bin/pip install -r requirements.txt'
                     sh './venv/bin/pip install .'
                 }
