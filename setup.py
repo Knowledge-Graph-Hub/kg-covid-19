@@ -47,7 +47,7 @@ setup(
     url='https://github.com/justaddcoffee/kg-emerging-viruses',
     author='justaddcoffee+github@gmail.com',
     author_email='Justin Reese',
-    python_requires='>=3.7',
+    python_requires='>=3.8',
 
     # choose your license
     license='BSD-3',
