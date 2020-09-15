@@ -11,7 +11,12 @@
 #    # brief comment about file, and optionally a local_name:
 #    url: http://curefordisease.org/some_data.txt
 #    local_name: some_data_more_chars_prevent_name_collision.pdf
-
+#
+#  For downloading from S3 buckets, see here for information about what URL to use:
+#  https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html#access-bucket-intro
+#  Amazon S3 virtual hosted style URLs follow the format shown below:
+#  https://bucket-name.s3.Region.amazonaws.com/key name
+#
 ---
 #
 #  Zhou host proteins - viral protein interactions
