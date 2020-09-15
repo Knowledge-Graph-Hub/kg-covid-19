@@ -1,2 +1,1 @@
-git+git://github.com/deepakunni3/kgx@821452fb9bf74c9dcef9f82a039e61ad0fe21fae
-
+git+git://github.com/deepakunni3/kgx@kg-covid-19
