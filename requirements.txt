@@ -1,1 +1,2 @@
-git+git://github.com/deepakunni3/kgx@82996942c1cd2b536e80c3fcdd7c527fa7fce452
+git+git://github.com/deepakunni3/kgx821452fb9bf74c9dcef9f82a039e61ad0fe21fae
+
