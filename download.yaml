@@ -15,7 +15,7 @@
 #  For downloading from S3 buckets, see here for information about what URL to use:
 #  https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingBucket.html#access-bucket-intro
 #  Amazon S3 virtual hosted style URLs follow the format shown below:
-#  https://bucket-name.s3.Region.amazonaws.com/key name
+#  https://bucket-name.s3.Region.amazonaws.com/key_name
 #
 ---
 #
