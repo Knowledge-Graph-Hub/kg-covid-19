@@ -8,7 +8,7 @@ addons:
       secure: "RqYy9rM6eZAD8aFcF9xejrCG0xpQ87R2tIGH18h1d3VNp4/2gvWQRRmSK+HW2lQ1td3+PFetjY1nrZjqEf6Gs94OdCmsgmRYYogtICrdhCmYj96KSRkLCHCWKAsyxaFjEHECEA/6pRnmxOaK6avUJ56NmfGteDtSY+tjlmd7WUF5iul2gxtcJ3Wyhp6ddsZ9oUjj5miutB3+3+v0V9T95o0arNMJrO76YDIMXqd7wA2IEmeqUjmNOlVNIXSNuOIp1/4ffme7MjPWtWxzO0QPpKbsci8bKidO+CO6iguhmkXaRlaC0AHiiDiGoHEhSlPY5ltS8g6A4tvefn4VDTBYaGYeuOLJwJr07G63u7DB+oUJdNLGdtX28Y6mjhyxSi5sQbzg2xV9ldv49lcpQRIV2asFVYMJ+iZxSPmwiTeUOnjulUFx4S0R90Ed3j1/UfWvgAgXhZ68sjHtuCKlMQbvIfnsy3SnTeIarJ/jwUZQEiRHvO0/j5KEbtI2dvmzAr9rtBdNT2g4Q2YeMRyJqBcL61P5offZUZrLATU0zMpDqyaWeJaWFsXU/dV3zBA7FZKM9gCbm48J/jdeZU2leQikw7I1Hzx5mXaT3gGR6rGF03b/e/KbLMr61+79/7/xJmqWaCHD4OW2YfrD+RDbqMscvhEJHV3NoC36ikuV/pUs0wY="
 language: python
 python:
-- '3.8'
+- '3.7'
 before_install:
 - sudo apt-get install openjdk-9-jdk-headless
 - pip install --upgrade pytest
