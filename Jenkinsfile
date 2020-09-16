@@ -138,6 +138,7 @@ pipeline {
                                 // transformed data
                                 sh 'rm -fr data/transformed/.gitkeep'
                                 sh 'cp -pr data/transformed $BUILDSTARTDATE/'
+                                sh 'cp -pr data/raw $BUILDSTARTDATE/'
                                 // stats dir
                                 sh 'mkdir $BUILDSTARTDATE/stats/'
                                 sh 'cp -p *_stats.yaml $BUILDSTARTDATE/stats/'
