@@ -82,7 +82,9 @@ pipeline {
                 dir('./gitrepo') {
 //                     sh 'env'
 //                     sh '. venv/bin/activate && env && python3.7 run.py transform'
-                    sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/transformed data/'
+                    withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                        sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/transformed data/'
+                    }
                 }
             }
         }
