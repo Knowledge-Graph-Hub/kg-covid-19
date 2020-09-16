@@ -2,7 +2,7 @@ import gzip
 import json
 import os
 import re
-import uuid
+from tqdm import tqdm
 from typing import List, Dict, Any, Set, Optional
 from zipfile import ZipFile
 import pandas as pd # type: ignore
@@ -87,15 +87,19 @@ class ScibiteCordTransform(Transform):
              None.
 
         """
+        pbar = tqdm(total=2, desc="Unzipping files")
         with ZipFile(data_file1, 'r') as ZF:
             ZF.extractall(path=self.input_base_dir)
+        pbar.update(1)
         with ZipFile(data_file2, 'r') as ZF:
             ZF.extractall(path=self.input_base_dir)
+        pbar.update(1)
+        pbar.close()
 
         subsets = ['pmc_json', 'pdf_json']
         for subset in subsets:
             subset_dir = os.path.join(self.input_base_dir, subset)
-            for filename in os.listdir(subset_dir):
+            for filename in tqdm(os.listdir(subset_dir)):
                 file = os.path.join(subset_dir, filename)
                 doc = json.load(open(file))
                 self.parse_annotation_doc(node_handle, edge_handle, doc)
@@ -444,7 +448,7 @@ class ScibiteCordTransform(Transform):
         file_path = os.path.join(self.input_base_dir, 'gene_info.gz')
 
         with gzip.open(file_path, 'rt') as FH:
-            for line in FH:
+            for line in tqdm(FH, desc="Loading gene info"):
                 records = line.split('\t')
                 if records[0] not in species_id:
                     continue
@@ -464,7 +468,7 @@ class ScibiteCordTransform(Transform):
         file_path = os.path.join(input_dir, 'wikidata_country_codes.tsv')
         if os.path.exists(file_path):
             with open(file_path, 'r') as FH:
-                for line in FH:
+                for line in tqdm(FH, desc="Loading country codes"):
                     if line.startswith('item'):
                         continue
                     records = line.rstrip().split('\t')
