@@ -145,6 +145,9 @@
 -
   url: http://current.geneontology.org/ontology/extensions/go-plus.json
   local_name: go-plus.json
+-
+  url: http://kg-hub.berkeleybop.io/frozen_incoming_data/chebi.json.gz
+  local_name: chebi.json.gz
 
 #
 # GO-CAM
