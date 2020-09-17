@@ -2,7 +2,7 @@
 name: Dataset request
 about: Suggest a dataset to be ingested for this project
 title: ''
-labels: ''
+labels: new data source
 assignees: ''
 
 ---
