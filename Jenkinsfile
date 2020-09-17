@@ -100,21 +100,21 @@ pipeline {
             }
         }
 
-        stage('Make blazegraph journal'){
-            steps {
-                dir('./gitrepo/blazegraph') {
-                        git(
-                                url: 'https://github.com/balhoff/blazegraph-runner.git',
-                                branch: 'master'
-                        )
-                        sh 'sbt stage'
-                        sh 'pigz -d ../data/merged/merged-kg.nt.gz'
-                        sh 'export JAVA_OPTS=-Xmx128G && ./target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=../merged-kg.jnl --use-ontology-graph=true ../data/merged/merged-kg.nt'
-                        sh 'pigz ../merged-kg.jnl'
-                        sh 'pigz ../data/merged/merged-kg.nt'
-                }
-            }
-        }
+//         stage('Make blazegraph journal'){
+//             steps {
+//                 dir('./gitrepo/blazegraph') {
+//                         git(
+//                                 url: 'https://github.com/balhoff/blazegraph-runner.git',
+//                                 branch: 'master'
+//                         )
+//                         sh 'sbt stage'
+//                         sh 'pigz -d ../data/merged/merged-kg.nt.gz'
+//                         sh 'export JAVA_OPTS=-Xmx128G && ./target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=../merged-kg.jnl --use-ontology-graph=true ../data/merged/merged-kg.nt'
+//                         sh 'pigz ../merged-kg.jnl'
+//                         sh 'pigz ../data/merged/merged-kg.nt'
+//                 }
+//             }
+//         }
 
         stage('Publish') {
             steps {
@@ -134,6 +134,7 @@ pipeline {
                                 sh 'mkdir $BUILDSTARTDATE/'
                                 sh 'cp -p data/merged/merged-kg.nt.gz $BUILDSTARTDATE/'
                                 sh 'cp -p data/merged/merged-kg.tar.gz $BUILDSTARTDATE/'
+                                sh 'touch merged-kg.jnl.gz' // REMOVE
                                 sh 'cp -p merged-kg.jnl.gz $BUILDSTARTDATE/'
                                 // transformed data
                                 sh 'rm -fr data/transformed/.gitkeep'
