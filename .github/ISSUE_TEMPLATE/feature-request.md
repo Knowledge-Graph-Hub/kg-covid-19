@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest a new feature to add to the KG-COVID-19 software framework
 title: ''
-labels: ''
+labels: enhancement
 assignees: ''
 
 ---
