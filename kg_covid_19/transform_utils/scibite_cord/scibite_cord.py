@@ -2,7 +2,7 @@ import gzip
 import json
 import os
 import re
-from tqdm import tqdm
+from tqdm import tqdm  # type: ignore
 from typing import List, Dict, Any, Set, Optional
 from zipfile import ZipFile
 import pandas as pd # type: ignore
