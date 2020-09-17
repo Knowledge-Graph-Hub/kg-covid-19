@@ -51,6 +51,7 @@ class OntologyTransform(Transform):
         """
         print(f"Parsing {data_file}")
         transformer = ObographJsonTransformer()
+        compression: Optional[str]
         if data_file.endswith('.gz'):
             compression = 'gz'
         else:
