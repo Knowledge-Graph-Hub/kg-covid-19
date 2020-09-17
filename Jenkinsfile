@@ -120,7 +120,8 @@ pipeline {
             steps {
                 dir('./gitrepo') {
                     script {
-                        if (env.BRANCH_NAME != 'master' || env.BRANCH_NAME != 'add_versioning_of_builds_run_jenkins') {
+                        // if (env.BRANCH_NAME != 'master' ||
+                        if (env.BRANCH_NAME != 'add_versioning_of_builds_run_jenkins') {
                             echo "Will not push if not on correct branch."
                         } else {
                             // code for building s3 index files
