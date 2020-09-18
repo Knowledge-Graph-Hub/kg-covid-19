@@ -97,6 +97,7 @@ pipeline {
 //                     sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
 //                     sh 'tar -rvf data/merged/merged-kg.tar merged_graph_stats_$BUILDSTARTDATE.yaml'
                     sh 'touch merged_graph_stats_$BUILDSTARTDATE.yaml'
+                    sh 'mkdir -p data/merged/'
                     sh 'touch data/merged/merged-kg.nt.gz'
                     sh 'touch data/merged/merged-kg.tar.gz'
                 }
