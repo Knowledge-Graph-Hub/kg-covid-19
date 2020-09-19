@@ -129,7 +129,7 @@ pipeline {
                 dir('./gitrepo') {
                     script {
                         // if (env.BRANCH_NAME != 'master' ||
-                        if (env.BRANCH_NAME != 'add_versioning_of_builds_run_jenkins') {
+                        if (env.BRANCH_NAME == 'NOT THIS BRANCH') {
                             echo "Will not push if not on correct branch."
                         } else {
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
