@@ -129,6 +129,10 @@ pipeline {
 //                 }
                 dir('./gitrepo') {
                     script {
+		        if(fileExists($BUILDSTARTDATE)){
+                        	echo "Will not overwrite existing directory: $BUILDSTARTDATE"
+                        	sh 'exit 1'
+			}
                         sh 'git clone https://github.com/justaddcoffee/go-site.git'
 
                         // if (env.BRANCH_NAME != 'master' ||
@@ -161,7 +165,7 @@ pipeline {
                                 //
                                 // make $BUILDSTARTDATE the new current/
                                 //
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate cp -pr s3://kg-hub-public-data/$BUILDSTARTDATE/ s3://kg-hub-public-data/new_current/'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate cp -v -pr s3://kg-hub-public-data/$BUILDSTARTDATE/ s3://kg-hub-public-data/new_current/'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate rm -fr s3://kg-hub-public-data/current'
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate mv --recursive s3://kg-hub-public-data/new_current s3://kg-hub-public-data/current'
 
