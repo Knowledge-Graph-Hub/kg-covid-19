@@ -133,6 +133,8 @@ pipeline {
 		        if(fileExists('./gitrepo/$BUILDSTARTDATE')){
                         	echo "Will not overwrite existing directory: $BUILDSTARTDATE"
                         	sh 'exit 1'
+			} else {
+                        	echo "$BUILDSTARTDATE doesn't exist, proceeding"
 			}
                         sh 'git clone https://github.com/justaddcoffee/go-site.git'
 
