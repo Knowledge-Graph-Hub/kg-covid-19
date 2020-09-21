@@ -35,17 +35,6 @@ pipeline {
             }
         }
 
-        stage('Check existing build directory'){
-            steps {
-                dir('./gitrepo') {		
-		   if(fileExists('$BUILDSTARTDATE')){
-			echo "Will not overwrite existing directory: $BUILDSTARTDATE"
-			sh 'exit 1'
-		   }
-		}
-	    }
-	}
-
         stage('Build kg_covid_19') {
             steps {
                 dir('./gitrepo') {
