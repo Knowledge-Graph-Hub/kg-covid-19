@@ -143,6 +143,7 @@ pipeline {
                             echo "Will not push if not on correct branch."
                         } else {
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+				sh '. venv/bin/activate'
                                 //
                                 // make $BUILDSTARTDATE/ directory and sync to s3 bucket
                                 //
@@ -177,7 +178,7 @@ pipeline {
 				// "External" packages required to run these
 				// scripts.
 				sh './venv/bin/pip install pystache boto3'
-				sh ". venv/bin/activate && python3.7 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html"
+				sh 'python3.7 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
 				sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put top-level-index.html s3://kg-hub-public-data/index.html'
 
                                 // Should now appear at:
