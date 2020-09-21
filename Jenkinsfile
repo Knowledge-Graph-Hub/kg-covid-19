@@ -170,6 +170,9 @@ pipeline {
                                 // sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate mv --recursive s3://kg-hub-public-data/new_current s3://kg-hub-public-data/current'
 
                         	// Build the top level index.html
+				// "External" packages required to run these
+				// scripts.
+				sh './venv/bin/pip install click pystache yamldown pypandoc'			    
 				sh 'python3 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
 				sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put top-level-index.html s3://kg-hub-public-data/index.html'
 
