@@ -157,7 +157,7 @@ pipeline {
                                 //
                                 // put $BUILDSTARTDATE/ in s3 bucket
                                 //
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate --add-header "x-amz-website-redirect-location: /current/" put -pr $BUILDSTARTDATE s3://kg-hub-public-data/'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put -pr $BUILDSTARTDATE s3://kg-hub-public-data/'
 
                                 //
                                 // make $BUILDSTARTDATE the new current/
