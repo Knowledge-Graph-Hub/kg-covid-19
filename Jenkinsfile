@@ -38,6 +38,10 @@ pipeline {
         stage('Build kg_covid_19') {
             steps {
                 dir('./gitrepo') {
+		   if(fileExists('$BUILDSTARTDATE')){
+			echo "Will not overwrite existing directory: $BUILDSTARTDATE"
+			sh 'exit 1'
+		   }
                     git(
                             url: 'https://github.com/Knowledge-Graph-Hub/kg-covid-19',
                             branch: env.BRANCH_NAME
@@ -129,7 +133,7 @@ pipeline {
 //                 }
                 dir('./gitrepo') {
                     script {
-		        if(fileExists($BUILDSTARTDATE)){
+		        if(fileExists('$BUILDSTARTDATE')){
                         	echo "Will not overwrite existing directory: $BUILDSTARTDATE"
                         	sh 'exit 1'
 			}
