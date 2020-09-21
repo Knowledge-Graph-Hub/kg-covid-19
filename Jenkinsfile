@@ -50,19 +50,6 @@ pipeline {
             }
         }
 
-        stage('Check existing build directory'){
-            steps {
-                dir('./gitrepo') {		
-		   if(fileExists('$BUILDSTARTDATE')){
-			echo "Will not overwrite existing directory: $BUILDSTARTDATE"
-			sh 'exit 1'
-		   } else {
-			sh 'carry on...'
-		   }
-		}
-	    }
-	}
-
         stage('Download') {
             steps {
                 dir('./gitrepo') {
