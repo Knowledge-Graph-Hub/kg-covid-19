@@ -135,7 +135,6 @@ pipeline {
                         	sh 'exit 1'
 			}
                         sh 'git clone https://github.com/justaddcoffee/go-site.git'
-                        sh 'cd go-site && ../venv/bin/pip install . && cd ..'
 
                         // if (env.BRANCH_NAME != 'master' ||
                         if (env.BRANCH_NAME == 'NOT THIS BRANCH') {
