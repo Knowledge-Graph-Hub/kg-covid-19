@@ -124,12 +124,9 @@ pipeline {
         stage('Publish') {
             steps {
                 // code for building s3 index files
-//                 dir('./go-site') {
-//                     git branch: master, url: 'https://github.com/justaddcoffee/go-site.git'
-//                 }
                 dir('./gitrepo') {
                     script {
-		        if(fileExists('$BUILDSTARTDATE')){
+		        if(fileExists('./gitrepo/$BUILDSTARTDATE')){
                         	echo "Will not overwrite existing directory: $BUILDSTARTDATE"
                         	sh 'exit 1'
 			}
