@@ -160,14 +160,14 @@ pipeline {
                                 //
                                 // put $BUILDSTARTDATE/ in s3 bucket
                                 //
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put -pr $BUILDSTARTDATE s3://kg-hub-public-data/'
+                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate --add-header "x-amz-website-redirect-location: /current/" put -pr $BUILDSTARTDATE s3://kg-hub-public-data/'
 
                                 //
                                 // make $BUILDSTARTDATE the new current/
-                                //
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate cp -v -pr s3://kg-hub-public-data/$BUILDSTARTDATE/ s3://kg-hub-public-data/new_current/'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate rm -fr s3://kg-hub-public-data/current'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate mv --recursive s3://kg-hub-public-data/new_current s3://kg-hub-public-data/current'
+                                // 	    
+                                // sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate cp -v -pr s3://kg-hub-public-data/$BUILDSTARTDATE/ s3://kg-hub-public-data/new_current/'
+                                // sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate rm -fr s3://kg-hub-public-data/current'
+                                // sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate mv --recursive s3://kg-hub-public-data/new_current s3://kg-hub-public-data/current'
 
                         	// Build the top level index.html
 				sh 'python3 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
