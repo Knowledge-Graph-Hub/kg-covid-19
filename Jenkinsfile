@@ -123,11 +123,13 @@ pipeline {
         stage('Publish') {
             steps {
                 // code for building s3 index files
-                dir('./go-site') {
-                    git branch: master, url: 'https://github.com/justaddcoffee/go-site.git'
-                }
+//                 dir('./go-site') {
+//                     git branch: master, url: 'https://github.com/justaddcoffee/go-site.git'
+//                 }
                 dir('./gitrepo') {
                     script {
+                        sh 'git clone https://github.com/justaddcoffee/go-site.git'
+
                         // if (env.BRANCH_NAME != 'master' ||
                         if (env.BRANCH_NAME == 'NOT THIS BRANCH') {
                             echo "Will not push if not on correct branch."
@@ -163,7 +165,7 @@ pipeline {
                                 sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate mv s3://kg-hub-public-data/new_current s3://kg-hub-public-data/current'
 
                         	    // Build the top level index.html
-				                sh 'python3 ../go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
+				                sh 'python3 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
 				                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put top-level-index.html s3://kg-hub-public-data/index.html'
 
                                 // Should now appear at:
