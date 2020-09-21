@@ -135,7 +135,7 @@ pipeline {
                         	sh 'exit 1'
 			}
                         sh 'git clone https://github.com/justaddcoffee/go-site.git'
-                        sh 'cd go-site && pip install . && cd ..'
+                        sh 'cd go-site && ../venv/bin/pip install . && cd ..'
 
                         // if (env.BRANCH_NAME != 'master' ||
                         if (env.BRANCH_NAME == 'NOT THIS BRANCH') {
@@ -174,7 +174,6 @@ pipeline {
                         	// Build the top level index.html
 				// "External" packages required to run these
 				// scripts.
-				sh './venv/bin/pip install click pystache yamldown'			    
 				sh 'python3 ./go-site/scripts/bucket-indexer.py --credentials $S3_PUSH_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
 				sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put top-level-index.html s3://kg-hub-public-data/index.html'
 
