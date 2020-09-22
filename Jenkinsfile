@@ -142,7 +142,7 @@ pipeline {
 		    	   	    script: 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate ls s3://kg-hub-public-data/$BUILDSTARTDATE/',
 		    	   	    returnStdout: true
 		                ).trim()
-		                echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): ${REMOTE_BUILD_DIR_CONTENTS}"
+		                echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): '${REMOTE_BUILD_DIR_CONTENTS}'"
 				if('$BUILDSTARTDATE'.trim() != ''){
                         		echo "Will not overwrite existing (---REMOTE S3---) directory: $BUILDSTARTDATE"
                         		sh 'exit 1'
