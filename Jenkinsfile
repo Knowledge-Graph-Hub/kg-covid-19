@@ -142,7 +142,10 @@ pipeline {
                         if (env.BRANCH_NAME == 'NOT THIS BRANCH') {
                             echo "Will not push if not on correct branch."
                         } else {
-                            withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                            withCredentials([
+					    file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG'),
+					    file(credentialsId: 'aws_kg_hub_push_json', variable: 'AWS_JSON')
+				    ]) {
                                 //
                                 // make $BUILDSTARTDATE/ directory and sync to s3 bucket
                                 //
@@ -163,22 +166,22 @@ pipeline {
                                 //
                                 // put $BUILDSTARTDATE/ in s3 bucket
                                 //
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put -pr $BUILDSTARTDATE s3://kg-hub-public-data/'
+                                sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate put -pr $BUILDSTARTDATE s3://kg-hub-public-data/'
 
                                 //
                                 // make $BUILDSTARTDATE the new current/
                                 // 	    
 				// The following cp always times out:
-                                // sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate cp -v -pr s3://kg-hub-public-data/$BUILDSTARTDATE/ s3://kg-hub-public-data/new_current/'
-                                // sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate rm -fr s3://kg-hub-public-data/current'
-                                // sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate mv --recursive s3://kg-hub-public-data/new_current s3://kg-hub-public-data/current'
+                                // sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate cp -v -pr s3://kg-hub-public-data/$BUILDSTARTDATE/ s3://kg-hub-public-data/new_current/'
+                                // sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate rm -fr s3://kg-hub-public-data/current'
+                                // sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate mv --recursive s3://kg-hub-public-data/new_current s3://kg-hub-public-data/current'
 
                         	// Build the top level index.html
 				// "External" packages required to run these
 				// scripts.
 				sh './venv/bin/pip install pystache boto3'
-				sh '. venv/bin/activate && env && python3.7 ./go-site/scripts/bucket-indexer.py --credentials $S3CMD_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
-				sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=text/html --cf-invalidate put top-level-index.html s3://kg-hub-public-data/index.html'
+				sh '. venv/bin/activate && python3.7 ./go-site/scripts/bucket-indexer.py --credentials $AWS_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
+				sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate put top-level-index.html s3://kg-hub-public-data/index.html'
 
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/[artifact name]
