@@ -117,8 +117,6 @@ def query(yaml: str, output_dir: str,
 @click.option("output_dir", "-o", default="data/edges/", type=click.Path())
 @click.option("train_fraction", "-t", default=0.8, type=float)
 @click.option("validation", "-v", is_flag=True, default=False)
-@click.option("min_degree", "-m", default=2, type=click.IntRange(min=0, max=None,
-                                                                 clamp=False))
 def edges(*args, **kwargs) -> None:
     """Make sets of edges for ML training
 
@@ -127,12 +125,11 @@ def edges(*args, **kwargs) -> None:
 
     To generate positive edges: a set of test positive edges equal in number to
     [(1 - train_fraction) * number of edges in input graph] are randomly selected from
-    the edges in the input graph, such that both nodes participating in the edge have a
-    degree greater than min_degree (to avoid creating disconnected components). These
-    edges are emitting as positive test edges. (If -v == true, the test positive edges
-    are divided equally to yield test and validation positive edges.) These edges are
-    then removed from the edges of the input graph, and these are emitted as the
-    training edges.
+    the edges in the input graph that is not part of a minimal spanning tree, such that
+    removing the edge does not create new components. These edges are emitting as
+    positive test edges. (If -v == true, the test positive edges are divided equally to
+    yield test and validation positive edges.) These edges are then removed from the
+    edges of the input graph, and these are emitted as the training edges.
 
     Negative edges are selected by randomly selecting pairs of nodes that are not
     connected by an edge in the input graph. The number of negative edges emitted is
@@ -154,8 +151,7 @@ def edges(*args, **kwargs) -> None:
         :param output_dir:     directory to output edges and new graph [data/edges/]
         :param train_fraction: fraction of edges to emit as training [0.8]
         :param validation:     should we make validation edges? [False]
-        :param min_degree      when choosing edges, what is the minimum degree of nodes
-                        involved in the edge [1]
+
     """
     make_edges(*args, **kwargs)
 
