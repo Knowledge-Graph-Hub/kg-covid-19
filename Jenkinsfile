@@ -130,7 +130,7 @@ pipeline {
                 // code for building s3 index files
                 dir('./gitrepo') {
                     script {
-		        if(fileExists($BUILDSTARTDATE)){
+		        if(fileExists('$BUILDSTARTDATE')){
                         	echo "Will not overwrite existing directory: $BUILDSTARTDATE"
                         	sh 'exit 1'
 			} else {
