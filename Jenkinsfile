@@ -145,7 +145,7 @@ pipeline {
 		                echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): ${REMOTE_BUILD_DIR_CONTENTS}"
 				if('$BUILDSTARTDATE'){
                         		echo "Will not overwrite existing (---REMOTE S3---) directory: $BUILDSTARTDATE"
-                        		// sh 'exit 1'
+                        		sh 'exit 1'
 				} else {
                         		echo "remote directory $BUILDSTARTDATE is empty, proceeding"
 				}
