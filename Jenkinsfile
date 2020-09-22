@@ -131,12 +131,6 @@ pipeline {
                 dir('./gitrepo') {
                     script {
 			// make sure we aren't going to clobber existing data
-		        if(fileExists('$BUILDSTARTDATE')){
-                        	echo "Will not overwrite existing directory: $BUILDSTARTDATE"
-                        	sh 'exit 1'
-			} else {
-                        	echo "local directory $BUILDSTARTDATE doesn't exist, proceeding"
-			}
     		        withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
 		                REMOTE_BUILD_DIR_CONTENTS = sh (
 		    	   	    script: 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate ls s3://kg-hub-public-data/$BUILDSTARTDATE/',
