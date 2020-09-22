@@ -136,7 +136,14 @@ pipeline {
 			} else {
                         	echo "$BUILDSTARTDATE doesn't exist, proceeding"
 			}
-                        sh 'git clone https://github.com/justaddcoffee/go-site.git'
+    		        withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
+		                GIT_COMMIT_EMAIL = sh (
+		    	   	    script: 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate ls s3://kg-hub-public-data/$BUILDSTARTDATE/',
+		    	   	    returnStdout: true
+		                ).trim()
+		                echo "Git committer email: ${GIT_COMMIT_EMAIL}"			    
+			}
+		        sh 'git clone https://github.com/justaddcoffee/go-site.git'
 
                         // if (env.BRANCH_NAME != 'master' ||
                         if (env.BRANCH_NAME == 'NOT THIS BRANCH') {
