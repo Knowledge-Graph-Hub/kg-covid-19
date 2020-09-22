@@ -143,7 +143,7 @@ pipeline {
 		    	   	    returnStdout: true
 		                ).trim()
 		                echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): '${REMOTE_BUILD_DIR_CONTENTS}'"
-				if("${BUILDSTARTDATE}".trim() != ''){
+				if("${BUILDSTARTDATE}"?.trim() != ''){
                         		echo "Will not overwrite existing (---REMOTE S3---) directory: $BUILDSTARTDATE"
                         		sh 'exit 1'
 				} else {
