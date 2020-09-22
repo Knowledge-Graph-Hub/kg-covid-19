@@ -117,7 +117,7 @@ def query(yaml: str, output_dir: str,
 @click.option("output_dir", "-o", default="data/edges/", type=click.Path())
 @click.option("train_fraction", "-t", default=0.8, type=float)
 @click.option("validation", "-v", is_flag=True, default=False)
-def edges(*args, **kwargs) -> None:
+def holdout(*args, **kwargs) -> None:
     """Make sets of edges for ML training
 
     Given a graph (from formatted node and edge TSVs), output positive edges and negative
