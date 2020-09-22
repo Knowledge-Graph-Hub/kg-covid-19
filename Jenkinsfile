@@ -176,7 +176,7 @@ pipeline {
                                 // put $BUILDSTARTDATE/ in s3 bucket
                                 //
 			        sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/ -x'
-			        sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate put -pr $BUILDSTARTDATE s3://kg-hub-public-data/'
+			        sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/'
 
                                 //
                                 // make $BUILDSTARTDATE the new current/
@@ -191,7 +191,7 @@ pipeline {
 				// scripts.
 				sh './venv/bin/pip install pystache boto3'
 				sh '. venv/bin/activate && python3.7 ./go-site/scripts/bucket-indexer.py --credentials $AWS_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
-				sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate put top-level-index.html s3://kg-hub-public-data/index.html'
+				sh 's3cmd -c $S3CMD_CFG put --acl-public --mime-type=text/html --cf-invalidate top-level-index.html s3://kg-hub-public-data/index.html'
 
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/[artifact name]
