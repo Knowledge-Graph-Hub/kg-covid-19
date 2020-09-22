@@ -184,8 +184,8 @@ pipeline {
                                 //
                                 // put $BUILDSTARTDATE/ in s3 bucket
                                 //
-			        sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/$BUILDSTARTDATE -x'
-			        sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/'
+			        sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/$BUILDSTARTDATE -x -u'
+				sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/'
 
                                 //
                                 // make $BUILDSTARTDATE the new current/
