@@ -159,10 +159,10 @@ pipeline {
                                 // make $BUILDSTARTDATE/ directory and sync to s3 bucket
                                 //
                                 sh 'mkdir $BUILDSTARTDATE/'
-                                sh 'cp -p data/merged/merged-kg.nt.gz $BUILDSTARTDATE/'
-                                sh 'cp -p data/merged/merged-kg.tar.gz $BUILDSTARTDATE/'
+                                sh 'cp -p data/merged/merged-kg.nt.gz $BUILDSTARTDATE/kg-covid-19.nt.gz'
+                                sh 'cp -p data/merged/merged-kg.tar.gz $BUILDSTARTDATE/kg-covid-19.tar.gz'
                                 sh 'touch merged-kg.jnl.gz' // REMOVE
-                                sh 'cp -p merged-kg.jnl.gz $BUILDSTARTDATE/'
+                                sh 'cp -p merged-kg.jnl.gz $BUILDSTARTDATE/kg-covid-19.jnl.gz'
                                 // transformed data
                                 sh 'rm -fr data/transformed/.gitkeep'
                                 sh 'cp -pr data/transformed $BUILDSTARTDATE/'
@@ -176,7 +176,7 @@ pipeline {
                                 // put $BUILDSTARTDATE/ in s3 bucket
                                 //
 			        sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/ -x'
-			        sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/'
+			        sh 's3cmd -c $S3CMD_CFG put -pr --cf-default-root-object=$BUILDSTARTDATE --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/'
 
                                 //
                                 // make $BUILDSTARTDATE the new current/
