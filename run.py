@@ -5,7 +5,7 @@ import os
 import click
 from kg_covid_19 import download as kg_download
 from kg_covid_19 import transform as kg_transform
-from kg_covid_19.edges import make_edges
+from kg_covid_19.edges import make_holdouts
 from kg_covid_19.merge_utils.merge_kg import load_and_merge
 from kg_covid_19.query import run_query, parse_query_yaml, result_dict_to_tsv
 from kg_covid_19.transform import DATA_SOURCES
@@ -117,7 +117,7 @@ def query(yaml: str, output_dir: str,
 @click.option("output_dir", "-o", default="data/edges/", type=click.Path())
 @click.option("train_fraction", "-t", default=0.8, type=float)
 @click.option("validation", "-v", is_flag=True, default=False)
-def holdout(*args, **kwargs) -> None:
+def holdouts(*args, **kwargs) -> None:
     """Make sets of edges for ML training
 
     Given a graph (from formatted node and edge TSVs), output positive edges and negative
@@ -153,7 +153,7 @@ def holdout(*args, **kwargs) -> None:
         :param validation:     should we make validation edges? [False]
 
     """
-    make_edges(*args, **kwargs)
+    make_holdouts(*args, **kwargs)
 
 
 if __name__ == "__main__":

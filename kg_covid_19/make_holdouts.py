@@ -7,12 +7,11 @@ from typing import List, Union, Tuple, Optional
 import pandas as pd  # type: ignore
 import numpy as np  # type: ignore
 from tqdm import tqdm  # type: ignore
+from ensmallen_graph import EnsmallenGraph
 
-
-def make_edges(nodes: str, edges: str, output_dir: str,
-               train_fraction: float, validation: bool,
-               min_degree: int, check_disconnected_nodes: bool = False,
-               remove_extra_cols: bool = False) -> None:
+def make_holdouts(nodes: str, edges: str, output_dir: str,
+                  train_fraction: float, validation: bool,
+                  remove_extra_cols: bool = False) -> None:
     """Prepare positive and negative edges for testing and training (see run.py edges
     command for documentation)
 
@@ -22,10 +21,6 @@ def make_edges(nodes: str, edges: str, output_dir: str,
         :param output_dir:     directory to output edges and new graph [data/edges/]
         :param train_fraction: fraction of edges to emit as training
         :param validation:     should we make validation edges? [False]
-        :param min_degree      when choosing positive edges, what is the minimum degree
-                        of nodes involved in the edge [2]
-        :param check_disconnected_nodes: should we check for disconnected nodes (i.e.
-                        nodes with degree of 0) in input graph? [False]
         :param remove_extra_cols throw out columns other than ['subject', 'object',
                         'relation', 'edge_label'][false]
     Returns:
@@ -40,11 +35,6 @@ def make_edges(nodes: str, edges: str, output_dir: str,
         edges_df = tsv_to_df(edges)
     logging.info("Loading node file %s" % nodes)
     nodes_df: pd.DataFrame = tsv_to_df(nodes)
-
-    # emit warning if there are nodes in nodes tsv not present in edges tsv
-    logging.info("Check for disconnected nodes: %r" % check_disconnected_nodes)
-    if check_disconnected_nodes and has_disconnected_nodes(nodes_df, edges_df):
-        warnings.warn("Graph has disconnected nodes")
 
     os.makedirs(output_dir, exist_ok=True)
 

@@ -7,7 +7,7 @@ from numpy import NaN
 from pandas import np
 from parameterized import parameterized
 
-from kg_covid_19.edges import make_edges, tsv_to_df, has_disconnected_nodes, \
+from kg_covid_19.edges import make_holdouts, tsv_to_df, has_disconnected_nodes, \
     make_negative_edges, make_positive_edges, df_to_tsv
 
 
@@ -46,7 +46,7 @@ class TestEdges(unittest.TestCase):
         self.assertEqual(df.shape, df_roundtrip.shape)
 
     def test_make_edges_exists(self):
-        self.assertTrue(isinstance(make_edges, object))
+        self.assertTrue(isinstance(make_holdouts, object))
 
     #
     # Test output files
@@ -72,9 +72,9 @@ class TestEdges(unittest.TestCase):
         output_file_with_path = os.path.join(me_output_dir, output_file)
         input_edges = tsv_to_df(self.edges_file)
         num_input_edges = input_edges.shape[0]
-        make_edges(nodes=self.nodes_file, edges=self.edges_file,
-                   output_dir=me_output_dir, train_fraction=0.8,
-                   validation=make_validation, min_degree=1)
+        make_holdouts(nodes=self.nodes_file, edges=self.edges_file,
+                      output_dir=me_output_dir, train_fraction=0.8,
+                      validation=make_validation, min_degree=1)
         if file_should_exist:
             self.assertTrue(os.path.isfile(output_file_with_path))
             new_edges_df = tsv_to_df(output_file_with_path)
@@ -94,9 +94,9 @@ class TestEdges(unittest.TestCase):
     def test_make_edges_pos_train_test_valid_edges_distinct(self, train, test, valid):
         output_dir = tempfile.mkdtemp()
         input_edges = tsv_to_df(self.edges_file)
-        make_edges(nodes=self.nodes_file, edges=self.edges_file,
-                   output_dir=output_dir, train_fraction=0.8,
-                   validation=True, min_degree=1)
+        make_holdouts(nodes=self.nodes_file, edges=self.edges_file,
+                      output_dir=output_dir, train_fraction=0.8,
+                      validation=True, min_degree=1)
         input_edges = tsv_to_df(self.edges_file)[['subject', 'object']]
         train_edges = tsv_to_df(os.path.join(output_dir, train))[['subject', 'object']]
         test_edges = tsv_to_df(os.path.join(output_dir, test))[['subject', 'object']]
@@ -120,9 +120,9 @@ class TestEdges(unittest.TestCase):
         output_dir = tempfile.mkdtemp()
         output_file_with_path = os.path.join(output_dir, 'pos_train_nodes.tsv')
         input_nodes = tsv_to_df(self.nodes_file)
-        make_edges(nodes=self.nodes_file, edges=self.edges_file,
-                   output_dir=output_dir, train_fraction=0.8,
-                   validation=False, min_degree=1)
+        make_holdouts(nodes=self.nodes_file, edges=self.edges_file,
+                      output_dir=output_dir, train_fraction=0.8,
+                      validation=False, min_degree=1)
         self.assertTrue(os.path.isfile(output_file_with_path))
         new_nodes_df = tsv_to_df(output_file_with_path)
         # make sure we get expected

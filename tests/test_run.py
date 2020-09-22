@@ -2,7 +2,7 @@ from unittest import TestCase, skip
 from click.testing import CliRunner
 from unittest import mock
 
-from run import download, transform, merge, edges, query
+from run import download, transform, merge, holdouts, query
 
 
 class TestRun(TestCase):
