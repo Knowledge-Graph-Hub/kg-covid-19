@@ -10,7 +10,6 @@ pipeline {
 	// upload already has an invalidation on it. For current,
 	// snapshot, and experimental.
 	AWS_CLOUDFRONT_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'
-	AWS_CLOUDFRONT_RELEASE_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'	    
     }
 
     options {
@@ -205,12 +204,7 @@ pipeline {
 				// files are up.
 				sh './venv/bin/pip install awscli'
 				sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
-				sh 'AWS_CONFIG_FILE=./awscli_config.txt python3.7 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
-				// The release branch also needs to
-				// deal with the second location.
-				if( env.BRANCH_NAME == 'release' ){
-				    sh 'AWS_CONFIG_FILE=./awscli_config.txt python3.7 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_RELEASE_DISTRIBUTION_ID --paths "/*"'
-				}
+				sh '. venv/bin/activate && AWS_CONFIG_FILE=./awscli_config.txt python3.7 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
 
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/[artifact name]
