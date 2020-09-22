@@ -3,6 +3,14 @@ pipeline {
 
     environment {
         BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
+
+        // Distribution ID for the AWS CloudFront for this branch,
+	// used soley for invalidations. Versioned release does not
+	// need this as it is always a new location and the index
+	// upload already has an invalidation on it. For current,
+	// snapshot, and experimental.
+	AWS_CLOUDFRONT_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'
+	AWS_CLOUDFRONT_RELEASE_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'	    
     }
 
     options {
@@ -176,7 +184,7 @@ pipeline {
                                 // put $BUILDSTARTDATE/ in s3 bucket
                                 //
 			        sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/ -x'
-			        sh 's3cmd -c $S3CMD_CFG put -pr --cf-default-root-object=$BUILDSTARTDATE --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/'
+			        sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/'
 
                                 //
                                 // make $BUILDSTARTDATE the new current/
@@ -192,6 +200,16 @@ pipeline {
 				sh './venv/bin/pip install pystache boto3'
 				sh '. venv/bin/activate && python3.7 ./go-site/scripts/bucket-indexer.py --credentials $AWS_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
 				sh 's3cmd -c $S3CMD_CFG put --acl-public --mime-type=text/html --cf-invalidate top-level-index.html s3://kg-hub-public-data/index.html'
+
+				// Invalidate the CDN now that the new
+				// files are up.
+				sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
+				sh 'AWS_CONFIG_FILE=./awscli_config.txt python3.7 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
+				// The release branch also needs to
+				// deal with the second location.
+				if( env.BRANCH_NAME == 'release' ){
+				    sh 'AWS_CONFIG_FILE=./awscli_config.txt python3.7 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_RELEASE_DISTRIBUTION_ID --paths "/*"'
+				}
 
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/[artifact name]
