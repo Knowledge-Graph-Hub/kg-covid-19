@@ -135,7 +135,7 @@ pipeline {
                         	echo "Will not overwrite existing directory: $BUILDSTARTDATE"
                         	sh 'exit 1'
 			} else {
-                        	echo "$BUILDSTARTDATE doesn't exist, proceeding"
+                        	echo "local directory $BUILDSTARTDATE doesn't exist, proceeding"
 			}
     		        withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
 		                REMOTE_BUILD_DIR_CONTENTS = sh (
@@ -143,9 +143,11 @@ pipeline {
 		    	   	    returnStdout: true
 		                ).trim()
 		                echo "REMOTE_BUILD_DIR_CONTENTS: ${REMOTE_BUILD_DIR_CONTENTS}"
-				if($REMOTE_BUILD_DIR_CONTENTS){
+				if($REMOTE_BUILD_DIR_CONTENTS != ''){
                         		echo "Will not overwrite existing (---REMOTE S3---) directory: $BUILDSTARTDATE"
                         		sh 'exit 1'
+				} else {
+                        		echo "remote directory $BUILDSTARTDATE is empty, proceeding"
 				}
 			}
 			    
