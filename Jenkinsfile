@@ -14,7 +14,7 @@ pipeline {
         stage('Ready and clean') {
             steps {
                 // Give us a minute to cancel if we want.
-                sleep time: 1, unit: 'MINUTES'
+                // sleep time: 1, unit: 'MINUTES'
                 cleanWs()
             }
         }
@@ -166,7 +166,8 @@ pipeline {
                                 //
                                 // put $BUILDSTARTDATE/ in s3 bucket
                                 //
-                                sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate put -pr $BUILDSTARTDATE s3://kg-hub-public-data/'
+			        sh '. venv/bin/activate && python3.7 ./scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE ---prefix https://kg-hub.berkeleybop.io/ -x'
+			        sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate put -pr $BUILDSTARTDATE s3://kg-hub-public-data/'
 
                                 //
                                 // make $BUILDSTARTDATE the new current/
