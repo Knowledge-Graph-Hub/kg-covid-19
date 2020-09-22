@@ -62,8 +62,9 @@ pipeline {
                 dir('./gitrepo') {
                     script {
                         def run_py_dl = sh(
-                            script: '. venv/bin/activate && python3.7 run.py download', returnStatus: true
-                        )
+                            // script: '. venv/bin/activate && python3.7 run.py download', returnStatus: true
+                            script: 'BADCOMMAND', returnStatus: true
+			)
                         if (run_py_dl == 0) {
                             if (env.BRANCH_NAME != 'master') { // upload raw to s3 if we're on correct branch
                                 echo "Will not push if not on correct branch."
