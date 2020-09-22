@@ -161,7 +161,9 @@ pipeline {
                         } else {
                             withCredentials([
 					    file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG'),
-					    file(credentialsId: 'aws_kg_hub_push_json', variable: 'AWS_JSON')
+					    file(credentialsId: 'aws_kg_hub_push_json', variable: 'AWS_JSON'),
+					    string(credentialsId: 'aws_kg_hub_access_key', variable: 'AWS_ACCESS_KEY_ID'), 
+					    string(credentialsId: 'aws_kg_hub_secret_key', variable: 'AWS_SECRET_ACCESS_KEY')]) {
 				    ]) {
                                 //
                                 // make $BUILDSTARTDATE/ directory and sync to s3 bucket
