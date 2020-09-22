@@ -182,7 +182,7 @@ pipeline {
 				// scripts.
 				sh './venv/bin/pip install pystache boto3'
 				sh '. venv/bin/activate && python3.7 ./go-site/scripts/bucket-indexer.py --credentials $AWS_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
-				sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate cp top-level-index.html s3://kg-hub-public-data/index.html'
+				sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate put top-level-index.html s3://kg-hub-public-data/index.html'
 
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/[artifact name]
