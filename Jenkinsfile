@@ -187,13 +187,17 @@ pipeline {
 			        sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/$BUILDSTARTDATE -x -u'
 				sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/'
 
+			        // make current/ directory
+				sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory current --prefix https://kg-hub.berkeleybop.io/current -x -u'
+				sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE/ s3://kg-hub-public-data/new_current'
+
                                 //
                                 // make $BUILDSTARTDATE the new current/
                                 // 	    
 				// The following cp always times out:
-                                sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate cp -v -pr s3://kg-hub-public-data/$BUILDSTARTDATE/ s3://kg-hub-public-data/new_current/'
-                                sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate rm -fr s3://kg-hub-public-data/current'
-                                sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate mv --recursive s3://kg-hub-public-data/new_current/ s3://kg-hub-public-data/current/'
+                                // sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate cp -v -pr s3://kg-hub-public-data/$BUILDSTARTDATE/ s3://kg-hub-public-data/new_current/'
+                                // sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate rm -fr s3://kg-hub-public-data/current'
+                                // sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate mv --recursive s3://kg-hub-public-data/new_current/ s3://kg-hub-public-data/current/'
 
                         	// Build the top level index.html
 				// "External" packages required to run these
