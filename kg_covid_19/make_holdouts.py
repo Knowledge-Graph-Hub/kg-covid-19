@@ -9,10 +9,11 @@ import numpy as np  # type: ignore
 from tqdm import tqdm  # type: ignore
 from ensmallen_graph import EnsmallenGraph
 
+
 def make_holdouts(nodes: str, edges: str, output_dir: str,
                   train_fraction: float, validation: bool,
                   remove_extra_cols: bool = False) -> None:
-    """Prepare positive and negative edges for testing and training (see run.py edges
+    """Prepare positive and negative edges for testing and training (see run.py holdouts
     command for documentation)
 
     Args:
@@ -33,7 +34,7 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
         sources_column='subject',
         destinations_column='object',
         directed=False,
-        edge_types_column='category',
+        edge_types_column='edge_label',
         default_edge_type='biolink:Association',
         # weights_column:str,
         # default_weight:float,
@@ -117,7 +118,7 @@ def make_negative_edges(nodes_df: pd.DataFrame,
                         edge_label: str = 'negative_edge',
                         relation: str = 'negative_edge'
                         ) -> pd.DataFrame:
-    """Given a graph (as nodes and edges pandas dataframes), select num_edges edges that
+    """Given a graph (as nodes and edges pandas dataframes), select num_edges holdouts that
     are NOT present in the graph
 
     :param nodes_df: pandas dataframe containing node info
@@ -208,8 +209,7 @@ def _generate_negative_edges(nodes_df: pd.DataFrame,
 
 def make_positive_edges(nodes_df: pd.DataFrame,
                         edges_df: pd.DataFrame,
-                        train_fraction: float,
-                        min_degree: int) -> List[pd.DataFrame]:
+                        train_fraction: float) -> List[pd.DataFrame]:
     """Positive edges are randomly selected from the edges in the graph, IFF both nodes
     participating in the edge have a degree greater than min_degree (to avoid creating
     disconnected components). This edge is then removed in the output graph. Negative
@@ -220,11 +220,10 @@ def make_positive_edges(nodes_df: pd.DataFrame,
     :param edges_df: pandas dataframe with edge info, generated from KGX TSV file
     :param train_fraction: fraction of input edges to emit as test (and optionally
                   validation) edges
-    :param min_degree: the minimum degree of nodes to be selected for positive edges
     :return:  pandas dataframes:
     training_edges_df: a dataframe with training edges with positive edges we
                     selected for test removed from graph
-    test_edges_df: a dataframe with training edges with positive edges
+    test_edges_df: a dataframe with test positive edges
     """
     if 'subject' not in list(edges_df.columns) or \
             'object' not in list(edges_df.columns):
@@ -253,13 +252,6 @@ def make_positive_edges(nodes_df: pd.DataFrame,
         test_edges = test_edges.merge(obj_degree_df, how='left', on='object')
         pbar.update()
 
-        pbar.set_description("Removing edges < min_degree")
-        test_edges.drop(test_edges[test_edges['subj_degree'] < min_degree].index,
-                        inplace=True)
-        test_edges.drop(test_edges[test_edges['obj_degree'] < min_degree].index,
-                        inplace=True)
-        pbar.update()
-
         pbar.set_description("Adding edge_label and relation columns")
         test_edges = test_edges.sample(frac=(1-train_fraction))
         test_edges['edge_label'] = 'positive_edge'
@@ -276,34 +268,6 @@ def make_positive_edges(nodes_df: pd.DataFrame,
         pbar.set_description("Done making positive edges")
 
     return [train_edges, test_edges]
-
-
-def has_disconnected_nodes(nodes_df: pd.DataFrame, edges_df: pd.DataFrame,
-                           check_nodes_in_edge_df_not_in_node_df=True) -> bool:
-    """Given nodes and edges df, determine if there are nodes that are not present in
-    edges (disconnected vertices)
-
-    :param nodes_df: pandas dataframe with node info
-    :param edges_df: pandas dataframe with edge info
-    :param check_nodes_in_edge_df_not_in_node_df: while we're at it, check if
-            edge df has nodes not mentioned in node df [True]
-    :return: bool
-    """
-    nodes_in_edge_file = \
-        np.sort(np.unique(np.concatenate((edges_df.subject, edges_df.object))))
-    nodes_in_node_file = np.sort(nodes_df.id.unique())
-
-    if check_nodes_in_edge_df_not_in_node_df:
-        diff = len(np.setdiff1d(nodes_in_edge_file, nodes_in_node_file))
-        if diff != 0:
-            warnings.warn(
-                "There are %i nodes in edge file that aren't in nodes file" % diff)
-
-    # if setdiff below is zero, odes_in_node_file is a subset of nodes_in_edge_file
-    if len(np.setdiff1d(nodes_in_node_file, nodes_in_edge_file)) == 0:
-        return False
-    else:
-        return True
 
 
 def tsv_to_df(tsv_file: str, *args, **kwargs) -> pd.DataFrame:
