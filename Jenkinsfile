@@ -129,6 +129,7 @@ pipeline {
 		                    REMOTE_BUILD_DIR_CONTENTS = sh (
 		    	   	            script: 's3cmd -c $S3CMD_CFG ls s3://kg-hub-public-data/$BUILDSTARTDATE/',
 		    	   	            returnStdout: true.trim()
+                            )
 		                    echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): '${REMOTE_BUILD_DIR_CONTENTS}'"
 				            if("${REMOTE_BUILD_DIR_CONTENTS}" != ''){
                         		echo "Will not overwrite existing (---REMOTE S3---) directory: $BUILDSTARTDATE"
