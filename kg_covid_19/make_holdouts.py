@@ -25,6 +25,7 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
     Returns:
         None.
     """
+    logging.basicConfig(level=logging.INFO)
     logging.info("Loading graph from nodes %s and edges %s files" % (nodes, edges))
     graph = EnsmallenGraph.from_csv(
         edge_path=edges,
