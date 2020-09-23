@@ -122,7 +122,7 @@ def holdouts(*args, **kwargs) -> None:
 
     Given a graph (from formatted node and edge TSVs), output positive edges and negative
     edges for use in machine learning.
-
+    \f
     To generate positive edges: a set of test positive edges equal in number to
     [(1 - train_fraction) * number of edges in input graph] are randomly selected from
     the edges in the input graph that is not part of a minimal spanning tree, such that
