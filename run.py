@@ -5,7 +5,7 @@ import os
 import click
 from kg_covid_19 import download as kg_download
 from kg_covid_19 import transform as kg_transform
-from kg_covid_19.edges import make_holdouts
+from kg_covid_19.make_holdouts import make_holdouts
 from kg_covid_19.merge_utils.merge_kg import load_and_merge
 from kg_covid_19.query import run_query, parse_query_yaml, result_dict_to_tsv
 from kg_covid_19.transform import DATA_SOURCES

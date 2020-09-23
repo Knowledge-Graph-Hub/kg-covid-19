@@ -28,6 +28,25 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
     """
     logging.info("Loading edge file %s" % edges)
     edges_df: pd.DataFrame
+    graph = EnsmallenGraph.from_csv(
+        edge_path=edges,
+        sources_column='subject',
+        destinations_column='object',
+        directed=False,
+        edge_types_column='category',
+        default_edge_type='biolink:Association',
+        # weights_column:str,
+        # default_weight:float,
+        node_path=nodes,
+        nodes_column='id',
+        default_node_type='biolink:NamedThing',
+        node_types_column='category',
+        # edge_sep="\t",
+        # node_sep="\t",
+        ignore_duplicated_edges=True,
+        ignore_duplicated_nodes=True,
+        force_conversion_to_undirected=True
+        );
     if remove_extra_cols:
         edges_df = tsv_to_df(edges, usecols=['subject', 'object', 'relation',
                                                        'edge_label'])
@@ -46,8 +65,7 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
     pos_train_edges, pos_test_edges = \
         make_positive_edges(nodes_df=nodes_df,
                             edges_df=edges_df,
-                            train_fraction=train_fraction,
-                            min_degree=min_degree)
+                            train_fraction=train_fraction)
     if validation:
         pos_valid_edges = pos_test_edges.sample(frac=0.5)
         pos_test_edges = pos_test_edges.drop(pos_valid_edges.index)
