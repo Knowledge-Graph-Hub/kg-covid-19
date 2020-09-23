@@ -114,7 +114,7 @@ def query(yaml: str, output_dir: str,
 @cli.command()
 @click.option("nodes", "-n", default="data/merged/nodes.tsv", type=click.Path(exists=True))
 @click.option("edges", "-e", default="data/merged/edges.tsv", type=click.Path(exists=True))
-@click.option("output_dir", "-o", default="data/edges/", type=click.Path())
+@click.option("output_dir", "-o", default="data/holdouts/", type=click.Path())
 @click.option("train_fraction", "-t", default=0.8, type=float)
 @click.option("validation", "-v", is_flag=True, default=False)
 def holdouts(*args, **kwargs) -> None:
