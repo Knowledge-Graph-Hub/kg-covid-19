@@ -152,7 +152,6 @@ pipeline {
                                 sh 'mkdir $BUILDSTARTDATE/'
                                 sh 'cp -p data/merged/merged-kg.nt.gz $BUILDSTARTDATE/kg-covid-19.nt.gz'
                                 sh 'cp -p data/merged/merged-kg.tar.gz $BUILDSTARTDATE/kg-covid-19.tar.gz'
-                                sh 'touch merged-kg.jnl.gz' // REMOVE
                                 sh 'cp -p merged-kg.jnl.gz $BUILDSTARTDATE/kg-covid-19.jnl.gz'
                                 // transformed data
                                 sh 'rm -fr data/transformed/.gitkeep'
