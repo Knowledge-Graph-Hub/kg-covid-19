@@ -11,8 +11,7 @@ from ensmallen_graph import EnsmallenGraph
 
 
 def make_holdouts(nodes: str, edges: str, output_dir: str,
-                  train_fraction: float, validation: bool,
-                  remove_extra_cols: bool = False) -> None:
+                  train_fraction: float, validation: bool, seed=42) -> None:
     """Prepare positive and negative edges for testing and training (see run.py holdouts
     command for documentation)
 
@@ -22,13 +21,11 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
         :param output_dir:     directory to output edges and new graph [data/edges/]
         :param train_fraction: fraction of edges to emit as training
         :param validation:     should we make validation edges? [False]
-        :param remove_extra_cols throw out columns other than ['subject', 'object',
-                        'relation', 'edge_label'][false]
+        :param seed:    random seed [42]
     Returns:
         None.
     """
-    logging.info("Loading edge file %s" % edges)
-    edges_df: pd.DataFrame
+    logging.info("Loading graph from nodes %s and edges %s files" % (nodes, edges))
     graph = EnsmallenGraph.from_csv(
         edge_path=edges,
         sources_column='subject',
@@ -48,38 +45,34 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
         ignore_duplicated_nodes=True,
         force_conversion_to_undirected=True
         );
-    if remove_extra_cols:
-        edges_df = tsv_to_df(edges, usecols=['subject', 'object', 'relation',
-                                                       'edge_label'])
-    else:
-        edges_df = tsv_to_df(edges)
-    logging.info("Loading node file %s" % nodes)
-    nodes_df: pd.DataFrame = tsv_to_df(nodes)
 
     os.makedirs(output_dir, exist_ok=True)
 
     # make positive edges
     logging.info("Making positive edges")
-    pos_train_edges: pd.DataFrame
-    pos_test_edges: pd.DataFrame
-    pos_valid_edges: pd.DataFrame
-    pos_train_edges, pos_test_edges = \
-        make_positive_edges(nodes_df=nodes_df,
-                            edges_df=edges_df,
-                            train_fraction=train_fraction)
+    pos_train_edges, pos_test_edges = graph.random_holdout(seed=42,
+                                                           train_percentage=train_fraction)
     if validation:
-        pos_valid_edges = pos_test_edges.sample(frac=0.5)
-        pos_test_edges = pos_test_edges.drop(pos_valid_edges.index)
+        pos_valid_edges, pos_test_edges = \
+            pos_test_edges.random_holdout(seed=seed,
+                                          train_percentage=0.5)
 
     # make negative edges
     logging.info("Making negative edges")
-    neg_edges_df: pd.DataFrame = make_negative_edges(nodes_df, edges_df)
-    neg_train_edges: pd.DataFrame = neg_edges_df.sample(frac=train_fraction)
-    neg_test_edges: pd.DataFrame = neg_edges_df.drop(neg_train_edges.index)
-    neg_valid_edges: pd.DataFrame
+    # neg_edges_df: pd.DataFrame = make_negative_edges(nodes_df, edges_df)
+    # neg_train_edges: pd.DataFrame = neg_edges_df.sample(frac=train_fraction)
+    # neg_test_edges: pd.DataFrame = neg_edges_df.drop(neg_train_edges.index)
+    # neg_valid_edges: pd.DataFrame
+
+    all_negative_edges = \
+        pos_train_edges.sample_negatives(seed=seed,
+                                         negatives_number=graph.get_edges_number(),
+                                         allow_selfloops=False)
+    neg_train_edges, neg_test_edges = \
+        all_negative_edges.random_holdout(seed=seed, train_percentage=train_fraction)
     if validation:
-        neg_valid_edges = neg_test_edges.sample(frac=0.5)
-        neg_test_edges = neg_test_edges.drop(neg_valid_edges.index)
+        neg_test_edges, neg_valid_edges = \
+            neg_test_edges.random_holdout(seed=seed, train_percentage=0.5)
 
     #
     # write out positive edges
@@ -90,11 +83,12 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
     pos_train_nodes_outfile = os.path.join(output_dir, "pos_train_nodes.tsv")
     pos_test_edges_outfile = os.path.join(output_dir, "pos_test_edges.tsv")
     pos_valid_edges_outfile = os.path.join(output_dir, "pos_valid_edges.tsv")
-    df_to_tsv(df=pos_train_edges, outfile=pos_train_edges_outfile)
-    df_to_tsv(df=nodes_df, outfile=pos_train_nodes_outfile)
-    df_to_tsv(df=pos_test_edges, outfile=pos_test_edges_outfile)
+
+    pos_train_edges.to_edges_csv(edges_path=pos_train_edges_outfile)
+    pos_train_edges.to_nodes_csv(nodes_path=pos_train_nodes_outfile)
+    pos_test_edges.to_edges_csv(edges_path=pos_test_edges_outfile)
     if validation:
-        df_to_tsv(df=pos_valid_edges, outfile=pos_valid_edges_outfile)
+        pos_valid_edges.to_edges_csv(edges_path=pos_valid_edges_outfile)
 
     #
     # write out negative edges
@@ -103,10 +97,11 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
     neg_train_edges_outfile = os.path.join(output_dir, "neg_train_edges.tsv")
     neg_test_edges_outfile = os.path.join(output_dir, "neg_test_edges.tsv")
     neg_valid_edges_outfile = os.path.join(output_dir, "neg_valid_edges.tsv")
-    df_to_tsv(df=neg_train_edges, outfile=neg_train_edges_outfile)
-    df_to_tsv(df=neg_test_edges, outfile=neg_test_edges_outfile)
+
+    neg_train_edges.to_edges_csv(edges_path=neg_train_edges_outfile)
+    neg_train_edges.to_edges_csv(edges_path=neg_test_edges_outfile)
     if validation:
-        df_to_tsv(df=neg_valid_edges, outfile=neg_valid_edges_outfile)
+        neg_valid_edges.to_edges_csv(edges_path=neg_valid_edges_outfile)
 
 
 def df_to_tsv(df: pd.DataFrame, outfile: str, sep="\t", index=False) -> None:
