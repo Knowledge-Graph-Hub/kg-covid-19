@@ -3,6 +3,10 @@ pipeline {
 
     environment {
         BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
+
+        // Distribution ID for the AWS CloudFront for this branch,
+        // used solely for invalidations
+        AWS_CLOUDFRONT_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'
     }
 
     options {
@@ -61,15 +65,15 @@ pipeline {
                             if (env.BRANCH_NAME != 'master') { // upload raw to s3 if we're on correct branch
                                 echo "Will not push if not on correct branch."
                             } else {
-                                withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
-                                    sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
+                                withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
+                                    sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
                                 }
                             }
                         } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
-                            withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                            withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
                                 sh 'rm -fr data/raw || true;'
                                 sh 'mkdir -p data/raw || true'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/raw/ data/raw/'
+                                sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/raw/ data/raw/'
                             }
                         }
                     }
@@ -117,18 +121,71 @@ pipeline {
             steps {
                 dir('./gitrepo') {
                     script {
+                        // code for building s3 index files
+                        sh 'git clone https://github.com/justaddcoffee/go-site.git'
+
+                        // make sure we aren't going to clobber existing data on S3
+                        withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
+                            REMOTE_BUILD_DIR_CONTENTS = sh (
+                                script: 's3cmd -c $S3CMD_CFG ls s3://kg-hub-public-data/$BUILDSTARTDATE/',
+                                returnStdout: true.trim()
+                            )
+                            echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): '${REMOTE_BUILD_DIR_CONTENTS}'"
+                            if("${REMOTE_BUILD_DIR_CONTENTS}" != ''){
+                                echo "Will not overwrite existing (---REMOTE S3---) directory: $BUILDSTARTDATE"
+                                sh 'exit 1'
+                            } else {
+                                echo "remote directory $BUILDSTARTDATE is empty, proceeding"
+                            }
+                        }
+
                         if (env.BRANCH_NAME != 'master') {
                             echo "Will not push if not on correct branch."
                         } else {
-                            withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_JSON')]) {
+                            withCredentials([
+					            file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG'),
+					            file(credentialsId: 'aws_kg_hub_push_json', variable: 'AWS_JSON'),
+					            string(credentialsId: 'aws_kg_hub_access_key', variable: 'AWS_ACCESS_KEY_ID'),
+					            string(credentialsId: 'aws_kg_hub_secret_key', variable: 'AWS_SECRET_ACCESS_KEY')]) {
+                                //
+                                // make $BUILDSTARTDATE/ directory and sync to s3 bucket
+                                //
+                                sh 'mkdir $BUILDSTARTDATE/'
+                                sh 'cp -p data/merged/merged-kg.nt.gz $BUILDSTARTDATE/kg-covid-19.nt.gz'
+                                sh 'cp -p data/merged/merged-kg.tar.gz $BUILDSTARTDATE/kg-covid-19.tar.gz'
+                                sh 'cp -p merged-kg.jnl.gz $BUILDSTARTDATE/kg-covid-19.jnl.gz'
+                                // transformed data
                                 sh 'rm -fr data/transformed/.gitkeep'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put -r data/transformed s3://kg-hub-public-data/'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put data/merged/merged-kg.nt.gz s3://kg-hub-public-data/kg-covid-19.nt.gz'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put data/merged/merged-kg.tar.gz s3://kg-hub-public-data/kg-covid-19.tar.gz'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put merged-kg.jnl.gz s3://kg-hub-public-data/kg-covid-19.jnl.gz'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put *_stats*.yaml s3://kg-hub-public-data/'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate ls s3://kg-hub-public-data/ | grep yaml > yaml_manifests.txt'
-                                sh 's3cmd -c $S3CMD_JSON --acl-public --mime-type=plain/text --cf-invalidate put yaml_manifests.txt s3://kg-hub-public-data/'
+                                sh 'cp -pr data/transformed $BUILDSTARTDATE/'
+                                sh 'cp -pr data/raw $BUILDSTARTDATE/'
+                                sh 'cp Jenkinsfile $BUILDSTARTDATE/'
+                                // stats dir
+                                sh 'mkdir $BUILDSTARTDATE/stats/'
+                                sh 'cp -p *_stats.yaml $BUILDSTARTDATE/stats/'
+
+                                //
+                                // put $BUILDSTARTDATE/ in s3 bucket
+                                //
+                                sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/$BUILDSTARTDATE -x -u'
+                                sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/'
+
+                                // make current/ directory
+                                sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/current -x -u'
+                                sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE/ s3://kg-hub-public-data/current/'
+
+                                // Build the top level index.html
+                                // "External" packages required to run these
+                                // scripts.
+                                sh './venv/bin/pip install pystache boto3'
+                                sh '. venv/bin/activate && python3.7 ./go-site/scripts/bucket-indexer.py --credentials $AWS_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
+                                sh 's3cmd -c $S3CMD_CFG put --acl-public --mime-type=text/html --cf-invalidate top-level-index.html s3://kg-hub-public-data/index.html'
+
+                                // Invalidate the CDN now that the new
+                                // files are up.
+                                sh './venv/bin/pip install awscli'
+                                sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
+                                sh '. venv/bin/activate && AWS_CONFIG_FILE=./awscli_config.txt python3.7 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
+
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/[artifact name]
                             }
