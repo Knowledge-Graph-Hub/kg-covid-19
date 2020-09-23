@@ -5,7 +5,7 @@ pipeline {
         BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
 
         // Distribution ID for the AWS CloudFront for this branch,
-        // used soley for invalidations
+        // used solely for invalidations
         AWS_CLOUDFRONT_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'
     }
 
