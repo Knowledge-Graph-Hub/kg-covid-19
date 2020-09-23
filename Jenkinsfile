@@ -18,7 +18,7 @@ pipeline {
         stage('Ready and clean') {
             steps {
                 // Give us a minute to cancel if we want.
-                // sleep time: 1, unit: 'MINUTES'
+                sleep time: 1, unit: 'MINUTES'
                 cleanWs()
             }
         }
