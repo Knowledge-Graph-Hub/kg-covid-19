@@ -112,11 +112,16 @@ def query(yaml: str, output_dir: str,
 
 
 @cli.command()
-@click.option("nodes", "-n", default="data/merged/nodes.tsv", type=click.Path(exists=True))
-@click.option("edges", "-e", default="data/merged/edges.tsv", type=click.Path(exists=True))
-@click.option("output_dir", "-o", default="data/holdouts/", type=click.Path())
-@click.option("train_fraction", "-t", default=0.8, type=float)
-@click.option("validation", "-v", is_flag=True, default=False)
+@click.option("nodes", "-n", help="nodes KGX TSV file", default="data/merged/nodes.tsv",
+              type=click.Path(exists=True))
+@click.option("edges", "-e", help="edges KGX TSV file", default="data/merged/edges.tsv",
+              type=click.Path(exists=True))
+@click.option("output_dir", "-o", help="output directory", default="data/holdouts/",
+              type=click.Path())
+@click.option("train_fraction", "-t",
+              help="fraction of input graph to use in training graph [0.8]",
+              default=0.8, type=float)
+@click.option("validation", "-v", help="make validation set", is_flag=True, default=False)
 def holdouts(*args, **kwargs) -> None:
     """Make holdouts for ML training
 
