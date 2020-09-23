@@ -84,12 +84,8 @@ pipeline {
         stage('Transform') {
             steps {
                 dir('./gitrepo') {
-//                     sh 'env'
-//                     sh '. venv/bin/activate && env && python3.7 run.py transform'
-                    withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
-		        sh 'mkdir transformed/'
-                        sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/transformed/ttd data/transformed/'
-                    }
+                    sh 'env'
+                    sh '. venv/bin/activate && env && python3.7 run.py transform'
                 }
             }
         }
