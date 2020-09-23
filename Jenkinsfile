@@ -101,21 +101,21 @@ pipeline {
             }
         }
 
-//         stage('Make blazegraph journal'){
-//             steps {
-//                 dir('./gitrepo/blazegraph') {
-//                         git(
-//                                 url: 'https://github.com/balhoff/blazegraph-runner.git',
-//                                 branch: 'master'
-//                         )
-//                         sh 'sbt stage'
-//                         sh 'pigz -d ../data/merged/merged-kg.nt.gz'
-//                         sh 'export JAVA_OPTS=-Xmx128G && ./target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=../merged-kg.jnl --use-ontology-graph=true ../data/merged/merged-kg.nt'
-//                         sh 'pigz ../merged-kg.jnl'
-//                         sh 'pigz ../data/merged/merged-kg.nt'
-//                 }
-//             }
-//         }
+        stage('Make blazegraph journal'){
+            steps {
+                dir('./gitrepo/blazegraph') {
+                        git(
+                                url: 'https://github.com/balhoff/blazegraph-runner.git',
+                                branch: 'master'
+                        )
+                        sh 'sbt stage'
+                        sh 'pigz -d ../data/merged/merged-kg.nt.gz'
+                        sh 'export JAVA_OPTS=-Xmx128G && ./target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=../merged-kg.jnl --use-ontology-graph=true ../data/merged/merged-kg.nt'
+                        sh 'pigz ../merged-kg.jnl'
+                        sh 'pigz ../data/merged/merged-kg.nt'
+                }
+            }
+        }
 
         stage('Publish') {
             steps {
