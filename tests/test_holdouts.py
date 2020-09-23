@@ -7,8 +7,8 @@ from numpy import NaN
 from pandas import np
 from parameterized import parameterized
 
-from kg_covid_19.make_holdouts import make_holdouts, tsv_to_df, has_disconnected_nodes,\
-    make_negative_edges, make_positive_edges, df_to_tsv
+from kg_covid_19.make_holdouts import make_holdouts, tsv_to_df, make_negative_edges, \
+    make_positive_edges, df_to_tsv
 
 
 class TestEdges(unittest.TestCase):
@@ -236,19 +236,6 @@ class TestEdges(unittest.TestCase):
     #
     # negative edge tests
     #
-    def test_has_disconnected_nodes(self):
-        nodes_extra_ids = tsv_to_df(
-            'tests/resources/holdouts/bigger_graph_nodes_EXTRA_IDS.tsv')
-        nodes_missing_ids = tsv_to_df(
-            'tests/resources/holdouts/bigger_graph_nodes_MISSING_IDS.tsv')
-        self.assertTrue(not has_disconnected_nodes(edges_df=self.edges,
-                                                   nodes_df=self.nodes))
-        with self.assertWarns(Warning):
-            self.assertTrue(not has_disconnected_nodes(edges_df=self.edges,
-                                                       nodes_df=nodes_missing_ids))
-        self.assertTrue(has_disconnected_nodes(edges_df=self.edges,
-                                               nodes_df=nodes_extra_ids))
-
     def test_make_negative_edges_check_instance_type(self):
         self.assertTrue(isinstance(self.ne, pd.DataFrame))
 
