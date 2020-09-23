@@ -172,18 +172,18 @@ pipeline {
                                 sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/current -x -u'
                                 sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE/ s3://kg-hub-public-data/current/'
 
-                        	// Build the top level index.html
-				// "External" packages required to run these
-				// scripts.
-				sh './venv/bin/pip install pystache boto3'
-				sh '. venv/bin/activate && python3.7 ./go-site/scripts/bucket-indexer.py --credentials $AWS_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
-				sh 's3cmd -c $S3CMD_CFG put --acl-public --mime-type=text/html --cf-invalidate top-level-index.html s3://kg-hub-public-data/index.html'
+                                // Build the top level index.html
+                                // "External" packages required to run these
+                                // scripts.
+                                sh './venv/bin/pip install pystache boto3'
+                                sh '. venv/bin/activate && python3.7 ./go-site/scripts/bucket-indexer.py --credentials $AWS_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
+                                sh 's3cmd -c $S3CMD_CFG put --acl-public --mime-type=text/html --cf-invalidate top-level-index.html s3://kg-hub-public-data/index.html'
 
-				// Invalidate the CDN now that the new
-				// files are up.
-				sh './venv/bin/pip install awscli'
-				sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
-				sh '. venv/bin/activate && AWS_CONFIG_FILE=./awscli_config.txt python3.7 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
+                                // Invalidate the CDN now that the new
+                                // files are up.
+                                sh './venv/bin/pip install awscli'
+                                sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
+                                sh '. venv/bin/activate && AWS_CONFIG_FILE=./awscli_config.txt python3.7 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
 
                                 // Should now appear at:
                                 // https://kg-hub.berkeleybop.io/[artifact name]
