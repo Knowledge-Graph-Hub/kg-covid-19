@@ -7,15 +7,15 @@ from numpy import NaN
 from pandas import np
 from parameterized import parameterized
 
-from kg_covid_19.edges import make_edges, tsv_to_df, has_disconnected_nodes, \
-    make_negative_edges, make_positive_edges, df_to_tsv
+from kg_covid_19.make_holdouts import make_holdouts, tsv_to_df, make_negative_edges, \
+    make_positive_edges, df_to_tsv
 
 
 class TestEdges(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.nodes_file = 'tests/resources/edges/bigger_graph_nodes.tsv'
-        cls.edges_file = 'tests/resources/edges/bigger_graph_edges.tsv'
+        cls.nodes_file = 'tests/resources/holdouts/bigger_graph_nodes.tsv'
+        cls.edges_file = 'tests/resources/holdouts/bigger_graph_edges.tsv'
         cls.edges = tsv_to_df(cls.edges_file)
         cls.nodes = tsv_to_df(cls.nodes_file)
 
@@ -25,8 +25,7 @@ class TestEdges(unittest.TestCase):
         # make positive edges for small graph
         cls.train_fraction = 0.8
         (cls.train_edges, cls.test_edges) = make_positive_edges(
-            nodes_df=cls.nodes, edges_df=cls.edges, train_fraction= cls.train_fraction,
-            min_degree=0)
+            nodes_df=cls.nodes, edges_df=cls.edges, train_fraction= cls.train_fraction)
 
     def setUp(self) -> None:
         pass
@@ -46,7 +45,7 @@ class TestEdges(unittest.TestCase):
         self.assertEqual(df.shape, df_roundtrip.shape)
 
     def test_make_edges_exists(self):
-        self.assertTrue(isinstance(make_edges, object))
+        self.assertTrue(isinstance(make_holdouts, object))
 
     #
     # Test output files
@@ -72,9 +71,9 @@ class TestEdges(unittest.TestCase):
         output_file_with_path = os.path.join(me_output_dir, output_file)
         input_edges = tsv_to_df(self.edges_file)
         num_input_edges = input_edges.shape[0]
-        make_edges(nodes=self.nodes_file, edges=self.edges_file,
-                   output_dir=me_output_dir, train_fraction=0.8,
-                   validation=make_validation, min_degree=1)
+        make_holdouts(nodes=self.nodes_file, edges=self.edges_file,
+                      output_dir=me_output_dir, train_fraction=0.8,
+                      validation=make_validation)
         if file_should_exist:
             self.assertTrue(os.path.isfile(output_file_with_path))
             new_edges_df = tsv_to_df(output_file_with_path)
@@ -94,9 +93,9 @@ class TestEdges(unittest.TestCase):
     def test_make_edges_pos_train_test_valid_edges_distinct(self, train, test, valid):
         output_dir = tempfile.mkdtemp()
         input_edges = tsv_to_df(self.edges_file)
-        make_edges(nodes=self.nodes_file, edges=self.edges_file,
-                   output_dir=output_dir, train_fraction=0.8,
-                   validation=True, min_degree=1)
+        make_holdouts(nodes=self.nodes_file, edges=self.edges_file,
+                      output_dir=output_dir, train_fraction=0.8,
+                      validation=True)
         input_edges = tsv_to_df(self.edges_file)[['subject', 'object']]
         train_edges = tsv_to_df(os.path.join(output_dir, train))[['subject', 'object']]
         test_edges = tsv_to_df(os.path.join(output_dir, test))[['subject', 'object']]
@@ -120,9 +119,9 @@ class TestEdges(unittest.TestCase):
         output_dir = tempfile.mkdtemp()
         output_file_with_path = os.path.join(output_dir, 'pos_train_nodes.tsv')
         input_nodes = tsv_to_df(self.nodes_file)
-        make_edges(nodes=self.nodes_file, edges=self.edges_file,
-                   output_dir=output_dir, train_fraction=0.8,
-                   validation=False, min_degree=1)
+        make_holdouts(nodes=self.nodes_file, edges=self.edges_file,
+                      output_dir=output_dir, train_fraction=0.8,
+                      validation=False)
         self.assertTrue(os.path.isfile(output_file_with_path))
         new_nodes_df = tsv_to_df(output_file_with_path)
         # make sure we get expected
@@ -216,41 +215,9 @@ class TestEdges(unittest.TestCase):
                          % (overlap_test_train.shape[0],
                             overlap_test_train.to_string()))
 
-    def test_make_positive_edges_test_min_degree_gt_zero(self):
-        train_fraction = 0.90
-        degree = 2
-        hd_edges_file =\
-            'tests/resources/edges/bigger_graph_edges_HIGHER_DEGREE_NODES.tsv'
-        hd_edges = tsv_to_df(hd_edges_file)
-        hd_nodes = ['p1', 'd1',
-                    'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10',
-                    'g11', 'g12', 'g13', 'g14', 'g15', 'g16', 'g17', 'g18', 'g19',
-                    'g20', 'g21', 'g22', 'g23', 'g24', 'g25']
-        for _ in range(10):
-            (train_edges, test_edges) = make_positive_edges(
-                nodes_df=self.nodes, edges_df=hd_edges, train_fraction=train_fraction,
-                min_degree=degree)
-            these_nodes = set(list(test_edges.subject) + list(test_edges.object))
-            self.assertTrue(set(these_nodes) < set(hd_nodes),
-                            "Got some nodes with degree < 2: %s" %
-                            " ".join(np.setdiff1d(these_nodes,hd_nodes)[0]))
-
     #
     # negative edge tests
     #
-    def test_has_disconnected_nodes(self):
-        nodes_extra_ids = tsv_to_df(
-            'tests/resources/edges/bigger_graph_nodes_EXTRA_IDS.tsv')
-        nodes_missing_ids = tsv_to_df(
-            'tests/resources/edges/bigger_graph_nodes_MISSING_IDS.tsv')
-        self.assertTrue(not has_disconnected_nodes(edges_df=self.edges,
-                                                   nodes_df=self.nodes))
-        with self.assertWarns(Warning):
-            self.assertTrue(not has_disconnected_nodes(edges_df=self.edges,
-                                                       nodes_df=nodes_missing_ids))
-        self.assertTrue(has_disconnected_nodes(edges_df=self.edges,
-                                               nodes_df=nodes_extra_ids))
-
     def test_make_negative_edges_check_instance_type(self):
         self.assertTrue(isinstance(self.ne, pd.DataFrame))
 
