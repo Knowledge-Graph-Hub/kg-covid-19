@@ -5,8 +5,8 @@ pipeline {
         BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
 
         // Distribution ID for the AWS CloudFront for this branch,
-	// used soley for invalidations
-	AWS_CLOUDFRONT_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'
+        // used soley for invalidations
+        AWS_CLOUDFRONT_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'
     }
 
     options {
@@ -159,7 +159,7 @@ pipeline {
                             withCredentials([
 					    file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG'),
 					    file(credentialsId: 'aws_kg_hub_push_json', variable: 'AWS_JSON'),
-					    string(credentialsId: 'aws_kg_hub_access_key', variable: 'AWS_ACCESS_KEY_ID'), 
+					    string(credentialsId: 'aws_kg_hub_access_key', variable: 'AWS_ACCESS_KEY_ID'),
 					    string(credentialsId: 'aws_kg_hub_secret_key', variable: 'AWS_SECRET_ACCESS_KEY')]) {
                                 //
                                 // make $BUILDSTARTDATE/ directory and sync to s3 bucket
@@ -190,7 +190,7 @@ pipeline {
 
                                 //
                                 // make $BUILDSTARTDATE the new current/
-                                // 	    
+                                //
 				// The following cp always times out:
                                 // sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate cp -v -pr s3://kg-hub-public-data/$BUILDSTARTDATE/ s3://kg-hub-public-data/new_current/'
                                 // sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=text/html --cf-invalidate rm -fr s3://kg-hub-public-data/current'
