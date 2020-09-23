@@ -91,7 +91,7 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
     neg_valid_edges_outfile = os.path.join(output_dir, "neg_valid_edges.tsv")
 
     neg_train_edges.to_edges_csv(edges_path=neg_train_edges_outfile)
-    neg_train_edges.to_edges_csv(edges_path=neg_test_edges_outfile)
+    neg_test_edges.to_edges_csv(edges_path=neg_test_edges_outfile)
     if validation:
         neg_valid_edges.to_edges_csv(edges_path=neg_valid_edges_outfile)
 
