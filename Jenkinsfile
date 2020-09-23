@@ -73,11 +73,8 @@ pipeline {
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
                                 sh 'rm -fr data/raw || true;'
                                 sh 'mkdir -p data/raw || true'
-			        // FIX THIS
-                                // sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/raw/ data/raw/'
-			 	sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/raw/hp.json data/raw/hp.json'
-
-			    }
+                                sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/raw/ data/raw/'
+                            }
                         }
                     }
                 }
