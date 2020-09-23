@@ -14,8 +14,8 @@ from kg_covid_19.make_holdouts import make_holdouts, tsv_to_df, has_disconnected
 class TestEdges(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.nodes_file = 'tests/resources/edges/bigger_graph_nodes.tsv'
-        cls.edges_file = 'tests/resources/edges/bigger_graph_edges.tsv'
+        cls.nodes_file = 'tests/resources/holdouts/bigger_graph_nodes.tsv'
+        cls.edges_file = 'tests/resources/holdouts/bigger_graph_edges.tsv'
         cls.edges = tsv_to_df(cls.edges_file)
         cls.nodes = tsv_to_df(cls.nodes_file)
 
@@ -25,8 +25,7 @@ class TestEdges(unittest.TestCase):
         # make positive edges for small graph
         cls.train_fraction = 0.8
         (cls.train_edges, cls.test_edges) = make_positive_edges(
-            nodes_df=cls.nodes, edges_df=cls.edges, train_fraction= cls.train_fraction,
-            min_degree=0)
+            nodes_df=cls.nodes, edges_df=cls.edges, train_fraction= cls.train_fraction)
 
     def setUp(self) -> None:
         pass
@@ -74,7 +73,7 @@ class TestEdges(unittest.TestCase):
         num_input_edges = input_edges.shape[0]
         make_holdouts(nodes=self.nodes_file, edges=self.edges_file,
                       output_dir=me_output_dir, train_fraction=0.8,
-                      validation=make_validation, min_degree=1)
+                      validation=make_validation)
         if file_should_exist:
             self.assertTrue(os.path.isfile(output_file_with_path))
             new_edges_df = tsv_to_df(output_file_with_path)
@@ -96,7 +95,7 @@ class TestEdges(unittest.TestCase):
         input_edges = tsv_to_df(self.edges_file)
         make_holdouts(nodes=self.nodes_file, edges=self.edges_file,
                       output_dir=output_dir, train_fraction=0.8,
-                      validation=True, min_degree=1)
+                      validation=True)
         input_edges = tsv_to_df(self.edges_file)[['subject', 'object']]
         train_edges = tsv_to_df(os.path.join(output_dir, train))[['subject', 'object']]
         test_edges = tsv_to_df(os.path.join(output_dir, test))[['subject', 'object']]
@@ -122,7 +121,7 @@ class TestEdges(unittest.TestCase):
         input_nodes = tsv_to_df(self.nodes_file)
         make_holdouts(nodes=self.nodes_file, edges=self.edges_file,
                       output_dir=output_dir, train_fraction=0.8,
-                      validation=False, min_degree=1)
+                      validation=False)
         self.assertTrue(os.path.isfile(output_file_with_path))
         new_nodes_df = tsv_to_df(output_file_with_path)
         # make sure we get expected
@@ -220,7 +219,7 @@ class TestEdges(unittest.TestCase):
         train_fraction = 0.90
         degree = 2
         hd_edges_file =\
-            'tests/resources/edges/bigger_graph_edges_HIGHER_DEGREE_NODES.tsv'
+            'tests/resources/holdouts/bigger_graph_edges_HIGHER_DEGREE_NODES.tsv'
         hd_edges = tsv_to_df(hd_edges_file)
         hd_nodes = ['p1', 'd1',
                     'g1', 'g2', 'g3', 'g4', 'g5', 'g6', 'g7', 'g8', 'g9', 'g10',
@@ -228,8 +227,7 @@ class TestEdges(unittest.TestCase):
                     'g20', 'g21', 'g22', 'g23', 'g24', 'g25']
         for _ in range(10):
             (train_edges, test_edges) = make_positive_edges(
-                nodes_df=self.nodes, edges_df=hd_edges, train_fraction=train_fraction,
-                min_degree=degree)
+                nodes_df=self.nodes, edges_df=hd_edges, train_fraction=train_fraction)
             these_nodes = set(list(test_edges.subject) + list(test_edges.object))
             self.assertTrue(set(these_nodes) < set(hd_nodes),
                             "Got some nodes with degree < 2: %s" %
@@ -240,9 +238,9 @@ class TestEdges(unittest.TestCase):
     #
     def test_has_disconnected_nodes(self):
         nodes_extra_ids = tsv_to_df(
-            'tests/resources/edges/bigger_graph_nodes_EXTRA_IDS.tsv')
+            'tests/resources/holdouts/bigger_graph_nodes_EXTRA_IDS.tsv')
         nodes_missing_ids = tsv_to_df(
-            'tests/resources/edges/bigger_graph_nodes_MISSING_IDS.tsv')
+            'tests/resources/holdouts/bigger_graph_nodes_MISSING_IDS.tsv')
         self.assertTrue(not has_disconnected_nodes(edges_df=self.edges,
                                                    nodes_df=self.nodes))
         with self.assertWarns(Warning):
