@@ -122,22 +122,21 @@ pipeline {
                 // code for building s3 index files
                 dir('./gitrepo') {
                     script {
-			sh 'git clone https://github.com/justaddcoffee/go-site.git'
+			            sh 'git clone https://github.com/justaddcoffee/go-site.git'
 
-			// make sure we aren't going to clobber existing data
-    		        withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
-		                REMOTE_BUILD_DIR_CONTENTS = sh (
-		    	   	    script: 's3cmd -c $S3CMD_CFG ls s3://kg-hub-public-data/$BUILDSTARTDATE/',
-		    	   	    returnStdout: true
-		                ).trim()
-		                echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): '${REMOTE_BUILD_DIR_CONTENTS}'"
-				if("${REMOTE_BUILD_DIR_CONTENTS}" != ''){
+			            // make sure we aren't going to clobber existing data on S3
+    		            withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
+		                    REMOTE_BUILD_DIR_CONTENTS = sh (
+		    	   	            script: 's3cmd -c $S3CMD_CFG ls s3://kg-hub-public-data/$BUILDSTARTDATE/',
+		    	   	            returnStdout: true.trim()
+		                    echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): '${REMOTE_BUILD_DIR_CONTENTS}'"
+				            if("${REMOTE_BUILD_DIR_CONTENTS}" != ''){
                         		echo "Will not overwrite existing (---REMOTE S3---) directory: $BUILDSTARTDATE"
                         		sh 'exit 1'
-				} else {
+				            } else {
                         		echo "remote directory $BUILDSTARTDATE is empty, proceeding"
-				}
-			}
+				            }
+			            }
 
                         // if (env.BRANCH_NAME != 'master' ||
                         if (env.BRANCH_NAME == 'NOT THIS BRANCH') {
