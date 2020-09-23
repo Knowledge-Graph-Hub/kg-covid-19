@@ -59,10 +59,6 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
 
     # make negative edges
     logging.info("Making negative edges")
-    # neg_edges_df: pd.DataFrame = make_negative_edges(nodes_df, edges_df)
-    # neg_train_edges: pd.DataFrame = neg_edges_df.sample(frac=train_fraction)
-    # neg_test_edges: pd.DataFrame = neg_edges_df.drop(neg_train_edges.index)
-    # neg_valid_edges: pd.DataFrame
 
     all_negative_edges = \
         pos_train_edges.sample_negatives(seed=seed,
