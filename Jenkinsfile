@@ -182,14 +182,14 @@ pipeline {
                                 sh 'mkdir $BUILDSTARTDATE/stats/'
                                 sh 'cp -p *_stats.yaml $BUILDSTARTDATE/stats/'
 
-sh 'mkdir $S3PROJECTDIR'
-sh 'mv $BUILDSTARTDATE $S3PROJECTDIR/'
-sh 'cp -pr $S3PROJECTDIR/$BUILDSTARTDATE $S3PROJECTDIR/current'
+                                sh 'mkdir $S3PROJECTDIR'
+                                sh 'mv $BUILDSTARTDATE $S3PROJECTDIR/'
+                                sh 'cp -pr $S3PROJECTDIR/$BUILDSTARTDATE $S3PROJECTDIR/current'
                                 //
                                 // put $BUILDSTARTDATE/ in s3 bucket
                                 //
-sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $S3PROJECTDIR --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/ -x -u'
-sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $S3PROJECTDIR s3://kg-hub-public-data/'
+                                sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $S3PROJECTDIR --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/ -x -u'
+                                sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $S3PROJECTDIR s3://kg-hub-public-data/'
 
 // 			        // make current/ directory
 // 				sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/current -x -u'
