@@ -139,7 +139,7 @@ pipeline {
                             }
                         }
 
-                        if (env.BRANCH_NAME == 'NOT THIS BRANCH') {
+                        if (env.BRANCH_NAME == 'master') {
                             echo "Will not push if not on correct branch."
                         } else {
                             withCredentials([
