@@ -69,7 +69,8 @@ setup(
         'click',
         'pyyaml',
         'bmt',
-        'SPARQLWrapper'
+        'SPARQLWrapper',
+        'ensmallen_graph'
     ],
     extras_require=extras,
 )

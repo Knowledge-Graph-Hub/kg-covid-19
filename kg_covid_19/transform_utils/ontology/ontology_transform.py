@@ -10,6 +10,7 @@ ONTOLOGIES = {
     'HpTransform': 'hp.json',
     'GoTransform': 'go-plus.json',
     'MondoTransform':  'mondo.json',
+    'ChebiTransform': 'chebi.json.gz'
 }
 
 
@@ -50,6 +51,11 @@ class OntologyTransform(Transform):
         """
         print(f"Parsing {data_file}")
         transformer = ObographJsonTransformer()
-        transformer.parse(data_file, provided_by=source)
+        compression: Optional[str]
+        if data_file.endswith('.gz'):
+            compression = 'gz'
+        else:
+            compression = None
+        transformer.parse(data_file, compression=compression, provided_by=source)
         output_transformer = PandasTransformer(transformer.graph)
         output_transformer.save(filename=os.path.join(self.output_dir, f'{name}'), output_format='tsv', mode=None)
