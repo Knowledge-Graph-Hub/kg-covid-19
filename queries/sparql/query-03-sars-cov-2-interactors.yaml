@@ -11,15 +11,15 @@ query: >
   prefix bl: <https://w3id.org/biolink/vocab/>
   SELECT ?covp ?covplab ?p ?plab ?humanp ?humanplab WHERE
   {
-  ?interaction bl:edge_label bl:interacts_with .
-  ?interaction bl:object ?covp .
-  ?interaction bl:subject ?humanp .
-  ?interaction bl:relation ?p .
-  ?covp bl:category bl:Protein; <https://www.example.org/UNKNOWN/ncbi_taxid> ?covtaxon .
-  ?humanp bl:category bl:Protein; <https://www.example.org/UNKNOWN/ncbi_taxid> ?humantaxon .
-  OPTIONAL { ?covp rdfs:label ?covplab } .
-  OPTIONAL { ?humanp rdfs:label ?humanplab } .
-  OPTIONAL { ?p rdfs:label ?plab }
-   FILTER(?covtaxon="2697049")
-   FILTER(?humantaxon="9606")
+    ?interaction rdf:predicate bl:interacts_with .
+    ?interaction rdf:object ?covp .
+    ?interaction rdf:subject ?humanp .
+    ?interaction bl:relation ?p .
+    ?covp bl:category bl:Protein; <https://www.example.org/UNKNOWN/ncbi_taxid> ?covtaxon .
+    ?humanp bl:category bl:Protein; <https://www.example.org/UNKNOWN/ncbi_taxid> ?humantaxon .
+    OPTIONAL { ?covp rdfs:label ?covplab } .
+    OPTIONAL { ?humanp rdfs:label ?humanplab } .
+    OPTIONAL { ?p rdfs:label ?plab }
+     FILTER(?covtaxon="2697049")
+     FILTER(?humantaxon="9606")
   }
