@@ -3,8 +3,9 @@ pipeline {
 
     environment {
         BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
+        S3PROJECTDIR = 'kg-covid-19' // no trailing slash
 
-        // Distribution ID for the AWS CloudFront for this branch,
+        // Distribution ID for the AWS CloudFront for this bucket
         // used solely for invalidations
         AWS_CLOUDFRONT_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'
     }
@@ -66,14 +67,14 @@ pipeline {
                                 echo "Will not push if not on correct branch."
                             } else {
                                 withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
-                                    sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/'
+                                    sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/$S3PROJECTDIR/'
                                 }
                             }
                         } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
                                 sh 'rm -fr data/raw || true;'
                                 sh 'mkdir -p data/raw || true'
-                                sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/raw/ data/raw/'
+                                sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/$S3PROJECTDIR/raw/ data/raw/'
                             }
                         }
                     }
@@ -124,18 +125,18 @@ pipeline {
                         // code for building s3 index files
                         sh 'git clone https://github.com/justaddcoffee/go-site.git'
 
-                        // make sure we aren't going to clobber existing data on S3
+                        // make sure we aren't going to clobber existing data
                         withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
                             REMOTE_BUILD_DIR_CONTENTS = sh (
-                                script: 's3cmd -c $S3CMD_CFG ls s3://kg-hub-public-data/$BUILDSTARTDATE/',
-                                returnStdout: true.trim()
-                            )
+                                script: 's3cmd -c $S3CMD_CFG ls s3://kg-hub-public-data/$S3PROJECTDIR/$BUILDSTARTDATE/',
+                                returnStdout: true
+                            ).trim()
                             echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): '${REMOTE_BUILD_DIR_CONTENTS}'"
                             if("${REMOTE_BUILD_DIR_CONTENTS}" != ''){
-                                echo "Will not overwrite existing (---REMOTE S3---) directory: $BUILDSTARTDATE"
+                                echo "Will not overwrite existing remote S3 directory: $S3PROJECTDIR/$BUILDSTARTDATE"
                                 sh 'exit 1'
                             } else {
-                                echo "remote directory $BUILDSTARTDATE is empty, proceeding"
+                                echo "remote directory $S3PROJECTDIR/$BUILDSTARTDATE is empty, proceeding"
                             }
                         }
 
@@ -163,25 +164,24 @@ pipeline {
                                 sh 'mkdir $BUILDSTARTDATE/stats/'
                                 sh 'cp -p *_stats.yaml $BUILDSTARTDATE/stats/'
 
-                                //
-                                // put $BUILDSTARTDATE/ in s3 bucket
-                                //
-                                sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/$BUILDSTARTDATE -x -u'
-                                sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE s3://kg-hub-public-data/'
+                                // make local $S3PROJECTDIR with two dirs, $BUILDSTARTDATE and current/, both with the same contents
+                                sh 'mkdir $S3PROJECTDIR'
+                                sh 'mv $BUILDSTARTDATE $S3PROJECTDIR/'
+                                sh 'cp -pr $S3PROJECTDIR/$BUILDSTARTDATE $S3PROJECTDIR/current'
 
-                                // make current/ directory
-                                sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $BUILDSTARTDATE --prefix https://kg-hub.berkeleybop.io/current -x -u'
-                                sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $BUILDSTARTDATE/ s3://kg-hub-public-data/current/'
+                                //
+                                // put $S3PROJECTDIR/$BUILDSTARTDATE/ and $S3PROJECTDIR/current in s3 bucket
+                                //
+                                sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $S3PROJECTDIR --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/ -x -u'
+                                sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $S3PROJECTDIR s3://kg-hub-public-data/'
 
                                 // Build the top level index.html
-                                // "External" packages required to run these
-                                // scripts.
+                                // "External" packages required to run these scripts.
                                 sh './venv/bin/pip install pystache boto3'
                                 sh '. venv/bin/activate && python3.7 ./go-site/scripts/bucket-indexer.py --credentials $AWS_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
                                 sh 's3cmd -c $S3CMD_CFG put --acl-public --mime-type=text/html --cf-invalidate top-level-index.html s3://kg-hub-public-data/index.html'
 
-                                // Invalidate the CDN now that the new
-                                // files are up.
+                                // Invalidate the CDN now that the new files are up.
                                 sh './venv/bin/pip install awscli'
                                 sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
                                 sh '. venv/bin/activate && AWS_CONFIG_FILE=./awscli_config.txt python3.7 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
