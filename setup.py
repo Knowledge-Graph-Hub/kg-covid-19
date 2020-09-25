@@ -70,7 +70,7 @@ setup(
         'pyyaml',
         'bmt',
         'SPARQLWrapper',
-        'ensmallen_graph'
+        'ensmallen_graph==0.3.6'
     ],
     extras_require=extras,
 )
