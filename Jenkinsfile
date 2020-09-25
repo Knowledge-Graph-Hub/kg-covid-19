@@ -122,6 +122,7 @@ pipeline {
             steps {
                 dir('./gitrepo') {
                     script {
+                        // code for building s3 index files
                         sh 'git clone https://github.com/justaddcoffee/go-site.git'
 
                         // make sure we aren't going to clobber existing data
