@@ -133,7 +133,7 @@ pipeline {
                             ).trim()
                             echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): '${REMOTE_BUILD_DIR_CONTENTS}'"
                             if("${REMOTE_BUILD_DIR_CONTENTS}" != ''){
-                                echo "Will not overwrite existing (---REMOTE S3---) directory: $S3PROJECTDIR/$BUILDSTARTDATE"
+                                echo "Will not overwrite existing remote S3 directory: $S3PROJECTDIR/$BUILDSTARTDATE"
                                 sh 'exit 1'
                             } else {
                                 echo "remote directory $S3PROJECTDIR/$BUILDSTARTDATE is empty, proceeding"
