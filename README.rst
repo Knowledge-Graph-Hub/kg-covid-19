@@ -7,9 +7,11 @@ KG hub to produce a knowledge graph for COVID-19 and SARS-COV-2
 
 Documentation
 ----------------------------------------------
-
 See the `repository's wiki <https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki>`_.
 
+Download the Knowledge Graph
+----------------------------------------------
+Download prebuilt versions of the KG-COVID-19 knowledge graph `here <https://kg-hub.berkeleybop.io/kg-covid-19/>`_.
 
 Tests Coverage
 ----------------------------------------------
