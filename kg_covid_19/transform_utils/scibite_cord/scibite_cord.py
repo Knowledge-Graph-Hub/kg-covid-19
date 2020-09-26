@@ -103,7 +103,7 @@ class ScibiteCordTransform(Transform):
 
             subsets = ['pmc_json', 'pdf_json']
             for subset in subsets:
-                subset_dir = os.path.join(self.input_base_dir, subset)
+                subset_dir = os.path.join(tmpdir, subset)
                 for filename in tqdm(os.listdir(subset_dir)):
                     file = os.path.join(subset_dir, filename)
                     doc = json.load(open(file))
