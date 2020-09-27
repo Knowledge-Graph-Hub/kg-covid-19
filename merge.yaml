@@ -123,10 +123,10 @@ merged_graph:
       type: tsv
       compression: tar.gz
       filename: merged-kg
-    merged-kg-nt:
-      type: nt
-      compression: gz
-      filename: merged-kg.nt.gz
+#    merged-kg-nt:
+#      type: nt
+#      compression: gz
+#      filename: merged-kg.nt.gz
 #    merged-kg-neo4j:
 #      type: neo4j
 #      uri: http://localhost:8484
