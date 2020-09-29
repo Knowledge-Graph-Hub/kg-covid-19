@@ -2,6 +2,8 @@ import gzip
 import json
 import os
 import re
+import tempfile
+
 from tqdm import tqdm  # type: ignore
 from typing import List, Dict, Any, Set, Optional
 from zipfile import ZipFile
@@ -10,6 +12,7 @@ from prefixcommons import contract_uri # type: ignore
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
+from kg_covid_19.utils.transform_utils import unzip_to_tempdir
 
 CUSTOM_CMAP = {
     'CHEMBL.COMPOUND': 'https://www.ebi.ac.uk/chembl/compound_report_card/',
@@ -88,21 +91,23 @@ class ScibiteCordTransform(Transform):
 
         """
         pbar = tqdm(total=2, desc="Unzipping files")
-        with ZipFile(data_file1, 'r') as ZF:
-            ZF.extractall(path=self.input_base_dir)
-        pbar.update(1)
-        with ZipFile(data_file2, 'r') as ZF:
-            ZF.extractall(path=self.input_base_dir)
-        pbar.update(1)
-        pbar.close()
 
-        subsets = ['pmc_json', 'pdf_json']
-        for subset in subsets:
-            subset_dir = os.path.join(self.input_base_dir, subset)
-            for filename in tqdm(os.listdir(subset_dir)):
-                file = os.path.join(subset_dir, filename)
-                doc = json.load(open(file))
-                self.parse_annotation_doc(node_handle, edge_handle, doc)
+        # unzip to tmpdir, remove after use, to avoid cluttering raw/ with processed
+        # data
+        with tempfile.TemporaryDirectory(dir=self.input_base_dir) as tmpdir:
+            unzip_to_tempdir(data_file1, tmpdir);
+            pbar.update(1)
+            unzip_to_tempdir(data_file2, tmpdir);
+            pbar.update(1)
+            pbar.close()
+
+            subsets = ['pmc_json', 'pdf_json']
+            for subset in subsets:
+                subset_dir = os.path.join(tmpdir, subset)
+                for filename in tqdm(os.listdir(subset_dir)):
+                    file = os.path.join(subset_dir, filename)
+                    doc = json.load(open(file))
+                    self.parse_annotation_doc(node_handle, edge_handle, doc)
 
     def parse_annotation_doc(self, node_handle, edge_handle, doc: Dict) -> None:
         """Parse a JSON document corresponding to a publication.

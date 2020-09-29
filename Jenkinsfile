@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers{
+        cron('H H 1 1-12 *')
+    }
+
     environment {
         BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
         S3PROJECTDIR = 'kg-covid-19' // no trailing slash
@@ -94,7 +98,7 @@ pipeline {
         stage('Merge') {
             steps {
                 dir('./gitrepo') {
-                    sh '. venv/bin/activate && python3.7 run.py merge'
+                    sh '. venv/bin/activate && python3.7 run.py merge -y merge_jenkins.yaml'
                     sh 'env'
                     sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
                     sh 'tar -rvf data/merged/merged-kg.tar merged_graph_stats_$BUILDSTARTDATE.yaml'
@@ -164,8 +168,12 @@ pipeline {
                                 sh 'mkdir $BUILDSTARTDATE/stats/'
                                 sh 'cp -p *_stats.yaml $BUILDSTARTDATE/stats/'
 
-                                // make local $S3PROJECTDIR with two dirs, $BUILDSTARTDATE and current/, both with the same contents
+                                // make local $S3PROJECTDIR
                                 sh 'mkdir $S3PROJECTDIR'
+                                // add dir for existing builds so they are indexed
+                                // do an s3cmd ls for our project subdir, for each existing build make a local dir in $S3PROJECTDIR
+                                sh "for dir in `s3cmd ls s3://kg-hub-public-data/kg-covid-19/ | grep '\\/\$' | awk '{print \$NF}' | grep -w -v -E 'raw|current' | xargs -n1 basename`; do mkdir -p $S3PROJECTDIR/$dir; done"
+                                // now make two dirs, $BUILDSTARTDATE and current/, both with the same contents
                                 sh 'mv $BUILDSTARTDATE $S3PROJECTDIR/'
                                 sh 'cp -pr $S3PROJECTDIR/$BUILDSTARTDATE $S3PROJECTDIR/current'
 
@@ -173,7 +181,7 @@ pipeline {
                                 // put $S3PROJECTDIR/$BUILDSTARTDATE/ and $S3PROJECTDIR/current in s3 bucket
                                 //
                                 sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $S3PROJECTDIR --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/ -x -u'
-                                sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --mime-type=text/html --cf-invalidate $S3PROJECTDIR s3://kg-hub-public-data/'
+                                sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate $S3PROJECTDIR s3://kg-hub-public-data/'
 
                                 // Build the top level index.html
                                 // "External" packages required to run these scripts.
