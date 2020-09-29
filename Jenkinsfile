@@ -167,9 +167,11 @@ pipeline {
                                 // stats dir
                                 sh 'mkdir $BUILDSTARTDATE/stats/'
                                 sh 'cp -p *_stats.yaml $BUILDSTARTDATE/stats/'
+                                sh 'cp templates/README.build $BUILDSTARTDATE/README'
 
                                 // make local $S3PROJECTDIR
                                 sh 'mkdir $S3PROJECTDIR'
+                                sh 'cp templates/README.toplevel $S3PROJECTDIR/README'
                                 // add dir for existing builds so they are indexed
                                 // do an s3cmd ls for our project subdir, for each existing build make a local dir in $S3PROJECTDIR
                                 sh "for dir in `s3cmd ls s3://kg-hub-public-data/kg-covid-19/ | grep '\\/\$' | awk '{print \$NF}' | grep -w -v -E 'raw|current' | xargs -n1 basename`; do mkdir -p $S3PROJECTDIR/\$dir; done"
