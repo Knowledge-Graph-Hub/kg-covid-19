@@ -1,0 +1,13 @@
+The files in this directory represent a build of the KG-COVID-19 knowledge graph.
+
+These file include:
+	•	Jenkinsfile - the exact command run to produce this build of the KG
+	•	kg-covid-19.jnl.gz - a blazegraph journal that can be loaded to produce a Blazegraph endpoint
+	•	kg-covid-19.nt.gz - an ntriples/RDF version of the KG
+	•	kg-covid-19.tar.gz - a tar.gz file containing the KG in KGX TSV format
+
+The subdirectories in this directory are:
+
+	•	raw - the raw data that was downloaded and transformed to produce this KG
+	•	stats - statistics about this build of the KG in yaml format
+	•	transformed - the transformed subgraphs for each source we ingest
