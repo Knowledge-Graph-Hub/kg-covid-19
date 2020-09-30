@@ -185,16 +185,20 @@ pipeline {
                                 // put $S3PROJECTDIR/$BUILDSTARTDATE/ and $S3PROJECTDIR/current in s3 bucket
                                 //
                                 sh '. venv/bin/activate && python3.7 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $S3PROJECTDIR --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/ -x -u'
+                                // for existing builds on s3, we just made an index.html that will clobber the existing (correct) s3 index.html
+                                // here we download the existing index.html and clobber the local one instead
+                                sh "for dir in `s3cmd ls s3://kg-hub-public-data/kg-covid-19/ | grep '\\/\$' | awk '{print \$NF}' | grep -w -v -E 'raw|current' | xargs -n1 basename`; do s3cmd get --force --continue s3://kg-hub-public-data/kg-covid-19/\$dir/index.html $S3PROJECTDIR/\$dir/ || true; done"
+
                                 sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate $S3PROJECTDIR s3://kg-hub-public-data/'
 
                                 // Build the top level index.html
                                 // "External" packages required to run these scripts.
-                                sh './venv/bin/pip install pystache boto3'
+                                sh '. venv/bin/activate && ./venv/bin/pip install pystache boto3'
                                 sh '. venv/bin/activate && python3.7 ./go-site/scripts/bucket-indexer.py --credentials $AWS_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
                                 sh 's3cmd -c $S3CMD_CFG put --acl-public --mime-type=text/html --cf-invalidate top-level-index.html s3://kg-hub-public-data/index.html'
 
                                 // Invalidate the CDN now that the new files are up.
-                                sh './venv/bin/pip install awscli'
+                                sh '. venv/bin/activate && ./venv/bin/pip install awscli'
                                 sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
                                 sh '. venv/bin/activate && AWS_CONFIG_FILE=./awscli_config.txt python3.7 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
 
