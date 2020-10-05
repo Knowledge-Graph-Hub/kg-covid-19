@@ -27,7 +27,7 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
     """
     logging.basicConfig(level=logging.INFO)
     logging.info("Loading graph from nodes %s and edges %s files" % (nodes, edges))
-    graph = EnsmallenGraph.from_csv(
+    graph = EnsmallenGraph.from_unsorted_csv(
         edge_path=edges,
         sources_column='subject',
         destinations_column='object',
@@ -37,10 +37,7 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
         node_path=nodes,
         nodes_column='id',
         default_node_type='biolink:NamedThing',
-        node_types_column='category',
-        ignore_duplicated_edges=True,
-        ignore_duplicated_nodes=True,
-        force_conversion_to_undirected=True
+        node_types_column='category'
         );
 
     os.makedirs(output_dir, exist_ok=True)
@@ -77,11 +74,11 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
     pos_test_edges_outfile = os.path.join(output_dir, "pos_test_edges.tsv")
     pos_valid_edges_outfile = os.path.join(output_dir, "pos_valid_edges.tsv")
 
-    pos_train_edges.to_edges_csv(edges_path=pos_train_edges_outfile)
-    pos_train_edges.to_nodes_csv(nodes_path=pos_train_nodes_outfile)
-    pos_test_edges.to_edges_csv(edges_path=pos_test_edges_outfile)
+    pos_train_edges.dump_edges(path=pos_train_edges_outfile)
+    pos_train_edges.dump_nodes(path=pos_train_nodes_outfile)
+    pos_test_edges.dump_edges(path=pos_test_edges_outfile)
     if validation:
-        pos_valid_edges.to_edges_csv(edges_path=pos_valid_edges_outfile)
+        pos_valid_edges.dump_edges(path=pos_valid_edges_outfile)
 
     #
     # write out negative edges
@@ -91,10 +88,10 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
     neg_test_edges_outfile = os.path.join(output_dir, "neg_test_edges.tsv")
     neg_valid_edges_outfile = os.path.join(output_dir, "neg_valid_edges.tsv")
 
-    neg_train_edges.to_edges_csv(edges_path=neg_train_edges_outfile)
-    neg_test_edges.to_edges_csv(edges_path=neg_test_edges_outfile)
+    neg_train_edges.dump_edges(path=neg_train_edges_outfile)
+    neg_test_edges.dump_edges(path=neg_test_edges_outfile)
     if validation:
-        neg_valid_edges.to_edges_csv(edges_path=neg_valid_edges_outfile)
+        neg_valid_edges.dump_edges(path=neg_valid_edges_outfile)
 
 
 def df_to_tsv(df: pd.DataFrame, outfile: str, sep="\t", index=False) -> None:
