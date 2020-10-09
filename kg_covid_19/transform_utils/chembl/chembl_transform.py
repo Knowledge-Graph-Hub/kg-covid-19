@@ -10,6 +10,12 @@ from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
 
 
+TAXON_MAP = {
+    'Severe acute respiratory syndrome coronavirus 2': 'NCBITaxon:2697049',
+    'SARS-CoV-2': 'NCBITaxon:2697049',
+}
+
+
 class ChemblTransform(Transform):
     """
     Parse ChEMBL and transform them into a property graph representation.
@@ -36,7 +42,7 @@ class ChemblTransform(Transform):
             None.
 
         """
-        self.node_header = ['id', 'category', 'provided_by']
+        self.node_header = ['id', 'name', 'category', 'provided_by']
         self.edge_header = ['id', 'subject', 'edge_label', 'object', 'relation', 'provided_by', 'type']
 
         # ChEMBL molecules
@@ -55,8 +61,8 @@ class ChemblTransform(Transform):
         data = self.get_chembl_activities()
         activity_edges = self.parse_chembl_activity(data)
 
-        self.node_header.extend(self._node_header)
-        self.edge_header.extend(self._edge_header)
+        self.node_header.extend([x for x in self._node_header if x not in self.node_header])
+        self.edge_header.extend([x for x in self._edge_header if x not in self.edge_header])
 
         node_handle = open(self.output_node_file, 'w')
         edge_handle = open(self.output_edge_file, 'w')
@@ -116,9 +122,8 @@ class ChemblTransform(Transform):
         edge_label = 'biolink:interacts_with'
         relation = 'RO:0002436'
         allowed_properties = {
-            'assay_chembl_id', 'document_chembl_id', 'target_chembl_id', 'molecule_chembl_id',
-            'standard_units', 'standard_type', 'standard_relation', 'standard_value',
-            'uo_units'
+            'assay_organism', 'assay_chembl_id', 'document_chembl_id', 'target_chembl_id', 'target_organism', 'target_pref_name',
+            'molecule_chembl_id', 'standard_units', 'standard_type', 'standard_relation', 'standard_value', 'uo_units'
         }
         remap = {
             'molecule_chembl_id': 'subject',
@@ -137,6 +142,10 @@ class ChemblTransform(Transform):
             edge_properties['relation'] = relation
             edge_properties['subject'] = f"CHEMBL.COMPOUND:{edge_properties['subject']}"
             edge_properties['object'] = f"CHEMBL.TARGET:{edge_properties['object']}"
+            if 'target_organism' in edge_properties:
+                # remap CHEMBL.TARGET that are just references to SARS-CoV-2
+                if edge_properties['target_organism'] in TAXON_MAP:
+                    edge_properties['object'] = TAXON_MAP[edge_properties['target_organism']]
             edge_properties['assay'] = f"CHEMBL.ASSAY:{edge_properties['assay']}"
             if edge_properties['uo_units']:
                 edge_properties['uo_units'] = edge_properties['uo_units'].replace('_', ':')
