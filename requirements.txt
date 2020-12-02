@@ -1,1 +1,2 @@
+pyshex
 git+git://github.com/deepakunni3/kgx@kg-covid-19
