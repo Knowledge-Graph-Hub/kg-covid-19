@@ -175,6 +175,18 @@ class ScibiteCordTransform(Transform):
                 curie = self.contract_uri(t)
                 name = self.concept_name_map[t] if t in self.concept_name_map else "",
 
+###
+###temporary solution to normalize PR: prefixes to UniProtKB
+###
+
+            ###test
+            if not re.search("^PR:\d+$", curie):
+                continue
+            else:
+                orig = curie
+                curie = re.sub("^PR:", "UniProtKB:", curie)
+                print("WARNING: replaced %s with %s", orig, curie)
+
             if t not in self.seen:
                 # add a biolink:OntologyClass node for each term
                 write_node_edge_item(
