@@ -97,7 +97,7 @@ pipeline {
         stage('Merge') {
             steps {
                 dir('./gitrepo') {
-                    sh '. venv/bin/activate && python3.7 run.py merge -p 4 -y merge_jenkins.yaml'
+                    sh '. venv/bin/activate && python3.7 run.py merge -y merge_jenkins.yaml'
                     sh 'env'
                     sh 'cp merged_graph_stats.yaml merged_graph_stats_$BUILDSTARTDATE.yaml'
                     sh 'tar -rvf data/merged/merged-kg.tar merged_graph_stats_$BUILDSTARTDATE.yaml'
