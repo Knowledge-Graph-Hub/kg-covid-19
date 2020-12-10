@@ -15,9 +15,6 @@ Download prebuilt versions of the KG-COVID-19 knowledge graph `here <https://kg-
 
 Tests Coverage
 ----------------------------------------------
-Since some software handling coverages sometimes
-get slightly different results, here are three of them:
-
 |sonar_coverage|
 
 
