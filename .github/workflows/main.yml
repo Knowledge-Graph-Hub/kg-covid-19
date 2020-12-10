@@ -21,6 +21,7 @@ jobs:
           pip install --upgrade pylint
           pip install -r requirements.txt
           pip install yamllint          
+          pip install coveralls
       - name: run pytest
         run: pytest --cov=kg_covid_19 --cov-report xml:coverage.xml
       - name: run mypy
