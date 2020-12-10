@@ -18,7 +18,7 @@ Tests Coverage
 Since some software handling coverages sometimes
 get slightly different results, here are three of them:
 
-|coveralls| |sonar_coverage| |code_climate_coverage|
+|sonar_coverage|
 
 
 .. |travis| image:: https://travis-ci.org/Knowledge-Graph-Hub/kg-covid-19.svg
