@@ -34,3 +34,8 @@ jobs:
 #         run: python -m pylint --errors-only --exit-zero kg_covid_19
       - name: run yamllint
         run: yamllint -d relaxed merge.yaml download.yaml
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.KGCOVID19_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
