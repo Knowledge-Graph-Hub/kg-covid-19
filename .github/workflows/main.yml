@@ -27,7 +27,12 @@ jobs:
           pip install codacy-coverage
           pip install parameterized
       - name: run pytest
-        run: pytest --cov=kg_covid_19 --cov-report xml:coverage.xml
+        run: |
+          coverage erase
+          pytest --cov=kg_covid_19 --cov-report xml:coverage.xml
+          coverage combine --append || true
+          coverage report
+          coverage xml
       - name: run mypy
         run: mypy --strict-optional kg_covid_19
 #       - name: run pylint
