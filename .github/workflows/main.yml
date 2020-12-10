@@ -1,0 +1,32 @@
+name: refresh-readmes
+on: [push]
+jobs:
+  run-make:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-python@v2
+        name: setup python
+        with:
+          python-version: 3.7
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+          pip install pytest
+          sudo apt-get install openjdk-9-jdk-headless
+          pip install --upgrade pytest
+          pip install --upgrade mypy
+          pip install --upgrade pylint
+          pip install -r requirements.txt
+          pip install yamllint          
+      - name: run pytest
+        run: pytest --cov=kg_covid_19 --cov-report xml:coverage.xml
+      - name: run mypy
+        run: mypy --strict-optional kg_covid_19
+      - name: run pylint
+        run: python -m pylint --errors-only --exit-zero kg_covid_19
+      - name: run yamllint
+        run: yamllint -d relaxed merge.yaml download.yaml
