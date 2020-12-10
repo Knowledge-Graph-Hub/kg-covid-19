@@ -1,7 +1,6 @@
 kg-covid-19
 =========================================================================================
-|sonar_quality| |sonar_maintainability| |codacy|
-|code_climate_maintainability|
+|sonar_quality| |sonar_maintainability| |sonar_coverage|
 
 KG hub to produce a knowledge graph for COVID-19 and SARS-COV-2
 
@@ -12,11 +11,6 @@ See the `repository's wiki <https://github.com/kg-emerging-viruses/kg-emerging-v
 Download the Knowledge Graph
 ----------------------------------------------
 Download prebuilt versions of the KG-COVID-19 knowledge graph `here <https://kg-hub.berkeleybop.io/kg-covid-19/>`_.
-
-Tests Coverage
-----------------------------------------------
-|sonar_coverage|
-
 
 
 .. |sonar_quality| image:: https://sonarcloud.io/api/project_badges/measure?project=Knowledge-Graph-Hub_kg-covid-19&metric=alert_status
