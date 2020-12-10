@@ -30,7 +30,7 @@ jobs:
         run: pytest --cov=kg_covid_19 --cov-report xml:coverage.xml
       - name: run mypy
         run: mypy --strict-optional kg_covid_19
-      - name: run pylint
-        run: python -m pylint --errors-only --exit-zero kg_covid_19
+#       - name: run pylint
+#         run: python -m pylint --errors-only --exit-zero kg_covid_19
       - name: run yamllint
         run: yamllint -d relaxed merge.yaml download.yaml
