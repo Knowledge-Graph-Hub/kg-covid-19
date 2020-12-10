@@ -22,6 +22,10 @@ jobs:
           pip install -r requirements.txt
           pip install yamllint          
           pip install coveralls
+          pip install pytest-cov
+          pip install validate_version_code
+          pip install codacy-coverage
+          pip install parameterized
       - name: run pytest
         run: pytest --cov=kg_covid_19 --cov-report xml:coverage.xml
       - name: run mypy
