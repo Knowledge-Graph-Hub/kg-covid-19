@@ -1,0 +1,44 @@
+name: run tests
+on: [push]
+jobs:
+  run-make:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-python@v2
+        name: setup python
+        with:
+          python-version: 3.7
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+          pip install pytest
+          pip install --upgrade pytest
+          pip install --upgrade mypy
+          pip install --upgrade pylint
+          pip install -r requirements.txt
+          pip install yamllint          
+          pip install coveralls
+          pip install pytest-cov
+          pip install validate_version_code
+          pip install codacy-coverage
+          pip install parameterized
+      - name: run pytest
+        run: |
+          coverage erase
+          pytest --cov=kg_covid_19 --cov-report xml:coverage.xml
+          coverage combine --append || true
+          coverage report
+          coverage xml
+      - name: run mypy
+        run: mypy --strict-optional kg_covid_19
+      - name: run yamllint
+        run: yamllint -d relaxed merge.yaml download.yaml
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.KGCOVID19_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
