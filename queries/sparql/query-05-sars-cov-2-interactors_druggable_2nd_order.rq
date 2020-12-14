@@ -1,6 +1,6 @@
-=+ title  "Get druggable 2nd order interactors"
-=+ description  "Get druggable (Tclind) human proteins that interact human proteins that interact with SARS-CoV-2 proteins, along with the relevant drugs"
-=+ endpoint  "http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql"
+=+ title Get druggable 2nd order interactors
+=+ description Get druggable (Tclind) human proteins that interact human proteins that interact with SARS-CoV-2 proteins, along with the relevant drugs
+=+ endpoint http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
 
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 prefix owl: <http://www.w3.org/2002/07/owl#>

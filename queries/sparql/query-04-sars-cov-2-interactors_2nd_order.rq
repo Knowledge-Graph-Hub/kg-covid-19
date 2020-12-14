@@ -1,6 +1,6 @@
-=+ title  "Get 2nd order interactors"
-=+ description  "Get human proteins that interact human proteins that interact with SARS-CoV-2 proteins"
-=+ endpoint  "http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql"
+=+ title Get 2nd order interactors
+=+ description Get human proteins that interact human proteins that interact with SARS-CoV-2 proteins
+=+ endpoint http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
 
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 prefix owl: <http://www.w3.org/2002/07/owl#>
