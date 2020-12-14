@@ -2,11 +2,11 @@ title: Example queries
 contact:
   name: Justin Reese
   url: https://github.com/Knowledge-Graph-Hub/kg-covid-19
-licence: https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/LICENSE.txt
+licence: https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/add_a_clove_of_grlc/LICENSE.txt
 queries:
-  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/master/queries/sparql/query-01-bl-cat-counts.rq
-  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/master/queries/sparql/query-02-sars-cov-2-prot.rq
-  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/master/queries/sparql/query-03-sars-cov-2-interactors.rq
-  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/master/queries/sparql/query-04-sars-cov-2-interactors_2nd_order.rq
-  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/master/queries/sparql/query-05-sars-cov-2-interactors_druggable_2nd_order.rq
-  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/master/queries/sparql/query-06-provided_by_counts.rq
+  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/add_a_clove_of_grlc/queries/sparql/query-01-bl-cat-counts.rq
+  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/add_a_clove_of_grlc/queries/sparql/query-02-sars-cov-2-prot.rq
+  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/add_a_clove_of_grlc/queries/sparql/query-03-sars-cov-2-interactors.rq
+  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/add_a_clove_of_grlc/queries/sparql/query-04-sars-cov-2-interactors_2nd_order.rq
+  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/add_a_clove_of_grlc/queries/sparql/query-05-sars-cov-2-interactors_druggable_2nd_order.rq
+  - https://raw.githubusercontent.com/Knowledge-Graph-Hub/kg-covid-19/add_a_clove_of_grlc/queries/sparql/query-06-provided_by_counts.rq
