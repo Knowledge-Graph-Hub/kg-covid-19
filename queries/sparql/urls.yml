@@ -1,0 +1,9 @@
+title: Example API generated via URL
+contact:
+  name: Albert Meronyo Penyuela
+  url: https://www.albertmeronyo.org
+licence: https://github.com/CLARIAH/grlc-queries/blob/master/LICENSE
+queries:
+  - https://raw.githubusercontent.com/CLARIAH/grlc-queries/master/summary.rq
+  - https://raw.githubusercontent.com/CLARIAH/grlc-queries/master/method.rq
+  - https://raw.githubusercontent.com/CLARIAH/grlc-queries/master/transform.rq
