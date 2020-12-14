@@ -93,7 +93,8 @@ def query(yaml: str, output_dir: str,
     """Perform a query of knowledge graph using a class contained in query_utils
 
     Args:
-        yaml: A YAML file containing a SPARQL query (see queries/sparql/ for examples)
+        yaml: A rq file containing a SPARQL query in grlc format:
+        https://github.com/CLARIAH/grlc/blob/master/README.md
         output_dir: Directory to output results of query
         query_key: the key in the yaml file containing the query string
         endpoint_key: the key in the yaml file containing the sparql endpoint URL
