@@ -7,7 +7,7 @@ from kg_covid_19 import download as kg_download
 from kg_covid_19 import transform as kg_transform
 from kg_covid_19.make_holdouts import make_holdouts
 from kg_covid_19.merge_utils.merge_kg import load_and_merge
-from kg_covid_19.query import run_query, parse_query_yaml, result_dict_to_tsv
+from kg_covid_19.query import run_query, parse_query_rq, result_dict_to_tsv
 from kg_covid_19.transform import DATA_SOURCES
 
 
@@ -103,7 +103,7 @@ def query(yaml: str, output_dir: str,
         None.
 
     """
-    query = parse_query_yaml(yaml)
+    query = parse_query_rq(yaml)
     result_dict = run_query(query=query[query_key], endpoint=query[endpoint_key])
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
