@@ -7,7 +7,7 @@ from unittest import TestCase
 import pandas as pd
 from parameterized import parameterized
 
-from kg_covid_19.query import parse_query_yaml, result_dict_to_tsv
+from kg_covid_19.query import parse_query_rq, result_dict_to_tsv
 
 
 class TestQuery(TestCase):
@@ -15,28 +15,29 @@ class TestQuery(TestCase):
     """
 
     def setUp(self) -> None:
-        self.test_yaml = 'tests/resources/query/test_template.yaml'
+        self.test_rq = 'tests/resources/query/test_template.yaml'
         self.test_result_dict_file = 'tests/resources/query/test_result_dict.pkl'
         self.tempfile = os.path.join(tempfile.mkdtemp(), 'output.tsv')
 
-    def test_parse_query_yaml(self) -> None:
-        parse_query_yaml(self.test_yaml)
+    def test_parse_query_rq(self) -> None:
+        parse_query_rq(self.test_rq)
 
-    def test_parse_query_yaml_should_be_dict(self) -> None:
-        q = parse_query_yaml(self.test_yaml)
+    def test_parse_query_rq_should_return_dict(self) -> None:
+        q = parse_query_rq(self.test_rq)
         self.assertTrue(isinstance(q, dict))
 
     @parameterized.expand([
         ('title', 'some title'),
         ('description', 'what is it'),
         ('endpoint', 'http://zombo.com'),
-        ('query', """SELECT (COUNT(?v2) AS ?v1) ?v0 WHERE {
+        ('query', """SELECT (COUNT(?v2) AS ?v1) ?v0
+WHERE {
   ?v2 <https://w3id.org/biolink/vocab/category> ?v0
 } GROUP BY ?v0
 """)
     ])
-    def test_parse_query_yaml_should_be_dict(self, key, value) -> None:
-        q = parse_query_yaml(self.test_yaml)
+    def test_parse_query_rq_parameterized(self, key, value) -> None:
+        q = parse_query_rq(self.test_rq)
         self.assertEqual(value, q[key])
 
     def test_result_dict_to_tsv_makes_file(self):
