@@ -180,9 +180,7 @@ class ScibiteCordTransform(Transform):
 ###
 
             ###test
-            if not re.search("^PR:\d+$", curie):
-                continue
-            else:
+            if re.search("^PR:\d+$", curie):
                 orig = curie
                 curie = re.sub("^PR:", "UniProtKB:", curie)
                 print("WARNING: replaced %s with %s", orig, curie)
