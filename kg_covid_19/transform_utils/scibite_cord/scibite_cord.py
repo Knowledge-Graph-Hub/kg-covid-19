@@ -175,11 +175,11 @@ class ScibiteCordTransform(Transform):
                 curie = self.contract_uri(t)
                 name = self.concept_name_map[t] if t in self.concept_name_map else "",
 
-###
-###temporary solution to normalize PR: prefixes to UniProtKB
-###
+            ###
+            ###temporary solution to normalize PR: prefixes to UniProtKB
+            ###
 
-            ###test
+            ### requjires testing
             if re.search("^PR:\d+$", curie):
                 orig = curie
                 curie = re.sub("^PR:", "UniProtKB:", curie)
