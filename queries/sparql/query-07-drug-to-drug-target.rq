@@ -13,6 +13,6 @@ SELECT ?drug ?druglab ?pred ?target ?targetlab WHERE
   OPTIONAL { ?drug rdfs:label ?druglab } .
   OPTIONAL { ?target rdfs:label ?targetlab } .
   FILTER ( ?drugcat = bl:Drug || ?drugcat = bl:ChemicalSubstance )
-  FILTER ( ?targetcat = bl:Protein || ?targetcat = bl:Gene || ?targetcat = bl:NamedThing )
+  FILTER ( ?targetcat = bl:Protein || ?targetcat = bl:Gene )
   FILTER ( ?pred = bl:molecularly_interacts_with || ?pred = bl:interacts_with )
 }
