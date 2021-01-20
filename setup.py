@@ -72,7 +72,7 @@ setup(
         'bmt',
         'SPARQLWrapper',
         'ensmallen_graph==0.4.3',
-        'kgx'
+        'kgx==0.2.4'
     ],
     extras_require=extras,
 )
