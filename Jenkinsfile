@@ -54,8 +54,7 @@ pipeline {
                     sh '/usr/bin/python3.8 -m venv venv'
                     sh '. venv/bin/activate'
                     sh './venv/bin/pip install .'
-                    sh './venv/bin/pip uninstall biolinkml' // workaround for biolinkml issue
-                    sh './venv/bin/pip install biolinkml==1.6.1'  // workaround biolinkml issue
+                    sh './venv/bin/pip install biolinkml==1.6.1 -U'  // workaround biolinkml issue
                 }
             }
         }
