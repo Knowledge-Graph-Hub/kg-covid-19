@@ -53,7 +53,7 @@ pipeline {
                     )
                     sh '/usr/bin/python3.8 -m venv venv'
                     sh '. venv/bin/activate'
-                    sh './venv/bin/pip install .'
+                    sh './venv/bin/pip install . --ignore-installed pyzmq'
                 }
             }
         }
