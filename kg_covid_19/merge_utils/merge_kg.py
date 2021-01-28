@@ -1,7 +1,4 @@
-import importlib
-import logging
-import os
-from typing import Dict, List
+from typing import Dict
 import yaml
 import networkx as nx  # type: ignore
 from kgx.cli.cli_utils import merge  # type: ignore
