@@ -163,7 +163,7 @@ class ChemblTransform(Transform):
         Returns:
             A list
         """
-        node_category = ['biolink:ChemicalSubstance']
+        node_category = ['biolink:Drug']
         allowed_properties = {
             'molecule_type', 'polymer_flag', 'inorganic_flag', 'natural_product',
             'synonyms', 'molecule_properties', 'canonical_smiles', 'full_molformula',
