@@ -80,14 +80,18 @@
   local_name: HUMAN_9606_idmapping.dat.gz
 
 #
-# SciBite CORD-19 annotations v1.5
+# SciBite CORD-19 annotations v1.6
 #
 -
-  url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/annotated-CORD-19/1.5/pdf_json.zip
-  local_name: pdf_json.zip
+  url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/annotated-CORD-19/1.6/pdf_json_part_1.zip
+  local_name: pdf_json_part1.zip
 
 -
-  url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/annotated-CORD-19/1.5/pmc_json.zip
+  url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/annotated-CORD-19/1.6/pdf_json_part_2.zip
+  local_name: pdf_json_part2.zip
+
+-
+  url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/annotated-CORD-19/1.6/pmc_json.zip
   local_name: pmc_json.zip
 
  # SciBite CORD-19 entity co-occurrences v1.2
