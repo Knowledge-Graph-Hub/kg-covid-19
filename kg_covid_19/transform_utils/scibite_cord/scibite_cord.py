@@ -7,7 +7,7 @@ import tempfile
 from tqdm import tqdm  # type: ignore
 from typing import List, Dict, Any, Set, Optional
 from zipfile import ZipFile
-import pandas as pd # type: ignore
+import pandas as pd  # type: ignore
 from prefixcommons import contract_uri # type: ignore
 
 from kg_covid_19.transform_utils.transform import Transform
