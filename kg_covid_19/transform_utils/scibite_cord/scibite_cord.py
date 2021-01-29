@@ -68,7 +68,7 @@ class ScibiteCordTransform(Transform):
         edge_handle = open(self.output_edge_file, 'w')
         node_handle.write("\t".join(self.node_header) + "\n")
         edge_handle.write("\t".join(self.edge_header) + "\n")
-        self.parse_annotations(node_handle, edge_handle, data_files[0], data_files[1])
+        self.parse_annotations(node_handle, edge_handle, data_files[0], data_files[1], data_files[2])
 
         node_handle = open(os.path.join(self.output_dir, "entity_cooccurrence_nodes.tsv"), 'w')
         edge_handle = open(os.path.join(self.output_dir, "entity_cooccurrence_edges.tsv"), 'w')
