@@ -54,7 +54,8 @@ class ScibiteCordTransform(Transform):
         """
         data_files = list()
         if not data_file:
-            data_files.append(os.path.join(self.input_base_dir, "pdf_json.zip"))
+            data_files.append(os.path.join(self.input_base_dir, "pdf_json_part1.zip"))
+            data_files.append(os.path.join(self.input_base_dir, "pdf_json_part2.zip"))
             data_files.append(os.path.join(self.input_base_dir, "pmc_json.zip"))
 
             data_files.append(os.path.join(self.input_base_dir, "cv19_scc_1_2.zip"))
@@ -77,20 +78,23 @@ class ScibiteCordTransform(Transform):
 
     def parse_annotations(self, node_handle: Any, edge_handle: Any,
                           data_file1: str,
-                          data_file2: str) -> None:
+                          data_file2: str,
+                          data_file3: str
+                          ) -> None:
         """Parse annotations from CORD-19_1_5.zip.
 
         Args:
             node_handle: File handle for nodes.csv.
             edge_handle: File handle for edges.csv.
-            data_file1: Path to first CORD-19_1_5.zip.
-            data_file2: Path to second CORD-19_1_5.zip.
+            data_file1: Path to pdf_json_part_1.zip
+            data_file2: Path to pdf_json_part_2.zip
+            data_file2: Path to pmc_json.zip
 
         Returns:
              None.
 
         """
-        pbar = tqdm(total=2, desc="Unzipping files")
+        pbar = tqdm(total=3, desc="Unzipping files")
 
         # unzip to tmpdir, remove after use, to avoid cluttering raw/ with processed
         # data
@@ -99,9 +103,11 @@ class ScibiteCordTransform(Transform):
             pbar.update(1)
             unzip_to_tempdir(data_file2, tmpdir);
             pbar.update(1)
+            unzip_to_tempdir(data_file3, tmpdir);
+            pbar.update(1)
             pbar.close()
 
-            subsets = ['pmc_json', 'pdf_json']
+            subsets = ['pmc_json', 'pdf_json_part_1 ', 'pdf_json_part_2']
             for subset in subsets:
                 subset_dir = os.path.join(tmpdir, subset)
                 for filename in tqdm(os.listdir(subset_dir)):
