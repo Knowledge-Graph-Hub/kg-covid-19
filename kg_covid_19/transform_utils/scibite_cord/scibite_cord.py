@@ -38,26 +38,28 @@ class ScibiteCordTransform(Transform):
         self.load_gene_info(self.input_base_dir, self.output_dir, ['9606'])
         self.load_country_code(self.input_base_dir, self.output_dir)
 
-    def run(self, data_file: Optional[str] = None) -> None:
+    def run(self, data_files: Optional[str] = None) -> None:
         """Method is called and performs needed transformations to process
         annotations from SciBite CORD-19
 
         Args:
-            data_file: data file to parse
+            data_files: data file to parse
 
             Should be:
-            [pdf_json.zip, pmc_json.zip, cv19_scc_1_2.zip]
+                [pdf_json_part_1.zip,
+                pdf_json_part_2.zip,
+                pmc_json.zip,
+                cv19_scc_1_2.zip]
 
         Returns:
             None.
 
         """
         data_files = list()
-        if not data_file:
+        if not data_files:
             data_files.append(os.path.join(self.input_base_dir, "pdf_json_part_1.zip"))
             data_files.append(os.path.join(self.input_base_dir, "pdf_json_part_2.zip"))
             data_files.append(os.path.join(self.input_base_dir, "pmc_json.zip"))
-
             data_files.append(os.path.join(self.input_base_dir, "cv19_scc_1_2.zip"))
         else:
             data_files.extend(data_files)
@@ -74,7 +76,7 @@ class ScibiteCordTransform(Transform):
         edge_handle = open(os.path.join(self.output_dir, "entity_cooccurrence_edges.tsv"), 'w')
         node_handle.write("\t".join(self.node_header) + "\n")
         edge_handle.write("\t".join(self.edge_header) + "\n")
-        self.parse_cooccurrence(node_handle, edge_handle, data_files[3])
+        self.parse_cooccurrence(node_handle, edge_handle, data_files[4])
 
     def parse_annotations(self, node_handle: Any, edge_handle: Any,
                           data_file1: str,
