@@ -112,7 +112,11 @@ class ScibiteCordTransform(Transform):
                 subset_dir = os.path.join(tmpdir, subset)
                 for filename in tqdm(os.listdir(subset_dir)):
                     file = os.path.join(subset_dir, filename)
-                    doc = json.load(open(file))
+                    try:
+                        doc = json.load(open(file))
+                    except:
+                        print(f"problem with {file}")
+                        raise(Exception)
                     self.parse_annotation_doc(node_handle, edge_handle, doc)
 
     def parse_annotation_doc(self, node_handle, edge_handle, doc: Dict) -> None:
