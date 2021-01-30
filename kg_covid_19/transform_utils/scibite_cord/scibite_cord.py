@@ -115,11 +115,7 @@ class ScibiteCordTransform(Transform):
                         print(f"skipping file {filename}")
                         continue
                     file = os.path.join(subset_dir, filename)
-                    try:
-                        doc = json.load(open(file))
-                    except:
-                        print(f"problem with {file}")
-                        raise(Exception)
+                    doc = json.load(open(file))
                     self.parse_annotation_doc(node_handle, edge_handle, doc)
 
     def parse_annotation_doc(self, node_handle, edge_handle, doc: Dict) -> None:
