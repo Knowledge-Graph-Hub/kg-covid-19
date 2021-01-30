@@ -84,11 +84,11 @@
 #
 -
   url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/annotated-CORD-19/1.6/pdf_json_part_1.zip
-  local_name: pdf_json_part1.zip
+  local_name: pdf_json_part_1.zip
 
 -
   url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/annotated-CORD-19/1.6/pdf_json_part_2.zip
-  local_name: pdf_json_part2.zip
+  local_name: pdf_json_part_2.zip
 
 -
   url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/annotated-CORD-19/1.6/pmc_json.zip
