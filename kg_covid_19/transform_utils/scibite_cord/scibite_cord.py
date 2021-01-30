@@ -99,11 +99,11 @@ class ScibiteCordTransform(Transform):
         # unzip to tmpdir, remove after use, to avoid cluttering raw/ with processed
         # data
         with tempfile.TemporaryDirectory(dir=self.input_base_dir) as tmpdir:
-            unzip_to_tempdir(data_file1, tmpdir);
+            unzip_to_tempdir(data_file1, tmpdir)
             pbar.update(1)
-            unzip_to_tempdir(data_file2, tmpdir);
+            unzip_to_tempdir(data_file2, tmpdir)
             pbar.update(1)
-            unzip_to_tempdir(data_file3, tmpdir);
+            unzip_to_tempdir(data_file3, tmpdir)
             pbar.update(1)
             pbar.close()
 
@@ -227,8 +227,8 @@ class ScibiteCordTransform(Transform):
         """
         with ZipFile(data_file, 'r') as ZF, \
                 tempfile.TemporaryDirectory(dir=self.input_base_dir) as tmpdir:
-            ZF.extractall(path=self.input_base_dir)
-        df = pd.read_csv(os.path.join(tmpdir, 'cv19_scc.tsv'), delimiter='\t', encoding='utf-8')
+            ZF.extractall(path=tmpdir)
+            df = pd.read_csv(os.path.join(tmpdir, 'cv19_scc.tsv'), delimiter='\t', encoding='utf-8')
         for index, row in df.iterrows():
             self.parse_cooccurrence_record(node_handle, edge_handle, row)
 
