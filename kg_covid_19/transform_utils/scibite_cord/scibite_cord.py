@@ -111,6 +111,9 @@ class ScibiteCordTransform(Transform):
             for subset in subsets:
                 subset_dir = os.path.join(tmpdir, subset)
                 for filename in tqdm(os.listdir(subset_dir)):
+                    if filename.startswith('.'):
+                        print(f"skipping file {filename}")
+                        continue
                     file = os.path.join(subset_dir, filename)
                     try:
                         doc = json.load(open(file))
