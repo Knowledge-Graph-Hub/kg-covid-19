@@ -225,10 +225,10 @@ class ScibiteCordTransform(Transform):
              None.
 
         """
-        with ZipFile(data_file, 'r') as ZF:
+        with ZipFile(data_file, 'r') as ZF, \
+                tempfile.TemporaryDirectory(dir=self.input_base_dir) as tmpdir:
             ZF.extractall(path=self.input_base_dir)
-
-        df = pd.read_csv(os.path.join(self.input_base_dir, 'cv19_scc_1_2.zip'), delimiter='\t', encoding='utf-8')
+        df = pd.read_csv(os.path.join(tmpdir, 'cv19_scc.tsv'), delimiter='\t', encoding='utf-8')
         for index, row in df.iterrows():
             self.parse_cooccurrence_record(node_handle, edge_handle, row)
 
