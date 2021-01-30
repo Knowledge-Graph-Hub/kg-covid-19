@@ -107,7 +107,7 @@ class ScibiteCordTransform(Transform):
             pbar.update(1)
             pbar.close()
 
-            subsets = ['pmc_json', 'pdf_json_part_1 ', 'pdf_json_part_2']
+            subsets = ['pmc_json', 'pdf_json_part_1', 'pdf_json_part_2']
             for subset in subsets:
                 subset_dir = os.path.join(tmpdir, subset)
                 for filename in tqdm(os.listdir(subset_dir)):
