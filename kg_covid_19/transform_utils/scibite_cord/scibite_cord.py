@@ -54,8 +54,8 @@ class ScibiteCordTransform(Transform):
         """
         data_files = list()
         if not data_file:
-            data_files.append(os.path.join(self.input_base_dir, "pdf_json_part1.zip"))
-            data_files.append(os.path.join(self.input_base_dir, "pdf_json_part2.zip"))
+            data_files.append(os.path.join(self.input_base_dir, "pdf_json_part_1.zip"))
+            data_files.append(os.path.join(self.input_base_dir, "pdf_json_part_2.zip"))
             data_files.append(os.path.join(self.input_base_dir, "pmc_json.zip"))
 
             data_files.append(os.path.join(self.input_base_dir, "cv19_scc_1_2.zip"))
