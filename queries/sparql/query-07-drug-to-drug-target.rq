@@ -1,0 +1,18 @@
+=+ title Get drugs and their human protein targets
+=+ description Get drugs and their human protein targets
+=+ endpoint http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
+
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix bl: <https://w3id.org/biolink/vocab/>
+SELECT ?drug ?druglab ?pred ?target ?targetlab WHERE
+{
+  ?drug ?pred ?target .
+  ?drug bl:category ?drugcat .
+  ?target bl:category ?targetcat; <https://www.example.org/UNKNOWN/ncbi_taxid> "9606"^^xsd:string .
+  OPTIONAL { ?drug rdfs:label ?druglab } .
+  OPTIONAL { ?target rdfs:label ?targetlab } .
+  FILTER ( ?drugcat = bl:Drug || ?drugcat = bl:ChemicalSubstance )
+  FILTER ( ?targetcat = bl:Protein || ?targetcat = bl:Gene )
+  FILTER ( ?pred = bl:molecularly_interacts_with || ?pred = bl:interacts_with )
+}
