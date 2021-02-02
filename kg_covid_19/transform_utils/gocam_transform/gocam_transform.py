@@ -1,6 +1,6 @@
 import gzip
+import logging
 import os
-import shutil
 from typing import Optional
 
 from kgx import RdfTransformer, PandasTransformer # type: ignore
@@ -82,6 +82,13 @@ class GocamTransform(Transform):
         transformer.parse(data_file, node_property_predicates=np, input_format=input_format)
         output_transformer = PandasTransformer(transformer.graph)
         output_transformer.save(os.path.join(self.output_dir, self.source_name), output_format='tsv', mode=None)
+
+        for ftype in ["edges.tsv", "nodes.tsv"]:
+            old_fname: str = "_".join([os.path.join(self.output_dir, self.source_name), ftype])
+            new_fname: str = os.path.join(self.output_dir, ftype)
+            if not os.path.exists(old_fname):
+                logging.error(f"file {old_fname} doesn't exist")
+            os.rename(old_fname, new_fname)
 
     def decompress_file(self, input_file: str, output_file: str):
         """Decompress a file.
