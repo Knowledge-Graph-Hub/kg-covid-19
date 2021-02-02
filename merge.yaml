@@ -112,8 +112,8 @@ merged_graph:
     go-cams:
       type: tsv
       filename:
-        - data/transformed/GOCAMs/GOCAMs_nodes.tsv
-        - data/transformed/GOCAMs/GOCAMs_edges.tsv
+        - data/transformed/GOCAMs/nodes.tsv
+        - data/transformed/GOCAMs/edges.tsv
   operations:
     - name: kgx.operations.summarize_graph.generate_graph_stats
       args:
