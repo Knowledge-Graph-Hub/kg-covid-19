@@ -2,7 +2,7 @@ kg-covid-19
 =========================================================================================
 |sonar_quality| |sonar_maintainability| |sonar_coverage|
 
-KG hub to produce a knowledge graph for COVID-19 and SARS-COV-2 
+KG hub to produce a knowledge graph for COVID-19 and SARS-COV-2
 
 Documentation
 ----------------------------------------------
