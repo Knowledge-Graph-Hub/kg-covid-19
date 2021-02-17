@@ -1,6 +1,6 @@
-#+ title Get counts by provided_by property
-#+ description Get counts by provided_by property
-#+ endpoint http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
+#+ summary: Get counts by provided_by property
+#+ description: Get counts by provided_by property
+#+ endpoint: http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
 
 PREFIX bl: <https://w3id.org/biolink/vocab/>
 SELECT (COUNT(?v2) AS ?v1) ?v0
