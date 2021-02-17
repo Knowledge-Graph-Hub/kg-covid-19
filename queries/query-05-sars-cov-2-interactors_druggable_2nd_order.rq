@@ -1,0 +1,25 @@
+#+ title Get druggable 2nd order interactors
+#+ description Get druggable (Tclind) human proteins that interact human proteins that interact with SARS-CoV-2 proteins, along with the relevant drugs
+#+ endpoint http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
+
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bl: <https://w3id.org/biolink/vocab/>
+SELECT ?covp ?covplab ?humanp ?humanplab ?humanp2 ?humanp2lab ?drug ?druglab
+WHERE {
+  VALUES ?covtaxon {"2697049"^^xsd:string }
+  VALUES ?humantaxon { "9606"^^xsd:string }
+  ?humanp bl:interacts_with ?covp .
+  ?humanp bl:interacts_with ?humanp2 .
+  ?covp bl:category bl:Protein; <https://www.example.org/UNKNOWN/ncbi_taxid> ?covtaxon .
+  ?humanp bl:category bl:Protein; <https://www.example.org/UNKNOWN/ncbi_taxid> ?humantaxon .
+  ?humanp2 bl:category bl:Protein; <https://www.example.org/UNKNOWN/ncbi_taxid> ?humantaxon .
+  ?humanp2 <https://www.example.org/UNKNOWN/TDL> "Tclin"^^<http://www.w3.org/2001/XMLSchema#string> .
+  ?drug bl:category bl:Drug; bl:interacts_with ?humanp2 .
+  OPTIONAL { ?covp rdfs:label ?covplab } .
+  OPTIONAL { ?humanp rdfs:label ?humanplab } .
+  OPTIONAL { ?humanp2 rdfs:label ?humanp2lab } .
+  OPTIONAL { ?drug rdfs:label ?druglab } .
+}
