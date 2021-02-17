@@ -19,7 +19,8 @@ jobs:
           pip install --upgrade pytest
           pip install --upgrade mypy
           pip install --upgrade pylint
-          pip install --no-cache-dir --force-reinstall -r requirements.txt
+          # pip install --no-cache-dir --force-reinstall -r requirements.txt
+          pip install --no-cache-dir --force-reinstall git+git://github.com/deepakunni3/kgx@kg-covid-19
           pip install yamllint          
           pip install coveralls
           pip install pytest-cov
