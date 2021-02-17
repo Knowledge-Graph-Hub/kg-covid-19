@@ -1,6 +1,6 @@
-#+ title Get drugs and their human protein targets
-#+ description Get drugs and their human protein targets
-#+ endpoint http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
+#+ summary: Get drugs and their human protein targets
+#+ description: Get drugs and their human protein targets
+#+ endpoint: http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
 
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>

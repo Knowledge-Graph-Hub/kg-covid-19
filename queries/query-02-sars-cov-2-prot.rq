@@ -1,6 +1,6 @@
-#+ title Get SARS-CoV-2 proteins
-#+ description Get info about SARS-CoV-2 proteins in the graph
-#+ endpoint http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
+#+ summary: Get SARS-CoV-2 proteins
+#+ description: Get info about SARS-CoV-2 proteins in the graph
+#+ endpoint: http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
 
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
