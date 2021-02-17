@@ -19,7 +19,6 @@ jobs:
           pip install --upgrade pytest
           pip install --upgrade mypy
           pip install --upgrade pylint
-          pip install jsonasobj==1.2.1
           pip install --no-cache-dir --force-reinstall -r requirements.txt
           pip install yamllint          
           pip install coveralls
