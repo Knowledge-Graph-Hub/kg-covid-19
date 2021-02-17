@@ -1,12 +1,13 @@
-=+ title Get drugs and their human protein targets
-=+ description Get drugs and their human protein targets
-=+ endpoint http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
+#+ title Get drugs and their human protein targets
+#+ description Get drugs and their human protein targets
+#+ endpoint http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
 
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-prefix bl: <https://w3id.org/biolink/vocab/>
-SELECT ?drug ?druglab ?pred ?target ?targetlab WHERE
-{
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bl: <https://w3id.org/biolink/vocab/>
+SELECT ?drug ?druglab ?pred ?target ?targetlab
+WHERE {
   ?drug ?pred ?target .
   ?drug bl:category ?drugcat .
   ?target bl:category ?targetcat; <https://www.example.org/UNKNOWN/ncbi_taxid> "9606"^^xsd:string .
