@@ -99,6 +99,11 @@ merged_graph:
       filename:
         - data/transformed/ontologies/mondo_nodes.tsv
         - data/transformed/ontologies/mondo_edges.tsv
+    chebi:
+      type: tsv
+      filename:
+        - data/transformed/ontologies/chebi_nodes.tsv
+        - data/transformed/ontologies/chebi_edges.tsv
     hp-ontology:
       type: tsv
       filename:
