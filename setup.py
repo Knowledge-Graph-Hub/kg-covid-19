@@ -72,8 +72,7 @@ setup(
         'pyyaml',
         'bmt',
         'SPARQLWrapper',
-        'ensmallen_graph==0.4.3',
-        'kgx==0.3.1'
+        'ensmallen_graph==0.4.3'
     ],
     extras_require=extras,
 )
