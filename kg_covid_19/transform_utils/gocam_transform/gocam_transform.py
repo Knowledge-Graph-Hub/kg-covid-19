@@ -1,12 +1,9 @@
 import gzip
 import os
-import shutil
 from typing import Optional
 
-from kgx import RdfTransformer, PandasTransformer # type: ignore
-
 from kg_covid_19.transform_utils.transform import Transform
-
+from kgx.cli.cli_utils import transform
 
 class GocamTransform(Transform):
     """
@@ -38,20 +35,26 @@ class GocamTransform(Transform):
         else:
             decompressed_data_file = data_file
 
+        if data_file.endswith('.gz'):
+            compression = 'gz'
+        else:
+            compression = None
+
         if 'input_format' in kwargs:
             input_format = kwargs['input_format']
             if input_format not in {'nt', 'ttl', 'rdf/xml'}:
                 raise ValueError(f"Unsupported input_format: {input_format}")
         else:
             input_format = None
-        self.parse(decompressed_data_file, input_format)
+        self.parse(decompressed_data_file, input_format, compression=compression)
 
-    def parse(self, data_file: str, input_format: str) -> None:
+    def parse(self, data_file: str, input_format: str, compression: str = 'gz') -> None:
         """Processes the data_file.
 
         Args:
             data_file: data file to parse
             input_format: format of input file
+            compression: compression
 
         Returns:
              None
@@ -82,6 +85,11 @@ class GocamTransform(Transform):
         transformer.parse(data_file, node_property_predicates=np, input_format=input_format)
         output_transformer = PandasTransformer(transformer.graph)
         output_transformer.save(os.path.join(self.output_dir, self.source_name), output_format='tsv', mode=None)
+        transform(inputs=[data_file],
+                  input_format=input_format,
+                  input_compression=compression,
+                  output=os.path.join(self.output_dir, self.source_name),
+                  output_format='tsv')
 
     def decompress_file(self, input_file: str, output_file: str):
         """Decompress a file.
