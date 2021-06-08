@@ -2,8 +2,9 @@ import gzip
 import os
 from typing import Optional
 
+from kgx.transformer import Transformer  # type: ignore
 from kg_covid_19.transform_utils.transform import Transform
-from kgx.cli.cli_utils import transform
+
 
 class GocamTransform(Transform):
     """
@@ -35,20 +36,16 @@ class GocamTransform(Transform):
         else:
             decompressed_data_file = data_file
 
-        if data_file.endswith('.gz'):
-            compression = 'gz'
-        else:
-            compression = None
-
         if 'input_format' in kwargs:
             input_format = kwargs['input_format']
             if input_format not in {'nt', 'ttl', 'rdf/xml'}:
                 raise ValueError(f"Unsupported input_format: {input_format}")
         else:
-            input_format = None
-        self.parse(decompressed_data_file, input_format, compression=compression)
+            input_format = 'rdf/xml'
+        self.parse(decompressed_data_file, input_format, compression=None)
 
-    def parse(self, data_file: str, input_format: str, compression: str = 'gz') -> None:
+    def parse(self, data_file: str, input_format: str,
+              compression: Optional[str] = None) -> None:
         """Processes the data_file.
 
         Args:
@@ -60,6 +57,8 @@ class GocamTransform(Transform):
              None
 
         """
+        print(f"Parsing {data_file}")
+
         # define prefix to IRI mappings
         cmap = {
             'REACT': 'http://purl.obolibrary.org/obo/go/extensions/reacto.owl#REACTO_',
@@ -80,16 +79,19 @@ class GocamTransform(Transform):
             'https://w3id.org/biolink/vocab/objectActivity',
         }
 
-        print(f"Parsing {data_file}")
-        transformer = RdfTransformer(curie_map=cmap)
-        transformer.parse(data_file, node_property_predicates=np, input_format=input_format)
-        output_transformer = PandasTransformer(transformer.graph)
-        output_transformer.save(os.path.join(self.output_dir, self.source_name), output_format='tsv', mode=None)
-        transform(inputs=[data_file],
-                  input_format=input_format,
-                  input_compression=compression,
-                  output=os.path.join(self.output_dir, self.source_name),
-                  output_format='tsv')
+        input_args = {
+            'format': input_format,
+            'compression': compression,
+            'prefix_map': cmap,
+            'node_property_predicates': np
+        }
+
+        output_args = {
+            'format': 'tsv',
+            'filename': os.path.join(self.output_dir, self.source_name)
+        }
+        t = Transformer(stream=False)
+        t.transform(input_args=input_args, output_args=output_args)
 
     def decompress_file(self, input_file: str, output_file: str):
         """Decompress a file.
