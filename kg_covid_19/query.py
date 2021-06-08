@@ -1,4 +1,5 @@
 import logging
+import re
 
 import yaml
 from SPARQLWrapper import SPARQLWrapper, JSON, XML, TURTLE, N3, RDF, RDFXML, CSV, TSV  # type: ignore
@@ -13,8 +14,28 @@ def run_query(query: str, endpoint: str, return_format=JSON) -> dict:
     return results
 
 
-def parse_query_yaml(yaml_file) -> dict:
-    return yaml.load(open(yaml_file))
+def parse_query_rq(rq_file) -> dict:
+    """
+
+    Args:
+        rq_file: sparql query in grlc rq format
+
+    Returns: dict with parsed info about sparql query
+
+    """
+    parsed_rq = dict()
+    with open(rq_file) as r:
+        query = ''
+        for line in r:
+            if line.isspace():
+                continue
+            elif re.match('^\=\+ ', line):
+                (key, value) = re.sub('^\=\+ ', '', line).rstrip().split(' ', maxsplit=1)
+                parsed_rq[key] = value
+            else:
+                query += line
+        parsed_rq['query'] = query
+    return parsed_rq
 
 
 def result_dict_to_tsv(result_dict: dict, outfile: str) -> None:

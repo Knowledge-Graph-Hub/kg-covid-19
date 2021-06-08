@@ -1,0 +1,20 @@
+#+ summary: Get SARS-CoV-2 proteins
+#+ description: Get info about SARS-CoV-2 proteins in the graph
+#+ endpoint: http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
+
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bl: <https://w3id.org/biolink/vocab/>
+PREFIX ex: <https://www.example.org/UNKNOWN/>
+SELECT ?protein ?p ?v WHERE {
+  ?protein bl:category bl:Protein;
+           ex:ncbi_taxid ?ncbitaxonid;
+           ?p ?v .
+  FILTER NOT EXISTS {
+    ?v bl:category bl:Publication .
+    ?v ex:provided_by ?scibitecord .
+    FILTER(?scibitecord="SciBite-CORD-19")
+  }
+  FILTER(?ncbitaxonid="2697049")
+}

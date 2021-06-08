@@ -5,9 +5,9 @@ import re
 import tempfile
 
 from tqdm import tqdm  # type: ignore
-from typing import List, Dict, Any, Set, Optional
+from typing import List, Dict, Any, Set, Optional, IO
 from zipfile import ZipFile
-import pandas as pd # type: ignore
+import pandas as pd  # type: ignore
 from prefixcommons import contract_uri # type: ignore
 
 from kg_covid_19.transform_utils.transform import Transform
@@ -38,28 +38,31 @@ class ScibiteCordTransform(Transform):
         self.load_gene_info(self.input_base_dir, self.output_dir, ['9606'])
         self.load_country_code(self.input_base_dir, self.output_dir)
 
-    def run(self, data_file: Optional[str] = None) -> None:
+    def run(self,
+            pdf_zipfile_1: Optional[str] = None,
+            pdf_zipfile_2: Optional[str] = None,
+            pmc_zipfile: Optional[str] = None,
+            co_occur_zipfile: Optional[str] = None) -> None:
         """Method is called and performs needed transformations to process
         annotations from SciBite CORD-19
 
         Args:
-            data_file: data file to parse
-
-            Should be:
-            [pdf_json.zip, pmc_json.zip, cv19_scc_1_2.zip]
+            pdf_zipfile_1: PDF zip file part 1 [pdf_json_part_1.zip]
+            pdf_zipfile_2: PDF zip file part 2 [pdf_json_part_1.zip]
+            pmc_zipfile: pmc zipfile [pmc_json.zip]
+            co_occur_zipfile: coocurrence data zipfile [cv19_scc_1_2.zip]
 
         Returns:
             None.
-
         """
-        data_files = list()
-        if not data_file:
-            data_files.append(os.path.join(self.input_base_dir, "pdf_json.zip"))
-            data_files.append(os.path.join(self.input_base_dir, "pmc_json.zip"))
-
-            data_files.append(os.path.join(self.input_base_dir, "cv19_scc_1_2.zip"))
-        else:
-            data_files.extend(data_files)
+        if not pdf_zipfile_1:
+            pdf_zipfile_1 = os.path.join(self.input_base_dir, "pdf_json_part_1.zip")
+        if not pdf_zipfile_2:
+            pdf_zipfile_2 = os.path.join(self.input_base_dir, "pdf_json_part_2.zip")
+        if not pmc_zipfile:
+            pmc_zipfile = os.path.join(self.input_base_dir, "pmc_json.zip")
+        if not co_occur_zipfile:
+            co_occur_zipfile = os.path.join(self.input_base_dir, "cv19_scc_1_2.zip")
 
         self.node_header = ['id', 'name', 'category', 'description', 'provided_by']
         self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by', 'type']
@@ -67,44 +70,53 @@ class ScibiteCordTransform(Transform):
         edge_handle = open(self.output_edge_file, 'w')
         node_handle.write("\t".join(self.node_header) + "\n")
         edge_handle.write("\t".join(self.edge_header) + "\n")
-        self.parse_annotations(node_handle, edge_handle, data_files[0], data_files[1])
+        self.parse_annotations(node_handle, edge_handle, pdf_zipfile_1, pdf_zipfile_2,
+                               pmc_zipfile)
 
         node_handle = open(os.path.join(self.output_dir, "entity_cooccurrence_nodes.tsv"), 'w')
         edge_handle = open(os.path.join(self.output_dir, "entity_cooccurrence_edges.tsv"), 'w')
         node_handle.write("\t".join(self.node_header) + "\n")
         edge_handle.write("\t".join(self.edge_header) + "\n")
-        self.parse_cooccurrence(node_handle, edge_handle, data_files[2])
+        self.parse_cooccurrence(node_handle, edge_handle, co_occur_zipfile)
 
-    def parse_annotations(self, node_handle: Any, edge_handle: Any,
+    def parse_annotations(self, node_handle: IO, edge_handle: IO,
                           data_file1: str,
-                          data_file2: str) -> None:
+                          data_file2: str,
+                          data_file3: str
+                          ) -> None:
         """Parse annotations from CORD-19_1_5.zip.
 
         Args:
             node_handle: File handle for nodes.csv.
             edge_handle: File handle for edges.csv.
-            data_file1: Path to first CORD-19_1_5.zip.
-            data_file2: Path to second CORD-19_1_5.zip.
+            data_file1: Path to pdf_json_part_1.zip
+            data_file2: Path to pdf_json_part_2.zip
+            data_file2: Path to pmc_json.zip
 
         Returns:
              None.
 
         """
-        pbar = tqdm(total=2, desc="Unzipping files")
+        pbar = tqdm(total=3, desc="Unzipping files")
 
         # unzip to tmpdir, remove after use, to avoid cluttering raw/ with processed
         # data
         with tempfile.TemporaryDirectory(dir=self.input_base_dir) as tmpdir:
-            unzip_to_tempdir(data_file1, tmpdir);
+            unzip_to_tempdir(data_file1, tmpdir)
             pbar.update(1)
-            unzip_to_tempdir(data_file2, tmpdir);
+            unzip_to_tempdir(data_file2, tmpdir)
+            pbar.update(1)
+            unzip_to_tempdir(data_file3, tmpdir)
             pbar.update(1)
             pbar.close()
 
-            subsets = ['pmc_json', 'pdf_json']
+            subsets = ['pmc_json', 'pdf_json_part_1', 'pdf_json_part_2']
             for subset in subsets:
                 subset_dir = os.path.join(tmpdir, subset)
                 for filename in tqdm(os.listdir(subset_dir)):
+                    if filename.startswith('.'):
+                        print(f"skipping file {filename}")
+                        continue
                     file = os.path.join(subset_dir, filename)
                     doc = json.load(open(file))
                     self.parse_annotation_doc(node_handle, edge_handle, doc)
@@ -216,10 +228,10 @@ class ScibiteCordTransform(Transform):
              None.
 
         """
-        with ZipFile(data_file, 'r') as ZF:
-            ZF.extractall(path=self.input_base_dir)
-
-        df = pd.read_csv(os.path.join(self.input_base_dir, 'cv19_scc.tsv'), delimiter='\t', encoding='utf-8')
+        with ZipFile(data_file, 'r') as ZF, \
+                tempfile.TemporaryDirectory(dir=self.input_base_dir) as tmpdir:
+            ZF.extractall(path=tmpdir)
+            df = pd.read_csv(os.path.join(tmpdir, 'cv19_scc.tsv'), delimiter='\t', encoding='utf-8')
         for index, row in df.iterrows():
             self.parse_cooccurrence_record(node_handle, edge_handle, row)
 

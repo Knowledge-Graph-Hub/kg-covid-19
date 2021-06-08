@@ -66,12 +66,12 @@ class SARSCoV2GeneAnnot(Transform):
                     edge_data = self.gpa_to_edge_data(rec)
                     subject_node = edge_data[0]
                     if subject_node not in seen:
-                        subject_node_data = [subject_node, guess_bl_category(subject_node)] + [""] * 5 + [self.source_name]
+                        subject_node_data = [subject_node, "", guess_bl_category(subject_node)] + [""] * 4 + [self.source_name]
                         write_node_edge_item(node, self.node_header, subject_node_data)
                         seen.add(subject_node)
                     object_node = edge_data[2]
                     if object_node not in seen:
-                        object_node_data = [object_node, guess_bl_category(object_node)] + [""] * 5 + [self.source_name]
+                        object_node_data = [object_node, "", guess_bl_category(object_node)] + [""] * 4 + [self.source_name]
                         write_node_edge_item(node, self.node_header, object_node_data)
                         seen.add(object_node)
 

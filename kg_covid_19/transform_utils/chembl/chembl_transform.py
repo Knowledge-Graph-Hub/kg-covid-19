@@ -89,6 +89,15 @@ class ChemblTransform(Transform):
                 data=[n[x] if x in n else '' for x in sorted(self.node_header)]
             )
 
+        # write node for organisms in TAXON_MAP
+        for org_curie, org_name in {v: k for k, v in TAXON_MAP.items()}.items():
+            o = {'id': org_curie, 'name': org_name, 'category': 'biolink:OrganismTaxon'}
+            write_node_edge_item(
+                fh=node_handle,
+                header=sorted(self.node_header),
+                data=[o[x] if x in o else '' for x in sorted(self.node_header)]
+            )
+
         for e in activity_edges:
             write_node_edge_item(
                 fh=edge_handle,
@@ -163,7 +172,7 @@ class ChemblTransform(Transform):
         Returns:
             A list
         """
-        node_category = ['biolink:ChemicalSubstance']
+        node_category = ['biolink:Drug']
         allowed_properties = {
             'molecule_type', 'polymer_flag', 'inorganic_flag', 'natural_product',
             'synonyms', 'molecule_properties', 'canonical_smiles', 'full_molformula',

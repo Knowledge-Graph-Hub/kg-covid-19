@@ -1,0 +1,22 @@
+#+ summary: Get human proteins that interact with SARS-CoV-2 proteins
+#+ description: Get human proteins that interact with SARS-CoV-2 proteins
+#+ endpoint: http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql
+
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX bl: <https://w3id.org/biolink/vocab/>
+SELECT ?covp ?covplab ?p ?plab ?humanp ?humanplab 
+WHERE {
+  ?interaction rdf:predicate bl:interacts_with .
+  ?interaction rdf:object ?covp .
+  ?interaction rdf:subject ?humanp .
+  ?interaction bl:relation ?p .
+  ?covp bl:category bl:Protein; <https://www.example.org/UNKNOWN/ncbi_taxid> ?covtaxon .
+  ?humanp bl:category bl:Protein; <https://www.example.org/UNKNOWN/ncbi_taxid> ?humantaxon .
+  OPTIONAL { ?covp rdfs:label ?covplab } .
+  OPTIONAL { ?humanp rdfs:label ?humanplab } .
+  OPTIONAL { ?p rdfs:label ?plab }
+  FILTER(?covtaxon="2697049")
+  FILTER(?humantaxon="9606")
+}
