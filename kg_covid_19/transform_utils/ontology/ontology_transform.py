@@ -2,7 +2,7 @@ import os
 
 from typing import Optional
 
-from kgx.cli.cli_utils import transform
+from kgx.cli.cli_utils import transform # type: ignore
 from kg_covid_19.transform_utils.transform import Transform
 
 ONTOLOGIES = {
