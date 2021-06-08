@@ -61,6 +61,7 @@ setup(
     tests_require=test_deps,
     # add package dependencies
     install_requires=[
+        'kgx==1.1.0',
         'tqdm',
         'tabula-py',
         'obonet',
