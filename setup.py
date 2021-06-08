@@ -29,10 +29,15 @@ __version__ = find_version('kg_covid_19', '__version__.py')
 test_deps = [
     'pytest',
     'pytest-cov',
+    'pylint',
+    'mypy',
+    'yamllint',
     'coveralls',
     'validate_version_code',
     'codacy-coverage',
-    'parameterized'
+    'parameterized',
+    'PyYAML',
+    'types-requests',
 ]
 
 extras = {
