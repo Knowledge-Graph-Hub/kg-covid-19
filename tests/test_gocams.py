@@ -17,10 +17,10 @@ class TestGOCams(unittest.TestCase):
                                       output_dir=cls.output_dir)
 
         # Suppress chatter
-        suppress_text = io.StringIO()
-        sys.stdout = suppress_text
+        # suppress_text = io.StringIO()
+        # sys.stdout = suppress_text
         cls.gocams_t.run(data_file=cls.gc_nt_file)
-        sys.stdout = sys.__stdout__
+        # sys.stdout = sys.__stdout__
 
     def setUp(self) -> None:
         self.dc_output_dir = os.path.join(self.output_dir, "gocams")
