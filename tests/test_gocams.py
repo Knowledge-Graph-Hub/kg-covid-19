@@ -16,13 +16,13 @@ class TestGOCams(unittest.TestCase):
                                       output_dir=self.output_dir)
 
         # Suppress chatter
-        suppress_text = io.StringIO()
-        sys.stdout = suppress_text
+        # suppress_text = io.StringIO()
+        # sys.stdout = suppress_text
         self.gocams_t.run(data_file=self.gc_nt_file)
-        sys.stdout = sys.__stdout__
+        # sys.stdout = sys.__stdout__
         #
-        # self.output_dir = os.path.join(self.output_dir, "gocams")
-        # self.expected_nodes_file = os.path.join(self.output_dir, 'GOCAMs_nodes.tsv')
+        self.output_dir = os.path.join(self.output_dir, "gocams")
+        self.expected_nodes_file = os.path.join(self.output_dir, 'GOCAMs_nodes.tsv')
         # self.expected_edges_file = os.path.join(self.output_dir, 'GOCAMs_edges.tsv')
         # self.expected_num_nodes = 3682
         # self.expected_num_edges = 4161
@@ -35,9 +35,9 @@ class TestGOCams(unittest.TestCase):
 
     def test_makes_output_dir(self):
         self.assertTrue(os.path.isdir(self.output_dir))
-    #
-    # def test_nodes_file_exists(self):
-    #     self.assertTrue(os.path.isfile(self.expected_nodes_file))
+
+    def test_nodes_file_exists(self):
+        self.assertTrue(os.path.isfile(self.expected_nodes_file))
     #
     # def test_num_transformed_nodes(self):
     #     self.assertTrue(sum(1 for line in open(self.expected_nodes_file)) > 1)
