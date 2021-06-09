@@ -14,12 +14,12 @@ class TestGOCams(unittest.TestCase):
         self.output_dir = tempfile.gettempdir()
         self.gocams_t = GocamTransform(input_dir=self.input_dir,
                                       output_dir=self.output_dir)
-        #
-        # # Suppress chatter
-        # suppress_text = io.StringIO()
-        # sys.stdout = suppress_text
-        # self.gocams_t.run(data_file=self.gc_nt_file)
-        # sys.stdout = sys.__stdout__
+
+        # Suppress chatter
+        suppress_text = io.StringIO()
+        sys.stdout = suppress_text
+        self.gocams_t.run(data_file=self.gc_nt_file)
+        sys.stdout = sys.__stdout__
         #
         # self.output_dir = os.path.join(self.output_dir, "gocams")
         # self.expected_nodes_file = os.path.join(self.output_dir, 'GOCAMs_nodes.tsv')
