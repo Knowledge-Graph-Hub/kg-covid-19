@@ -111,55 +111,6 @@ class GocamTransform(Transform):
         transformer = Transformer(stream=False)
         input_args['filename'] = [input_args['filename']]
         transformer.transform(input_args, output_args)
-        # input_args = {
-        #     'format': input_format,
-        #     # 'compression': compression,
-        #     'prefix_map': cmap,
-        #     'node_property_predicates': np
-        # }
-        #
-        # output_args = {
-        #     'format': 'tsv',
-        #     'filename': os.path.join(self.output_dir, self.source_name)
-        # }
-        # this is how this is done in the cli transform() method:
-        # key = self.source_name  # I guess
-        # source: Dict = {
-        #             'input': {
-        #                 'format': input_format,
-        #                 'compression': compression,
-        #                 'filename': data_file
-        #             },
-        #             'output': {
-        #                 'format': 'tsv',
-        #                 'compression': None,
-        #                 'filename': os.path.join(self.output_dir, self.source_name),
-        #             },
-        # }
-        #
-        # input_args = prepare_input_args(
-        #      key, source, output_directory, prefix_map, node_property_predicates,
-        #      predicate_mappings
-        # )
-        # output_args = prepare_output_args(
-        #     key=None, # key,
-        #     source="GOCams",
-        #     output_directory=os.path.join(self.output_dir, self.source_name),
-        #     reverse_prefix_map=None,
-        #     reverse_predicate_mappings,
-        #     property_types=np,
-        # )
-        # transformer = Transformer(stream=stream)
-        # transformer.transform(input_args, output_args)
-        # t = Transformer(stream=False)
-        # t.transform(input_args=input_args, output_args=output_args)
-
-        # this works and outputs nodes/edges, but it's not taking in cmap and np
-        # transform(inputs=[data_file],
-        #           input_format=input_format,
-        #           input_compression=compression,
-        #           output=os.path.join(self.output_dir, self.source_name),
-        #           output_format='tsv')
 
     def decompress_file(self, input_file: str, output_file: str):
         """Decompress a file.
