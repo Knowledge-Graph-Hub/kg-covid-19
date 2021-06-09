@@ -158,5 +158,8 @@
 #
 
 -
-  url: https://github.com/justaddcoffee/go-cam-models-kg-covid-19/raw/master/lifted-go-cams-20200619.xml.gz
+  # this nt file was produced by converting rdf/xml here:
+  # https://github.com/justaddcoffee/go-cam-models-kg-covid-19/raw/master/lifted-go-cams-20200619.xml.gz
+  # using KGX. This is to allow us to upgrade to KGX 1.1.0, which doesn't seem to support rdf/xml
+  url: http://kg-hub.berkeleybop.io/frozen_incoming_data/lifted-go-cams-20200619.nt
   local_name: lifted-go-cams-20200619.xml.gz
