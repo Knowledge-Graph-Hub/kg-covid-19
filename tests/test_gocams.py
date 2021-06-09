@@ -33,9 +33,8 @@ class TestGOCams(unittest.TestCase):
     def test_run_exists(self):
         self.assertTrue(isinstance(self.gocams_t.run, object))
 
-    #
-    # def test_makes_output_dir(self):
-    #     self.assertTrue(os.path.isdir(self.output_dir))
+    def test_makes_output_dir(self):
+        self.assertTrue(os.path.isdir(self.output_dir))
     #
     # def test_nodes_file_exists(self):
     #     self.assertTrue(os.path.isfile(self.expected_nodes_file))
