@@ -30,20 +30,13 @@ class GocamTransform(Transform):
         if not data_file:
             data_file = os.path.join(self.input_base_dir, 'lifted-go-cams-20200619.nt')
 
-        if data_file.endswith('.gz'):
-            print("Decompressing")
-            decompressed_data_file = '.'.join(data_file.split('.')[0:-1])
-            self.decompress_file(data_file, decompressed_data_file)
-        else:
-            decompressed_data_file = data_file
-
         if 'input_format' in kwargs:
             input_format = kwargs['input_format']
             if input_format not in {'nt', 'ttl', 'rdf/xml'}:
                 raise ValueError(f"Unsupported input_format: {input_format}")
         else:
             input_format = 'nt'
-        self.parse(decompressed_data_file, input_format, compression=None)
+        self.parse(data_file, input_format, compression=None)
 
     def parse(self, data_file: str, input_format: str,
               compression: Optional[str] = None) -> None:
@@ -112,18 +105,3 @@ class GocamTransform(Transform):
         input_args['filename'] = [input_args['filename']]
         transformer.transform(input_args, output_args)
 
-    def decompress_file(self, input_file: str, output_file: str):
-        """Decompress a file.
-
-        Args:
-             input_file: Input file
-             output_file: Output file
-
-        Returns:
-            str
-
-        """
-        FH = gzip.open(input_file, 'rb')
-        WH = open(output_file, 'wb')
-        WH.write(FH.read())
-        return output_file
