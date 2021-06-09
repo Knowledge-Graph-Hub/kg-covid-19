@@ -2,7 +2,7 @@ import gzip
 import os
 from typing import Optional, Dict
 
-from kgx.cli.cli_utils import prepare_output_args, prepare_input_args
+from kgx.cli.cli_utils import prepare_output_args, prepare_input_args  # type: ignore
 from kgx.transformer import Transformer  # type: ignore
 from kg_covid_19.transform_utils.transform import Transform
 
