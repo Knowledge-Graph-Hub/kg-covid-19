@@ -9,12 +9,11 @@ from kg_covid_19.transform_utils.gocam_transform import GocamTransform
 class TestGOCams(unittest.TestCase):
 
     def setUp(self) -> None:
-        pass
-        # self.gc_nt_file = 'tests/resources/gocams/lifted-go-cams-20200619_SNIPPET.nt'
-        # self.input_dir = 'tests/resources/gocams/'
-        # self.output_dir = tempfile.gettempdir()
-        # self.gocams_t = GocamTransform(input_dir=self.input_dir,
-        #                               output_dir=self.output_dir)
+        self.gc_nt_file = 'tests/resources/gocams/lifted-go-cams-20200619_SNIPPET.nt'
+        self.input_dir = 'tests/resources/gocams/'
+        self.output_dir = tempfile.gettempdir()
+        self.gocams_t = GocamTransform(input_dir=self.input_dir,
+                                      output_dir=self.output_dir)
         #
         # # Suppress chatter
         # suppress_text = io.StringIO()
@@ -30,8 +29,10 @@ class TestGOCams(unittest.TestCase):
 
     def test_reality(self):
         self.assertTrue(True)
-    # def test_run_exists(self):
-    #     self.assertTrue(isinstance(self.gocams_t.run, object))
+
+    def test_run_exists(self):
+        self.assertTrue(isinstance(self.gocams_t.run, object))
+
     #
     # def test_makes_output_dir(self):
     #     self.assertTrue(os.path.isdir(self.output_dir))
