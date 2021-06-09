@@ -11,7 +11,7 @@ class TestGOCams(unittest.TestCase):
     def setUp(self) -> None:
         self.gc_nt_file = 'tests/resources/gocams/lifted-go-cams-20200619_SNIPPET.nt'
         self.input_dir = 'tests/resources/gocams/'
-        self.output_dir = tempfile.gettempdir()
+        self.output_dir = tempfile.mkdtemp()
         self.gocams_t = GocamTransform(input_dir=self.input_dir,
                                       output_dir=self.output_dir)
 
