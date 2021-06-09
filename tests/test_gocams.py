@@ -3,6 +3,8 @@ import os
 import sys
 import tempfile
 import unittest
+from unittest import mock
+
 from kg_covid_19.transform_utils.gocam_transform import GocamTransform
 
 
@@ -13,14 +15,12 @@ class TestGOCams(unittest.TestCase):
         self.input_dir = 'tests/resources/gocams/'
         self.output_dir = tempfile.mkdtemp()
         self.gocams_t = GocamTransform(input_dir=self.input_dir,
-                                      output_dir=self.output_dir)
+                                       output_dir=self.output_dir)
 
         # Suppress chatter
-        # suppress_text = io.StringIO()
-        # sys.stdout = suppress_text
-        self.gocams_t.run(data_file=self.gc_nt_file)
-        # sys.stdout = sys.__stdout__
-        #
+        with mock.patch('sys.stdout', new=io.StringIO()) as std_out:
+            self.gocams_t.run(data_file=self.gc_nt_file)
+
         self.output_dir = os.path.join(self.output_dir, "gocams")
         self.expected_nodes_file = os.path.join(self.output_dir, 'GOCAMs_nodes.tsv')
         # self.expected_edges_file = os.path.join(self.output_dir, 'GOCAMs_edges.tsv')
@@ -33,8 +33,8 @@ class TestGOCams(unittest.TestCase):
     def test_run_exists(self):
         self.assertTrue(isinstance(self.gocams_t.run, object))
 
-    def test_makes_output_dir(self):
-        self.assertTrue(os.path.isdir(self.output_dir))
+    # def test_makes_output_dir(self):
+    #     self.assertTrue(os.path.isdir(self.output_dir))
 
     def test_nodes_file_exists(self):
         self.assertTrue(os.path.isfile(self.expected_nodes_file))
