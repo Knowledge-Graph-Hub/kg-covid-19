@@ -43,7 +43,7 @@ class ChemblTransform(Transform):
 
         """
         self.node_header = ['id', 'name', 'category', 'provided_by']
-        self.edge_header = ['id', 'subject', 'edge_label', 'object', 'relation', 'provided_by', 'type']
+        self.edge_header = ['id', 'subject', 'predicate', 'object', 'relation', 'provided_by', 'type']
 
         # ChEMBL molecules
         data = self.get_chembl_molecules()

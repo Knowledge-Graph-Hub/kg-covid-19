@@ -24,7 +24,7 @@ id  name    category
 gene:1234   TBX4    Gene 
 
 Edge: 
-subject edge_label  object   relation
+subject predicate  object   relation
 gene:1234  contributes_to_condition    MONDO:0005002   RO:0003304
 """
 
@@ -35,7 +35,7 @@ class ZhouTransform(Transform):
         source_name = "zhou_host_proteins"
         super().__init__(source_name, input_dir, output_dir)
         self.node_header = ['id', 'name', 'category', 'provided_by']
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+        self.edge_header = ['subject', 'predicate', 'object', 'relation',
                             'provided_by', 'type', 'publication']
 
     def run(self, data_file: Optional[str] = None):

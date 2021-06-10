@@ -13,7 +13,7 @@ class Transform:
         # default columns, can be appended to or overwritten as necessary
         self.source_name = source_name
         self.node_header = ['id', 'name', 'category']
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+        self.edge_header = ['subject', 'predicate', 'object', 'relation',
                             'provided_by']
 
         # default dirs

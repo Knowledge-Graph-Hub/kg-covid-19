@@ -40,7 +40,7 @@ class TTDTransform(Transform):
         drug_gene_edge_relation = "RO:0002436"  # molecularly interacts with
         uniprot_curie_prefix = "UniProtKB:"
         self.node_header = ['id', 'name', 'category', 'TTD_ID', 'provided_by']
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+        self.edge_header = ['subject', 'predicate', 'object', 'relation',
                             'provided_by', 'type', 'target_type']
 
         # make name to id map for uniprot names of human proteins

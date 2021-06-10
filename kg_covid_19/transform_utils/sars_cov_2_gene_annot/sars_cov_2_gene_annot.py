@@ -23,7 +23,7 @@ class SARSCoV2GeneAnnot(Transform):
 
         self.node_header = ['id', 'name', 'category', 'full_name', 'synonym',
                             'in_taxon', 'xrefs', 'provided_by']
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+        self.edge_header = ['subject', 'predicate', 'object', 'relation',
                             'provided_by', 'type', 'DB_References', 'ECO_code', 'With',
                             'Interacting_taxon_ID',
                             'Date', 'Assigned_by', 'Annotation_Extension',
