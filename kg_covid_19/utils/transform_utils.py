@@ -5,9 +5,10 @@ import logging
 import os
 import re
 import shutil
+import tempfile
 import zipfile
 from typing import Any, Dict, List, Union
-from tqdm.notebook import tqdm  # type: ignore
+from tqdm import tqdm  # type: ignore
 
 
 class TransformError(Exception):

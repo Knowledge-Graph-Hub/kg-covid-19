@@ -4,7 +4,7 @@ import os
 import re
 import tempfile
 
-from tqdm.notebook import tqdm  # type: ignore
+from tqdm import tqdm  # type: ignore
 from typing import List, Dict, Any, Set, Optional, IO
 from zipfile import ZipFile
 import pandas as pd  # type: ignore
