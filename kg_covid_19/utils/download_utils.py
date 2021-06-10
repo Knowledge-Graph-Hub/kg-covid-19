@@ -8,7 +8,8 @@ from urllib.request import Request, urlopen
 
 import yaml
 from os import path
-from tqdm.auto import tqdm  # type: ignore
+from tqdm.notebook import tqdm  # type: ignore
+
 
 def download_from_yaml(yaml_file: str, output_dir: str,
                        ignore_cache: bool = False) -> None:
