@@ -15,7 +15,7 @@ class TestIntAct(unittest.TestCase):
         self.assertEqual(self.intact.node_header,
                          ['id', 'name', 'category', 'ncbi_taxid', 'provided_by'])
         self.assertEqual(self.intact.edge_header,
-                        ['subject', 'edge_label', 'object', 'relation', 'provided_by', 'type',
+                        ['subject', 'predicate', 'object', 'relation', 'provided_by', 'type',
                          'publication', 'num_participants', 'association_type',
                          'detection_method', 'subj_exp_role', 'obj_exp_role'])
 
