@@ -122,12 +122,12 @@ merged_graph:
         filename:
           - data/transformed/ontologies/hp_nodes.tsv
           - data/transformed/ontologies/hp_edges.tsv
-    go-cams:
-      input:
-        format: tsv
-        filename:
-          - data/transformed/GOCAMs/GOCAMs_nodes.tsv
-          - data/transformed/GOCAMs/GOCAMs_edges.tsv
+#    go-cams:
+#      input:
+#        format: tsv
+#        filename:
+#          - data/transformed/GOCAMs/GOCAMs_nodes.tsv
+#          - data/transformed/GOCAMs/GOCAMs_edges.tsv
   operations:
     - name: kgx.operations.summarize_graph.generate_graph_stats
       args:
