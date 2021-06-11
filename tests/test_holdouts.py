@@ -229,7 +229,7 @@ class TestEdges(unittest.TestCase):
             self.assertEqual(self.edges.shape[0], ne.shape[0])
 
     def test_make_negative_edges_check_column_names(self):
-        expected_columns = ['subject', 'edge_label', 'object', 'relation']
+        expected_columns = ['subject', 'predicate', 'object', 'relation']
         self.assertEqual(len(expected_columns), self.ne.shape[1],
                          "didn't get expected columns in negative edge df")
         self.assertListEqual(expected_columns, list(self.ne.columns))
