@@ -167,7 +167,7 @@ class TestEdges(unittest.TestCase):
                              "as the original")
 
     def test_make_positive_edges_check_test_edges_column_names(self):
-        expected_columns = ['subject', 'edge_label', 'object', 'relation', 'weight',
+        expected_columns = ['subject', 'predicate', 'object', 'relation', 'weight',
                             'subj_degree', 'obj_degree']
         self.assertEqual(len(expected_columns), self.test_edges.shape[1],
                          "didn't get expected columns in positive edge df")

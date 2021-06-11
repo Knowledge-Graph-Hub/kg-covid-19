@@ -147,7 +147,7 @@ class ChemblTransform(Transform):
             activity_id = record['_source']['activity_id']
             edge_properties = self.parse_doc_fields(record['_source'], allowed_properties, remap)
             edge_properties['id'] = str(activity_id)
-            edge_properties['edge_label'] = edge_label
+            edge_properties['predicate'] = edge_label
             edge_properties['relation'] = relation
             edge_properties['subject'] = f"CHEMBL.COMPOUND:{edge_properties['subject']}"
             edge_properties['object'] = f"CHEMBL.TARGET:{edge_properties['object']}"
