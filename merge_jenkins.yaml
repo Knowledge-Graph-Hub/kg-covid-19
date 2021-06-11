@@ -129,7 +129,7 @@ merged_graph:
           - data/transformed/GOCAMs/GOCAMs_nodes.tsv
           - data/transformed/GOCAMs/GOCAMs_edges.tsv
   operations:
-    - name: kgx.operations.summarize_graph.generate_graph_stats
+    - name: kgx.graph_operations.summarize_graph.generate_graph_stats
       args:
         graph_name: KG-COVID-19 Graph
         filename: merged_graph_stats.yaml
