@@ -1,4 +1,4 @@
-subject	edge_label	object	relation	weight
+subject	predicate	object	relation	weight
 g2	biolink:interacts_with	g3	RO:0002410	10
 g4	biolink:interacts_with	g5	RO:0002410	10
 g6	biolink:interacts_with	g7	RO:0002410	10

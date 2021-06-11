@@ -176,7 +176,7 @@ class TestEdges(unittest.TestCase):
     def test_make_positive_edges_check_test_edge_label_column(self):
         expected_edge_label = 'positive_edge'
         self.assertListEqual([expected_edge_label] * self.test_edges.shape[0],
-                             list(self.test_edges.edge_label),
+                             list(self.test_edges.predicate),
                              "Edge label column not correct in positive edges")
 
     def test_make_positive_edges_check_test_edge_relation_column(self):
@@ -237,7 +237,7 @@ class TestEdges(unittest.TestCase):
     def test_make_negative_edges_check_edge_label_column(self):
         expected_edge_label = 'negative_edge'
         self.assertListEqual([expected_edge_label] * self.ne.shape[0],
-                             list(self.ne.edge_label),
+                             list(self.ne.predicate),
                              "Edge label column not correct")
 
     def test_make_negative_edges_check_relation_column(self):
