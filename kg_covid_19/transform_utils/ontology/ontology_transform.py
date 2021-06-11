@@ -2,9 +2,8 @@ import os
 
 from typing import Optional
 
+from kgx.cli.cli_utils import transform  # type: ignore
 from kg_covid_19.transform_utils.transform import Transform
-from kgx import PandasTransformer, ObographJsonTransformer  # type: ignore
-
 
 ONTOLOGIES = {
     'HpTransform': 'hp.json',
@@ -50,12 +49,14 @@ class OntologyTransform(Transform):
              None.
         """
         print(f"Parsing {data_file}")
-        transformer = ObographJsonTransformer()
         compression: Optional[str]
         if data_file.endswith('.gz'):
             compression = 'gz'
         else:
             compression = None
-        transformer.parse(data_file, compression=compression, provided_by=source)
-        output_transformer = PandasTransformer(transformer.graph)
-        output_transformer.save(filename=os.path.join(self.output_dir, f'{name}'), output_format='tsv', mode=None)
+
+        transform(inputs=[data_file],
+                  input_format='obojson',
+                  input_compression=compression,
+                  output=os.path.join(self.output_dir, name),
+                  output_format='tsv')

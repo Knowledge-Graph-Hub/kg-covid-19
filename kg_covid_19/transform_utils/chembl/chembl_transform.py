@@ -43,7 +43,7 @@ class ChemblTransform(Transform):
 
         """
         self.node_header = ['id', 'name', 'category', 'provided_by']
-        self.edge_header = ['id', 'subject', 'edge_label', 'object', 'relation', 'provided_by', 'type']
+        self.edge_header = ['id', 'subject', 'predicate', 'object', 'relation', 'provided_by', 'type']
 
         # ChEMBL molecules
         data = self.get_chembl_molecules()
@@ -147,7 +147,7 @@ class ChemblTransform(Transform):
             activity_id = record['_source']['activity_id']
             edge_properties = self.parse_doc_fields(record['_source'], allowed_properties, remap)
             edge_properties['id'] = str(activity_id)
-            edge_properties['edge_label'] = edge_label
+            edge_properties['predicate'] = edge_label
             edge_properties['relation'] = relation
             edge_properties['subject'] = f"CHEMBL.COMPOUND:{edge_properties['subject']}"
             edge_properties['object'] = f"CHEMBL.TARGET:{edge_properties['object']}"

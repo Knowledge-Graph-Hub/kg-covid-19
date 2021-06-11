@@ -32,7 +32,7 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
         sources_column='subject',
         destinations_column='object',
         directed=False,
-        edge_types_column='edge_label',
+        edge_types_column='predicate',
         default_edge_type='biolink:Association',
         node_path=nodes,
         nodes_column='id',
@@ -183,7 +183,7 @@ def _generate_negative_edges(nodes_df: pd.DataFrame,
 
         # add edge_label and relation
         negative_edges = pd.DataFrame({'subject': negative_edges['subject'],
-                                       'edge_label': edge_label,
+                                       'predicate': edge_label,
                                        'object': negative_edges['object'],
                                        'relation': relation})
         pbar.update()
@@ -239,7 +239,7 @@ def make_positive_edges(nodes_df: pd.DataFrame,
 
         pbar.set_description("Adding edge_label and relation columns")
         test_edges = test_edges.sample(frac=(1-train_fraction))
-        test_edges['edge_label'] = 'positive_edge'
+        test_edges['predicate'] = 'positive_edge'
         test_edges['relation'] = 'positive_edge'
         pbar.update()
 

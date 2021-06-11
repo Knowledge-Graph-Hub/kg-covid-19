@@ -86,6 +86,6 @@ class TestDrugCentral(unittest.TestCase):
         edge_df = pd.read_csv(edge_file, sep="\t", header=0)
         self.assertEqual((21, 7), edge_df.shape)
         self.assertEqual(
-            ['subject', 'edge_label', 'object', 'relation', 'provided_by', 'comment', 'type'],
+            ['subject', 'predicate', 'object', 'relation', 'provided_by', 'comment', 'type'],
              list(edge_df.columns)
         )

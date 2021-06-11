@@ -24,7 +24,7 @@ protein:1234    TBX4    biolink:Protein UniProtKB:123456    STRING
 xrefs contains the UniProtKB id for the protein, if available
 
 Edge: 
-subject edge_label  object  relation
+subject predicate  object  relation
 protein:1234    interacts_with  protein:4567    RO:0002434
 
 

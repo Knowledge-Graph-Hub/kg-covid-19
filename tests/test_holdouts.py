@@ -167,7 +167,7 @@ class TestEdges(unittest.TestCase):
                              "as the original")
 
     def test_make_positive_edges_check_test_edges_column_names(self):
-        expected_columns = ['subject', 'edge_label', 'object', 'relation', 'weight',
+        expected_columns = ['subject', 'predicate', 'object', 'relation', 'weight',
                             'subj_degree', 'obj_degree']
         self.assertEqual(len(expected_columns), self.test_edges.shape[1],
                          "didn't get expected columns in positive edge df")
@@ -176,7 +176,7 @@ class TestEdges(unittest.TestCase):
     def test_make_positive_edges_check_test_edge_label_column(self):
         expected_edge_label = 'positive_edge'
         self.assertListEqual([expected_edge_label] * self.test_edges.shape[0],
-                             list(self.test_edges.edge_label),
+                             list(self.test_edges.predicate),
                              "Edge label column not correct in positive edges")
 
     def test_make_positive_edges_check_test_edge_relation_column(self):
@@ -229,7 +229,7 @@ class TestEdges(unittest.TestCase):
             self.assertEqual(self.edges.shape[0], ne.shape[0])
 
     def test_make_negative_edges_check_column_names(self):
-        expected_columns = ['subject', 'edge_label', 'object', 'relation']
+        expected_columns = ['subject', 'predicate', 'object', 'relation']
         self.assertEqual(len(expected_columns), self.ne.shape[1],
                          "didn't get expected columns in negative edge df")
         self.assertListEqual(expected_columns, list(self.ne.columns))
@@ -237,7 +237,7 @@ class TestEdges(unittest.TestCase):
     def test_make_negative_edges_check_edge_label_column(self):
         expected_edge_label = 'negative_edge'
         self.assertListEqual([expected_edge_label] * self.ne.shape[0],
-                             list(self.ne.edge_label),
+                             list(self.ne.predicate),
                              "Edge label column not correct")
 
     def test_make_negative_edges_check_relation_column(self):

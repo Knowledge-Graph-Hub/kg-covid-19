@@ -59,7 +59,7 @@ class IntAct(Transform):
         self.ppi_edge_label = 'biolink:interacts_with'
         self.ppi_ro_relation = 'RO:0002437'
         self.node_header = ['id', 'name', 'category', 'ncbi_taxid', 'provided_by']
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by', 'type',
+        self.edge_header = ['subject', 'predicate', 'object', 'relation', 'provided_by', 'type',
                             'publication', 'num_participants', 'association_type',
                             'detection_method',  'subj_exp_role', 'obj_exp_role']
 

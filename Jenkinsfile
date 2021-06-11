@@ -53,7 +53,6 @@ pipeline {
                     )
                     sh '/usr/bin/python3.7 -m venv venv'
                     sh '. venv/bin/activate'
-                    sh './venv/bin/pip install -r requirements.txt'
                     sh './venv/bin/pip install .'
                 }
             }

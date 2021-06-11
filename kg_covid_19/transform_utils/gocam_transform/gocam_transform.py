@@ -1,10 +1,9 @@
 import gzip
 import os
-import shutil
-from typing import Optional
+from typing import Optional, Dict
 
-from kgx import RdfTransformer, PandasTransformer # type: ignore
-
+from kgx.cli.cli_utils import prepare_output_args, prepare_input_args  # type: ignore
+from kgx.transformer import Transformer  # type: ignore
 from kg_covid_19.transform_utils.transform import Transform
 
 
@@ -29,34 +28,31 @@ class GocamTransform(Transform):
 
         """
         if not data_file:
-            data_file = os.path.join(self.input_base_dir, 'lifted-go-cams-20200619.xml.gz')
-
-        if data_file.endswith('.gz'):
-            print("Decompressing")
-            decompressed_data_file = '.'.join(data_file.split('.')[0:-1])
-            self.decompress_file(data_file, decompressed_data_file)
-        else:
-            decompressed_data_file = data_file
+            data_file = os.path.join(self.input_base_dir, 'lifted-go-cams-20200619.nt')
 
         if 'input_format' in kwargs:
             input_format = kwargs['input_format']
             if input_format not in {'nt', 'ttl', 'rdf/xml'}:
                 raise ValueError(f"Unsupported input_format: {input_format}")
         else:
-            input_format = None
-        self.parse(decompressed_data_file, input_format)
+            input_format = 'nt'
+        self.parse(data_file, input_format, compression=None)
 
-    def parse(self, data_file: str, input_format: str) -> None:
+    def parse(self, data_file: str, input_format: str,
+              compression: Optional[str] = None) -> None:
         """Processes the data_file.
 
         Args:
             data_file: data file to parse
             input_format: format of input file
+            compression: compression
 
         Returns:
              None
 
         """
+        print(f"Parsing {data_file}")
+
         # define prefix to IRI mappings
         cmap = {
             'REACT': 'http://purl.obolibrary.org/obo/go/extensions/reacto.owl#REACTO_',
@@ -77,24 +73,35 @@ class GocamTransform(Transform):
             'https://w3id.org/biolink/vocab/objectActivity',
         }
 
-        print(f"Parsing {data_file}")
-        transformer = RdfTransformer(curie_map=cmap)
-        transformer.parse(data_file, node_property_predicates=np, input_format=input_format)
-        output_transformer = PandasTransformer(transformer.graph)
-        output_transformer.save(os.path.join(self.output_dir, self.source_name), output_format='tsv', mode=None)
+        source: Dict = {
+            'input': {
+                'format': input_format,
+                'compression': compression,
+                'filename': data_file,
+            },
+            'output': {
+                'format': 'tsv',
+                'compression': None,
+                'filename': os.path.join(self.output_dir, self.source_name),
+            },
+        }
+        input_args = prepare_input_args(
+            key=self.source_name,
+            source=source,
+            output_directory=os.path.join(self.output_dir, self.source_name),
+            prefix_map=cmap,
+            node_property_predicates=np,
+            predicate_mappings=None
+        )
+        output_args = prepare_output_args(
+            key=self.source_name,
+            source=source,
+            output_directory=os.path.join(self.output_dir, self.source_name),
+            reverse_prefix_map=None,
+            reverse_predicate_mappings=None,
+            property_types=None,
+        )
+        transformer = Transformer(stream=False)
+        input_args['filename'] = [input_args['filename']]
+        transformer.transform(input_args, output_args)
 
-    def decompress_file(self, input_file: str, output_file: str):
-        """Decompress a file.
-
-        Args:
-             input_file: Input file
-             output_file: Output file
-
-        Returns:
-            str
-
-        """
-        FH = gzip.open(input_file, 'rb')
-        WH = open(output_file, 'wb')
-        WH.write(FH.read())
-        return output_file

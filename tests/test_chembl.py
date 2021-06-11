@@ -14,7 +14,7 @@ class TestChembl(TestCase):
         cls.expected_ca_keys = ['standard_units', 'standard_type', 'standard_relation',
                                  'target_pref_name', 'assay', 'publications', 'object',
                                  'subject', 'assay_organism', 'standard_value',
-                                 'target_organism', 'uo_units', 'id', 'edge_label',
+                                 'target_organism', 'uo_units', 'id', 'predicate',
                                  'relation', 'provided_by', 'type']
 
     def setUp(self) -> None:
@@ -36,7 +36,7 @@ class TestChembl(TestCase):
                 self.chembl_activities.append(eval(line))
         ca = self.chembl.parse_chembl_activity(self.chembl_activities)
         self.assertEqual(len(ca), 5)
-        self.assertEqual(list(ca[0].keys()), self.expected_ca_keys)
+        self.assertEqual(self.expected_ca_keys, list(ca[0].keys()))
 
 
 

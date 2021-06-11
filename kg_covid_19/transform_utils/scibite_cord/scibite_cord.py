@@ -65,7 +65,7 @@ class ScibiteCordTransform(Transform):
             co_occur_zipfile = os.path.join(self.input_base_dir, "cv19_scc_1_2.zip")
 
         self.node_header = ['id', 'name', 'category', 'description', 'provided_by']
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation', 'provided_by', 'type']
+        self.edge_header = ['subject', 'predicate', 'object', 'relation', 'provided_by', 'type']
         node_handle = open(self.output_node_file, 'w')
         edge_handle = open(self.output_edge_file, 'w')
         node_handle.write("\t".join(self.node_header) + "\n")

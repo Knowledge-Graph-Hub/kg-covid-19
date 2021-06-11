@@ -25,7 +25,7 @@ class PharmGKB(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None):
         source_name = "pharmgkb"
         super().__init__(source_name, input_dir, output_dir)
-        self.edge_header = ['subject', 'edge_label', 'object', 'relation',
+        self.edge_header = ['subject', 'predicate', 'object', 'relation',
                             'provided_by', 'type', 'evidence']
         self.node_header = ['id', 'name', 'category', 'provided_by']
         self.edge_of_interest = ['Gene',

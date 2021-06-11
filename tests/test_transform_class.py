@@ -29,7 +29,7 @@ class TestTransform(TestCase):
         ('source_name', 'test_transform'),
         ('node_header', ['id', 'name', 'category']),
         ('edge_header',
-         ['subject', 'edge_label', 'object', 'relation', 'provided_by']),
+         ['subject', 'predicate', 'object', 'relation', 'provided_by']),
         ('output_base_dir', os.path.join("data", "transformed")),
         ('input_base_dir', os.path.join("data", "raw")),
         ('output_dir', os.path.join("data", "transformed", "test_transform")),
