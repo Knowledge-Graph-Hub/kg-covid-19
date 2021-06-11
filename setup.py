@@ -68,6 +68,7 @@ setup(
     # add package dependencies
     install_requires=[
         'kgx==1.1.0',
+        'linkml-model',
         'tqdm',
         'tabula-py',
         'obonet',
