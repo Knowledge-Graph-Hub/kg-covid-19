@@ -89,7 +89,7 @@ pipeline {
             steps {
                 dir('./gitrepo') {
                     sh 'env'
-                    sh '. venv/bin/activate && env && python3.8 run.py transform'
+                    sh '. venv/bin/activate && env && python3.7 run.py transform'
                 }
             }
         }
