@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        node {
-            label 'docker'
-        }
-    }
+    agent any
     triggers{
         cron('H H 1 1-12 *')
     }
