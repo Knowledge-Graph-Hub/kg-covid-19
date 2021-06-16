@@ -1,4 +1,9 @@
 pipeline {
+    agent {
+        node {
+            label 'docker'
+        }
+    }
     triggers{
         cron('H H 1 1-12 *')
     }
@@ -10,18 +15,10 @@ pipeline {
         // used solely for invalidations
         AWS_CLOUDFRONT_DISTRIBUTION_ID = 'EUVSWXZQBXCFP'
     }
-
     options {
         timestamps()
     }
     stages {
-        agent {
-            docker {
-                image 'ubuntu'
-                // Reset Jenkins Docker agent default to original root
-                args '-u root:root'
-            }
-        }
         // Very first: pause for a minute to give a chance to
         // cancel and clean the workspace before use.
         stage('Ready and clean') {
@@ -33,6 +30,14 @@ pipeline {
         }
 
         stage('Initialize') {
+            agent {
+                docker {
+                    reuseNode true
+                    image 'ubuntu'
+                    // Reset Jenkins Docker agent default to original root
+                    args '-u root:root'
+                }
+            }
             steps {
                 // print some info
                 dir('./gitrepo') {
@@ -48,6 +53,14 @@ pipeline {
         }
 
         stage('Build kg_covid_19') {
+            agent {
+                docker {
+                    reuseNode true
+                    image 'ubuntu'
+                    // Reset Jenkins Docker agent default to original root
+                    args '-u root:root'
+                }
+            }
             steps {
                 dir('./gitrepo') {
                     git(
@@ -62,6 +75,14 @@ pipeline {
         }
 
         stage('Download') {
+            agent {
+                docker {
+                    reuseNode true
+                    image 'ubuntu'
+                    // Reset Jenkins Docker agent default to original root
+                    args '-u root:root'
+                }
+            }
             steps {
                 dir('./gitrepo') {
                     script {
@@ -89,6 +110,14 @@ pipeline {
         }
 
         stage('Transform') {
+            agent {
+                docker {
+                    reuseNode true
+                    image 'ubuntu'
+                    // Reset Jenkins Docker agent default to original root
+                    args '-u root:root'
+                }
+            }
             steps {
                 dir('./gitrepo') {
                     sh 'env'
@@ -98,6 +127,14 @@ pipeline {
         }
 
         stage('Merge') {
+            agent {
+                docker {
+                    reuseNode true
+                    image 'ubuntu'
+                    // Reset Jenkins Docker agent default to original root
+                    args '-u root:root'
+                }
+            }
             steps {
                 dir('./gitrepo') {
                     sh '. venv/bin/activate && python3.7 run.py merge -y merge_jenkins.yaml'
@@ -109,6 +146,14 @@ pipeline {
         }
 
         stage('Make blazegraph journal'){
+            agent {
+                docker {
+                    reuseNode true
+                    image 'ubuntu'
+                    // Reset Jenkins Docker agent default to original root
+                    args '-u root:root'
+                }
+            }
             steps {
                 dir('./gitrepo/blazegraph') {
                         git(
@@ -125,6 +170,14 @@ pipeline {
         }
 
         stage('Publish') {
+            agent {
+                docker {
+                    reuseNode true
+                    image 'ubuntu'
+                    // Reset Jenkins Docker agent default to original root
+                    args '-u root:root'
+                }
+            }
             steps {
                 dir('./gitrepo') {
                     script {
@@ -215,6 +268,14 @@ pipeline {
         }
 
         stage('Deploy blazegraph') {
+            agent {
+                docker {
+                    reuseNode true
+                    image 'ubuntu'
+                    // Reset Jenkins Docker agent default to original root
+                    args '-u root:root'
+                }
+            }
             when { anyOf { branch 'master' } }
             steps {
 
