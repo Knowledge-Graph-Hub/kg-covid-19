@@ -1,15 +1,7 @@
 pipeline {
-    agent {
-        docker {
-            image 'ubuntu'
-            // Reset Jenkins Docker agent default to original root
-            args '-u root:root'
-        }
-    }
     triggers{
         cron('H H 1 1-12 *')
     }
-
     environment {
         BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
         S3PROJECTDIR = 'kg-covid-19' // no trailing slash
@@ -23,6 +15,13 @@ pipeline {
         timestamps()
     }
     stages {
+        agent {
+            docker {
+                image 'ubuntu'
+                // Reset Jenkins Docker agent default to original root
+                args '-u root:root'
+            }
+        }
         // Very first: pause for a minute to give a chance to
         // cancel and clean the workspace before use.
         stage('Ready and clean') {
