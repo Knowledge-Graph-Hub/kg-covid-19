@@ -21,7 +21,7 @@ pipeline {
             steps {
                 // Give us a minute to cancel if we want.
                 sleep time: 30, unit: 'SECONDS'
-                cleanWs()
+                cleanWs deleteDirs: true, disableDeferredWipeout: true
             }
         }
 
