@@ -29,7 +29,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image 'ubuntu'
+                    image 'justaddcoffee/ubuntu20-python-3-8-5-dev'
                     // Reset Jenkins Docker agent default to original root
                     args '-u root:root'
                 }
@@ -53,7 +53,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image 'ubuntu'
+                    image 'justaddcoffee/ubuntu20-python-3-8-5-dev'
                     // Reset Jenkins Docker agent default to original root
                     args '-u root:root'
                 }
@@ -75,7 +75,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image 'ubuntu'
+                    image 'justaddcoffee/ubuntu20-python-3-8-5-dev'
                     // Reset Jenkins Docker agent default to original root
                     args '-u root:root'
                 }
@@ -110,7 +110,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image 'ubuntu'
+                    image 'justaddcoffee/ubuntu20-python-3-8-5-dev'
                     // Reset Jenkins Docker agent default to original root
                     args '-u root:root'
                 }
@@ -127,7 +127,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image 'ubuntu'
+                    image 'justaddcoffee/ubuntu20-python-3-8-5-dev'
                     // Reset Jenkins Docker agent default to original root
                     args '-u root:root'
                 }
@@ -146,7 +146,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image 'ubuntu'
+                    image 'justaddcoffee/ubuntu20-python-3-8-5-dev'
                     // Reset Jenkins Docker agent default to original root
                     args '-u root:root'
                 }
@@ -170,7 +170,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image 'ubuntu'
+                    image 'justaddcoffee/ubuntu20-python-3-8-5-dev'
                     // Reset Jenkins Docker agent default to original root
                     args '-u root:root'
                 }
@@ -268,7 +268,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image 'ubuntu'
+                    image 'justaddcoffee/ubuntu20-python-3-8-5-dev'
                     // Reset Jenkins Docker agent default to original root
                     args '-u root:root'
                 }
