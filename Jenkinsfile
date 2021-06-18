@@ -52,7 +52,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image $DOCKERIMAGE
+                    image env.DOCKERIMAGE
                 }
             }
             steps {
@@ -70,7 +70,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image $DOCKERIMAGE
+                    image env.DOCKERIMAGE
                 }
             }
             steps {
@@ -103,7 +103,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image $DOCKERIMAGE
+                    image env.DOCKERIMAGE
                 }
             }
             steps {
@@ -118,7 +118,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image $DOCKERIMAGE
+                    image env.DOCKERIMAGE
                 }
             }
             steps {
@@ -134,7 +134,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image $DOCKERIMAGE
+                    image env.DOCKERIMAGE
                 }
             }
             steps {
@@ -156,7 +156,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image $DOCKERIMAGE
+                    image env.DOCKERIMAGE
                 }
             }
             steps {
@@ -251,7 +251,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image $DOCKERIMAGE
+                    image env.DOCKERIMAGE
                 }
             }
             when { anyOf { branch 'master' } }
