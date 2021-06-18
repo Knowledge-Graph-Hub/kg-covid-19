@@ -29,7 +29,6 @@ pipeline {
         stage('Initialize') {
             agent {
                 docker {
-                    reuseNode true
                     image env.DOCKERIMAGE
                 }
             }
@@ -64,7 +63,6 @@ pipeline {
                     )
                     sh 'pip3 install .'
                     sh 'pip3 install awscli pystache boto3 s3cmd'
-//                     sh 'apt-get -y install s3cmd'
                     sh 'which s3cmd'
                     sh 'whereis s3cmd'
                 }
