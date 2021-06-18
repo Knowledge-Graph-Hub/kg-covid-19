@@ -30,7 +30,7 @@ pipeline {
             agent {
                 docker {
                     reuseNode true
-                    image $DOCKERIMAGE
+                    image env.DOCKERIMAGE
                 }
             }
             steps {
