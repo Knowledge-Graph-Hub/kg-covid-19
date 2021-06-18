@@ -60,7 +60,7 @@ pipeline {
                             url: 'https://github.com/Knowledge-Graph-Hub/kg-covid-19',
                             branch: env.BRANCH_NAME
                     )
-                    sh 'pip install .'
+                    sh 'pip3 install .'
                 }
             }
         }
@@ -232,7 +232,7 @@ pipeline {
                                 sh 's3cmd -c $S3CMD_CFG put --acl-public --mime-type=text/html --cf-invalidate top-level-index.html s3://kg-hub-public-data/index.html'
 
                                 // Invalidate the CDN now that the new files are up.
-                                sh 'pip install awscli'
+                                sh 'pip3 install awscli'
                                 sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
                                 sh 'AWS_CONFIG_FILE=./awscli_config.txt python3.8 aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
 
