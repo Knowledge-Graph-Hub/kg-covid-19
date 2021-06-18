@@ -29,6 +29,7 @@ pipeline {
         stage('Initialize') {
             agent {
                 docker {
+                    reuseNode true
                     image env.DOCKERIMAGE
                 }
             }
