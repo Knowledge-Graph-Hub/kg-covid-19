@@ -53,6 +53,7 @@ pipeline {
                 docker {
                     reuseNode true
                     image env.DOCKERIMAGE
+                    args '-u root:root'
                 }
             }
             steps {
@@ -62,6 +63,7 @@ pipeline {
                             branch: env.BRANCH_NAME
                     )
                     sh 'pip3 install .'
+                    sh 'pip3 install awscli pystache boto3'
                 }
             }
         }
@@ -165,7 +167,6 @@ pipeline {
                         // code for building s3 index files
                         sh 'git clone https://github.com/justaddcoffee/go-site.git'
                         // fail early if there's going to be a problem installing these
-                        sh 'pip3 install awscli pystache boto3'
 
                         // make sure we aren't going to clobber existing data
                         withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
