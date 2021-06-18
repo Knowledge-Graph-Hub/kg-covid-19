@@ -63,7 +63,7 @@ pipeline {
                             branch: env.BRANCH_NAME
                     )
                     sh 'pip3 install .'
-                    sh 'pip3 install awscli pystache boto3'
+                    sh 'pip3 install awscli pystache boto3 s3cmd'
                 }
             }
         }
