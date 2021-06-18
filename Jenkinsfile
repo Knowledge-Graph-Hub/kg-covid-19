@@ -90,6 +90,7 @@ pipeline {
                                 }
                             }
                         } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
+                            currentBuild.result = "UNSTABLE"
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
                                 sh 'rm -fr data/raw || true;'
                                 sh 'mkdir -p data/raw || true'
