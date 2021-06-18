@@ -80,10 +80,10 @@ pipeline {
             }
             steps {
                 dir('./gitrepo') {
+                    sh 'whereis s3cmd'
+                    sh 'which s3cmd'
                     script {
                         def run_py_dl = sh(
-                            script: 'whereis s3cmd'
-                            script: 'which s3cmd'
                             script: 'python3.8 run.py download', returnStatus: true
                         )
                         if (run_py_dl == 0) {
