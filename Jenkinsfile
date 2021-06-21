@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            reuseNode false
+            image env.DOCKERIMAGE
+            args '-u root:root'
+        }
+    }
     triggers{
         cron('H H 1 1-12 *')
     }
@@ -27,12 +33,6 @@ pipeline {
         }
 
         stage('Initialize') {
-            agent {
-                docker {
-                    reuseNode true
-                    image env.DOCKERIMAGE
-                }
-            }
             steps {
                 // print some info
                 dir('./gitrepo') {
@@ -49,13 +49,6 @@ pipeline {
         }
 
         stage('Build kg_covid_19') {
-            agent {
-                docker {
-                    reuseNode true
-                    image env.DOCKERIMAGE
-                    args '-u root:root'
-                }
-            }
             steps {
                 dir('./gitrepo') {
                     git(
@@ -71,12 +64,6 @@ pipeline {
         }
 
         stage('Download') {
-            agent {
-                docker {
-                    reuseNode true
-                    image env.DOCKERIMAGE
-                }
-            }
             steps {
                 dir('./gitrepo') {
                     sh 'echo $PATH'
@@ -108,12 +95,6 @@ pipeline {
         }
 
         stage('Transform') {
-            agent {
-                docker {
-                    reuseNode true
-                    image env.DOCKERIMAGE
-                }
-            }
             steps {
                 dir('./gitrepo') {
                     sh 'env'
@@ -123,12 +104,6 @@ pipeline {
         }
 
         stage('Merge') {
-            agent {
-                docker {
-                    reuseNode true
-                    image env.DOCKERIMAGE
-                }
-            }
             steps {
                 dir('./gitrepo') {
                     sh 'python3.8 run.py merge -y merge_jenkins.yaml'
@@ -139,12 +114,6 @@ pipeline {
         }
 
         stage('Make blazegraph journal'){
-            agent {
-                docker {
-                    reuseNode true
-                    image env.DOCKERIMAGE
-                }
-            }
             steps {
                 dir('./gitrepo/blazegraph') {
                         git(
@@ -161,12 +130,6 @@ pipeline {
         }
 
         stage('Publish') {
-            agent {
-                docker {
-                    reuseNode true
-                    image env.DOCKERIMAGE
-                }
-            }
             steps {
                 dir('./gitrepo') {
                     script {
@@ -255,12 +218,6 @@ pipeline {
         }
 
         stage('Deploy blazegraph') {
-            agent {
-                docker {
-                    reuseNode true
-                    image env.DOCKERIMAGE
-                }
-            }
             when { anyOf { branch 'master' } }
             steps {
 
