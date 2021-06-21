@@ -245,6 +245,7 @@ pipeline {
             dir('./gitrepo') {
                 echo "removing files..."
                 sh "rm -fr ./"
+            }
         }
         success {
             echo 'I succeeded!'
