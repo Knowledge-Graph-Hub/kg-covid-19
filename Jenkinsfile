@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             reuseNode false
-            image env.DOCKERIMAGE
+            image 'justaddcoffee/ubuntu20-python-3-8-5-dev:2'
             args '-u root:root'
         }
     }
@@ -10,7 +10,6 @@ pipeline {
         cron('H H 1 1-12 *')
     }
     environment {
-        DOCKERIMAGE = 'justaddcoffee/ubuntu20-python-3-8-5-dev:2'
         BUILDSTARTDATE = sh(script: "echo `date +%Y%m%d`", returnStdout: true).trim()
         S3PROJECTDIR = 'kg-covid-19' // no trailing slash
 
