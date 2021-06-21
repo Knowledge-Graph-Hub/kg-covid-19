@@ -238,4 +238,26 @@ pipeline {
         }
 
     }
+
+    post {
+        always {
+            echo 'Clean-up'
+            dir('./gitrepo') {
+                echo "removing files..."
+                sh "rm -fr ./"
+        }
+        success {
+            echo 'I succeeded!'
+        }
+        unstable {
+            echo 'I am unstable :/'
+        }
+        failure {
+            echo 'I failed :('
+        }
+        changed {
+            echo 'Things were different before...'
+        }
+    }
+
 }
