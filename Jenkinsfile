@@ -3,7 +3,7 @@ pipeline {
         docker {
             reuseNode false
             image 'justaddcoffee/ubuntu20-python-3-8-5-dev:2'
-            args '-u root:root'
+            args '-u root:root --mount type=tmpfs,destination=/work' // work will be deleted after pipeline finishes
         }
     }
     triggers{
@@ -243,8 +243,7 @@ pipeline {
         always {
             echo 'Clean-up'
             dir('./gitrepo') {
-                echo "removing files..."
-                sh "rm -fr ./"
+                echo "Nothing to do"
             }
         }
         success {
