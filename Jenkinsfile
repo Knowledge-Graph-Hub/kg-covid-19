@@ -237,8 +237,10 @@ pipeline {
             }
         }
         stage('Clean up') {
-            echo 'Clean-up'
-            cleanWs deleteDirs: true, disableDeferredWipeout: true
+            steps {
+                echo 'Clean-up'
+                cleanWs deleteDirs: true, disableDeferredWipeout: true
+            }
         }
 
     }
