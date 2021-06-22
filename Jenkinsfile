@@ -3,7 +3,7 @@ pipeline {
         docker {
             reuseNode false
             image 'justaddcoffee/ubuntu20-python-3-8-5-dev:2'
-            args "-u root:root -w /opt" // opt will be deleted after pipeline finishes
+            args "-u root:root"
         }
     }
     triggers{
