@@ -27,7 +27,7 @@ pipeline {
             steps {
                 // Give us a minute to cancel if we want.
                 sleep time: 30, unit: 'SECONDS'
-                // cleanWs deleteDirs: true, disableDeferredWipeout: true
+                cleanWs deleteDirs: true, disableDeferredWipeout: true
             }
         }
 
@@ -236,12 +236,16 @@ pipeline {
 
             }
         }
+        stage('Clean up') {
+            echo 'Clean-up'
+            cleanWs deleteDirs: true, disableDeferredWipeout: true
+        }
 
     }
 
     post {
         always {
-            echo 'Clean-up'
+            echo 'Clean-up (post)'
             cleanWs deleteDirs: true, disableDeferredWipeout: true
         }
         success {
