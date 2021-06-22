@@ -27,7 +27,7 @@ pipeline {
             steps {
                 // Give us a minute to cancel if we want.
                 sleep time: 30, unit: 'SECONDS'
-                cleanWs deleteDirs: false, disableDeferredWipeout: false
+                cleanWs deleteDirs: true, disableDeferredWipeout: true
             }
         }
 
@@ -242,9 +242,7 @@ pipeline {
     post {
         always {
             echo 'Clean-up'
-            dir('./gitrepo') {
-                echo "Nothing to do"
-            }
+            cleanWs deleteDirs: true, disableDeferredWipeout: true
         }
         success {
             echo 'I succeeded!'
