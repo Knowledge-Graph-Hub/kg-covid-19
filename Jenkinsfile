@@ -230,19 +230,11 @@ pipeline {
 
             }
         }
-        stage('Clean up') {
-            steps {
-                echo 'Clean-up'
-                cleanWs deleteDirs: true, disableDeferredWipeout: true
-            }
-        }
-
     }
 
     post {
         always {
-            echo 'Clean-up (post)'
-            cleanWs deleteDirs: true, disableDeferredWipeout: true
+            echo 'Nothing to do (in always)'
         }
         success {
             echo 'I succeeded!'
