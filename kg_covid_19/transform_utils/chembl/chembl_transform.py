@@ -337,7 +337,7 @@ class ChemblTransform(Transform):
         Returns:
             A list of ChEMBL activity records
         """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_activity/_search'
+        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_activity/_search'
         query_data = compress_json.local_load('chembl_activity_query.json')
         query_end = self.estimate_records(url, query_data, start, end)
         output = open(os.path.join(self.input_base_dir, 'chembl_activity_records.json'), 'w')
@@ -358,7 +358,7 @@ class ChemblTransform(Transform):
         Returns:
             A list of ChEMBL molecule records
         """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_molecule/_search'
+        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_molecule/_search'
         query_data = compress_json.local_load('chembl_molecule_query.json')
         query_end = self.estimate_records(url, query_data, start, end)
         output = open(os.path.join(self.input_base_dir, 'chembl_molecule_records.json'), 'w')
@@ -379,7 +379,7 @@ class ChemblTransform(Transform):
         Returns:
             A list of ChEMBL document records
         """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_document/_search'
+        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_document/_search'
         query_data = compress_json.local_load('chembl_document_query.json')
         query_end = self.estimate_records(url, query_data, start, end)
         output = open(os.path.join(self.input_base_dir, 'chembl_document_records.json'), 'w')
@@ -400,7 +400,7 @@ class ChemblTransform(Transform):
         Returns:
             A list of ChEMBL assay records
         """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_assay/_search'
+        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_assay/_search'
         query_data = compress_json.local_load('chembl_assay_query.json')
         query_end = self.estimate_records(url, query_data, start, end)
         output = open(os.path.join(self.input_base_dir, 'chembl_assay_records.json'), 'w')
