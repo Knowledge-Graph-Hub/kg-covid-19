@@ -326,141 +326,126 @@ class ChemblTransform(Transform):
 
         return properties
 
-    def get_chembl_activities(self, start=0, end=100000, step=10000):
+    def get_chembl_activities(self):
         """Get ChEMBL activities by querying the ChEMBL Activity Resource.
 
         Args:
-            start: query start
-            end: query end
-            step: page size
 
         Returns:
             A list of ChEMBL activity records
         """
         url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_activity/_search'
         query_data = compress_json.local_load('chembl_activity_query.json')
-        query_end = self.estimate_records(url, query_data, start, end)
         output = open(os.path.join(self.input_base_dir, 'chembl_activity_records.json'), 'w')
-        activities = []
-        for i in range(start, query_end, step):
-            activities.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
+        activities = self.get_records(url, query_data)
         json.dump(activities, output)
         return activities
 
-    def get_chembl_molecules(self, start=0, end=100000, step=10000):
+    def get_chembl_molecules(self):
         """Get ChEMBL molecules by querying the ChEMBL Molecule Resource.
 
         Args:
             start: query start
-            end: query end
-            step: page size
 
         Returns:
             A list of ChEMBL molecule records
         """
         url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_molecule/_search'
         query_data = compress_json.local_load('chembl_molecule_query.json')
-        query_end = self.estimate_records(url, query_data, start, end)
         output = open(os.path.join(self.input_base_dir, 'chembl_molecule_records.json'), 'w')
-        molecules = []
-        for i in range(start, query_end, step):
-            molecules.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
+        molecules = self.get_records(url, query_data)
         json.dump(molecules, output)
         return molecules
 
-    def get_chembl_documents(self, start=0, end=100000, step=10000):
+    def get_chembl_documents(self):
         """Get ChEMBL documents by querying the ChEMBL Document Resource.
 
         Args:
-            start: query start
-            end: query end
-            step: page size
 
         Returns:
             A list of ChEMBL document records
         """
         url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_document/_search'
         query_data = compress_json.local_load('chembl_document_query.json')
-        query_end = self.estimate_records(url, query_data, start, end)
         output = open(os.path.join(self.input_base_dir, 'chembl_document_records.json'), 'w')
-        documents = []
-        for i in range(start, query_end, step):
-            documents.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
+        documents = self.get_records(url, query_data)
         json.dump(documents, output)
         return documents
 
-    def get_chembl_assays(self, start=0, end=100000, step=10000):
+    def get_chembl_assays(self):
         """Get ChEMBL assays by querying the ChEMBL Assay Resource.
 
         Args:
-            start: query start
-            end: query end
-            step: page size
 
         Returns:
             A list of ChEMBL assay records
         """
         url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_assay/_search'
         query_data = compress_json.local_load('chembl_assay_query.json')
-        query_end = self.estimate_records(url, query_data, start, end)
         output = open(os.path.join(self.input_base_dir, 'chembl_assay_records.json'), 'w')
-        assays = []
-        for i in range(start, query_end, step):
-            assays.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
+        assays = self.get_records(url, query_data)
         json.dump(assays, output)
         return assays
 
-    def estimate_records(self, url, data, start, end):
-        """Estimate the total number of records to fetch for a given query.
-
-        Args:
-             url: the URL of the resource
-             data: query data
-             start: query start
-             end: query end
-
-        Returns:
-            Will return a number that is min(end, actual query end)
-
-        """
-        self.get_records(url, data, start=0, end=0)
-        if end != 0:
-            query_end = min(end, self._end)
-        else:
-            query_end = self._end
-        return query_end
-
-    def get_records(self, url, data, start, end, retry=True):
+    def get_records(self, url, query, get_count_only=False, retry=True, timeout="2m"):
         """Fetch records from the given URL and query parameters.
 
         Args:
-            url: the URL of the resource
-            data: query data
-            start: query start
-            end: query end
+            url: the URL of the resource (used to generate scroll URLs)
+            query: query data
+            get_count_only: do we only want a count of records? [false]
             retry: Whether to retry on fail
+            timeout: timeout to pass to scroll API
 
         Returns:
             Will return a number that is min(end, actual query end)
         """
-        data['from'] = start
-        data['size'] = end
         records = []
-        response = requests.post(url, data=json.dumps(data), headers={'Content-type': 'application/json'})
+
+        scroll_url_get_scroll_id = url + "?scroll=" + timeout
+        scroll_api_url = url + "/scroll"
+        headers = {'Content-type': 'application/json'}
+
+        response = requests.get(scroll_url_get_scroll_id, data=json.dumps(query),
+                                headers=headers)
+
         if response.ok:
             response_json = response.json()
             if 'hits' in response_json:
                 total = response_json['hits']['total']['value']
-                if start == end == 0:
+                if get_count_only:
                     self._end = total
                     return total
                 else:
-                    for d in response_json['hits']['hits']:
-                        records.append(d)
+                    # first batch of data
+                    try:
+                        data = response_json['hits']['hits']
+                        _scroll_id = response_json['_scroll_id']
+                    except KeyError as e:
+                        raise KeyError(f"KeyError for key {e} in {response_json}")
+                    while data:
+                        records.append(data)
+                        scroll_payload = json.dumps({
+                            'scroll': timeout,
+                            'scroll_id': _scroll_id,
+                            'verbose': 10,
+                        })
+                        scroll_res = requests.request(
+                            "GET", scroll_api_url,
+                            data=scroll_payload,
+                            headers=headers
+                        )
+                        try:
+                            response_json = scroll_res.json()
+                            data = response_json['hits']['hits']
+                            _scroll_id = response_json['_scroll_id']
+                        except KeyError as e:
+                            print(f"KeyError for key {e} in {response_json}")
+                            break
         else:
             if retry:
                 time.sleep(5)
-                self.get_records(url, data, start, end, retry=False)
+                self.get_records(url, query, retry=False)
             else:
                 raise HTTPError(f"query yielded {response.status_code}\n{response.json()}")
         return records
