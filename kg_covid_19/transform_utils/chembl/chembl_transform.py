@@ -1,10 +1,11 @@
 import json
 import os
-import time
-import requests
+import elasticsearch
+import elasticsearch.helpers
+
 import compress_json  # type: ignore
 from typing import Optional, Set, Dict, List
-from requests import HTTPError
+from tqdm import tqdm
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
@@ -21,13 +22,15 @@ class ChemblTransform(Transform):
     Parse ChEMBL and transform them into a property graph representation.
     """
 
-    def __init__(self, input_dir: str = None, output_dir: str = None):
+    def __init__(self, input_dir: str = None, output_dir: str = None,
+                 host: str = 'https://www.ebi.ac.uk/chembl/elk/es/'):
         source_name = 'ChEMBL'
         super().__init__(source_name, input_dir, output_dir)
         self.subset = 'SARS-CoV-2 subset'
         self._end = None
         self._node_header: Set = set()
         self._edge_header: Set = set()
+        self.es_conn = elasticsearch.Elasticsearch(hosts=[host])
 
     def run(self, data_file: Optional[str] = None) -> None:
         """Method is called and performs needed transformations to process
@@ -334,10 +337,10 @@ class ChemblTransform(Transform):
         Returns:
             A list of ChEMBL activity records
         """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_activity/_search'
+        index = 'chembl_28_activity'
         query_data = compress_json.local_load('chembl_activity_query.json')
         output = open(os.path.join(self.input_base_dir, 'chembl_activity_records.json'), 'w')
-        activities = self.get_records(url, query_data)
+        activities = self.get_records(index, query_data)
         json.dump(activities, output)
         return activities
 
@@ -350,10 +353,10 @@ class ChemblTransform(Transform):
         Returns:
             A list of ChEMBL molecule records
         """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_molecule/_search'
+        index = 'chembl_28_molecule'
         query_data = compress_json.local_load('chembl_molecule_query.json')
         output = open(os.path.join(self.input_base_dir, 'chembl_molecule_records.json'), 'w')
-        molecules = self.get_records(url, query_data)
+        molecules = self.get_records(index, query_data)
         json.dump(molecules, output)
         return molecules
 
@@ -365,10 +368,10 @@ class ChemblTransform(Transform):
         Returns:
             A list of ChEMBL document records
         """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_document/_search'
+        index = 'chembl_28_document'
         query_data = compress_json.local_load('chembl_document_query.json')
         output = open(os.path.join(self.input_base_dir, 'chembl_document_records.json'), 'w')
-        documents = self.get_records(url, query_data)
+        documents = self.get_records(index, query_data)
         json.dump(documents, output)
         return documents
 
@@ -380,74 +383,42 @@ class ChemblTransform(Transform):
         Returns:
             A list of ChEMBL assay records
         """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_28_assay/_search'
+        index = 'chembl_28_assay'
         query_data = compress_json.local_load('chembl_assay_query.json')
         output = open(os.path.join(self.input_base_dir, 'chembl_assay_records.json'), 'w')
-        assays = self.get_records(url, query_data)
+        assays = self.get_records(index, query_data)
         json.dump(assays, output)
         return assays
 
-    def get_records(self, url, query, get_count_only=False, retry=True, timeout="2m"):
+    def get_records(self,
+                    index,
+                    query,
+                    scroll: str = u'1m',
+                    request_timeout: int = 60,
+                    preserve_order: bool = True,
+                    ):
         """Fetch records from the given URL and query parameters.
 
         Args:
-            url: the URL of the resource (used to generate scroll URLs)
-            query: query data
-            get_count_only: do we only want a count of records? [false]
-            retry: Whether to retry on fail
-            timeout: timeout to pass to scroll API
-
+            index: the elastic search index for query
+            query: query
+            scroll: scroll parameter passed to elastic search
+            request_timeout: timeout parameter passed to elastic search
+            preserve_order: preserve order param passed to elastic search
         Returns:
-            Will return a number that is min(end, actual query end)
+            All records for query
         """
         records = []
+        results = elasticsearch.helpers.scan(self.es_conn,
+                                             index=index,
+                                             scroll=scroll,
+                                             request_timeout=request_timeout,
+                                             preserve_order=preserve_order,
+                                             query=query)
 
-        scroll_url_get_scroll_id = url + "?scroll=" + timeout
-        scroll_api_url = url + "/scroll"
-        headers = {'Content-type': 'application/json'}
+        for item in tqdm(results, desc="querying for index: " + index):
+            records.append(item)
 
-        response = requests.get(scroll_url_get_scroll_id, data=json.dumps(query),
-                                headers=headers)
-
-        if response.ok:
-            response_json = response.json()
-            if 'hits' in response_json:
-                total = response_json['hits']['total']['value']
-                if get_count_only:
-                    self._end = total
-                    return total
-                else:
-                    # first batch of data
-                    try:
-                        data = response_json['hits']['hits']
-                        _scroll_id = response_json['_scroll_id']
-                    except KeyError as e:
-                        raise KeyError(f"KeyError for key {e} in {response_json}")
-                    while data:
-                        records.append(data)
-                        scroll_payload = json.dumps({
-                            'scroll': timeout,
-                            'scroll_id': _scroll_id,
-                            'verbose': 10,
-                        })
-                        scroll_res = requests.request(
-                            "GET", scroll_api_url,
-                            data=scroll_payload,
-                            headers=headers
-                        )
-                        try:
-                            response_json = scroll_res.json()
-                            data = response_json['hits']['hits']
-                            _scroll_id = response_json['_scroll_id']
-                        except KeyError as e:
-                            print(f"KeyError for key {e} in {response_json}")
-                            break
-        else:
-            if retry:
-                time.sleep(5)
-                self.get_records(url, query, retry=False)
-            else:
-                raise HTTPError(f"query yielded {response.status_code}\n{response.json()}")
         return records
 
 

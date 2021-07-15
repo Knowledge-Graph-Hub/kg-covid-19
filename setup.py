@@ -78,7 +78,8 @@ setup(
         'pyyaml',
         'bmt',
         'SPARQLWrapper',
-        'ensmallen_graph==0.4.3'
+        'ensmallen_graph==0.4.3',
+        'elasticsearch'
     ],
     extras_require=extras,
 )
