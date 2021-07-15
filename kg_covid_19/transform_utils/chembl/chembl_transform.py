@@ -5,7 +5,7 @@ import elasticsearch.helpers
 
 import compress_json  # type: ignore
 from typing import Optional, Set, Dict, List
-from tqdm import tqdm
+from tqdm import tqdm # type: ignore
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
