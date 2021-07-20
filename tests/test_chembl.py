@@ -1,3 +1,4 @@
+import json
 from unittest import TestCase
 
 from kg_covid_19.transform_utils.chembl import ChemblTransform
@@ -9,6 +10,11 @@ class TestChembl(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.chembl = ChemblTransform()
+        cls.data_files = ['tests/resources/chembl/chembl_molecule_records.json',
+                          'tests/resources/chembl/chembl_assay_records.json',
+                          'tests/resources/chembl/chembl_document_records.json',
+                          'tests/resources/chembl/chembl_activity_records.json']
+
         cls.chembl_activities_snippet_file = \
             'tests/resources/chembl/chembl_activities.snippet.txt'
         cls.expected_ca_keys = ['standard_units', 'standard_type', 'standard_relation',
@@ -22,6 +28,7 @@ class TestChembl(TestCase):
 
     def test_run(self) -> None:
         self.assertTrue(hasattr(self.chembl, 'run'))
+        self.chembl.run(self.data_files)
 
     def test_source_name(self) -> None:
         self.assertEqual(self.chembl.source_name, 'ChEMBL')
