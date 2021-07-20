@@ -26,14 +26,17 @@ class ChemblTransform(Transform):
         self._node_header: Set = set()
         self._edge_header: Set = set()
 
-    def run(self, data_file: Optional[list] = None) -> None:
+    def run(self,
+            data_file: Optional[str] = None,
+            chembl_data_files: Optional[dict] = None) -> None:
         """Method is called and performs needed transformations to process
         SARS-CoV-2 subset of ChEMBL.
 
         http://chembl.blogspot.com/2020/05/chembl27-sars-cov-2-release.html
 
         Args:
-            data_file: data file to parse
+            data_file: NOT USED - preserves to placate mypy. Use "data_files" instead
+            chembl_data_files: data files to parse
 
         Returns:
             None.
@@ -42,27 +45,26 @@ class ChemblTransform(Transform):
         self.node_header = ['id', 'name', 'category', 'provided_by']
         self.edge_header = ['id', 'subject', 'predicate', 'object', 'relation', 'provided_by', 'type']
 
-        if data_file is None:
-            data_file = []
-            data_file.extend(['data/raw/chembl_molecule_records.json',
-                              'data/raw/chembl_assay_records.json',
-                              'data/raw/chembl_document_records.json',
-                              'data/raw/chembl_activity_records.json'])
+        if chembl_data_files is None:
+            chembl_data_files = {'molecules_data': 'data/raw/chembl_molecule_records.json',
+                          'assay_data': 'data/raw/chembl_assay_records.json',
+                          'document_data': 'data/raw/chembl_document_records.json',
+                          'activity_data': 'data/raw/chembl_activity_records.json'}
 
         # ChEMBL molecules
-        molecules_data = self.read_json(data_file[0])
+        molecules_data = self.read_json(chembl_data_files['molecules_data'])
         molecule_nodes = self.parse_chembl_molecules(molecules_data)
 
         # ChEMBL assay
-        assays_data = self.read_json(data_file[1])
+        assays_data = self.read_json(chembl_data_files['assay_data'])
         assay_nodes = self.parse_chembl_assay(assays_data)
 
         # ChEMBL document
-        documents_data = self.read_json(data_file[2])
+        documents_data = self.read_json(chembl_data_files['document_data'])
         document_nodes = self.parse_chembl_document(documents_data)
 
         # ChEMBL activity
-        activities_data = self.read_json(data_file[3])
+        activities_data = self.read_json(chembl_data_files['activity_data'])
         activity_edges = self.parse_chembl_activity(activities_data)
 
         self.node_header.extend([x for x in self._node_header if x not in self.node_header])

@@ -10,10 +10,11 @@ class TestChembl(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.chembl = ChemblTransform()
-        cls.data_files = ['tests/resources/chembl/chembl_molecule_records.json',
-                          'tests/resources/chembl/chembl_assay_records.json',
-                          'tests/resources/chembl/chembl_document_records.json',
-                          'tests/resources/chembl/chembl_activity_records.json']
+        cls.data_files = {
+            'molecules_data': 'tests/resources/chembl/chembl_molecule_records.json',
+            'assay_data': 'tests/resources/chembl/chembl_assay_records.json',
+            'document_data': 'tests/resources/chembl/chembl_document_records.json',
+            'activity_data': 'tests/resources/chembl/chembl_activity_records.json'}
 
         cls.chembl_activities_snippet_file = \
             'tests/resources/chembl/chembl_activities.snippet.txt'
