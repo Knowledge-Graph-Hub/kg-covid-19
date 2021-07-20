@@ -10,7 +10,7 @@ class TestChembl(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.chembl = ChemblTransform()
-        cls.data_files = {
+        cls.chembl_data_files = {
             'molecules_data': 'tests/resources/chembl/chembl_molecule_records.json',
             'assay_data': 'tests/resources/chembl/chembl_assay_records.json',
             'document_data': 'tests/resources/chembl/chembl_document_records.json',
@@ -29,7 +29,7 @@ class TestChembl(TestCase):
 
     def test_run(self) -> None:
         self.assertTrue(hasattr(self.chembl, 'run'))
-        self.chembl.run(self.data_files)
+        self.chembl.run(chembl_data_files=self.chembl_data_files)
 
     def test_source_name(self) -> None:
         self.assertEqual(self.chembl.source_name, 'ChEMBL')
