@@ -1,8 +1,4 @@
 import json
-import os
-import elasticsearch
-import elasticsearch.helpers
-
 import compress_json  # type: ignore
 from typing import Optional, Set, Dict, List
 from tqdm import tqdm # type: ignore
@@ -22,15 +18,13 @@ class ChemblTransform(Transform):
     Parse ChEMBL and transform them into a property graph representation.
     """
 
-    def __init__(self, input_dir: str = None, output_dir: str = None,
-                 host: str = 'https://www.ebi.ac.uk/chembl/elk/es/'):
+    def __init__(self, input_dir: str = None, output_dir: str = None):
         source_name = 'ChEMBL'
         super().__init__(source_name, input_dir, output_dir)
         self.subset = 'SARS-CoV-2 subset'
         self._end = None
         self._node_header: Set = set()
         self._edge_header: Set = set()
-        self.es_conn = elasticsearch.Elasticsearch(hosts=[host])
 
     def run(self, data_file: Optional[list] = None) -> None:
         """Method is called and performs needed transformations to process
@@ -348,35 +342,5 @@ class ChemblTransform(Transform):
         with open(json_file, 'r') as f:
             return json.load(f)
 
-    def get_records(self,
-                    index,
-                    query,
-                    scroll: str = u'1m',
-                    request_timeout: int = 60,
-                    preserve_order: bool = True,
-                    ):
-        """Fetch records from the given URL and query parameters.
-
-        Args:
-            index: the elastic search index for query
-            query: query
-            scroll: scroll parameter passed to elastic search
-            request_timeout: timeout parameter passed to elastic search
-            preserve_order: preserve order param passed to elastic search
-        Returns:
-            All records for query
-        """
-        records = []
-        results = elasticsearch.helpers.scan(self.es_conn,
-                                             index=index,
-                                             scroll=scroll,
-                                             request_timeout=request_timeout,
-                                             preserve_order=preserve_order,
-                                             query=query)
-
-        for item in tqdm(results, desc="querying for index: " + index):
-            records.append(item)
-
-        return records
 
 
