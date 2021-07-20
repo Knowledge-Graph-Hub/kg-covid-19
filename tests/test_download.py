@@ -10,6 +10,9 @@ class TestDownload(TestCase):
     def setUp(self) -> None:
         pass
 
+    def test_api_download(self):
+        pass
+
     # @mock.patch('requests.get')
     # def test_download(self, mock_get):
     #     dl_file = 'data/raw/test_1234.pdf'
