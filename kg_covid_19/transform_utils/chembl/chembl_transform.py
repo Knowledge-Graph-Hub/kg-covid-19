@@ -32,7 +32,7 @@ class ChemblTransform(Transform):
         self._edge_header: Set = set()
         self.es_conn = elasticsearch.Elasticsearch(hosts=[host])
 
-    def run(self, data_file: Optional[str] = None) -> None:
+    def run(self, data_file: Optional[list] = None) -> None:
         """Method is called and performs needed transformations to process
         SARS-CoV-2 subset of ChEMBL.
 
@@ -48,21 +48,28 @@ class ChemblTransform(Transform):
         self.node_header = ['id', 'name', 'category', 'provided_by']
         self.edge_header = ['id', 'subject', 'predicate', 'object', 'relation', 'provided_by', 'type']
 
+        if data_file is None:
+            data_file = []
+            data_file.extend(['data/raw/chembl_molecule_records.json',
+                              'data/raw/chembl_assay_records.json',
+                              'data/raw/chembl_document_records.json',
+                              'data/raw/chembl_activity_records.json'])
+
         # ChEMBL molecules
-        data = self.get_chembl_molecules()
-        molecule_nodes = self.parse_chembl_molecules(data)
+        molecules_data = self.read_json(data_file[0])
+        molecule_nodes = self.parse_chembl_molecules(molecules_data)
 
         # ChEMBL assay
-        data = self.get_chembl_assays()
-        assay_nodes = self.parse_chembl_assay(data)
+        assays_data = self.read_json(data_file[1])
+        assay_nodes = self.parse_chembl_assay(assays_data)
 
         # ChEMBL document
-        data = self.get_chembl_documents()
-        document_nodes = self.parse_chembl_document(data)
+        documents_data = self.read_json(data_file[2])
+        document_nodes = self.parse_chembl_document(documents_data)
 
         # ChEMBL activity
-        data = self.get_chembl_activities()
-        activity_edges = self.parse_chembl_activity(data)
+        activities_data = self.read_json(data_file[3])
+        activity_edges = self.parse_chembl_activity(activities_data)
 
         self.node_header.extend([x for x in self._node_header if x not in self.node_header])
         self.edge_header.extend([x for x in self._edge_header if x not in self.edge_header])
@@ -329,66 +336,17 @@ class ChemblTransform(Transform):
 
         return properties
 
-    def get_chembl_activities(self):
-        """Get ChEMBL activities by querying the ChEMBL Activity Resource.
+    def read_json(self, json_file):
+        """Read in json files
 
         Args:
+            data_file: json_file to parse
 
         Returns:
-            A list of ChEMBL activity records
+            A list of records
         """
-        index = 'chembl_28_activity'
-        query_data = compress_json.local_load('chembl_activity_query.json')
-        output = open(os.path.join(self.input_base_dir, 'chembl_activity_records.json'), 'w')
-        activities = self.get_records(index, query_data)
-        json.dump(activities, output)
-        return activities
-
-    def get_chembl_molecules(self):
-        """Get ChEMBL molecules by querying the ChEMBL Molecule Resource.
-
-        Args:
-            start: query start
-
-        Returns:
-            A list of ChEMBL molecule records
-        """
-        index = 'chembl_28_molecule'
-        query_data = compress_json.local_load('chembl_molecule_query.json')
-        output = open(os.path.join(self.input_base_dir, 'chembl_molecule_records.json'), 'w')
-        molecules = self.get_records(index, query_data)
-        json.dump(molecules, output)
-        return molecules
-
-    def get_chembl_documents(self):
-        """Get ChEMBL documents by querying the ChEMBL Document Resource.
-
-        Args:
-
-        Returns:
-            A list of ChEMBL document records
-        """
-        index = 'chembl_28_document'
-        query_data = compress_json.local_load('chembl_document_query.json')
-        output = open(os.path.join(self.input_base_dir, 'chembl_document_records.json'), 'w')
-        documents = self.get_records(index, query_data)
-        json.dump(documents, output)
-        return documents
-
-    def get_chembl_assays(self):
-        """Get ChEMBL assays by querying the ChEMBL Assay Resource.
-
-        Args:
-
-        Returns:
-            A list of ChEMBL assay records
-        """
-        index = 'chembl_28_assay'
-        query_data = compress_json.local_load('chembl_assay_query.json')
-        output = open(os.path.join(self.input_base_dir, 'chembl_assay_records.json'), 'w')
-        assays = self.get_records(index, query_data)
-        json.dump(assays, output)
-        return assays
+        with open(json_file, 'r') as f:
+            return json.load(f)
 
     def get_records(self,
                     index,
