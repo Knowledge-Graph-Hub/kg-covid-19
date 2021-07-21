@@ -114,7 +114,7 @@ pipeline {
                                 url: 'https://github.com/balhoff/blazegraph-runner.git',
                                 branch: 'master'
                         )
-                        sh 'sbt stage'
+                        sh 'HOME=`pwd` && sbt stage' // set HOME here to prevent sbt from trying to make dir .cache in /
                         sh 'pigz -d ../data/merged/merged-kg.nt.gz'
                         sh 'export JAVA_OPTS=-Xmx128G && ./target/universal/stage/bin/blazegraph-runner load --informat=ntriples --journal=../merged-kg.jnl --use-ontology-graph=true ../data/merged/merged-kg.nt'
                         sh 'pigz ../merged-kg.jnl'
