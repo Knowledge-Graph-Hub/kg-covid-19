@@ -67,6 +67,7 @@ setup(
 
     # add package dependencies
     install_requires=[
+        'rdflib==5.0.0',
         'kgx==1.1.0',
         'linkml-model',
         'tqdm',
