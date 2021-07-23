@@ -73,7 +73,7 @@ pipeline {
                                 echo "Will not push if not on correct branch."
                             } else {
                                 withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
-                                    sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/$S3PROJECTDIR/'
+                                    sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text --cf-invalidate put -r data/raw s3://kg-hub-public-data/$S3PROJECTDIR/'
                                 }
                             }
                         } else { // 'run.py download' failed - let's try to download last good copy of raw/ from s3 to data/
@@ -81,7 +81,7 @@ pipeline {
                             withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
                                 sh 'rm -fr data/raw || true;'
                                 sh 'mkdir -p data/raw || true'
-                                sh 's3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/$S3PROJECTDIR/raw/ data/raw/'
+                                sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG --acl-public --mime-type=plain/text get -r s3://kg-hub-public-data/$S3PROJECTDIR/raw/ data/raw/'
                             }
                         }
                     }
@@ -134,7 +134,7 @@ pipeline {
                         // make sure we aren't going to clobber existing data
                         withCredentials([file(credentialsId: 's3cmd_kg_hub_push_configuration', variable: 'S3CMD_CFG')]) {
                             REMOTE_BUILD_DIR_CONTENTS = sh (
-                                script: 's3cmd -c $S3CMD_CFG ls s3://kg-hub-public-data/$S3PROJECTDIR/$BUILDSTARTDATE/',
+                                script: '. venv/bin/activate && s3cmd -c $S3CMD_CFG ls s3://kg-hub-public-data/$S3PROJECTDIR/$BUILDSTARTDATE/',
                                 returnStdout: true
                             ).trim()
                             echo "REMOTE_BUILD_DIR_CONTENTS (THIS SHOULD BE EMPTY): '${REMOTE_BUILD_DIR_CONTENTS}'"
@@ -176,7 +176,7 @@ pipeline {
                                 sh 'cp templates/README.toplevel $S3PROJECTDIR/README'
                                 // add dir for existing builds so they are indexed
                                 // do an s3cmd ls for our project subdir, for each existing build make a local dir in $S3PROJECTDIR
-                                sh "for dir in `s3cmd ls s3://kg-hub-public-data/kg-covid-19/ | grep '\\/\$' | awk '{print \$NF}' | grep -w -v -E 'raw|current' | xargs -n1 basename`; do mkdir -p $S3PROJECTDIR/\$dir; done"
+                                sh ". venv/bin/activate && for dir in `s3cmd ls s3://kg-hub-public-data/kg-covid-19/ | grep '\\/\$' | awk '{print \$NF}' | grep -w -v -E 'raw|current' | xargs -n1 basename`; do mkdir -p $S3PROJECTDIR/\$dir; done"
                                 // now make two dirs, $BUILDSTARTDATE and current/, both with the same contents
                                 sh 'mv $BUILDSTARTDATE $S3PROJECTDIR/'
                                 sh 'cp -pr $S3PROJECTDIR/$BUILDSTARTDATE $S3PROJECTDIR/current'
@@ -187,14 +187,14 @@ pipeline {
                                 sh '. venv/bin/activate && python3.8 ./go-site/scripts/directory_indexer.py -v --inject ./go-site/scripts/directory-index-template.html --directory $S3PROJECTDIR --prefix https://kg-hub.berkeleybop.io/$S3PROJECTDIR/ -x -u'
                                 // for existing builds on s3, we just made an index.html that will clobber the existing (correct) s3 index.html
                                 // here we download the existing index.html and clobber the local one instead
-                                sh "for dir in `s3cmd ls s3://kg-hub-public-data/kg-covid-19/ | grep '\\/\$' | awk '{print \$NF}' | grep -w -v -E 'raw|current' | xargs -n1 basename`; do s3cmd get --force --continue s3://kg-hub-public-data/kg-covid-19/\$dir/index.html $S3PROJECTDIR/\$dir/ || true; done"
+                                sh ". venv/bin/activate && for dir in `s3cmd ls s3://kg-hub-public-data/kg-covid-19/ | grep '\\/\$' | awk '{print \$NF}' | grep -w -v -E 'raw|current' | xargs -n1 basename`; do s3cmd get --force --continue s3://kg-hub-public-data/kg-covid-19/\$dir/index.html $S3PROJECTDIR/\$dir/ || true; done"
 
-                                sh 's3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate $S3PROJECTDIR s3://kg-hub-public-data/'
+                                sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate $S3PROJECTDIR s3://kg-hub-public-data/'
 
                                 // Build the top level index.html
                                 // "External" packages required to run these scripts.
                                 sh '. venv/bin/activate && python3.8 ./go-site/scripts/bucket-indexer.py --credentials $AWS_JSON --bucket kg-hub-public-data --inject ./go-site/scripts/directory-index-template.html --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
-                                sh 's3cmd -c $S3CMD_CFG put --acl-public --mime-type=text/html --cf-invalidate top-level-index.html s3://kg-hub-public-data/index.html'
+                                sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG put --acl-public --mime-type=text/html --cf-invalidate top-level-index.html s3://kg-hub-public-data/index.html'
 
                                 // Invalidate the CDN now that the new files are up.
                                 sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
