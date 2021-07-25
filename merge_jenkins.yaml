@@ -2,23 +2,6 @@
 configuration:
   output_directory: data/merged
   checkpoint: false
-  property_types:
-    # define the type for non-canonical node/edge properties
-    combined_score: 'xsd:float'
-    confidence_score: 'xsd:float'
-    neighborhood: 'xsd:float'
-    neighborhood_transferred: 'xsd:float'
-    fusion: 'xsd:float'
-    cooccurence: 'xsd:float'
-    homology: 'xsd:float'
-    coexpression: 'xsd:float'
-    coexpression_transferred: 'xsd:float'
-    experiments: 'xsd:float'
-    experiments_transferred: 'xsd:float'
-    database: 'xsd:float'
-    database_transferred: 'xsd:float'
-    textmining: 'xsd:float'
-    textmining_transferred: 'xsd:float'
 
 merged_graph:
   name: KG-COVID-19 Graph
@@ -142,10 +125,44 @@ merged_graph:
       format: tsv
       compression: tar.gz
       filename: merged-kg
+      property_types:
+        # define the type for non-canonical node/edge properties
+        combined_score: 'xsd:float'
+        confidence_score: 'xsd:float'
+        neighborhood: 'xsd:float'
+        neighborhood_transferred: 'xsd:float'
+        fusion: 'xsd:float'
+        cooccurence: 'xsd:float'
+        homology: 'xsd:float'
+        coexpression: 'xsd:float'
+        coexpression_transferred: 'xsd:float'
+        experiments: 'xsd:float'
+        experiments_transferred: 'xsd:float'
+        database: 'xsd:float'
+        database_transferred: 'xsd:float'
+        textmining: 'xsd:float'
+        textmining_transferred: 'xsd:float'
     merged-kg-nt:
       format: nt
       compression: gz
       filename: merged-kg.nt.gz
+      property_types:
+        # define the type for non-canonical node/edge properties
+        combined_score: 'xsd:float'
+        confidence_score: 'xsd:float'
+        neighborhood: 'xsd:float'
+        neighborhood_transferred: 'xsd:float'
+        fusion: 'xsd:float'
+        cooccurence: 'xsd:float'
+        homology: 'xsd:float'
+        coexpression: 'xsd:float'
+        coexpression_transferred: 'xsd:float'
+        experiments: 'xsd:float'
+        experiments_transferred: 'xsd:float'
+        database: 'xsd:float'
+        database_transferred: 'xsd:float'
+        textmining: 'xsd:float'
+        textmining_transferred: 'xsd:float'
 #    merged-kg-neo4j:
 #      format: neo4j
 #      uri: http://localhost:8484

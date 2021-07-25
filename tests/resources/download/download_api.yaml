@@ -1,0 +1,7 @@
+-
+  api: elasticsearch
+  url: https://www.ebi.ac.uk/chembl/elk/es/
+  query_file: kg_covid_19/transform_utils/chembl/chembl_document_query.json
+  local_name: chembl_document_records.json
+  index: chembl_28_document
+

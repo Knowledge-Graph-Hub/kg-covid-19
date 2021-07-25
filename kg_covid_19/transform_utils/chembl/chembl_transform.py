@@ -1,10 +1,7 @@
 import json
-import os
-import time
-import requests
 import compress_json  # type: ignore
 from typing import Optional, Set, Dict, List
-from requests import HTTPError
+from tqdm import tqdm # type: ignore
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
@@ -29,14 +26,17 @@ class ChemblTransform(Transform):
         self._node_header: Set = set()
         self._edge_header: Set = set()
 
-    def run(self, data_file: Optional[str] = None) -> None:
+    def run(self,
+            data_file: Optional[str] = None,
+            chembl_data_files: Optional[dict] = None) -> None:
         """Method is called and performs needed transformations to process
         SARS-CoV-2 subset of ChEMBL.
 
         http://chembl.blogspot.com/2020/05/chembl27-sars-cov-2-release.html
 
         Args:
-            data_file: data file to parse
+            data_file: NOT USED - preserves to placate mypy. Use "data_files" instead
+            chembl_data_files: data files to parse
 
         Returns:
             None.
@@ -45,21 +45,27 @@ class ChemblTransform(Transform):
         self.node_header = ['id', 'name', 'category', 'provided_by']
         self.edge_header = ['id', 'subject', 'predicate', 'object', 'relation', 'provided_by', 'type']
 
+        if chembl_data_files is None:
+            chembl_data_files = {'molecules_data': 'data/raw/chembl_molecule_records.json',
+                          'assay_data': 'data/raw/chembl_assay_records.json',
+                          'document_data': 'data/raw/chembl_document_records.json',
+                          'activity_data': 'data/raw/chembl_activity_records.json'}
+
         # ChEMBL molecules
-        data = self.get_chembl_molecules()
-        molecule_nodes = self.parse_chembl_molecules(data)
+        molecules_data = self.read_json(chembl_data_files['molecules_data'])
+        molecule_nodes = self.parse_chembl_molecules(molecules_data)
 
         # ChEMBL assay
-        data = self.get_chembl_assays()
-        assay_nodes = self.parse_chembl_assay(data)
+        assays_data = self.read_json(chembl_data_files['assay_data'])
+        assay_nodes = self.parse_chembl_assay(assays_data)
 
         # ChEMBL document
-        data = self.get_chembl_documents()
-        document_nodes = self.parse_chembl_document(data)
+        documents_data = self.read_json(chembl_data_files['document_data'])
+        document_nodes = self.parse_chembl_document(documents_data)
 
         # ChEMBL activity
-        data = self.get_chembl_activities()
-        activity_edges = self.parse_chembl_activity(data)
+        activities_data = self.read_json(chembl_data_files['activity_data'])
+        activity_edges = self.parse_chembl_activity(activities_data)
 
         self.node_header.extend([x for x in self._node_header if x not in self.node_header])
         self.edge_header.extend([x for x in self._edge_header if x not in self.edge_header])
@@ -326,143 +332,17 @@ class ChemblTransform(Transform):
 
         return properties
 
-    def get_chembl_activities(self, start=0, end=100000, step=10000):
-        """Get ChEMBL activities by querying the ChEMBL Activity Resource.
+    def read_json(self, json_file):
+        """Read in json files
 
         Args:
-            start: query start
-            end: query end
-            step: page size
+            data_file: json_file to parse
 
         Returns:
-            A list of ChEMBL activity records
+            A list of records
         """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_activity/_search'
-        query_data = compress_json.local_load('chembl_activity_query.json')
-        query_end = self.estimate_records(url, query_data, start, end)
-        output = open(os.path.join(self.input_base_dir, 'chembl_activity_records.json'), 'w')
-        activities = []
-        for i in range(start, query_end, step):
-            activities.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
-        json.dump(activities, output)
-        return activities
+        with open(json_file, 'r') as f:
+            return json.load(f)
 
-    def get_chembl_molecules(self, start=0, end=100000, step=10000):
-        """Get ChEMBL molecules by querying the ChEMBL Molecule Resource.
-
-        Args:
-            start: query start
-            end: query end
-            step: page size
-
-        Returns:
-            A list of ChEMBL molecule records
-        """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_molecule/_search'
-        query_data = compress_json.local_load('chembl_molecule_query.json')
-        query_end = self.estimate_records(url, query_data, start, end)
-        output = open(os.path.join(self.input_base_dir, 'chembl_molecule_records.json'), 'w')
-        molecules = []
-        for i in range(start, query_end, step):
-            molecules.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
-        json.dump(molecules, output)
-        return molecules
-
-    def get_chembl_documents(self, start=0, end=100000, step=10000):
-        """Get ChEMBL documents by querying the ChEMBL Document Resource.
-
-        Args:
-            start: query start
-            end: query end
-            step: page size
-
-        Returns:
-            A list of ChEMBL document records
-        """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_document/_search'
-        query_data = compress_json.local_load('chembl_document_query.json')
-        query_end = self.estimate_records(url, query_data, start, end)
-        output = open(os.path.join(self.input_base_dir, 'chembl_document_records.json'), 'w')
-        documents = []
-        for i in range(start, query_end, step):
-            documents.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
-        json.dump(documents, output)
-        return documents
-
-    def get_chembl_assays(self, start=0, end=100000, step=10000):
-        """Get ChEMBL assays by querying the ChEMBL Assay Resource.
-
-        Args:
-            start: query start
-            end: query end
-            step: page size
-
-        Returns:
-            A list of ChEMBL assay records
-        """
-        url = 'https://www.ebi.ac.uk/chembl/elk/es/chembl_27_assay/_search'
-        query_data = compress_json.local_load('chembl_assay_query.json')
-        query_end = self.estimate_records(url, query_data, start, end)
-        output = open(os.path.join(self.input_base_dir, 'chembl_assay_records.json'), 'w')
-        assays = []
-        for i in range(start, query_end, step):
-            assays.extend(self.get_records(url, query_data, i, min(i+step, query_end)))
-        json.dump(assays, output)
-        return assays
-
-    def estimate_records(self, url, data, start, end):
-        """Estimate the total number of records to fetch for a given query.
-
-        Args:
-             url: the URL of the resource
-             data: query data
-             start: query start
-             end: query end
-
-        Returns:
-            Will return a number that is min(end, actual query end)
-
-        """
-        self.get_records(url, data, start=0, end=0)
-        if end != 0:
-            query_end = min(end, self._end)
-        else:
-            query_end = self._end
-        return query_end
-
-    def get_records(self, url, data, start, end, retry=True):
-        """Fetch records from the given URL and query parameters.
-
-        Args:
-            url: the URL of the resource
-            data: query data
-            start: query start
-            end: query end
-            retry: Whether to retry on fail
-
-        Returns:
-            Will return a number that is min(end, actual query end)
-        """
-        data['from'] = start
-        data['size'] = end
-        records = []
-        response = requests.post(url, data=json.dumps(data), headers={'Content-type': 'application/json'})
-        if response.ok:
-            response_json = response.json()
-            if 'hits' in response_json:
-                total = response_json['hits']['total']['value']
-                if start == end == 0:
-                    self._end = total
-                    return total
-                else:
-                    for d in response_json['hits']['hits']:
-                        records.append(d)
-        else:
-            if retry:
-                time.sleep(5)
-                self.get_records(url, data, start, end, retry=False)
-            else:
-                raise HTTPError(f"query yielded {response.status_code}\n{response.json()}")
-        return records
 
 

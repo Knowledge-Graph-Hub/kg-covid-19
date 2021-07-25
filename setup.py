@@ -67,6 +67,7 @@ setup(
 
     # add package dependencies
     install_requires=[
+        'rdflib==5.0.0',
         'kgx==1.1.0',
         'linkml-model',
         'tqdm',
@@ -78,7 +79,8 @@ setup(
         'pyyaml',
         'bmt',
         'SPARQLWrapper',
-        'ensmallen_graph==0.4.3'
+        'ensmallen_graph==0.4.3',
+        'elasticsearch'
     ],
     extras_require=extras,
 )
