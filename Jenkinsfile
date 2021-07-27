@@ -47,9 +47,8 @@ pipeline {
 
         stage('Deploy blazegraph') {
             when { anyOf { branch 'fix_deploy_blazegraph_stage_run_jenkins' } }
-            sh 'FIX THE ABOVE LINE!!!'
             steps {
-
+                sh 'FIX THE ABOVE LINE!!!'
                 git([branch: 'master',
                      credentialsId: 'justaddcoffee_github_api_token_username_pw',
                      url: 'https://github.com/geneontology/operations.git'])
