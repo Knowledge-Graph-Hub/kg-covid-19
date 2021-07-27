@@ -42,6 +42,7 @@ pipeline {
                     sh "echo $BUILDSTARTDATE"
                     sh "python3.8 --version"
                     sh "id"
+                    sh "whoami"
                 }
             }
         }
