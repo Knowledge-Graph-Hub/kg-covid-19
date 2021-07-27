@@ -41,6 +41,7 @@ pipeline {
                     sh "echo $BUILDSTARTDATE > dow.txt"
                     sh "echo $BUILDSTARTDATE"
                     sh "python3.8 --version"
+                    sh "id"
                 }
             }
         }
