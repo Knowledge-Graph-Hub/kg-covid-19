@@ -42,7 +42,12 @@ pipeline {
                     sh "echo $BUILDSTARTDATE"
                     sh "python3.8 --version"
                     sh "id"
-                    sh "whoami"
+                    sh "whoami" // this should be jenkinsuser
+                    // if the above fails, then the docker host didn't start the docker
+                    // container as a user that this image knows about. This will
+                    // likely cause lots of problems (like trying to write to $HOME
+                    // directory that doesn't exist, etc), so we should fail here and
+                    // have the user fix this
                 }
             }
         }
