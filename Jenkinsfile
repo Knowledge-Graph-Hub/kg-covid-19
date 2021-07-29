@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'justaddcoffee/ubuntu20-python-3-8-5-dev:4'
+        }
+    }
     triggers{
         cron('H H 1 1-12 *')
     }
@@ -57,9 +61,10 @@ pipeline {
 
                 dir('./ansible') {
 
-                    withCredentials([file(credentialsId: 'ansible-bbop-local-slave', variable: 'DEPLOY_LOCAL_IDENTITY')]) {
+                    withCredentials([file(credentialsId: 'ansible-bbop-local-slave', variable: 'ssh-credentials-plugin')]) {
                         echo 'Push master out to public Blazegraph'
                         retry(3){
+                            sh 'echo $ssh-credentials-plugin'
                             sh 'ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.local-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=bbop --extra-vars="endpoint=internal"'
                         }
                     }
