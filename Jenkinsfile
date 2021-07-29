@@ -61,13 +61,17 @@ pipeline {
 
                 dir('./ansible') {
 
-                    withCredentials([file(credentialsId: 'ansible-bbop-local-slave', variable: 'DEPLOY_LOCAL_IDENTITY')]) {
-                        echo 'Push master out to public Blazegraph'
-                        retry(3){
-                            sh 'echo $DEPLOY_LOCAL_IDENTITY'
-                            sh 'ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.local-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=bbop --extra-vars="endpoint=internal"'
+                    docker.image('justaddcoffee/ubuntu20-python-3-8-5-dev:4').inside{
+
+                        withCredentials([file(credentialsId: 'ansible-bbop-local-slave', variable: 'DEPLOY_LOCAL_IDENTITY')]) {
+                            echo 'Push master out to public Blazegraph'
+                            retry(3){
+                                sh 'echo $DEPLOY_LOCAL_IDENTITY'
+                                sh 'ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.local-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=bbop --extra-vars="endpoint=internal"'
+                            }
                         }
                     }
+
                 }
 
             }
