@@ -55,25 +55,21 @@ pipeline {
             when { anyOf { branch 'check_ansible_run_jenkins' } }
             steps {
                 sh 'echo FIX BRANCH CHECK ABOVE!!!'
-                git([branch: 'master',
-                     credentialsId: 'justaddcoffee_github_api_token_username_pw',
-                     url: 'https://github.com/geneontology/operations.git'])
 
-                dir('./ansible') {
+                docker.image('justaddcoffee/ubuntu20-python-3-8-5-dev:4').inside{
+                    git([branch: 'master',
+                         credentialsId: 'justaddcoffee_github_api_token_username_pw',
+                         url: 'https://github.com/geneontology/operations.git'])
 
-                    docker.image('justaddcoffee/ubuntu20-python-3-8-5-dev:4').inside{
+                    dir('./ansible') {
 
                         withCredentials([file(credentialsId: 'ansible-bbop-local-slave', variable: 'DEPLOY_LOCAL_IDENTITY')]) {
                             echo 'Push master out to public Blazegraph'
-                            retry(3){
-                                sh 'echo $DEPLOY_LOCAL_IDENTITY'
-                                sh 'ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.local-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=bbop --extra-vars="endpoint=internal"'
-                            }
+                            sh 'ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.local-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=bbop --extra-vars="endpoint=internal"'
                         }
+
                     }
-
                 }
-
             }
         }
     }
