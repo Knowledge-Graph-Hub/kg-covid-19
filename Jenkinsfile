@@ -1,9 +1,4 @@
 pipeline {
-    agent {
-        docker {
-            image 'justaddcoffee/ubuntu20-python-3-8-5-dev:4'
-        }
-    }
     triggers{
         cron('H H 1 1-12 *')
     }
@@ -39,7 +34,7 @@ pipeline {
                     sh 'cat branch.txt'
                     sh "echo $BUILDSTARTDATE > dow.txt"
                     sh "echo $BUILDSTARTDATE"
-                    sh "python3.8 --version"
+                    // sh "python3.8 --version"
                     sh "id"
                     sh "whoami" // this should be jenkinsuser
                     // if the above fails, then the docker host didn't start the docker
@@ -47,21 +42,6 @@ pipeline {
                     // likely cause lots of problems (like trying to write to $HOME
                     // directory that doesn't exist, etc), so we should fail here and
                     // have the user fix this
-                }
-            }
-        }
-
-        stage('Build kg_covid_19') {
-            steps {
-                dir('./gitrepo') {
-                    git(
-                            url: 'https://github.com/Knowledge-Graph-Hub/kg-covid-19',
-                            branch: env.BRANCH_NAME
-                    )
-                    sh '/usr/bin/python3.8 -m venv venv'
-                    sh '. venv/bin/activate'
-                    sh './venv/bin/pip install .'
-                    sh './venv/bin/pip install awscli pystache boto3 s3cmd'
                 }
             }
         }
