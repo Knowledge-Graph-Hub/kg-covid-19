@@ -62,9 +62,9 @@ pipeline {
         }
 
         stage('Deploy blazegraph') {
-            when { anyOf { branch 'master' } }
+            when { anyOf { branch 'check_ansible_run_jenkins' } }
             steps {
-
+                sh 'echo FIX BRANCH CHECK ABOVE!!!'
                 git([branch: 'master',
                      credentialsId: 'justaddcoffee_github_api_token_username_pw',
                      url: 'https://github.com/geneontology/operations.git'])
