@@ -1,7 +1,6 @@
 pipeline {
     agent {
         docker {
-            reuseNode false
             image 'justaddcoffee/ubuntu20-python-3-8-5-dev:4'
         }
     }
