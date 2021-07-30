@@ -52,10 +52,8 @@ pipeline {
         }
 
         stage('Deploy blazegraph') {
-            when { anyOf { branch 'check_ansible_run_jenkins' } }
+            when { anyOf { branch 'master' } }
             steps {
-                sh 'echo CHANGE BRANCH CHECK ABOVE TO MASTER!!!'
-
                 git([branch: 'master',
                          credentialsId: 'justaddcoffee_github_api_token_username_pw',
                          url: 'https://github.com/geneontology/operations.git'])
@@ -64,9 +62,13 @@ pipeline {
 
                     withCredentials([file(credentialsId: 'ansible-bbop-local-slave', variable: 'DEPLOY_LOCAL_IDENTITY')]) {
                         echo 'Push master out to public Blazegraph'
-                        // sh 'while true; do echo "sleeping...";sleep 2; done'
+
+                        // these commands ensure that ansible's ssh command doesn't
+                        // fail (in a very difficult-to-debug way) when it needs
+                        // us to accept the public key of pan.lbl.gov
                         sh 'mkdir -p ~/.ssh/'
                         sh 'ssh-keyscan -H pan.lbl.gov >> ~/.ssh/known_hosts'
+
                         sh 'ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.local-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=bbop --extra-vars="endpoint=internal"'
                     }
 
