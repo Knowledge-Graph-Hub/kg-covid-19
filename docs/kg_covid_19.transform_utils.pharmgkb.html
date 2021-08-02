@@ -1,0 +1,475 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>kg_covid_19.transform_utils.pharmgkb package &mdash; kg-covid-19 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="kg_covid_19.transform_utils.sars_cov_2_gene_annot package" href="kg_covid_19.transform_utils.sars_cov_2_gene_annot.html" />
+    <link rel="prev" title="kg_covid_19.transform_utils.ontology package" href="kg_covid_19.transform_utils.ontology.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> kg-covid-19
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">kg-covid-19</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="kg_covid_19.html">kg_covid_19 package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="kg_covid_19.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="kg_covid_19.transform_utils.html">kg_covid_19.transform_utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.utils.html">kg_covid_19.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.html#module-kg_covid_19.download">kg_covid_19.download module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.html#module-kg_covid_19.make_holdouts">kg_covid_19.make_holdouts module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.html#module-kg_covid_19.query">kg_covid_19.query module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.html#module-kg_covid_19.transform">kg_covid_19.transform module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.html#module-kg_covid_19">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="run.html">run module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">kg-covid-19</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">kg-covid-19</a> &raquo;</li>
+        
+          <li><a href="kg_covid_19.html">kg_covid_19 package</a> &raquo;</li>
+        
+          <li><a href="kg_covid_19.transform_utils.html">kg_covid_19.transform_utils package</a> &raquo;</li>
+        
+      <li>kg_covid_19.transform_utils.pharmgkb package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/kg_covid_19.transform_utils.pharmgkb.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kg-covid-19-transform-utils-pharmgkb-package">
+<h1>kg_covid_19.transform_utils.pharmgkb package<a class="headerlink" href="#kg-covid-19-transform-utils-pharmgkb-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-kg_covid_19.transform_utils.pharmgkb.pharmgkb">
+<span id="kg-covid-19-transform-utils-pharmgkb-pharmgkb-module"></span><h2>kg_covid_19.transform_utils.pharmgkb.pharmgkb module<a class="headerlink" href="#module-kg_covid_19.transform_utils.pharmgkb.pharmgkb" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.CantFindPharmGKBKey">
+<em class="property">exception </em><code class="sig-prename descclassname">kg_covid_19.transform_utils.pharmgkb.pharmgkb.</code><code class="sig-name descname">CantFindPharmGKBKey</code><a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.CantFindPharmGKBKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB">
+<em class="property">class </em><code class="sig-prename descclassname">kg_covid_19.transform_utils.pharmgkb.pharmgkb.</code><code class="sig-name descname">PharmGKB</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_dir</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="kg_covid_19.transform_utils.html#kg_covid_19.transform_utils.transform.Transform" title="kg_covid_19.transform_utils.transform.Transform"><code class="xref py py-class docutils literal notranslate"><span class="pre">kg_covid_19.transform_utils.transform.Transform</span></code></a></p>
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.get_uniprot_id">
+<code class="sig-name descname">get_uniprot_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">this_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">pharmgkb_prefix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'PHARMGKB'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.get_uniprot_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.make_id_mapping_file">
+<code class="sig-name descname">make_id_mapping_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">map_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">sep</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'\t'</span></em>, <em class="sig-param"><span class="n">pharmgkb_id_col</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'PharmGKB Accession Id'</span></em>, <em class="sig-param"><span class="n">id_key</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Cross-references'</span></em>, <em class="sig-param"><span class="n">id_sep</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">','</span></em>, <em class="sig-param"><span class="n">id_key_val_sep</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">':'</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.make_id_mapping_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fxn to parse gene ID mappings or drug ID mapping for PharmGKB ids
+This is to parse both genes.tsv and drugs.tsv files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>map_file</strong> – genes.tsv file, containing mappings</p></li>
+<li><p><strong>pharmgkb_id_col</strong> – column containing pharmgkb, to be used as key for map</p></li>
+<li><p><strong>sep</strong> – separator between columns [ ]</p></li>
+<li><p><strong>id_key</strong> – column name that contains ids [Cross-references]</p></li>
+<li><p><strong>id_sep</strong> – separator between each id key:val pair [,]</p></li>
+<li><p><strong>id_key_val_sep</strong> – separator between key:val pair [:]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.make_pharmgkb_chemical_node">
+<code class="sig-name descname">make_pharmgkb_chemical_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fh</span><span class="p">:</span> <span class="n">TextIO</span></em>, <em class="sig-param"><span class="n">chem_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">biolink_type</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.make_pharmgkb_chemical_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out node for gene
+:param fh: file handle to write out gene
+:param id: pharmgkb gene id
+:param name: gene name
+:param biolink_type: biolink type for Chemical
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.make_pharmgkb_edge">
+<code class="sig-name descname">make_pharmgkb_edge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fh</span><span class="p">:</span> <span class="n">TextIO</span></em>, <em class="sig-param"><span class="n">line_data</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.make_pharmgkb_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.make_pharmgkb_gene_node">
+<code class="sig-name descname">make_pharmgkb_gene_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fh</span><span class="p">:</span> <span class="n">TextIO</span></em>, <em class="sig-param"><span class="n">this_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">biolink_type</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.make_pharmgkb_gene_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out node for gene
+:param fh: file handle to write out gene
+:param this_id: pharmgkb gene id
+:param name: gene name
+:param biolink_type: biolink type for Gene
+(from make_gene_id_mapping_file())
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.make_preferred_drug_id">
+<code class="sig-name descname">make_preferred_drug_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pharmgkb_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">drug_id_map</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">preferred_ids</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">{'CHEMBL': 'CHEMBL', 'ChEBI:CHEBI': 'CHEBI', 'DrugBank': 'DRUGBANK', 'PubChem Compound:': 'PUBCHEM'}</span></em>, <em class="sig-param"><span class="n">pharmgkb_prefix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'PHARMGKB'</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.make_preferred_drug_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a drug id, convert it to a cross-referenced ID, in this order of
+preference:</p>
+<blockquote>
+<div><p>CHEBI &gt; CHEMBL &gt; DRUGBANK &gt; PUBCHEM</p>
+</div></blockquote>
+<p>:param pharmgkb_id
+:param drug_id_map - map of pharmgkb ids to cross-referenced IDs
+:param preferred_ids - dict of preferred ids in desc order of preference</p>
+<blockquote>
+<div><p>‘their string’ -&gt; ‘canonical CURIE prefix’
+wow, they don’t make this easy</p>
+</div></blockquote>
+<p>:param pharmgkb_prefix thing to prepend to pharmgkb id (‘PHARMGKB’)
+:return: preferred_id: preferred cross-referenced ID</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.parse_pharmgkb_line">
+<code class="sig-name descname">parse_pharmgkb_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">this_line</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">header_items</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.parse_pharmgkb_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a single line from relationships.tsv and return a dict with data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>this_line</strong> – line from relationship.tsv to parse</p></li>
+<li><p><strong>header_items</strong> – header from relationships.tsv</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict with key value containing data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_file</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKB.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKBFileError">
+<em class="property">exception </em><code class="sig-prename descclassname">kg_covid_19.transform_utils.pharmgkb.pharmgkb.</code><code class="sig-name descname">PharmGKBFileError</code><a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKBFileError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKBInvalidEdge">
+<em class="property">exception </em><code class="sig-prename descclassname">kg_covid_19.transform_utils.pharmgkb.pharmgkb.</code><code class="sig-name descname">PharmGKBInvalidEdge</code><a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmGKBInvalidEdge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmKGBInvalidNodeType">
+<em class="property">exception </em><code class="sig-prename descclassname">kg_covid_19.transform_utils.pharmgkb.pharmgkb.</code><code class="sig-name descname">PharmKGBInvalidNodeType</code><a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.pharmgkb.PharmKGBInvalidNodeType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-kg_covid_19.transform_utils.pharmgkb">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-kg_covid_19.transform_utils.pharmgkb" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="kg_covid_19.transform_utils.pharmgkb.PharmGKB">
+<em class="property">class </em><code class="sig-prename descclassname">kg_covid_19.transform_utils.pharmgkb.</code><code class="sig-name descname">PharmGKB</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_dir</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.PharmGKB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="kg_covid_19.transform_utils.html#kg_covid_19.transform_utils.transform.Transform" title="kg_covid_19.transform_utils.transform.Transform"><code class="xref py py-class docutils literal notranslate"><span class="pre">kg_covid_19.transform_utils.transform.Transform</span></code></a></p>
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.PharmGKB.get_uniprot_id">
+<code class="sig-name descname">get_uniprot_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">this_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">pharmgkb_prefix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'PHARMGKB'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.PharmGKB.get_uniprot_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.PharmGKB.make_id_mapping_file">
+<code class="sig-name descname">make_id_mapping_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">map_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">sep</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'\t'</span></em>, <em class="sig-param"><span class="n">pharmgkb_id_col</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'PharmGKB Accession Id'</span></em>, <em class="sig-param"><span class="n">id_key</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Cross-references'</span></em>, <em class="sig-param"><span class="n">id_sep</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">','</span></em>, <em class="sig-param"><span class="n">id_key_val_sep</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">':'</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.PharmGKB.make_id_mapping_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fxn to parse gene ID mappings or drug ID mapping for PharmGKB ids
+This is to parse both genes.tsv and drugs.tsv files</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>map_file</strong> – genes.tsv file, containing mappings</p></li>
+<li><p><strong>pharmgkb_id_col</strong> – column containing pharmgkb, to be used as key for map</p></li>
+<li><p><strong>sep</strong> – separator between columns [ ]</p></li>
+<li><p><strong>id_key</strong> – column name that contains ids [Cross-references]</p></li>
+<li><p><strong>id_sep</strong> – separator between each id key:val pair [,]</p></li>
+<li><p><strong>id_key_val_sep</strong> – separator between key:val pair [:]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.PharmGKB.make_pharmgkb_chemical_node">
+<code class="sig-name descname">make_pharmgkb_chemical_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fh</span><span class="p">:</span> <span class="n">TextIO</span></em>, <em class="sig-param"><span class="n">chem_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">biolink_type</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.PharmGKB.make_pharmgkb_chemical_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out node for gene
+:param fh: file handle to write out gene
+:param id: pharmgkb gene id
+:param name: gene name
+:param biolink_type: biolink type for Chemical
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.PharmGKB.make_pharmgkb_edge">
+<code class="sig-name descname">make_pharmgkb_edge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fh</span><span class="p">:</span> <span class="n">TextIO</span></em>, <em class="sig-param"><span class="n">line_data</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.PharmGKB.make_pharmgkb_edge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.PharmGKB.make_pharmgkb_gene_node">
+<code class="sig-name descname">make_pharmgkb_gene_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fh</span><span class="p">:</span> <span class="n">TextIO</span></em>, <em class="sig-param"><span class="n">this_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">biolink_type</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.PharmGKB.make_pharmgkb_gene_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out node for gene
+:param fh: file handle to write out gene
+:param this_id: pharmgkb gene id
+:param name: gene name
+:param biolink_type: biolink type for Gene
+(from make_gene_id_mapping_file())
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.PharmGKB.make_preferred_drug_id">
+<code class="sig-name descname">make_preferred_drug_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pharmgkb_id</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">drug_id_map</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">preferred_ids</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">{'CHEMBL': 'CHEMBL', 'ChEBI:CHEBI': 'CHEBI', 'DrugBank': 'DRUGBANK', 'PubChem Compound:': 'PUBCHEM'}</span></em>, <em class="sig-param"><span class="n">pharmgkb_prefix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'PHARMGKB'</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.PharmGKB.make_preferred_drug_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a drug id, convert it to a cross-referenced ID, in this order of
+preference:</p>
+<blockquote>
+<div><p>CHEBI &gt; CHEMBL &gt; DRUGBANK &gt; PUBCHEM</p>
+</div></blockquote>
+<p>:param pharmgkb_id
+:param drug_id_map - map of pharmgkb ids to cross-referenced IDs
+:param preferred_ids - dict of preferred ids in desc order of preference</p>
+<blockquote>
+<div><p>‘their string’ -&gt; ‘canonical CURIE prefix’
+wow, they don’t make this easy</p>
+</div></blockquote>
+<p>:param pharmgkb_prefix thing to prepend to pharmgkb id (‘PHARMGKB’)
+:return: preferred_id: preferred cross-referenced ID</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.PharmGKB.parse_pharmgkb_line">
+<code class="sig-name descname">parse_pharmgkb_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">this_line</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">header_items</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.PharmGKB.parse_pharmgkb_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a single line from relationships.tsv and return a dict with data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>this_line</strong> – line from relationship.tsv to parse</p></li>
+<li><p><strong>header_items</strong> – header from relationships.tsv</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict with key value containing data</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.pharmgkb.PharmGKB.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_file</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#kg_covid_19.transform_utils.pharmgkb.PharmGKB.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kg_covid_19.transform_utils.sars_cov_2_gene_annot.html" class="btn btn-neutral float-right" title="kg_covid_19.transform_utils.sars_cov_2_gene_annot package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="kg_covid_19.transform_utils.ontology.html" class="btn btn-neutral float-left" title="kg_covid_19.transform_utils.ontology package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Justin Reese
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

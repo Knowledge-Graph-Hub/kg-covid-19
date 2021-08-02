@@ -1,0 +1,506 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>kg_covid_19 package &mdash; kg-covid-19 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="kg_covid_19.transform_utils package" href="kg_covid_19.transform_utils.html" />
+    <link rel="prev" title="kg-covid-19" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> kg-covid-19
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">kg-covid-19</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">kg_covid_19 package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.html">kg_covid_19.transform_utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.utils.html">kg_covid_19.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-kg_covid_19.download">kg_covid_19.download module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-kg_covid_19.make_holdouts">kg_covid_19.make_holdouts module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-kg_covid_19.query">kg_covid_19.query module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-kg_covid_19.transform">kg_covid_19.transform module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-kg_covid_19">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="run.html">run module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">kg-covid-19</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">kg-covid-19</a> &raquo;</li>
+        
+      <li>kg_covid_19 package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/kg_covid_19.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kg-covid-19-package">
+<h1>kg_covid_19 package<a class="headerlink" href="#kg-covid-19-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="kg_covid_19.transform_utils.html">kg_covid_19.transform_utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.transform_utils.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.transform_utils.chembl.html">kg_covid_19.transform_utils.chembl package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.chembl.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.chembl.html#module-kg_covid_19.transform_utils.chembl.chembl_transform">kg_covid_19.transform_utils.chembl.chembl_transform module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.chembl.html#module-kg_covid_19.transform_utils.chembl">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.transform_utils.drug_central.html">kg_covid_19.transform_utils.drug_central package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.drug_central.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.drug_central.html#module-kg_covid_19.transform_utils.drug_central.drug_central">kg_covid_19.transform_utils.drug_central.drug_central module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.drug_central.html#module-kg_covid_19.transform_utils.drug_central">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.transform_utils.gocam_transform.html">kg_covid_19.transform_utils.gocam_transform package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.gocam_transform.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.gocam_transform.html#module-kg_covid_19.transform_utils.gocam_transform.gocam_transform">kg_covid_19.transform_utils.gocam_transform.gocam_transform module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.gocam_transform.html#module-kg_covid_19.transform_utils.gocam_transform">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.transform_utils.intact.html">kg_covid_19.transform_utils.intact package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.intact.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.intact.html#module-kg_covid_19.transform_utils.intact.intact">kg_covid_19.transform_utils.intact.intact module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.intact.html#module-kg_covid_19.transform_utils.intact">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.transform_utils.ontology.html">kg_covid_19.transform_utils.ontology package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.ontology.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.ontology.html#module-kg_covid_19.transform_utils.ontology.ontology_transform">kg_covid_19.transform_utils.ontology.ontology_transform module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.ontology.html#module-kg_covid_19.transform_utils.ontology">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.transform_utils.pharmgkb.html">kg_covid_19.transform_utils.pharmgkb package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.pharmgkb.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.pharmgkb.html#module-kg_covid_19.transform_utils.pharmgkb.pharmgkb">kg_covid_19.transform_utils.pharmgkb.pharmgkb module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.pharmgkb.html#module-kg_covid_19.transform_utils.pharmgkb">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.transform_utils.sars_cov_2_gene_annot.html">kg_covid_19.transform_utils.sars_cov_2_gene_annot package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.sars_cov_2_gene_annot.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.sars_cov_2_gene_annot.html#module-kg_covid_19.transform_utils.sars_cov_2_gene_annot.sars_cov_2_gene_annot">kg_covid_19.transform_utils.sars_cov_2_gene_annot.sars_cov_2_gene_annot module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.sars_cov_2_gene_annot.html#module-kg_covid_19.transform_utils.sars_cov_2_gene_annot">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.transform_utils.scibite_cord.html">kg_covid_19.transform_utils.scibite_cord package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.scibite_cord.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.scibite_cord.html#module-kg_covid_19.transform_utils.scibite_cord.scibite_cord">kg_covid_19.transform_utils.scibite_cord.scibite_cord module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.scibite_cord.html#module-kg_covid_19.transform_utils.scibite_cord">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.transform_utils.string_ppi.html">kg_covid_19.transform_utils.string_ppi package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.string_ppi.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.string_ppi.html#module-kg_covid_19.transform_utils.string_ppi.string_ppi">kg_covid_19.transform_utils.string_ppi.string_ppi module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.string_ppi.html#module-kg_covid_19.transform_utils.string_ppi">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.transform_utils.ttd.html">kg_covid_19.transform_utils.ttd package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.ttd.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.ttd.html#module-kg_covid_19.transform_utils.ttd.ttd">kg_covid_19.transform_utils.ttd.ttd module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.ttd.html#module-kg_covid_19.transform_utils.ttd">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.transform_utils.zhou_host_proteins.html">kg_covid_19.transform_utils.zhou_host_proteins package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.zhou_host_proteins.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.zhou_host_proteins.html#module-kg_covid_19.transform_utils.zhou_host_proteins.zhou_transform">kg_covid_19.transform_utils.zhou_host_proteins.zhou_transform module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.zhou_host_proteins.html#module-kg_covid_19.transform_utils.zhou_host_proteins">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.transform_utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.transform_utils.html#module-kg_covid_19.transform_utils.transform">kg_covid_19.transform_utils.transform module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.transform_utils.html#module-kg_covid_19.transform_utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kg_covid_19.utils.html">kg_covid_19.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.utils.html#module-kg_covid_19.utils.download_utils">kg_covid_19.utils.download_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.utils.html#module-kg_covid_19.utils.transform_utils">kg_covid_19.utils.transform_utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.utils.html#module-kg_covid_19.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-kg_covid_19.download">
+<span id="kg-covid-19-download-module"></span><h2>kg_covid_19.download module<a class="headerlink" href="#module-kg_covid_19.download" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="kg_covid_19.download.download">
+<code class="sig-prename descclassname">kg_covid_19.download.</code><code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">yaml_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">ignore_cache</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.download.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads data files from list of URLs (default: download.yaml) into data directory (default: data/).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>yaml_file: A string pointing to the yaml file utilized to facilitate the downloading of data.
+output_dir: A string pointing to the location to download data to.
+ignore_cache: Ignore cache and download files even if they exist [false]</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-kg_covid_19.make_holdouts">
+<span id="kg-covid-19-make-holdouts-module"></span><h2>kg_covid_19.make_holdouts module<a class="headerlink" href="#module-kg_covid_19.make_holdouts" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="kg_covid_19.make_holdouts.df_to_tsv">
+<code class="sig-prename descclassname">kg_covid_19.make_holdouts.</code><code class="sig-name descname">df_to_tsv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">outfile</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">'\t'</span></em>, <em class="sig-param"><span class="n">index</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.make_holdouts.df_to_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="kg_covid_19.make_holdouts.make_holdouts">
+<code class="sig-prename descclassname">kg_covid_19.make_holdouts.</code><code class="sig-name descname">make_holdouts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">edges</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">train_fraction</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">validation</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">42</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.make_holdouts.make_holdouts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare positive and negative edges for testing and training (see run.py holdouts
+command for documentation)</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>:param nodes    nodes of input graph, in KGX TSV format [data/merged/nodes.tsv]
+:param edges:   edges for input graph, in KGX TSV format [data/merged/edges.tsv]
+:param output_dir:     directory to output edges and new graph [data/edges/]
+:param train_fraction: fraction of edges to emit as training
+:param validation:     should we make validation edges? [False]
+:param seed:    random seed [42]</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="kg_covid_19.make_holdouts.make_negative_edges">
+<code class="sig-prename descclassname">kg_covid_19.make_holdouts.</code><code class="sig-name descname">make_negative_edges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes_df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">edges_df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">edge_label</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'negative_edge'</span></em>, <em class="sig-param"><span class="n">relation</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'negative_edge'</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#kg_covid_19.make_holdouts.make_negative_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a graph (as nodes and edges pandas dataframes), select num_edges holdouts that
+are NOT present in the graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes_df</strong> – pandas dataframe containing node info</p></li>
+<li><p><strong>edges_df</strong> – pandas dataframe containing edge info</p></li>
+<li><p><strong>relation</strong> – string to put in relation column</p></li>
+<li><p><strong>edge_label</strong> – string to put in edge_label column</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="kg_covid_19.make_holdouts.make_positive_edges">
+<code class="sig-prename descclassname">kg_covid_19.make_holdouts.</code><code class="sig-name descname">make_positive_edges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodes_df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">edges_df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">train_fraction</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>pandas.core.frame.DataFrame<span class="p">]</span><a class="headerlink" href="#kg_covid_19.make_holdouts.make_positive_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Positive edges are randomly selected from the edges in the graph, IFF both nodes
+participating in the edge have a degree greater than min_degree (to avoid creating
+disconnected components). This edge is then removed in the output graph. Negative
+edges are selected by randomly selecting pairs of nodes that are not connected by an
+edge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes_df</strong> – pandas dataframe with node info, generated from KGX TSV file</p></li>
+<li><p><strong>edges_df</strong> – pandas dataframe with edge info, generated from KGX TSV file</p></li>
+<li><p><strong>train_fraction</strong> – fraction of input edges to emit as test (and optionally
+validation) edges</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pandas dataframes:</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>training_edges_df: a dataframe with training edges with positive edges we</dt><dd><p>selected for test removed from graph</p>
+</dd>
+</dl>
+<p>test_edges_df: a dataframe with test positive edges</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="kg_covid_19.make_holdouts.tsv_to_df">
+<code class="sig-prename descclassname">kg_covid_19.make_holdouts.</code><code class="sig-name descname">tsv_to_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tsv_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#kg_covid_19.make_holdouts.tsv_to_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in a TSV file and return a pandas dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tsv_file</strong> – file to read in</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pandas dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-kg_covid_19.query">
+<span id="kg-covid-19-query-module"></span><h2>kg_covid_19.query module<a class="headerlink" href="#module-kg_covid_19.query" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="kg_covid_19.query.parse_query_rq">
+<code class="sig-prename descclassname">kg_covid_19.query.</code><code class="sig-name descname">parse_query_rq</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rq_file</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#kg_covid_19.query.parse_query_rq" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Args:</dt><dd><p>rq_file: sparql query in grlc rq format</p>
+</dd>
+</dl>
+<p>Returns: dict with parsed info about sparql query</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="kg_covid_19.query.result_dict_to_tsv">
+<code class="sig-prename descclassname">kg_covid_19.query.</code><code class="sig-name descname">result_dict_to_tsv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">result_dict</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">outfile</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.query.result_dict_to_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="kg_covid_19.query.run_query">
+<code class="sig-prename descclassname">kg_covid_19.query.</code><code class="sig-name descname">run_query</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">endpoint</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">return_format</span><span class="o">=</span><span class="default_value">'json'</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#kg_covid_19.query.run_query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-kg_covid_19.transform">
+<span id="kg-covid-19-transform-module"></span><h2>kg_covid_19.transform module<a class="headerlink" href="#module-kg_covid_19.transform" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="kg_covid_19.transform.transform">
+<code class="sig-prename descclassname">kg_covid_19.transform.</code><code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">sources</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call scripts in kg_covid_19/transform/[source name]/ to transform each source into a graph format that
+KGX can ingest directly, in either TSV or JSON format:
+<a class="reference external" href="https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md">https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md</a></p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>input_dir: A string pointing to the directory to import data from.
+output_dir: A string pointing to the directory to output data to.
+sources: A list of sources to transform.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-kg_covid_19">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-kg_covid_19" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="kg_covid_19.download">
+<code class="sig-prename descclassname">kg_covid_19.</code><code class="sig-name descname">download</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">yaml_file</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">ignore_cache</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads data files from list of URLs (default: download.yaml) into data directory (default: data/).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>yaml_file: A string pointing to the yaml file utilized to facilitate the downloading of data.
+output_dir: A string pointing to the location to download data to.
+ignore_cache: Ignore cache and download files even if they exist [false]</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="kg_covid_19.transform">
+<code class="sig-prename descclassname">kg_covid_19.</code><code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">sources</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call scripts in kg_covid_19/transform/[source name]/ to transform each source into a graph format that
+KGX can ingest directly, in either TSV or JSON format:
+<a class="reference external" href="https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md">https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md</a></p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>input_dir: A string pointing to the directory to import data from.
+output_dir: A string pointing to the directory to output data to.
+sources: A list of sources to transform.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kg_covid_19.transform_utils.html" class="btn btn-neutral float-right" title="kg_covid_19.transform_utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="kg-covid-19" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Justin Reese
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

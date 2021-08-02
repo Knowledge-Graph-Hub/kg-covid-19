@@ -120,4 +120,5 @@ wheels/
 !/data/transformed/.gitkeep
 !/data/raw/.gitkeep
 
-sphinx/build/
+sphinx/_build/
+sphinx/_templates/
