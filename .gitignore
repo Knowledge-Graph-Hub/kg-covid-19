@@ -120,3 +120,4 @@ wheels/
 !/data/transformed/.gitkeep
 !/data/raw/.gitkeep
 
+sphinx/build/
