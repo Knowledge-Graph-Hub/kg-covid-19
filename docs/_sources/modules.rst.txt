@@ -6,5 +6,4 @@ kg-covid-19
 
    kg_covid_19
    run
-   setup
    tests
