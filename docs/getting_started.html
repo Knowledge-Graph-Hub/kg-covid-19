@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Download the Knowledge Graph &mdash; kg-covid-19 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="kg_covid_19 package" href="kg_covid_19.html" />
+    <link rel="prev" title="kg-covid-19" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> kg-covid-19
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">kg-covid-19</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Download the Knowledge Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#knowledge-graph-hub-concept">Knowledge Graph Hub concept</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kg-covid-19-project">KG-COVID-19 project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-codebase">The codebase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#computational-requirements">Computational requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-pipeline">Running the pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#jupyter-notebook">Jupyter notebook</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#a-few-organizing-principles-used-for-data-ingest">A few organizing principles used for data ingest</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#querying-the-graph">Querying the graph</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#summary-of-the-data">Summary of the data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-contribute">How to Contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contributors">Contributors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.html">kg_covid_19 package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="run.html">run module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">kg-covid-19</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">kg-covid-19</a> &raquo;</li>
+        
+      <li>Download the Knowledge Graph</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/getting_started.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="download-the-knowledge-graph">
+<h1>Download the Knowledge Graph<a class="headerlink" href="#download-the-knowledge-graph" title="Permalink to this headline">¶</a></h1>
+<p>Prebuilt versions of the KG-COVID-19 knowledge graph build from all
+available data are available in the following serialization formats:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://kg-hub.berkeleybop.io/kg-covid-19/current/kg-covid-19.nt.gz">RDF N-Triples</a></p></li>
+<li><p><a class="reference external" href="http://kg-hub.berkeleybop.io/kg-covid-19/current/kg-covid-19.tar.gz">KGX TSV</a></p></li>
+</ul>
+<p>See <a class="reference external" href="https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md">here</a>
+for a description of the KGX TSV format</p>
+<p>Previous builds are available for download
+<a class="reference external" href="https://kg-hub.berkeleybop.io/kg-covid-19/">here</a>. Each build
+contains the following data:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">raw</span></code>: the data ingested for this build</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">transformed</span></code>: the transformed data from each source</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stats</span></code>: detailed statistics about the contents of the KG</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Jenkinsfile</span></code>: the exact commands used to generate the KG</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kg-covid-19.nt.gz</span></code>: an RDF/Ntriples version of the KG</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kg-covid-19.tar.gz</span></code>: a KGX TSV version of the KG</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kg-covid-19.jnl.gz</span></code>: the Blazegraph journal file (for loading an endpoint)</p></li>
+</ul>
+</div>
+<div class="section" id="knowledge-graph-hub-concept">
+<h1>Knowledge Graph Hub concept<a class="headerlink" href="#knowledge-graph-hub-concept" title="Permalink to this headline">¶</a></h1>
+<p>A Knowledge Graph Hub (KG Hub) is framework to download and transform
+data to a central location for building knowledge graphs (KGs) from
+different combination of data sources, in an automated, YAML-driven way.
+The workflow constitutes of 3 steps:</p>
+<ul class="simple">
+<li><p>Download data</p></li>
+<li><p>Transform data for each data source into two TSV files (<code class="docutils literal notranslate"><span class="pre">edges.tsv</span></code> and <code class="docutils literal notranslate"><span class="pre">nodes.tsv</span></code>) as specified <a class="reference external" href="https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md">here</a></p></li>
+<li><p>Merge the graphs for each data source of interest using <a class="reference external" href="https://github.com/NCATS-Tangerine/kgx/">KGX</a> to produce a merged knowledge graph</p></li>
+</ul>
+<p>To facilitate interoperability of datasets, <a class="reference external" href="https://biolink.github.io/biolink-model/docs/category.html">Biolink
+categories</a>
+are added to nodes and <a class="reference external" href="https://biolink.github.io/biolink-model/docs/Association">Biolink association
+types</a> are
+added to edges during transformation.</p>
+<p>A more thorough explanation of the KG-hub concept is
+<a class="reference external" href="https://knowledge-graph-hub.github.io/">here</a>.</p>
+</div>
+<div class="section" id="kg-covid-19-project">
+<h1>KG-COVID-19 project<a class="headerlink" href="#kg-covid-19-project" title="Permalink to this headline">¶</a></h1>
+<p>The
+<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/">KG-COVID-19</a>
+project is the first instantiation of such a KG Hub. Thus, KG-COVID-19
+is a framework, that follows design patterns of the KG Hub, to download
+and transform COVID-19/SARS-COV-2 related datasets and emit a knowledge
+graph that can then be used for machine learning or others uses, to
+produce actionable knowledge.</p>
+<div class="section" id="the-codebase">
+<h2>The codebase<a class="headerlink" href="#the-codebase" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19">Here</a> is the
+GitHub repo for this project.</p></li>
+<li><p><a class="reference external" href="https://github.com/monarch-initiative/embiggen">Here</a> is the
+GitHub repo for Embiggen, an implementation of node2vec and other
+methods to generate embeddings and apply machine learning to graphs.</p></li>
+<li><p><a class="reference external" href="https://github.com/NCATS-Tangerine/kgx/">Here</a> is the GitHub repo
+for KGX, a knowledge graph exchange tool for working with graphs</p></li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Java/JDK is required in order for the transform step to work
+properly. See
+<a class="reference external" href="https://docs.oracle.com/en/java/javase/15/install/overview-jdk-installation.html#GUID-8677A77F-231A-40F7-98B9-1FD0B48C346A">here</a>
+for instructions on installing.</p></li>
+</ul>
+</div>
+<div class="section" id="computational-requirements">
+<h2>Computational requirements<a class="headerlink" href="#computational-requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>On a commodity server with 200 GB of memory, generation of the
+knowledge graph containing all source data requires a total of 3.7
+hours (0.13 hours, 1.5 hours, and 2.1 hours for the download,
+transform, and merge step, respectively), with a peak memory usage of
+34.4 GB and disk use of 37 GB. An estimate of the current build time
+on a typical server is also available
+<a class="reference external" href="https://build.berkeleybop.io/job/knowledge-graph-hub/job/kg-covid-19/job/master/">here</a>.</p></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/Knowledge-Graph-Hub/kg-covid-19
+<span class="nb">cd</span> kg-covid-19
+python3 -m venv venv <span class="o">&amp;&amp;</span> <span class="nb">source</span> venv/bin/activate <span class="c1"># optional</span>
+pip install .
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-the-pipeline">
+<h2>Running the pipeline<a class="headerlink" href="#running-the-pipeline" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python run.py download
+python run.py transform
+python run.py merge
+</pre></div>
+</div>
+</div>
+<div class="section" id="jupyter-notebook">
+<h2>Jupyter notebook<a class="headerlink" href="#jupyter-notebook" title="Permalink to this headline">¶</a></h2>
+<p>We have also prepared a <a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/example-KG-COVID-19-usage.ipynb">Jupyter
+notebook</a>
+demonstrating how to run the pipeline to generate a KG, and also how to
+use other tooling such as graph sampling for generating holdouts, and
+graph querying.</p>
+</div>
+<div class="section" id="a-few-organizing-principles-used-for-data-ingest">
+<h2>A few organizing principles used for data ingest<a class="headerlink" href="#a-few-organizing-principles-used-for-data-ingest" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>UniProtKB identifiers are used for genes and proteins, where possible</p></li>
+<li><p>For drug/compound identifiers, there is a preferred namespace. If
+there are datasets that provide identifiers from multiple namespaces
+then the choice is determined based on a descending order of
+preference,</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">CHEBI</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">CHEMBL</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">DRUGBANK</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">PUBCHEM</span></code></p></li>
+</ul>
+</li>
+<li><p>Less is more: for each data source, we ingest only the subset of data
+that is most relevant to the knowledge graph in question (here, it’s
+KG-COVID-19)</p></li>
+<li><p>We avoid ingesting data from a source that isn’t authoritative for
+the data in question (e.g. we do not ingest protein interaction data
+from a drug database)</p></li>
+<li><p>Each ingest should make an effort to add provenance data by adding a
+<code class="docutils literal notranslate"><span class="pre">provided_by</span></code> column for each node and edge in the output TSV file,
+populated with the source of each datum</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="querying-the-graph">
+<h1>Querying the graph<a class="headerlink" href="#querying-the-graph" title="Permalink to this headline">¶</a></h1>
+<p>A SPARQL endpoint for the merged knowledge graph is available
+<a class="reference external" href="http://kg-hub-rdf.berkeleybop.io/blazegraph/#query">here</a>. For a
+better experience, consider using <a class="reference external" href="https://yasgui.triply.cc/">https://yasgui.triply.cc/</a> for your
+querying needs (for yasgui, set
+<a class="reference external" href="http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql">http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql</a> as your SPARQL
+endpoint). If you are not sure where to start, here are some example
+SPARQL queries:
+<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/tree/master/queries/sparql">https://github.com/Knowledge-Graph-Hub/kg-covid-19/tree/master/queries/sparql</a></p>
+<div class="section" id="summary-of-the-data">
+<h2>Summary of the data<a class="headerlink" href="#summary-of-the-data" title="Permalink to this headline">¶</a></h2>
+<p>A detailed, up-to-date summary of data in KG-COVID-19 is available
+<a class="reference external" href="https://kg-hub.berkeleybop.io/kg-covid-19/current/stats/merged_graph_stats.yaml">here</a>,
+with contents of the knowledge graph broken down by Biolink categories
+and Biolink association types for nodes and edges, respectively.</p>
+<p>An interactive dashboard to explore these stats is available
+<a class="reference external" href="https://knowledge-graph-hub.github.io/kg-covid-19-dashboard/">here</a>.</p>
+</div>
+</div>
+<div class="section" id="how-to-contribute">
+<h1>How to Contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/wiki/How-to-help">Here</a>
+is a more detailed description, and instructions on how to help us
+with our KG-COVID-19 effort.</p></li>
+</ul>
+</div>
+<div class="section" id="contributors">
+<h1>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/justaddcoffee">Justin Reese</a></p></li>
+<li><p><a class="reference external" href="https://github.com/deepakunni3">Deepak Unni</a></p></li>
+<li><p><a class="reference external" href="https://github.com/realmarcin">Marcin Joachimiak</a></p></li>
+<li><p><a class="reference external" href="https://github.com/pnrobinson">Peter Robinson</a></p></li>
+<li><p><a class="reference external" href="https://github.com/cmungall">Chris Mungall</a></p></li>
+<li><p><a class="reference external" href="https://github.com/callahantiff">Tiffany Callahan</a></p></li>
+<li><p><a class="reference external" href="https://github.com/LucaCappelletti94">Luca Cappelletti</a></p></li>
+<li><p><a class="reference external" href="https://github.com/vidarmehr">Vida Ravanmehr</a></p></li>
+</ul>
+</div>
+<div class="section" id="acknowledgements">
+<h1>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">¶</a></h1>
+<p>We gratefully acknowledge and thank all COVID-19 data providers for
+making their data available.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kg_covid_19.html" class="btn btn-neutral float-right" title="kg_covid_19 package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="kg-covid-19" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Justin Reese
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
