@@ -10,6 +10,7 @@ KG-COVID-19 documentation
    :maxdepth: 2
    :caption: Contents:
 
+   getting_started
    modules
 
 
