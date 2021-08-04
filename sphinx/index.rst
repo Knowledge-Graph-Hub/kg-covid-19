@@ -11,7 +11,8 @@ KG-COVID-19 documentation
    :caption: Contents:
 
    getting_started
-   modules
+   kg_covid_19
+   run
 
 
 Indices and tables
