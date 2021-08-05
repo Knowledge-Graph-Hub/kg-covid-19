@@ -207,9 +207,9 @@ class ScibiteCordTransform(Transform):
                 fh=edge_handle,
                 header=self.edge_header,
                 data=[
-                    f"{curie}",
-                    f"biolink:related_to",
                     f"CORD:{paper_id}",
+                    f"biolink:mentions",
+                    f"{curie}",
                     "SIO:000255",
                     provided_by,
                     "biolink:Association"
