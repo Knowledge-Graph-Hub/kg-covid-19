@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Download the Knowledge Graph &mdash; kg-covid-19 1.0.0 documentation</title>
+  <title>Quick Start &mdash; kg-covid-19 1.0.0 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="kg_covid_19 package" href="kg_covid_19.html" />
-    <link rel="prev" title="kg-covid-19" href="modules.html" /> 
+    <link rel="prev" title="KG-COVID-19 documentation" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,30 +84,28 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">kg-covid-19</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Download the Knowledge Graph</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#knowledge-graph-hub-concept">Knowledge Graph Hub concept</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#kg-covid-19-project">KG-COVID-19 project</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#the-codebase">The codebase</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#computational-requirements">Computational requirements</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#running-the-pipeline">Running the pipeline</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#jupyter-notebook">Jupyter notebook</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#a-few-organizing-principles-used-for-data-ingest">A few organizing principles used for data ingest</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#download-the-knowledge-graph">Download the Knowledge Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#knowledge-graph-hub-concept">Knowledge Graph Hub concept</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#kg-covid-19-project">KG-COVID-19 project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-codebase">The codebase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#computational-requirements">Computational requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-pipeline">Running the pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jupyter-notebook">Jupyter notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-few-organizing-principles-used-for-data-ingest">A few organizing principles used for data ingest</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#querying-the-graph">Querying the graph</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#summary-of-the-data">Summary of the data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#querying-the-graph">Querying the graph</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#summary-of-the-data">Summary of the data</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#how-to-contribute">How to Contribute</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#contributors">Contributors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#acknowledgements">Acknowledgements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.html">kg_covid_19 package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="run.html">run module</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="#how-to-contribute">How to Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#contributors">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kg_covid_19.html">kg_covid_19 package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run.html">run module</a></li>
 </ul>
 
             
@@ -154,9 +152,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="modules.html">kg-covid-19</a> &raquo;</li>
-        
-      <li>Download the Knowledge Graph</li>
+      <li>Quick Start</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -175,7 +171,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="download-the-knowledge-graph">
+  <div class="section" id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/Knowledge-Graph-Hub/kg-covid-19
+<span class="nb">cd</span> kg-covid-19
+python3 -m venv venv <span class="o">&amp;&amp;</span> <span class="nb">source</span> venv/bin/activate <span class="c1"># optional</span>
+pip install .
+python run.py download
+python run.py transform
+python run.py merge
+</pre></div>
+</div>
+</div>
+<div class="section" id="download-the-knowledge-graph">
 <h1>Download the Knowledge Graph<a class="headerlink" href="#download-the-knowledge-graph" title="Permalink to this headline">¶</a></h1>
 <p>Prebuilt versions of the KG-COVID-19 knowledge graph build from all
 available data are available in the following serialization formats:</p>
@@ -183,7 +191,7 @@ available data are available in the following serialization formats:</p>
 <li><p><a class="reference external" href="http://kg-hub.berkeleybop.io/kg-covid-19/current/kg-covid-19.nt.gz">RDF N-Triples</a></p></li>
 <li><p><a class="reference external" href="http://kg-hub.berkeleybop.io/kg-covid-19/current/kg-covid-19.tar.gz">KGX TSV</a></p></li>
 </ul>
-<p>See <a class="reference external" href="https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md">here</a>
+<p>See <a class="reference external" href="https://github.com/biolink/kgx/blob/master/specification/kgx-format.md">here</a>
 for a description of the KGX TSV format</p>
 <p>Previous builds are available for download
 <a class="reference external" href="https://kg-hub.berkeleybop.io/kg-covid-19/">here</a>. Each build
@@ -219,10 +227,9 @@ added to edges during transformation.</p>
 </div>
 <div class="section" id="kg-covid-19-project">
 <h1>KG-COVID-19 project<a class="headerlink" href="#kg-covid-19-project" title="Permalink to this headline">¶</a></h1>
-<p>The
-<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/">KG-COVID-19</a>
+<p>The <a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/">KG-COVID-19</a>
 project is the first instantiation of such a KG Hub. Thus, KG-COVID-19
-is a framework, that follows design patterns of the KG Hub, to download
+is a framework that follows design patterns of the KG Hub to download
 and transform COVID-19/SARS-COV-2 related datasets and emit a knowledge
 graph that can then be used for machine learning or others uses, to
 produce actionable knowledge.</p>
@@ -366,7 +373,7 @@ making their data available.</p>
         <a href="kg_covid_19.html" class="btn btn-neutral float-right" title="kg_covid_19 package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="modules.html" class="btn btn-neutral float-left" title="kg-covid-19" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="KG-COVID-19 documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

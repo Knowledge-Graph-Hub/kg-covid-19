@@ -1,3 +1,16 @@
+Quick Start
+-----------
+
+.. code:: sh
+
+       git clone https://github.com/Knowledge-Graph-Hub/kg-covid-19
+       cd kg-covid-19
+       python3 -m venv venv && source venv/bin/activate # optional
+       pip install .
+       python run.py download
+       python run.py transform
+       python run.py merge
+
 Download the Knowledge Graph
 ----------------------------
 
@@ -7,7 +20,7 @@ available data are available in the following serialization formats:
 * `RDF N-Triples <http://kg-hub.berkeleybop.io/kg-covid-19/current/kg-covid-19.nt.gz>`__
 * `KGX TSV <http://kg-hub.berkeleybop.io/kg-covid-19/current/kg-covid-19.tar.gz>`__
 
-See `here <https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md>`__
+See `here <https://github.com/biolink/kgx/blob/master/specification/kgx-format.md>`__
 for a description of the KGX TSV format
 
 Previous builds are available for download
@@ -46,10 +59,9 @@ A more thorough explanation of the KG-hub concept is
 KG-COVID-19 project
 -------------------
 
-The
-`KG-COVID-19 <https://github.com/Knowledge-Graph-Hub/kg-covid-19/>`__
+The `KG-COVID-19 <https://github.com/Knowledge-Graph-Hub/kg-covid-19/>`__
 project is the first instantiation of such a KG Hub. Thus, KG-COVID-19
-is a framework, that follows design patterns of the KG Hub, to download
+is a framework that follows design patterns of the KG Hub to download
 and transform COVID-19/SARS-COV-2 related datasets and emit a knowledge
 graph that can then be used for machine learning or others uses, to
 produce actionable knowledge.
