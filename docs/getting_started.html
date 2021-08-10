@@ -101,7 +101,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#summary-of-the-data">Summary of the data</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#how-to-contribute">How to Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#how-to-contribute">How to Contribute</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#download-and-use-the-code">Download and use the code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#write-code-to-ingest-data">Write code to ingest data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#develop-jupyter-notebooks-to-show-how-to-use-kg-covid-19">Develop jupyter notebooks to show how to use kg-covid-19</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="#contributors">Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#acknowledgements">Acknowledgements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="kg_covid_19.html">kg_covid_19 package</a></li>
@@ -337,11 +342,109 @@ and Biolink association types for nodes and edges, respectively.</p>
 </div>
 <div class="section" id="how-to-contribute">
 <h1>How to Contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="download-and-use-the-code">
+<h2>Download and use the code<a class="headerlink" href="#download-and-use-the-code" title="Permalink to this headline">¶</a></h2>
+<p>Download and use the code, and any issues and questions
+<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/new/choose">here</a>.</p>
+</div>
+<div class="section" id="write-code-to-ingest-data">
+<h2>Write code to ingest data<a class="headerlink" href="#write-code-to-ingest-data" title="Permalink to this headline">¶</a></h2>
+<p>Most urgent need is for code to ingest data from new sources.</p>
+<p><strong>Find a data source to ingest:</strong></p>
+<p>An issue tracker with a list of new data sources is
+<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/labels/new%20data%20source">here</a>.</p>
+<p><strong>Look at the data file(s), and plan how you are going to write out data
+to nodes and edges:</strong></p>
+<p>You’ll need to write out a <code class="docutils literal notranslate"><span class="pre">nodes.tsv</span></code> file describing each entity you
+are ingesting, and an <code class="docutils literal notranslate"><span class="pre">edges.tsv</span></code> describing the relationships between
+entities, as described
+<a class="reference external" href="https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md">here</a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">nodes.tsv</span></code> should have at least these columns (you can add more
+columns if you like):</p>
+<p><code class="docutils literal notranslate"><span class="pre">id</span>&#160; <span class="pre">name</span>&#160;&#160;&#160; <span class="pre">category</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">id</span></code> should be a CURIE that uses one of <a class="reference external" href="https://biolink.github.io/biolink-model/#identifiers">these
+identifiers</a>.
+They are enumerated
+<a class="reference external" href="https://biolink.github.io/biolink-model/context.jsonld">here</a>. For
+genes, a Uniprot ID is preferred, if available.</p>
+<p><code class="docutils literal notranslate"><span class="pre">category</span></code> should be a <a class="reference external" href="https://biolink.github.io/biolink-model/docs/category.html">Biolink
+category</a>
+in CURIE format, for example <code class="docutils literal notranslate"><span class="pre">biolink:Gene</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">edges.tsv</span></code> should have at least these columns:</p>
+<p><code class="docutils literal notranslate"><span class="pre">subject</span> <span class="pre">edge_label</span>&#160; <span class="pre">object</span>&#160;&#160; <span class="pre">relation</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">subject</span></code> and <code class="docutils literal notranslate"><span class="pre">object</span></code> should be <code class="docutils literal notranslate"><span class="pre">id</span></code>s that are present in the
+<code class="docutils literal notranslate"><span class="pre">nodes.tsv</span></code> file (again, as CURIEs that uses one of
+<a class="reference external" href="https://biolink.github.io/biolink-model/#identifiers">these</a>).
+<code class="docutils literal notranslate"><span class="pre">edge_label</span></code> should be a CURIE for the <a class="reference external" href="https://biolink.github.io/biolink-model/docs/edge_label">biolink
+edge_label</a>
+that describes the relationship. <code class="docutils literal notranslate"><span class="pre">relation</span></code> should be a CURIE for the
+term from the <a class="reference external" href="https://www.ebi.ac.uk/ols/ontologies/ro">relation
+ontology</a>.</p>
+<p><strong>Read how to make a PR, and fork the repo:</strong></p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/wiki/How-to-help">Here</a>
-is a more detailed description, and instructions on how to help us
-with our KG-COVID-19 effort.</p></li>
+<li><p>Read
+<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/CONTRIBUTING.md">these</a>
+instructions about how to make a pull request in github. Fork the
+code and set up your development environment.</p></li>
 </ul>
+<p><strong>Add a block to ``download.yaml`` to download data file for source:</strong></p>
+<ul class="simple">
+<li><p>Add a block of yaml containing the url of the file you need to
+download for the source (and optionally a brief description) in
+<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/download.yaml">download.yaml</a>
+like so - each item will be downloaded when the <code class="docutils literal notranslate"><span class="pre">run.py</span> <span class="pre">download</span></code>
+command is executed:</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">yaml</span> <span class="pre">#</span> <span class="pre">#</span> <span class="pre">brief</span> <span class="pre">comment</span> <span class="pre">about</span> <span class="pre">this</span> <span class="pre">source,</span> <span class="pre">one</span> <span class="pre">or</span> <span class="pre">more</span> <span class="pre">blocks</span> <span class="pre">with</span> <span class="pre">a</span> <span class="pre">url:</span> <span class="pre">(and</span> <span class="pre">optionally</span> <span class="pre">a</span> <span class="pre">local_name:,</span> <span class="pre">to</span> <span class="pre">avoid</span> <span class="pre">name</span> <span class="pre">collisions)</span> <span class="pre">#</span> <span class="pre">-</span>&#160;&#160; <span class="pre">#</span> <span class="pre">first</span> <span class="pre">file</span>&#160;&#160;&#160;&#160; <span class="pre">url:</span> <span class="pre">http://curefordisease.org/some_data.txt</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">local_name:</span> <span class="pre">some_data.txt</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">-</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">#</span> <span class="pre">second</span> <span class="pre">file</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">url:</span> <span class="pre">http://curefordisease.org/some_more_data.txt</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">local_name:</span> <span class="pre">some_more_data.txt</span></code></p>
+<p><strong>Add code to ingest and transform data:</strong></p>
+<ul class="simple">
+<li><p>Add a new sub-directory in
+<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/tree/master/kg_emerging_viruses/transform_utils">kg_emerging_viruses/transform_utils</a>
+with a unique name for your source. If the data come from a
+scientific paper, consider prepending the pubmed ID to the name of
+the source (e.g. <code class="docutils literal notranslate"><span class="pre">pmid28355270_hcov229e_a549_cells</span></code>)</p></li>
+<li><p>In this sub-directory, write a class that ingests the file(s) you
+added above in the yaml, which will be in
+<code class="docutils literal notranslate"><span class="pre">data/raw/[file</span> <span class="pre">name</span> <span class="pre">without</span> <span class="pre">path]</span></code>. Your class should have a
+constructor and a <code class="docutils literal notranslate"><span class="pre">run()</span></code> function, which is called to perform the
+ingest. It should output data into <code class="docutils literal notranslate"><span class="pre">data/transformed/[source</span> <span class="pre">name]</span></code>
+for all nodes and edges, in tsv format, as described
+<a class="reference external" href="https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md">here</a>.</p></li>
+<li><p>Also add the following metadata in the comments of your script:</p>
+<ul>
+<li><p>data source</p>
+<ul>
+<li><p>files used</p></li>
+<li><p>release version that you are ingesting</p>
+<ul>
+<li><p>documentation on which fields are relevant and how they map
+to node and edge properties</p></li>
+</ul>
+</li>
+<li><p>In
+<code class="docutils literal notranslate"><span class="pre">`kg_covid_19/transform.py</span></code> &lt;<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/kg_covid_19/transform.py">https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/kg_covid_19/transform.py</a>&gt;`__,
+add a key/value pair to <code class="docutils literal notranslate"><span class="pre">DATA_SOURCES</span></code>. The key should be the
+<code class="docutils literal notranslate"><span class="pre">[source</span> <span class="pre">name]</span></code> above, and the value should be the name of
+the class above. Also add an import statement for the class.</p></li>
+<li><p>In
+<code class="docutils literal notranslate"><span class="pre">`merge.yaml</span></code> &lt;<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/merge.yaml">https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/merge.yaml</a>&gt;`__,
+add a block for your new source, something like:</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">yaml</span>&#160;&#160;&#160; <span class="pre">SOURCE_NAME:</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">type:</span> <span class="pre">tsv</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">filename:</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">-</span> <span class="pre">data/transformed/[source_name]/nodes.tsv</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">-</span> <span class="pre">data/transformed/[source_name]/edges.tsv</span></code></p>
+<p><strong>Submit your PR on github, and link the github issue for the data
+source you ingested</strong></p>
+<p>Might want to run <code class="docutils literal notranslate"><span class="pre">pylint</span></code> and <code class="docutils literal notranslate"><span class="pre">mypy</span></code> and fix any issues before
+submitting your PR.</p>
+</div>
+<div class="section" id="develop-jupyter-notebooks-to-show-how-to-use-kg-covid-19">
+<h2>Develop jupyter notebooks to show how to use kg-covid-19<a class="headerlink" href="#develop-jupyter-notebooks-to-show-how-to-use-kg-covid-19" title="Permalink to this headline">¶</a></h2>
+<p>See <cite>here &lt;https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/example-KG-COVID-19-usage.ipynb&gt;</cite> for example. Please contact <a class="reference external" href="mailto:justaddcoffee&#37;&#52;&#48;gmail&#46;com">Justin</a> or
+anyone on the development team if you’d like to help!</p>
+</div>
 </div>
 <div class="section" id="contributors">
 <h1>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h1>

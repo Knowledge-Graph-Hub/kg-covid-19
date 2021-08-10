@@ -171,9 +171,120 @@ An interactive dashboard to explore these stats is available
 How to Contribute
 -----------------
 
--  `Here <https://github.com/Knowledge-Graph-Hub/kg-covid-19/wiki/How-to-help>`__
-   is a more detailed description, and instructions on how to help us
-   with our KG-COVID-19 effort.
+Download and use the code
+~~~~~~~~~~~~~~~~~~~~~~~~
+Download and use the code, and any issues and questions
+`here <https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/new/choose>`__.
+
+Write code to ingest data
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Most urgent need is for code to ingest data from new sources.
+
+**Find a data source to ingest:**
+
+An issue tracker with a list of new data sources is
+`here <https://github.com/Knowledge-Graph-Hub/kg-covid-19/labels/new%20data%20source>`__.
+
+**Look at the data file(s), and plan how you are going to write out data
+to nodes and edges:**
+
+You’ll need to write out a ``nodes.tsv`` file describing each entity you
+are ingesting, and an ``edges.tsv`` describing the relationships between
+entities, as described
+`here <https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md>`__.
+
+``nodes.tsv`` should have at least these columns (you can add more
+columns if you like):
+
+``id  name    category``
+
+``id`` should be a CURIE that uses one of `these
+identifiers <https://biolink.github.io/biolink-model/#identifiers>`__.
+They are enumerated
+`here <https://biolink.github.io/biolink-model/context.jsonld>`__. For
+genes, a Uniprot ID is preferred, if available.
+
+``category`` should be a `Biolink
+category <https://biolink.github.io/biolink-model/docs/category.html>`__
+in CURIE format, for example ``biolink:Gene``
+
+``edges.tsv`` should have at least these columns:
+
+``subject edge_label  object   relation``
+
+``subject`` and ``object`` should be ``id``\ s that are present in the
+``nodes.tsv`` file (again, as CURIEs that uses one of
+`these <https://biolink.github.io/biolink-model/#identifiers>`__).
+``edge_label`` should be a CURIE for the `biolink
+edge_label <https://biolink.github.io/biolink-model/docs/edge_label>`__
+that describes the relationship. ``relation`` should be a CURIE for the
+term from the `relation
+ontology <https://www.ebi.ac.uk/ols/ontologies/ro>`__.
+
+**Read how to make a PR, and fork the repo:**
+
+-  Read
+   `these <https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/CONTRIBUTING.md>`__
+   instructions about how to make a pull request in github. Fork the
+   code and set up your development environment.
+
+**Add a block to ``download.yaml`` to download data file for source:**
+
+-  Add a block of yaml containing the url of the file you need to
+   download for the source (and optionally a brief description) in
+   `download.yaml <https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/download.yaml>`__
+   like so - each item will be downloaded when the ``run.py download``
+   command is executed:
+
+``yaml # # brief comment about this source, one or more blocks with a url: (and optionally a local_name:, to avoid name collisions) # -   # first file     url: http://curefordisease.org/some_data.txt       local_name: some_data.txt       -         # second file       url: http://curefordisease.org/some_more_data.txt         local_name: some_more_data.txt``
+
+**Add code to ingest and transform data:**
+
+-  Add a new sub-directory in
+   `kg_emerging_viruses/transform_utils <https://github.com/Knowledge-Graph-Hub/kg-covid-19/tree/master/kg_emerging_viruses/transform_utils>`__
+   with a unique name for your source. If the data come from a
+   scientific paper, consider prepending the pubmed ID to the name of
+   the source (e.g. ``pmid28355270_hcov229e_a549_cells``)
+-  In this sub-directory, write a class that ingests the file(s) you
+   added above in the yaml, which will be in
+   ``data/raw/[file name without path]``. Your class should have a
+   constructor and a ``run()`` function, which is called to perform the
+   ingest. It should output data into ``data/transformed/[source name]``
+   for all nodes and edges, in tsv format, as described
+   `here <https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md>`__.
+-  Also add the following metadata in the comments of your script:
+
+   -  data source
+
+      -  files used
+      -  release version that you are ingesting
+
+         -  documentation on which fields are relevant and how they map
+            to node and edge properties
+
+      -  In
+         ```kg_covid_19/transform.py`` <https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/kg_covid_19/transform.py>`__,
+         add a key/value pair to ``DATA_SOURCES``. The key should be the
+         ``[source name]`` above, and the value should be the name of
+         the class above. Also add an import statement for the class.
+      -  In
+         ```merge.yaml`` <https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/merge.yaml>`__,
+         add a block for your new source, something like:
+
+``yaml    SOURCE_NAME:          type: tsv            filename:                     - data/transformed/[source_name]/nodes.tsv                      - data/transformed/[source_name]/edges.tsv``
+
+**Submit your PR on github, and link the github issue for the data
+source you ingested**
+
+Might want to run ``pylint`` and ``mypy`` and fix any issues before
+submitting your PR.
+
+Develop jupyter notebooks to show how to use kg-covid-19
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+See `here <https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/example-KG-COVID-19-usage.ipynb>` for example. Please contact `Justin <justaddcoffee@gmail.com>`__ or
+anyone on the development team if you’d like to help!
 
 Contributors
 ------------
