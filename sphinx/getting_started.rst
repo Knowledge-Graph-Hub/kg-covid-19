@@ -237,7 +237,20 @@ ontology <https://www.ebi.ac.uk/ols/ontologies/ro>`__.
    like so - each item will be downloaded when the ``run.py download``
    command is executed:
 
-``yaml # # brief comment about this source, one or more blocks with a url: (and optionally a local_name:, to avoid name collisions) # -   # first file     url: http://curefordisease.org/some_data.txt       local_name: some_data.txt       -         # second file       url: http://curefordisease.org/some_more_data.txt         local_name: some_more_data.txt``
+.. code-block:: yaml
+
+    #
+    # brief comment about this source, one or more blocks with a url: (and optionally a local_name:, to avoid name collisions)
+    #
+    -
+      # first file
+      url: http://curefordisease.org/some_data.txt
+      local_name: some_data.txt
+    -
+      # second file
+      url: http://curefordisease.org/some_more_data.txt
+      local_name: some_more_data.txt
+
 
 **Add code to ingest and transform data:**
 
@@ -272,7 +285,14 @@ ontology <https://www.ebi.ac.uk/ols/ontologies/ro>`__.
          ```merge.yaml`` <https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/merge.yaml>`__,
          add a block for your new source, something like:
 
-``yaml    SOURCE_NAME:          type: tsv            filename:                     - data/transformed/[source_name]/nodes.tsv                      - data/transformed/[source_name]/edges.tsv``
+.. code-block:: yaml
+
+    SOURCE_NAME:
+      input:
+        format: tsv
+        filename:
+        - data/transformed/[source_name]/nodes.tsv
+        - data/transformed/[source_name]/edges.tsv\
 
 **Submit your PR on github, and link the github issue for the data
 source you ingested**
