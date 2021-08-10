@@ -395,11 +395,22 @@ download for the source (and optionally a brief description) in
 like so - each item will be downloaded when the <code class="docutils literal notranslate"><span class="pre">run.py</span> <span class="pre">download</span></code>
 command is executed:</p></li>
 </ul>
-<p><code class="docutils literal notranslate"><span class="pre">yaml</span> <span class="pre">#</span> <span class="pre">#</span> <span class="pre">brief</span> <span class="pre">comment</span> <span class="pre">about</span> <span class="pre">this</span> <span class="pre">source,</span> <span class="pre">one</span> <span class="pre">or</span> <span class="pre">more</span> <span class="pre">blocks</span> <span class="pre">with</span> <span class="pre">a</span> <span class="pre">url:</span> <span class="pre">(and</span> <span class="pre">optionally</span> <span class="pre">a</span> <span class="pre">local_name:,</span> <span class="pre">to</span> <span class="pre">avoid</span> <span class="pre">name</span> <span class="pre">collisions)</span> <span class="pre">#</span> <span class="pre">-</span>&#160;&#160; <span class="pre">#</span> <span class="pre">first</span> <span class="pre">file</span>&#160;&#160;&#160;&#160; <span class="pre">url:</span> <span class="pre">http://curefordisease.org/some_data.txt</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">local_name:</span> <span class="pre">some_data.txt</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">-</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">#</span> <span class="pre">second</span> <span class="pre">file</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">url:</span> <span class="pre">http://curefordisease.org/some_more_data.txt</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">local_name:</span> <span class="pre">some_more_data.txt</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1"># brief comment about this source, one or more blocks with a url: (and optionally a local_name:, to avoid name collisions)</span>
+<span class="c1">#</span>
+<span class="p p-Indicator">-</span>
+  <span class="c1"># first file</span>
+  <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://curefordisease.org/some_data.txt</span>
+  <span class="nt">local_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">some_data.txt</span>
+<span class="p p-Indicator">-</span>
+  <span class="c1"># second file</span>
+  <span class="nt">url</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">http://curefordisease.org/some_more_data.txt</span>
+  <span class="nt">local_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">some_more_data.txt</span>
+</pre></div>
+</div>
 <p><strong>Add code to ingest and transform data:</strong></p>
 <ul class="simple">
-<li><p>Add a new sub-directory in
-<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/tree/master/kg_emerging_viruses/transform_utils">kg_emerging_viruses/transform_utils</a>
+<li><p>Add a new sub-directory in <a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/tree/master/kg_emerging_viruses/transform_utils">kg_emerging_viruses/transform_utils</a>
 with a unique name for your source. If the data come from a
 scientific paper, consider prepending the pubmed ID to the name of
 the source (e.g. <code class="docutils literal notranslate"><span class="pre">pmid28355270_hcov229e_a549_cells</span></code>)</p></li>
@@ -408,33 +419,28 @@ added above in the yaml, which will be in
 <code class="docutils literal notranslate"><span class="pre">data/raw/[file</span> <span class="pre">name</span> <span class="pre">without</span> <span class="pre">path]</span></code>. Your class should have a
 constructor and a <code class="docutils literal notranslate"><span class="pre">run()</span></code> function, which is called to perform the
 ingest. It should output data into <code class="docutils literal notranslate"><span class="pre">data/transformed/[source</span> <span class="pre">name]</span></code>
-for all nodes and edges, in tsv format, as described
-<a class="reference external" href="https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md">here</a>.</p></li>
-<li><p>Also add the following metadata in the comments of your script:</p>
-<ul>
-<li><p>data source</p>
-<ul>
+for all nodes and edges, in tsv format, as described <a class="reference external" href="https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md">here</a>.</p></li>
+<li><dl class="simple">
+<dt>Also add the following metadata in the comments of your script:</dt><dd><ul>
+<li><p>data source</p></li>
 <li><p>files used</p></li>
-<li><p>release version that you are ingesting</p>
-<ul>
-<li><p>documentation on which fields are relevant and how they map
-to node and edge properties</p></li>
+<li><p>release version that you are ingesting</p></li>
+<li><p>documentation on which fields are relevant and how they map to node and edge properties</p></li>
+<li><p>In <a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/kg_covid_19/transform.py">kg_covid_19/transform.py</a>, add a key/value pair to <code class="docutils literal notranslate"><span class="pre">DATA_SOURCES</span></code>. The key should be the <code class="docutils literal notranslate"><span class="pre">[source</span> <span class="pre">name]</span></code> above, and the value should be the name of the class above. Also add an import statement for the class.</p></li>
+<li><p>In <a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/merge.yaml">merge.yaml</a>, add a block for your new source, something like:</p></li>
 </ul>
-</li>
-<li><p>In
-<code class="docutils literal notranslate"><span class="pre">`kg_covid_19/transform.py</span></code> &lt;<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/kg_covid_19/transform.py">https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/kg_covid_19/transform.py</a>&gt;`__,
-add a key/value pair to <code class="docutils literal notranslate"><span class="pre">DATA_SOURCES</span></code>. The key should be the
-<code class="docutils literal notranslate"><span class="pre">[source</span> <span class="pre">name]</span></code> above, and the value should be the name of
-the class above. Also add an import statement for the class.</p></li>
-<li><p>In
-<code class="docutils literal notranslate"><span class="pre">`merge.yaml</span></code> &lt;<a class="reference external" href="https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/merge.yaml">https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/merge.yaml</a>&gt;`__,
-add a block for your new source, something like:</p></li>
-</ul>
+</dd>
+</dl>
 </li>
 </ul>
-</li>
-</ul>
-<p><code class="docutils literal notranslate"><span class="pre">yaml</span>&#160;&#160;&#160; <span class="pre">SOURCE_NAME:</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">type:</span> <span class="pre">tsv</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">filename:</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">-</span> <span class="pre">data/transformed/[source_name]/nodes.tsv</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">-</span> <span class="pre">data/transformed/[source_name]/edges.tsv</span></code></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">SOURCE_NAME</span><span class="p">:</span>
+  <span class="nt">input</span><span class="p">:</span>
+    <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tsv</span>
+    <span class="nt">filename</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">data/transformed/[source_name]/nodes.tsv</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">data/transformed/[source_name]/edges.tsv\</span>
+</pre></div>
+</div>
 <p><strong>Submit your PR on github, and link the github issue for the data
 source you ingested</strong></p>
 <p>Might want to run <code class="docutils literal notranslate"><span class="pre">pylint</span></code> and <code class="docutils literal notranslate"><span class="pre">mypy</span></code> and fix any issues before

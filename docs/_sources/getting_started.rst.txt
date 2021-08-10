@@ -237,42 +237,51 @@ ontology <https://www.ebi.ac.uk/ols/ontologies/ro>`__.
    like so - each item will be downloaded when the ``run.py download``
    command is executed:
 
-``yaml # # brief comment about this source, one or more blocks with a url: (and optionally a local_name:, to avoid name collisions) # -   # first file     url: http://curefordisease.org/some_data.txt       local_name: some_data.txt       -         # second file       url: http://curefordisease.org/some_more_data.txt         local_name: some_more_data.txt``
+.. code-block:: yaml
+
+    #
+    # brief comment about this source, one or more blocks with a url: (and optionally a local_name:, to avoid name collisions)
+    #
+    -
+      # first file
+      url: http://curefordisease.org/some_data.txt
+      local_name: some_data.txt
+    -
+      # second file
+      url: http://curefordisease.org/some_more_data.txt
+      local_name: some_more_data.txt
+
 
 **Add code to ingest and transform data:**
 
--  Add a new sub-directory in
-   `kg_emerging_viruses/transform_utils <https://github.com/Knowledge-Graph-Hub/kg-covid-19/tree/master/kg_emerging_viruses/transform_utils>`__
+*  Add a new sub-directory in `kg_emerging_viruses/transform_utils <https://github.com/Knowledge-Graph-Hub/kg-covid-19/tree/master/kg_emerging_viruses/transform_utils>`__
    with a unique name for your source. If the data come from a
    scientific paper, consider prepending the pubmed ID to the name of
    the source (e.g. ``pmid28355270_hcov229e_a549_cells``)
--  In this sub-directory, write a class that ingests the file(s) you
+
+*  In this sub-directory, write a class that ingests the file(s) you
    added above in the yaml, which will be in
    ``data/raw/[file name without path]``. Your class should have a
    constructor and a ``run()`` function, which is called to perform the
    ingest. It should output data into ``data/transformed/[source name]``
-   for all nodes and edges, in tsv format, as described
-   `here <https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md>`__.
--  Also add the following metadata in the comments of your script:
+   for all nodes and edges, in tsv format, as described `here <https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md>`__.
 
-   -  data source
+*  Also add the following metadata in the comments of your script:
+    * data source
+    * files used
+    * release version that you are ingesting
+    * documentation on which fields are relevant and how they map to node and edge properties
+    * In `kg_covid_19/transform.py <https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/kg_covid_19/transform.py>`__, add a key/value pair to ``DATA_SOURCES``. The key should be the ``[source name]`` above, and the value should be the name of the class above. Also add an import statement for the class.
+    * In `merge.yaml <https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/merge.yaml>`__, add a block for your new source, something like:
 
-      -  files used
-      -  release version that you are ingesting
+.. code-block:: yaml
 
-         -  documentation on which fields are relevant and how they map
-            to node and edge properties
-
-      -  In
-         ```kg_covid_19/transform.py`` <https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/kg_covid_19/transform.py>`__,
-         add a key/value pair to ``DATA_SOURCES``. The key should be the
-         ``[source name]`` above, and the value should be the name of
-         the class above. Also add an import statement for the class.
-      -  In
-         ```merge.yaml`` <https://github.com/Knowledge-Graph-Hub/kg-covid-19/blob/master/merge.yaml>`__,
-         add a block for your new source, something like:
-
-``yaml    SOURCE_NAME:          type: tsv            filename:                     - data/transformed/[source_name]/nodes.tsv                      - data/transformed/[source_name]/edges.tsv``
+    SOURCE_NAME:
+      input:
+        format: tsv
+        filename:
+        - data/transformed/[source_name]/nodes.tsv
+        - data/transformed/[source_name]/edges.tsv\
 
 **Submit your PR on github, and link the github issue for the data
 source you ingested**
