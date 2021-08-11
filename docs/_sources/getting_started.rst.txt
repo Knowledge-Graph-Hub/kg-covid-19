@@ -150,12 +150,9 @@ Querying the graph
 
 A SPARQL endpoint for the merged knowledge graph is available
 `here <http://kg-hub-rdf.berkeleybop.io/blazegraph/#query>`__. For a
-better experience, consider using https://yasgui.triply.cc/ for your
-querying needs (for yasgui, set
-http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql as your SPARQL
-endpoint). If you are not sure where to start, here are some example
-SPARQL queries:
-https://github.com/Knowledge-Graph-Hub/kg-covid-19/tree/master/queries/sparql
+better experience, consider using `yasgui <https://yasgui.triply.cc/>`__ for your querying needs (for yasgui, set http://kg-hub-rdf.berkeleybop.io/blazegraph/sparql as your SPARQL endpoint).
+
+If you are not sure where to start, `here <http://grlc.io/api-git/Knowledge-Graph-Hub/kg-covid-19/subdir/queries>`__ are some example SPARQL queries.
 
 Summary of the data
 ~~~~~~~~~~~~~~~~~~~
