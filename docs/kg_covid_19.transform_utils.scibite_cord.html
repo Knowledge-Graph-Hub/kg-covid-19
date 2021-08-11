@@ -1,0 +1,590 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>kg_covid_19.transform_utils.scibite_cord package &mdash; kg-covid-19 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="kg_covid_19.transform_utils.string_ppi package" href="kg_covid_19.transform_utils.string_ppi.html" />
+    <link rel="prev" title="kg_covid_19.transform_utils.sars_cov_2_gene_annot package" href="kg_covid_19.transform_utils.sars_cov_2_gene_annot.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> kg-covid-19
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#download-the-knowledge-graph">Download the Knowledge Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#knowledge-graph-hub-concept">Knowledge Graph Hub concept</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#kg-covid-19-project">KG-COVID-19 project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#querying-the-graph">Querying the graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#how-to-contribute">How to Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#write-code-to-ingest-data">Write code to ingest data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#develop-jupyter-notebooks-to-show-how-to-use-kg-covid-19">Develop jupyter notebooks to show how to use kg-covid-19</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#contributors">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="kg_covid_19.html">kg_covid_19 package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="kg_covid_19.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="kg_covid_19.transform_utils.html">kg_covid_19.transform_utils package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="kg_covid_19.transform_utils.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.html#module-kg_covid_19.transform_utils.transform">kg_covid_19.transform_utils.transform module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kg_covid_19.transform_utils.html#module-kg_covid_19.transform_utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="kg_covid_19.utils.html">kg_covid_19.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.html#module-kg_covid_19.download">kg_covid_19.download module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.html#module-kg_covid_19.make_holdouts">kg_covid_19.make_holdouts module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.html#module-kg_covid_19.query">kg_covid_19.query module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.html#module-kg_covid_19.transform">kg_covid_19.transform module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kg_covid_19.html#module-kg_covid_19">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="run.html">run module</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">kg-covid-19</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="kg_covid_19.html">kg_covid_19 package</a> &raquo;</li>
+        
+          <li><a href="kg_covid_19.transform_utils.html">kg_covid_19.transform_utils package</a> &raquo;</li>
+        
+      <li>kg_covid_19.transform_utils.scibite_cord package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/kg_covid_19.transform_utils.scibite_cord.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kg-covid-19-transform-utils-scibite-cord-package">
+<h1>kg_covid_19.transform_utils.scibite_cord package<a class="headerlink" href="#kg-covid-19-transform-utils-scibite-cord-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-kg_covid_19.transform_utils.scibite_cord.scibite_cord">
+<span id="kg-covid-19-transform-utils-scibite-cord-scibite-cord-module"></span><h2>kg_covid_19.transform_utils.scibite_cord.scibite_cord module<a class="headerlink" href="#module-kg_covid_19.transform_utils.scibite_cord.scibite_cord" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform">
+<em class="property">class </em><code class="sig-prename descclassname">kg_covid_19.transform_utils.scibite_cord.scibite_cord.</code><code class="sig-name descname">ScibiteCordTransform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_dir</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="kg_covid_19.transform_utils.html#kg_covid_19.transform_utils.transform.Transform" title="kg_covid_19.transform_utils.transform.Transform"><code class="xref py py-class docutils literal notranslate"><span class="pre">kg_covid_19.transform_utils.transform.Transform</span></code></a></p>
+<p>ScibiteCordTransform parses the SciBite annotations on CORD-19 dataset
+to extract concept to publication annotations and co-occurrences.</p>
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.contract_uri">
+<code class="sig-name descname">contract_uri</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">iri</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.contract_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contract a given IRI.</p>
+<p>Contract a given IRI, with special parsing and transformations
+depending on the nature of the IRI.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>iri: IRI as string</p>
+</dd>
+<dt>Returns:</dt><dd><p>str.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.extract_termite_hits">
+<code class="sig-name descname">extract_termite_hits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span></em><span class="sig-paren">)</span> &#x2192; Set<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.extract_termite_hits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse termite hits</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node_handle: File handle for nodes.csv.
+edge_handle: File handle for edges.csv.
+data: A dictionary.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.get_identifier_by_prefix">
+<em class="property">static </em><code class="sig-name descname">get_identifier_by_prefix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">record</span></em>, <em class="sig-param"><span class="n">prefix</span></em><span class="sig-paren">)</span><a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.get_identifier_by_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get identifier from a list based on prefix.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>record: record from NCBI gene_info.
+prefix: prefix of the identifier to extract.</p>
+</dd>
+<dt>Returns:</dt><dd><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.is_curie">
+<em class="property">static </em><code class="sig-name descname">is_curie</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.is_curie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given string is a CURIE.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>s: string</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.is_iri">
+<em class="property">static </em><code class="sig-name descname">is_iri</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.is_iri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check ig a given string is an IRI.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>s: string</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.load_country_code">
+<code class="sig-name descname">load_country_code</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.load_country_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.load_gene_info">
+<code class="sig-name descname">load_gene_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">species_id</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.load_gene_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load mappings from NCBI gene_info (gene_info.gz).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>input_dir: A string pointing to the directory to import data from.
+output_dir: A string pointing to the directory to output data to.
+species_id: A list with the species IDs.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.parse_annotation_doc">
+<code class="sig-name descname">parse_annotation_doc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_handle</span></em>, <em class="sig-param"><span class="n">edge_handle</span></em>, <em class="sig-param"><span class="n">doc</span><span class="p">:</span> <span class="n">Dict</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.parse_annotation_doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a JSON document corresponding to a publication.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node_handle: File handle for nodes.csv.
+edge_handle: File handle for edges.csv.
+doc: JSON document as dict.
+subset: The subset name for this dataset.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.parse_annotations">
+<code class="sig-name descname">parse_annotations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_handle</span><span class="p">:</span> <span class="n">IO</span></em>, <em class="sig-param"><span class="n">edge_handle</span><span class="p">:</span> <span class="n">IO</span></em>, <em class="sig-param"><span class="n">data_file1</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">data_file2</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">data_file3</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.parse_annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse annotations from CORD-19_1_5.zip.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node_handle: File handle for nodes.csv.
+edge_handle: File handle for edges.csv.
+data_file1: Path to pdf_json_part_1.zip
+data_file2: Path to pdf_json_part_2.zip
+data_file2: Path to pmc_json.zip</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.parse_cooccurrence">
+<code class="sig-name descname">parse_cooccurrence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_handle</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">edge_handle</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">data_file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.parse_cooccurrence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse term co-occurrences from cv19_scc.zip.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node_handle: File handle for nodes.csv.
+edge_handle: File handle for edges.csv.
+data_file: Path to cv19_scc.zip.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.parse_cooccurrence_record">
+<code class="sig-name descname">parse_cooccurrence_record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_handle</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">edge_handle</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">record</span><span class="p">:</span> <span class="n">Dict</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.parse_cooccurrence_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse term-cooccurrences.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node_handle: File handle for nodes.csv.
+edge_handle: File handle for edges.csv.
+record: A dictionary corresponding to a row from a table.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pdf_zipfile_1</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pdf_zipfile_2</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pmc_zipfile</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">co_occur_zipfile</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.scibite_cord.ScibiteCordTransform.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method is called and performs needed transformations to process
+annotations from SciBite CORD-19</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>pdf_zipfile_1: PDF zip file part 1 [pdf_json_part_1.zip]
+pdf_zipfile_2: PDF zip file part 2 [pdf_json_part_1.zip]
+pmc_zipfile: pmc zipfile [pmc_json.zip]
+co_occur_zipfile: coocurrence data zipfile [cv19_scc_1_2.zip]</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-kg_covid_19.transform_utils.scibite_cord">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-kg_covid_19.transform_utils.scibite_cord" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform">
+<em class="property">class </em><code class="sig-prename descclassname">kg_covid_19.transform_utils.scibite_cord.</code><code class="sig-name descname">ScibiteCordTransform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_dir</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="kg_covid_19.transform_utils.html#kg_covid_19.transform_utils.transform.Transform" title="kg_covid_19.transform_utils.transform.Transform"><code class="xref py py-class docutils literal notranslate"><span class="pre">kg_covid_19.transform_utils.transform.Transform</span></code></a></p>
+<p>ScibiteCordTransform parses the SciBite annotations on CORD-19 dataset
+to extract concept to publication annotations and co-occurrences.</p>
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.contract_uri">
+<code class="sig-name descname">contract_uri</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">iri</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.contract_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contract a given IRI.</p>
+<p>Contract a given IRI, with special parsing and transformations
+depending on the nature of the IRI.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>iri: IRI as string</p>
+</dd>
+<dt>Returns:</dt><dd><p>str.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.extract_termite_hits">
+<code class="sig-name descname">extract_termite_hits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span></em><span class="sig-paren">)</span> &#x2192; Set<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.extract_termite_hits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse termite hits</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node_handle: File handle for nodes.csv.
+edge_handle: File handle for edges.csv.
+data: A dictionary.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.get_identifier_by_prefix">
+<em class="property">static </em><code class="sig-name descname">get_identifier_by_prefix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">record</span></em>, <em class="sig-param"><span class="n">prefix</span></em><span class="sig-paren">)</span><a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.get_identifier_by_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get identifier from a list based on prefix.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>record: record from NCBI gene_info.
+prefix: prefix of the identifier to extract.</p>
+</dd>
+<dt>Returns:</dt><dd><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.is_curie">
+<em class="property">static </em><code class="sig-name descname">is_curie</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.is_curie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a given string is a CURIE.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>s: string</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.is_iri">
+<em class="property">static </em><code class="sig-name descname">is_iri</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.is_iri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check ig a given string is an IRI.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>s: string</p>
+</dd>
+<dt>Returns:</dt><dd><p>bool.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.load_country_code">
+<code class="sig-name descname">load_country_code</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.load_country_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.load_gene_info">
+<code class="sig-name descname">load_gene_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">output_dir</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">species_id</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.load_gene_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load mappings from NCBI gene_info (gene_info.gz).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>input_dir: A string pointing to the directory to import data from.
+output_dir: A string pointing to the directory to output data to.
+species_id: A list with the species IDs.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.parse_annotation_doc">
+<code class="sig-name descname">parse_annotation_doc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_handle</span></em>, <em class="sig-param"><span class="n">edge_handle</span></em>, <em class="sig-param"><span class="n">doc</span><span class="p">:</span> <span class="n">Dict</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.parse_annotation_doc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a JSON document corresponding to a publication.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node_handle: File handle for nodes.csv.
+edge_handle: File handle for edges.csv.
+doc: JSON document as dict.
+subset: The subset name for this dataset.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.parse_annotations">
+<code class="sig-name descname">parse_annotations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_handle</span><span class="p">:</span> <span class="n">IO</span></em>, <em class="sig-param"><span class="n">edge_handle</span><span class="p">:</span> <span class="n">IO</span></em>, <em class="sig-param"><span class="n">data_file1</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">data_file2</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">data_file3</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.parse_annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse annotations from CORD-19_1_5.zip.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node_handle: File handle for nodes.csv.
+edge_handle: File handle for edges.csv.
+data_file1: Path to pdf_json_part_1.zip
+data_file2: Path to pdf_json_part_2.zip
+data_file2: Path to pmc_json.zip</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.parse_cooccurrence">
+<code class="sig-name descname">parse_cooccurrence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_handle</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">edge_handle</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">data_file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.parse_cooccurrence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse term co-occurrences from cv19_scc.zip.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node_handle: File handle for nodes.csv.
+edge_handle: File handle for edges.csv.
+data_file: Path to cv19_scc.zip.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.parse_cooccurrence_record">
+<code class="sig-name descname">parse_cooccurrence_record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node_handle</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">edge_handle</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">record</span><span class="p">:</span> <span class="n">Dict</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.parse_cooccurrence_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse term-cooccurrences.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>node_handle: File handle for nodes.csv.
+edge_handle: File handle for edges.csv.
+record: A dictionary corresponding to a row from a table.</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pdf_zipfile_1</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pdf_zipfile_2</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pmc_zipfile</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">co_occur_zipfile</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#kg_covid_19.transform_utils.scibite_cord.ScibiteCordTransform.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method is called and performs needed transformations to process
+annotations from SciBite CORD-19</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>pdf_zipfile_1: PDF zip file part 1 [pdf_json_part_1.zip]
+pdf_zipfile_2: PDF zip file part 2 [pdf_json_part_1.zip]
+pmc_zipfile: pmc zipfile [pmc_json.zip]
+co_occur_zipfile: coocurrence data zipfile [cv19_scc_1_2.zip]</p>
+</dd>
+<dt>Returns:</dt><dd><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kg_covid_19.transform_utils.string_ppi.html" class="btn btn-neutral float-right" title="kg_covid_19.transform_utils.string_ppi package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="kg_covid_19.transform_utils.sars_cov_2_gene_annot.html" class="btn btn-neutral float-left" title="kg_covid_19.transform_utils.sars_cov_2_gene_annot package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Justin Reese
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

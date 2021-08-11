@@ -6,7 +6,7 @@ KG hub to produce a knowledge graph for COVID-19 and SARS-COV-2
 
 Documentation
 ----------------------------------------------
-See the `repository's wiki <https://github.com/kg-emerging-viruses/kg-emerging-viruses/wiki>`_.
+See `here <https://knowledge-graph-hub.github.io/kg-covid-19/>`_.
 
 Download the Knowledge Graph
 ----------------------------------------------

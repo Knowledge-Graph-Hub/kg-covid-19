@@ -80,7 +80,10 @@ setup(
         'bmt',
         'SPARQLWrapper',
         'ensmallen_graph==0.4.3',
-        'elasticsearch'
+        'elasticsearch',
+        'sphinx',
+        'sphinx_rtd_theme',
+        'recommonmark',
     ],
     extras_require=extras,
 )

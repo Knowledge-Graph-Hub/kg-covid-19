@@ -1,0 +1,1526 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tests package &mdash; kg-covid-19 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> kg-covid-19
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#download-the-knowledge-graph">Download the Knowledge Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#knowledge-graph-hub-concept">Knowledge Graph Hub concept</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#kg-covid-19-project">KG-COVID-19 project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#querying-the-graph">Querying the graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#how-to-contribute">How to Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#write-code-to-ingest-data">Write code to ingest data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#develop-jupyter-notebooks-to-show-how-to-use-kg-covid-19">Develop jupyter notebooks to show how to use kg-covid-19</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#contributors">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html#acknowledgements">Acknowledgements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kg_covid_19.html">kg_covid_19 package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run.html">run module</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">kg-covid-19</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>tests package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/tests.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tests-package">
+<h1>tests package<a class="headerlink" href="#tests-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-tests.test_chembl">
+<span id="tests-test-chembl-module"></span><h2>tests.test_chembl module<a class="headerlink" href="#module-tests.test_chembl" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_chembl.TestChembl">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_chembl.</code><code class="sig-name descname">TestChembl</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_chembl.TestChembl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests the ChEMBL transform</p>
+<dl class="py method">
+<dt id="tests.test_chembl.TestChembl.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_chembl.TestChembl.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_chembl.TestChembl.setUpClass">
+<em class="property">classmethod </em><code class="sig-name descname">setUpClass</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_chembl.TestChembl.setUpClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up class fixture before running tests in the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_chembl.TestChembl.test_parse_chembl_activity">
+<code class="sig-name descname">test_parse_chembl_activity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_chembl.TestChembl.test_parse_chembl_activity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_chembl.TestChembl.test_run">
+<code class="sig-name descname">test_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_chembl.TestChembl.test_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_chembl.TestChembl.test_source_name">
+<code class="sig-name descname">test_source_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_chembl.TestChembl.test_source_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_download">
+<span id="tests-test-download-module"></span><h2>tests.test_download module<a class="headerlink" href="#module-tests.test_download" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_download.TestDownload">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_download.</code><code class="sig-name descname">TestDownload</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_download.TestDownload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests kg_emerging_viruses.download</p>
+<dl class="py method">
+<dt id="tests.test_download.TestDownload.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_download.TestDownload.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_download.TestDownload.test_api_download">
+<code class="sig-name descname">test_api_download</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_download.TestDownload.test_api_download" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_download_from_yaml">
+<span id="tests-test-download-from-yaml-module"></span><h2>tests.test_download_from_yaml module<a class="headerlink" href="#module-tests.test_download_from_yaml" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_download_from_yaml.TestDownloadFromYaml">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_download_from_yaml.</code><code class="sig-name descname">TestDownloadFromYaml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_download_from_yaml.TestDownloadFromYaml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests download_yaml()</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_drug_central">
+<span id="tests-test-drug-central-module"></span><h2>tests.test_drug_central module<a class="headerlink" href="#module-tests.test_drug_central" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_drug_central.TestDrugCentral">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_drug_central.</code><code class="sig-name descname">TestDrugCentral</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_edges_file">
+<code class="sig-name descname">test_edges_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_edges_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_nodes_are_not_repeated">
+<code class="sig-name descname">test_nodes_are_not_repeated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_nodes_are_not_repeated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_nodes_file">
+<code class="sig-name descname">test_nodes_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_nodes_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line">
+<code class="sig-name descname">test_parse_drug_central_line</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_00_STRUCT_ID">
+<code class="sig-name descname">test_parse_drug_central_line_00_STRUCT_ID</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_00_STRUCT_ID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_01_TARGET_NAME">
+<code class="sig-name descname">test_parse_drug_central_line_01_TARGET_NAME</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_01_TARGET_NAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_02_TARGET_CLASS">
+<code class="sig-name descname">test_parse_drug_central_line_02_TARGET_CLASS</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_02_TARGET_CLASS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_03_ACCESSION">
+<code class="sig-name descname">test_parse_drug_central_line_03_ACCESSION</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_03_ACCESSION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_04_GENE">
+<code class="sig-name descname">test_parse_drug_central_line_04_GENE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_04_GENE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_05_SWISSPROT">
+<code class="sig-name descname">test_parse_drug_central_line_05_SWISSPROT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_05_SWISSPROT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_06_ACT_VALUE">
+<code class="sig-name descname">test_parse_drug_central_line_06_ACT_VALUE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_06_ACT_VALUE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_07_ACT_UNIT">
+<code class="sig-name descname">test_parse_drug_central_line_07_ACT_UNIT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_07_ACT_UNIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_08_ACT_TYPE">
+<code class="sig-name descname">test_parse_drug_central_line_08_ACT_TYPE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_08_ACT_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_09_ACT_COMMENT">
+<code class="sig-name descname">test_parse_drug_central_line_09_ACT_COMMENT</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_09_ACT_COMMENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_10_ACT_SOURCE">
+<code class="sig-name descname">test_parse_drug_central_line_10_ACT_SOURCE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_10_ACT_SOURCE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_11_RELATION">
+<code class="sig-name descname">test_parse_drug_central_line_11_RELATION</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_11_RELATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_12_MOA">
+<code class="sig-name descname">test_parse_drug_central_line_12_MOA</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_12_MOA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_13_MOA_SOURCE">
+<code class="sig-name descname">test_parse_drug_central_line_13_MOA_SOURCE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_13_MOA_SOURCE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_14_ACT_SOURCE_URL">
+<code class="sig-name descname">test_parse_drug_central_line_14_ACT_SOURCE_URL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_14_ACT_SOURCE_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_15_MOA_SOURCE_URL">
+<code class="sig-name descname">test_parse_drug_central_line_15_MOA_SOURCE_URL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_15_MOA_SOURCE_URL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_16_ACTION_TYPE">
+<code class="sig-name descname">test_parse_drug_central_line_16_ACTION_TYPE</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_16_ACTION_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_17_TDL">
+<code class="sig-name descname">test_parse_drug_central_line_17_TDL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_17_TDL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_18_ORGANISM">
+<code class="sig-name descname">test_parse_drug_central_line_18_ORGANISM</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_parse_drug_central_line_18_ORGANISM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_drug_central.TestDrugCentral.test_run">
+<code class="sig-name descname">test_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_drug_central.TestDrugCentral.test_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_gocams">
+<span id="tests-test-gocams-module"></span><h2>tests.test_gocams module<a class="headerlink" href="#module-tests.test_gocams" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_gocams.TestGOCams">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_gocams.</code><code class="sig-name descname">TestGOCams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_gocams.TestGOCams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="py method">
+<dt id="tests.test_gocams.TestGOCams.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_gocams.TestGOCams.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_gocams.TestGOCams.test_run">
+<code class="sig-name descname">test_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_gocams.TestGOCams.test_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_gocams.TestGOCams.test_run_exists">
+<code class="sig-name descname">test_run_exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_gocams.TestGOCams.test_run_exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_gpi_file">
+<span id="tests-test-gpi-file-module"></span><h2>tests.test_gpi_file module<a class="headerlink" href="#module-tests.test_gpi_file" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_gpi_file.TestGpiFile">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_gpi_file.</code><code class="sig-name descname">TestGpiFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_gpi_file.TestGpiFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="py method">
+<dt id="tests.test_gpi_file.TestGpiFile.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_gpi_file.TestGpiFile.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_gpi_file.TestGpiFile.test_gpi_file_exists">
+<code class="sig-name descname">test_gpi_file_exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_gpi_file.TestGpiFile.test_gpi_file_exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_gpi_file.TestGpiFile.test_gpi_parsing">
+<code class="sig-name descname">test_gpi_parsing</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_gpi_file.TestGpiFile.test_gpi_parsing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_holdouts">
+<span id="tests-test-holdouts-module"></span><h2>tests.test_holdouts module<a class="headerlink" href="#module-tests.test_holdouts" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_holdouts.TestEdges">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_holdouts.</code><code class="sig-name descname">TestEdges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_holdouts.TestEdges.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.setUpClass">
+<em class="property">classmethod </em><code class="sig-name descname">setUpClass</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_holdouts.TestEdges.setUpClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up class fixture before running tests in the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_df_to_tsv">
+<code class="sig-name descname">test_df_to_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_df_to_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files">
+<code class="sig-name descname">test_make_edges_check_edge_output_files</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_0_pos_train_edges_tsv">
+<code class="sig-name descname">test_make_edges_check_edge_output_files_0_pos_train_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_0_pos_train_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_1_pos_test_edges_tsv">
+<code class="sig-name descname">test_make_edges_check_edge_output_files_1_pos_test_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_1_pos_test_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_2_pos_test_edges_tsv">
+<code class="sig-name descname">test_make_edges_check_edge_output_files_2_pos_test_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_2_pos_test_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_3_pos_valid_edges_tsv">
+<code class="sig-name descname">test_make_edges_check_edge_output_files_3_pos_valid_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_3_pos_valid_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_4_pos_valid_edges_tsv">
+<code class="sig-name descname">test_make_edges_check_edge_output_files_4_pos_valid_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_4_pos_valid_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_5_neg_train_edges_tsv">
+<code class="sig-name descname">test_make_edges_check_edge_output_files_5_neg_train_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_5_neg_train_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_6_neg_test_edges_tsv">
+<code class="sig-name descname">test_make_edges_check_edge_output_files_6_neg_test_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_6_neg_test_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_7_neg_test_edges_tsv">
+<code class="sig-name descname">test_make_edges_check_edge_output_files_7_neg_test_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_7_neg_test_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_8_neg_valid_edges_tsv">
+<code class="sig-name descname">test_make_edges_check_edge_output_files_8_neg_valid_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_8_neg_valid_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_9_neg_valid_edges_tsv">
+<code class="sig-name descname">test_make_edges_check_edge_output_files_9_neg_valid_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_edge_output_files_9_neg_valid_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_check_node_output_file">
+<code class="sig-name descname">test_make_edges_check_node_output_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_check_node_output_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_exists">
+<code class="sig-name descname">test_make_edges_exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_pos_train_test_valid_edges_distinct">
+<code class="sig-name descname">test_make_edges_pos_train_test_valid_edges_distinct</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_pos_train_test_valid_edges_distinct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_pos_train_test_valid_edges_distinct_0_pos_train_edges_tsv">
+<code class="sig-name descname">test_make_edges_pos_train_test_valid_edges_distinct_0_pos_train_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_pos_train_test_valid_edges_distinct_0_pos_train_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_edges_pos_train_test_valid_edges_distinct_1_neg_train_edges_tsv">
+<code class="sig-name descname">test_make_edges_pos_train_test_valid_edges_distinct_1_neg_train_edges_tsv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_edges_pos_train_test_valid_edges_distinct_1_neg_train_edges_tsv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_negative_edges_check_column_names">
+<code class="sig-name descname">test_make_negative_edges_check_column_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_negative_edges_check_column_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_negative_edges_check_edge_label_column">
+<code class="sig-name descname">test_make_negative_edges_check_edge_label_column</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_negative_edges_check_edge_label_column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_negative_edges_check_instance_type">
+<code class="sig-name descname">test_make_negative_edges_check_instance_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_negative_edges_check_instance_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_negative_edges_check_neg_nodes">
+<code class="sig-name descname">test_make_negative_edges_check_neg_nodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_negative_edges_check_neg_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_negative_edges_check_num_edges_returned">
+<code class="sig-name descname">test_make_negative_edges_check_num_edges_returned</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_negative_edges_check_num_edges_returned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_negative_edges_check_relation_column">
+<code class="sig-name descname">test_make_negative_edges_check_relation_column</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_negative_edges_check_relation_column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_negative_edges_ensure_neg_edges_are_actually_negative">
+<code class="sig-name descname">test_make_negative_edges_ensure_neg_edges_are_actually_negative</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_negative_edges_ensure_neg_edges_are_actually_negative" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_negative_edges_no_reflexive_edges">
+<code class="sig-name descname">test_make_negative_edges_no_reflexive_edges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_negative_edges_no_reflexive_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_negative_edges_test_repeated_edges">
+<code class="sig-name descname">test_make_negative_edges_test_repeated_edges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_negative_edges_test_repeated_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positive_edges_check_nodes">
+<code class="sig-name descname">test_make_positive_edges_check_nodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positive_edges_check_nodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positive_edges_check_num_test_edges_returned">
+<code class="sig-name descname">test_make_positive_edges_check_num_test_edges_returned</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positive_edges_check_num_test_edges_returned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positive_edges_check_num_train_edges_returned">
+<code class="sig-name descname">test_make_positive_edges_check_num_train_edges_returned</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positive_edges_check_num_train_edges_returned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positive_edges_check_test_edge_label_column">
+<code class="sig-name descname">test_make_positive_edges_check_test_edge_label_column</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positive_edges_check_test_edge_label_column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positive_edges_check_test_edge_relation_column">
+<code class="sig-name descname">test_make_positive_edges_check_test_edge_relation_column</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positive_edges_check_test_edge_relation_column" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positive_edges_check_test_edges_column_names">
+<code class="sig-name descname">test_make_positive_edges_check_test_edges_column_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positive_edges_check_test_edges_column_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positive_edges_check_train_edges_column_num">
+<code class="sig-name descname">test_make_positive_edges_check_train_edges_column_num</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positive_edges_check_train_edges_column_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positive_edges_check_train_edges_columns">
+<code class="sig-name descname">test_make_positive_edges_check_train_edges_columns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positive_edges_check_train_edges_columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positive_edges_test_pos_edges_are_in_input_edge_df">
+<code class="sig-name descname">test_make_positive_edges_test_pos_edges_are_in_input_edge_df</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positive_edges_test_pos_edges_are_in_input_edge_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positive_edges_test_pos_edges_are_removed_from_train_edges">
+<code class="sig-name descname">test_make_positive_edges_test_pos_edges_are_removed_from_train_edges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positive_edges_test_pos_edges_are_removed_from_train_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positive_edges_test_repeated_edges">
+<code class="sig-name descname">test_make_positive_edges_test_repeated_edges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positive_edges_test_repeated_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positives_edges_check_new_edges_instance_type">
+<code class="sig-name descname">test_make_positives_edges_check_new_edges_instance_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positives_edges_check_new_edges_instance_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_make_positives_edges_check_test_edge_instance_type">
+<code class="sig-name descname">test_make_positives_edges_check_test_edge_instance_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_make_positives_edges_check_test_edge_instance_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_holdouts.TestEdges.test_tsv_to_df">
+<code class="sig-name descname">test_tsv_to_df</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_holdouts.TestEdges.test_tsv_to_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_intact">
+<span id="tests-test-intact-module"></span><h2>tests.test_intact module<a class="headerlink" href="#module-tests.test_intact" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_intact.TestIntAct">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_intact.</code><code class="sig-name descname">TestIntAct</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_intact.TestIntAct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="py method">
+<dt id="tests.test_intact.TestIntAct.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_intact.TestIntAct.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_intact.TestIntAct.test_fix_for_chebi_id">
+<code class="sig-name descname">test_fix_for_chebi_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_intact.TestIntAct.test_fix_for_chebi_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_intact.TestIntAct.test_intact_instance">
+<code class="sig-name descname">test_intact_instance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_intact.TestIntAct.test_intact_instance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_intact.TestIntAct.test_nodes_parse_xml_to_nodes_edges">
+<code class="sig-name descname">test_nodes_parse_xml_to_nodes_edges</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_intact.TestIntAct.test_nodes_parse_xml_to_nodes_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_intact.TestIntAct.test_nodes_parse_xml_to_nodes_edges_0_tests_resources_intact_test_xml">
+<code class="sig-name descname">test_nodes_parse_xml_to_nodes_edges_0_tests_resources_intact_test_xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_intact.TestIntAct.test_nodes_parse_xml_to_nodes_edges_0_tests_resources_intact_test_xml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_intact.TestIntAct.test_nodes_parse_xml_to_nodes_edges_1_tests_resources_intact_3_participants_xml">
+<code class="sig-name descname">test_nodes_parse_xml_to_nodes_edges_1_tests_resources_intact_3_participants_xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_intact.TestIntAct.test_nodes_parse_xml_to_nodes_edges_1_tests_resources_intact_3_participants_xml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_intact.TestIntAct.test_parse_experiment_info">
+<code class="sig-name descname">test_parse_experiment_info</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_intact.TestIntAct.test_parse_experiment_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_intact.TestIntAct.test_parse_experiment_info_0_tests_resources_intact_test_xml">
+<code class="sig-name descname">test_parse_experiment_info_0_tests_resources_intact_test_xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_intact.TestIntAct.test_parse_experiment_info_0_tests_resources_intact_test_xml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_intact.TestIntAct.test_parse_experiment_info_1_tests_resources_intact_test_xml">
+<code class="sig-name descname">test_parse_experiment_info_1_tests_resources_intact_test_xml</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_intact.TestIntAct.test_parse_experiment_info_1_tests_resources_intact_test_xml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_intact.TestIntAct.test_struct_parse_xml_to_nodes_edges">
+<code class="sig-name descname">test_struct_parse_xml_to_nodes_edges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_intact.TestIntAct.test_struct_parse_xml_to_nodes_edges" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_pharmgkb">
+<span id="tests-test-pharmgkb-module"></span><h2>tests.test_pharmgkb module<a class="headerlink" href="#module-tests.test_pharmgkb" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_pharmgkb.TestPharmGKB">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_pharmgkb.</code><code class="sig-name descname">TestPharmGKB</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_pharmgkb.TestPharmGKB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests the ttd transform</p>
+<dl class="py method">
+<dt id="tests.test_pharmgkb.TestPharmGKB.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_pharmgkb.TestPharmGKB.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_pharmgkb.TestPharmGKB.test_make_id_mapping_file">
+<code class="sig-name descname">test_make_id_mapping_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_pharmgkb.TestPharmGKB.test_make_id_mapping_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_pharmgkb.TestPharmGKB.test_make_preferred_drug_id">
+<code class="sig-name descname">test_make_preferred_drug_id</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_pharmgkb.TestPharmGKB.test_make_preferred_drug_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_pharmgkb.TestPharmGKB.test_make_preferred_drug_id_0_PA164712302">
+<code class="sig-name descname">test_make_preferred_drug_id_0_PA164712302</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_pharmgkb.TestPharmGKB.test_make_preferred_drug_id_0_PA164712302" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_pharmgkb.TestPharmGKB.test_make_preferred_drug_id_1_PA131887008">
+<code class="sig-name descname">test_make_preferred_drug_id_1_PA131887008</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_pharmgkb.TestPharmGKB.test_make_preferred_drug_id_1_PA131887008" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_pharmgkb.TestPharmGKB.test_parse_pharmgkb_line">
+<code class="sig-name descname">test_parse_pharmgkb_line</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_pharmgkb.TestPharmGKB.test_parse_pharmgkb_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_pharmgkb.TestPharmGKB.test_run">
+<code class="sig-name descname">test_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_pharmgkb.TestPharmGKB.test_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_query">
+<span id="tests-test-query-module"></span><h2>tests.test_query module<a class="headerlink" href="#module-tests.test_query" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_query.TestQuery">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_query.</code><code class="sig-name descname">TestQuery</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_query.TestQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests query functions()</p>
+<dl class="py method">
+<dt id="tests.test_query.TestQuery.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_query.TestQuery.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_query.TestQuery.test_parse_query_rq">
+<code class="sig-name descname">test_parse_query_rq</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_query.TestQuery.test_parse_query_rq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_query.TestQuery.test_parse_query_rq_parameterized">
+<code class="sig-name descname">test_parse_query_rq_parameterized</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_query.TestQuery.test_parse_query_rq_parameterized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_query.TestQuery.test_parse_query_rq_parameterized_0_title">
+<code class="sig-name descname">test_parse_query_rq_parameterized_0_title</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_query.TestQuery.test_parse_query_rq_parameterized_0_title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_query.TestQuery.test_parse_query_rq_parameterized_1_description">
+<code class="sig-name descname">test_parse_query_rq_parameterized_1_description</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_query.TestQuery.test_parse_query_rq_parameterized_1_description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_query.TestQuery.test_parse_query_rq_parameterized_2_endpoint">
+<code class="sig-name descname">test_parse_query_rq_parameterized_2_endpoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_query.TestQuery.test_parse_query_rq_parameterized_2_endpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_query.TestQuery.test_parse_query_rq_parameterized_3_query">
+<code class="sig-name descname">test_parse_query_rq_parameterized_3_query</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_query.TestQuery.test_parse_query_rq_parameterized_3_query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_query.TestQuery.test_parse_query_rq_should_return_dict">
+<code class="sig-name descname">test_parse_query_rq_should_return_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_query.TestQuery.test_parse_query_rq_should_return_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_query.TestQuery.test_result_dict_to_tsv_makes_correct_file">
+<code class="sig-name descname">test_result_dict_to_tsv_makes_correct_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_query.TestQuery.test_result_dict_to_tsv_makes_correct_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_query.TestQuery.test_result_dict_to_tsv_makes_file">
+<code class="sig-name descname">test_result_dict_to_tsv_makes_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_query.TestQuery.test_result_dict_to_tsv_makes_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="tests.test_query.load_obj">
+<code class="sig-prename descclassname">tests.test_query.</code><code class="sig-name descname">load_obj</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_query.load_obj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="tests.test_query.save_obj">
+<code class="sig-prename descclassname">tests.test_query.</code><code class="sig-name descname">save_obj</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_query.save_obj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_run">
+<span id="tests-test-run-module"></span><h2>tests.test_run module<a class="headerlink" href="#module-tests.test_run" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_run.TestRun">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_run.</code><code class="sig-name descname">TestRun</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_run.TestRun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests the run.py script.</p>
+<dl class="py method">
+<dt id="tests.test_run.TestRun.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_run.TestRun.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_run.TestRun.test_merge_missing_file_error">
+<code class="sig-name descname">test_merge_missing_file_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_run.TestRun.test_merge_missing_file_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_run.TestRun.test_transform">
+<code class="sig-name descname">test_transform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_run.TestRun.test_transform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_sars_cov_2_gene_annot">
+<span id="tests-test-sars-cov-2-gene-annot-module"></span><h2>tests.test_sars_cov_2_gene_annot module<a class="headerlink" href="#module-tests.test_sars_cov_2_gene_annot" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_sars_cov_2_gene_annot.</code><code class="sig-name descname">TestSarsGeneAnnot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests the SARS-CoV-2 gene annotation transform</p>
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpa_to_edge_data">
+<code class="sig-name descname">test_gpa_to_edge_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpa_to_edge_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance">
+<code class="sig-name descname">test_gpi12iterator_instance</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_0_DB">
+<code class="sig-name descname">test_gpi12iterator_instance_0_DB</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_0_DB" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_1_DB_Object_ID">
+<code class="sig-name descname">test_gpi12iterator_instance_1_DB_Object_ID</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_1_DB_Object_ID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_2_DB_Object_Symbol">
+<code class="sig-name descname">test_gpi12iterator_instance_2_DB_Object_Symbol</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_2_DB_Object_Symbol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_3_DB_Object_Name">
+<code class="sig-name descname">test_gpi12iterator_instance_3_DB_Object_Name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_3_DB_Object_Name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_4_DB_Object_Synonym">
+<code class="sig-name descname">test_gpi12iterator_instance_4_DB_Object_Synonym</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_4_DB_Object_Synonym" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_5_DB_Object_Type">
+<code class="sig-name descname">test_gpi12iterator_instance_5_DB_Object_Type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_5_DB_Object_Type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_6_DB_Xref">
+<code class="sig-name descname">test_gpi12iterator_instance_6_DB_Xref</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_6_DB_Xref" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_7_Taxon">
+<code class="sig-name descname">test_gpi12iterator_instance_7_Taxon</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi12iterator_instance_7_Taxon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi_to_gene_node">
+<code class="sig-name descname">test_gpi_to_gene_node</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_gpi_to_gene_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_run">
+<code class="sig-name descname">test_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_sars_cov_2_gene_annot.TestSarsGeneAnnot.test_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_scibite_cord">
+<span id="tests-test-scibite-cord-module"></span><h2>tests.test_scibite_cord module<a class="headerlink" href="#module-tests.test_scibite_cord" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_scibite_cord.TestScibiteCord">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_scibite_cord.</code><code class="sig-name descname">TestScibiteCord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_scibite_cord.TestScibiteCord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="py method">
+<dt id="tests.test_scibite_cord.TestScibiteCord.setUpClass">
+<em class="property">classmethod </em><code class="sig-name descname">setUpClass</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_scibite_cord.TestScibiteCord.setUpClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up class fixture before running tests in the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_scibite_cord.TestScibiteCord.test_run">
+<code class="sig-name descname">test_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_scibite_cord.TestScibiteCord.test_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_string">
+<span id="tests-test-string-module"></span><h2>tests.test_string module<a class="headerlink" href="#module-tests.test_string" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_string.TestString">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_string.</code><code class="sig-name descname">TestString</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests the string ingest</p>
+<dl class="py method">
+<dt id="tests.test_string.TestString.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_string.TestString.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_string.TestString.test_edges_file">
+<code class="sig-name descname">test_edges_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString.test_edges_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_string.TestString.test_input_dir">
+<code class="sig-name descname">test_input_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString.test_input_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_string.TestString.test_instance_vars">
+<code class="sig-name descname">test_instance_vars</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_string.TestString.test_instance_vars" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_string.TestString.test_instance_vars_0_ensembl2ncbi_map">
+<code class="sig-name descname">test_instance_vars_0_ensembl2ncbi_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString.test_instance_vars_0_ensembl2ncbi_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_string.TestString.test_instance_vars_1_gene_info_map">
+<code class="sig-name descname">test_instance_vars_1_gene_info_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString.test_instance_vars_1_gene_info_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_string.TestString.test_instance_vars_2_protein_gene_map">
+<code class="sig-name descname">test_instance_vars_2_protein_gene_map</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString.test_instance_vars_2_protein_gene_map" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_string.TestString.test_nodes_file">
+<code class="sig-name descname">test_nodes_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString.test_nodes_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_string.TestString.test_output_dir">
+<code class="sig-name descname">test_output_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString.test_output_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_string.TestString.test_output_edge_file">
+<code class="sig-name descname">test_output_edge_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString.test_output_edge_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_string.TestString.test_output_node_file">
+<code class="sig-name descname">test_output_node_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString.test_output_node_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_string.TestString.test_run">
+<code class="sig-name descname">test_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString.test_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_string.TestString.test_source_name">
+<code class="sig-name descname">test_source_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_string.TestString.test_source_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_transform_class">
+<span id="tests-test-transform-class-module"></span><h2>tests.test_transform_class module<a class="headerlink" href="#module-tests.test_transform_class" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_transform_class.TestTransform">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_transform_class.</code><code class="sig-name descname">TestTransform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_transform_class.TestTransform.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_transform_class.TestTransform.test_attributes">
+<code class="sig-name descname">test_attributes</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_attributes_0_source_name">
+<code class="sig-name descname">test_attributes_0_source_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_attributes_0_source_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_attributes_1_node_header">
+<code class="sig-name descname">test_attributes_1_node_header</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_attributes_1_node_header" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_attributes_2_edge_header">
+<code class="sig-name descname">test_attributes_2_edge_header</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_attributes_2_edge_header" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_attributes_3_output_base_dir">
+<code class="sig-name descname">test_attributes_3_output_base_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_attributes_3_output_base_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_attributes_4_input_base_dir">
+<code class="sig-name descname">test_attributes_4_input_base_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_attributes_4_input_base_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_attributes_5_output_dir">
+<code class="sig-name descname">test_attributes_5_output_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_attributes_5_output_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_attributes_6_output_node_file">
+<code class="sig-name descname">test_attributes_6_output_node_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_attributes_6_output_node_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_attributes_7_output_edge_file">
+<code class="sig-name descname">test_attributes_7_output_edge_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_attributes_7_output_edge_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_attributes_8_output_json_file">
+<code class="sig-name descname">test_attributes_8_output_json_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_attributes_8_output_json_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_transform_class.TestTransform.test_default_dir">
+<code class="sig-name descname">test_default_dir</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_default_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_default_dir_0_DEFAULT_INPUT_DIR">
+<code class="sig-name descname">test_default_dir_0_DEFAULT_INPUT_DIR</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_default_dir_0_DEFAULT_INPUT_DIR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_default_dir_1_DEFAULT_OUTPUT_DIR">
+<code class="sig-name descname">test_default_dir_1_DEFAULT_OUTPUT_DIR</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_default_dir_1_DEFAULT_OUTPUT_DIR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_reality">
+<code class="sig-name descname">test_reality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_reality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes">
+<code class="sig-name descname">test_transform_child_classes</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_00_ZhouTransform">
+<code class="sig-name descname">test_transform_child_classes_00_ZhouTransform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_00_ZhouTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’ZhouTransform’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_01_DrugCentralTransform">
+<code class="sig-name descname">test_transform_child_classes_01_DrugCentralTransform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_01_DrugCentralTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’DrugCentralTransform’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_02_TTDTransform">
+<code class="sig-name descname">test_transform_child_classes_02_TTDTransform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_02_TTDTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’TTDTransform’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_03_StringTransform">
+<code class="sig-name descname">test_transform_child_classes_03_StringTransform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_03_StringTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’StringTransform’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_04_ScibiteCordTransform">
+<code class="sig-name descname">test_transform_child_classes_04_ScibiteCordTransform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_04_ScibiteCordTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’ScibiteCordTransform’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_05_PharmGKB">
+<code class="sig-name descname">test_transform_child_classes_05_PharmGKB</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_05_PharmGKB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’PharmGKB’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_06_SARSCoV2GeneAnnot">
+<code class="sig-name descname">test_transform_child_classes_06_SARSCoV2GeneAnnot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_06_SARSCoV2GeneAnnot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’SARSCoV2GeneAnnot’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_07_IntAct">
+<code class="sig-name descname">test_transform_child_classes_07_IntAct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_07_IntAct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’IntAct’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_08_GoTransform">
+<code class="sig-name descname">test_transform_child_classes_08_GoTransform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_08_GoTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’GoTransform’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_09_HpTransform">
+<code class="sig-name descname">test_transform_child_classes_09_HpTransform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_09_HpTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’HpTransform’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_10_MondoTransform">
+<code class="sig-name descname">test_transform_child_classes_10_MondoTransform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_10_MondoTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’MondoTransform’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_11_ChebiTransform">
+<code class="sig-name descname">test_transform_child_classes_11_ChebiTransform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_11_ChebiTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’ChebiTransform’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_12_GocamTransform">
+<code class="sig-name descname">test_transform_child_classes_12_GocamTransform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_12_GocamTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’GocamTransform’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_class.TestTransform.test_transform_child_classes_13_ChemblTransform">
+<code class="sig-name descname">test_transform_child_classes_13_ChemblTransform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_class.TestTransform.test_transform_child_classes_13_ChemblTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sure Transform child classes: [with src_name=’ChemblTransform’]
+- properly set default input_dir and output_dir
+- properly pass and set input_dir and output from constructor
+- implement run()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>src_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tests.test_transform_class.TransformChildClass">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_transform_class.</code><code class="sig-name descname">TransformChildClass</code><a class="headerlink" href="#tests.test_transform_class.TransformChildClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="kg_covid_19.transform_utils.html#kg_covid_19.transform_utils.transform.Transform" title="kg_covid_19.transform_utils.transform.Transform"><code class="xref py py-class docutils literal notranslate"><span class="pre">kg_covid_19.transform_utils.transform.Transform</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_transform_utils">
+<span id="tests-test-transform-utils-module"></span><h2>tests.test_transform_utils module<a class="headerlink" href="#module-tests.test_transform_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_transform_utils.TestTransformUtils">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_transform_utils.</code><code class="sig-name descname">TestTransformUtils</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<dl class="py attribute">
+<dt id="tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie">
+<code class="sig-name descname">test_collapse_uniprot_curie</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie_0_foobar">
+<code class="sig-name descname">test_collapse_uniprot_curie_0_foobar</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie_0_foobar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie_1_ENSEMBL_ENSG00000178607">
+<code class="sig-name descname">test_collapse_uniprot_curie_1_ENSEMBL_ENSG00000178607</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie_1_ENSEMBL_ENSG00000178607" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie_2_UniprotKB_P63151_1">
+<code class="sig-name descname">test_collapse_uniprot_curie_2_UniprotKB_P63151_1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie_2_UniprotKB_P63151_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie_3_uniprotkb_P63151_1">
+<code class="sig-name descname">test_collapse_uniprot_curie_3_uniprotkb_P63151_1</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie_3_uniprotkb_P63151_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie_4_UniprotKB_P63151_2">
+<code class="sig-name descname">test_collapse_uniprot_curie_4_UniprotKB_P63151_2</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils.test_collapse_uniprot_curie_4_UniprotKB_P63151_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_transform_utils.TestTransformUtils.test_guess_bl_category">
+<code class="sig-name descname">test_guess_bl_category</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils.test_guess_bl_category" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_utils.TestTransformUtils.test_guess_bl_category_0_">
+<code class="sig-name descname">test_guess_bl_category_0_</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils.test_guess_bl_category_0_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_utils.TestTransformUtils.test_guess_bl_category_1_UniProtKB">
+<code class="sig-name descname">test_guess_bl_category_1_UniProtKB</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils.test_guess_bl_category_1_UniProtKB" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_utils.TestTransformUtils.test_guess_bl_category_2_ComplexPortal">
+<code class="sig-name descname">test_guess_bl_category_2_ComplexPortal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils.test_guess_bl_category_2_ComplexPortal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_transform_utils.TestTransformUtils.test_guess_bl_category_3_GO">
+<code class="sig-name descname">test_guess_bl_category_3_GO</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_transform_utils.TestTransformUtils.test_guess_bl_category_3_GO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_ttd_transform">
+<span id="tests-test-ttd-transform-module"></span><h2>tests.test_ttd_transform module<a class="headerlink" href="#module-tests.test_ttd_transform" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="tests.test_ttd_transform.TestTTD">
+<em class="property">class </em><code class="sig-prename descclassname">tests.test_ttd_transform.</code><code class="sig-name descname">TestTTD</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">methodName</span><span class="o">=</span><span class="default_value">'runTest'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_ttd_transform.TestTTD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">unittest.case.TestCase</span></code></p>
+<p>Tests the ttd transform</p>
+<dl class="py method">
+<dt id="tests.test_ttd_transform.TestTTD.setUp">
+<code class="sig-name descname">setUp</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_ttd_transform.TestTTD.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_ttd_transform.TestTTD.test_parse_ttd_file_fxn">
+<code class="sig-name descname">test_parse_ttd_file_fxn</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_ttd_transform.TestTTD.test_parse_ttd_file_fxn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tests.test_ttd_transform.TestTTD.test_parse_ttd_file_values">
+<code class="sig-name descname">test_parse_ttd_file_values</code><em class="property"> = None</em><a class="headerlink" href="#tests.test_ttd_transform.TestTTD.test_parse_ttd_file_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_ttd_transform.TestTTD.test_parse_ttd_file_values_0_T47101">
+<code class="sig-name descname">test_parse_ttd_file_values_0_T47101</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_ttd_transform.TestTTD.test_parse_ttd_file_values_0_T47101" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_ttd_transform.TestTTD.test_parse_ttd_file_values_1_T47101">
+<code class="sig-name descname">test_parse_ttd_file_values_1_T47101</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_ttd_transform.TestTTD.test_parse_ttd_file_values_1_T47101" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_ttd_transform.TestTTD.test_parse_ttd_file_values_2_T47101">
+<code class="sig-name descname">test_parse_ttd_file_values_2_T47101</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_ttd_transform.TestTTD.test_parse_ttd_file_values_2_T47101" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_ttd_transform.TestTTD.test_parse_ttd_file_values_3_T17514">
+<code class="sig-name descname">test_parse_ttd_file_values_3_T17514</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_ttd_transform.TestTTD.test_parse_ttd_file_values_3_T17514" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="tests.test_ttd_transform.TestTTD.test_run">
+<code class="sig-name descname">test_run</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#tests.test_ttd_transform.TestTTD.test_run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests.test_version">
+<span id="tests-test-version-module"></span><h2>tests.test_version module<a class="headerlink" href="#module-tests.test_version" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="tests.test_version.test_version">
+<code class="sig-prename descclassname">tests.test_version.</code><code class="sig-name descname">test_version</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.test_version.test_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests the package version.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tests">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tests" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Justin Reese
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
