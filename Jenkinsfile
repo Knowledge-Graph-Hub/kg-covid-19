@@ -100,7 +100,7 @@ pipeline {
                 dir('./gitrepo') {
                     // sh '. venv/bin/activate && env && python3.8 run.py transform'
                     echo 'REMOVE THIS, UNCOMMENT PREVIOUS LINE, AND FIX MERGE.YAML!'
-                    sh '. venv/bin/activate && env && python3.8 python run.py transform -s DrugCentralTransform -s PharmGKB'
+                    sh '. venv/bin/activate && env && python3.8 run.py transform -s DrugCentralTransform -s PharmGKB'
                 }
             }
         }
