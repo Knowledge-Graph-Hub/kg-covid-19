@@ -247,7 +247,9 @@ pipeline {
 
     post {
         always {
-            echo 'Nothing to do (in always)'
+            echo 'In always'
+            echo 'Cleaning workspace...'
+            cleanWs()
         }
         success {
             echo 'I succeeded!'
