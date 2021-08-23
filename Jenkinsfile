@@ -61,7 +61,6 @@ pipeline {
                     )
                     sh '/usr/bin/python3.8 -m venv venv'
                     sh '. venv/bin/activate'
-                    sh './venv/bin/pip install -r requirements.txt' // remove this when Deepak's fix (issue-329) is merged
                     sh './venv/bin/pip install .'
                     sh './venv/bin/pip install awscli pystache boto3 s3cmd'
                 }
