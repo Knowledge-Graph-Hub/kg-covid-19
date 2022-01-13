@@ -52,7 +52,7 @@ class TestPharmGKB(TestCase):
                         "P04217")
 
     @parameterized.expand([
-        ('PA164712302', 'PHARMGKB:PA164712302'),
+        ('PA164712302', 'pharmgkb.drug:PA164712302'),
         ('PA131887008', 'CHEBI:1391')
     ])
     def test_make_preferred_drug_id(self, pharmgkb_id, preferred_id) -> None:
