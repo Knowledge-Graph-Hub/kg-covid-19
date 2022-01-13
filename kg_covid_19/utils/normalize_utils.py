@@ -16,7 +16,6 @@ def normalize_curies(map_path: str, entries: List) -> List:
                     with ids as prefix:value
     """
 
-    norm_map = {}
     new_entries = []
 
     # Load the map
