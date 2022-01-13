@@ -4,7 +4,7 @@ from typing import Optional, Set, Dict, List
 from tqdm import tqdm # type: ignore
 
 from kg_covid_19.transform_utils.transform import Transform
-from kg_covid_19.utils import write_node_edge_item
+from kg_covid_19.utils import write_node_edge_item, normalize_curies
 
 
 TAXON_MAP = {
@@ -74,6 +74,9 @@ class ChemblTransform(Transform):
         edge_handle = open(self.output_edge_file, 'w')
         node_handle.write("\t".join(sorted(self.node_header)) + "\n")
         edge_handle.write("\t".join(sorted(self.edge_header)) + "\n")
+        
+        molecule_nodes = normalize_curies(map_path="./maps/drugcentral-maps-kg_covid_19-0.1.sssom.tsv",
+                                            entries=molecule_nodes)
 
         for n in molecule_nodes:
             write_node_edge_item(
