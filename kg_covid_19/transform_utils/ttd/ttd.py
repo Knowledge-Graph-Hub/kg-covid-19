@@ -101,7 +101,6 @@ class TTDTransform(Transform):
                 # for each drug in DRUGINFO:
                 for this_drug in data['DRUGINFO']:
                     this_drug_curie = ttd_drug_map[drug_id_prefix + this_drug[0]]
-                    print(this_drug_curie)
                     #
                     # make node for drug
                     #
