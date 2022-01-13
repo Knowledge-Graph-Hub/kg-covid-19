@@ -8,6 +8,7 @@ from collections import defaultdict
 from io import TextIOBase
 from typing import Optional, TextIO
 
+from kg_covid_19.utils import normalize_curies
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import data_to_dict, parse_header, \
     unzip_to_tempdir, write_node_edge_item, get_item_by_priority, ItemInDictNotFound
@@ -90,6 +91,25 @@ class PharmGKB(Transform):
             edge.write("\t".join(self.edge_header) + "\n")
 
             rel_header = parse_header(relationships.readline())
+
+            # Set up ID mapping for normalization
+            # this gets converted to a flat dict in the end
+            all_pharmgkb_drugs = []
+            for line in relationships:
+                line_data = self.parse_pharmgkb_line(line, rel_header)
+                if line_data['Entity1_type'] == 'Chemical':
+                    this_drug_curie = "pharmgkb.drug:" + line_data['Entity1_id']
+                    all_pharmgkb_drugs.append({'orig_id':this_drug_curie,
+                                             'id':this_drug_curie})
+                if line_data['Entity2_type'] == 'Chemical':
+                    this_drug_curie = "pharmgkb.drug:" + line_data['Entity2_id']
+                    all_pharmgkb_drugs.append({'orig_id':this_drug_curie,
+                                             'id':this_drug_curie})
+            normalized_pharmgkb_drugs = normalize_curies(map_path="./maps/drugcentral-maps-kg_covid_19-0.1.sssom.tsv",
+                                             entries=all_pharmgkb_drugs)
+            pharmgkb_drug_map = {entry['orig_id']:entry['id'] for entry in normalized_pharmgkb_drugs}
+
+            relationships.seek(0)
             for line in relationships:
                 line_data = self.parse_pharmgkb_line(line, rel_header)
 
@@ -116,7 +136,8 @@ class PharmGKB(Transform):
                                                         fh=node,
                                                         chem_id=entity_id,
                                                         name=entity_name,
-                                                        biolink_type=self.drug_node_type)
+                                                        biolink_type=self.drug_node_type,
+                                                        norm_map = pharmgkb_drug_map)
                         else:
                             raise PharmKGBInvalidNodeType(
                                 "Node type isn't gene or chemical!")
@@ -132,9 +153,9 @@ class PharmGKB(Transform):
                                drug_id_map: dict,
                                preferred_ids: dict={'ChEBI:CHEBI': 'CHEBI',
                                                     'CHEMBL': 'CHEMBL',
-                                                    'DrugBank': 'DRUGBANK',
+                                                    'DrugBank': 'DrugBank',
                                                     'PubChem Compound:': 'PUBCHEM'},
-                               pharmgkb_prefix: str='PHARMGKB') \
+                               pharmgkb_prefix: str='pharmgkb.drug') \
             -> str:
         """Given a drug id, convert it to a cross-referenced ID, in this order of
         preference:
@@ -145,7 +166,7 @@ class PharmGKB(Transform):
         :param preferred_ids - dict of preferred ids in desc order of preference
                 'their string' -> 'canonical CURIE prefix'
                 wow, they don't make this easy
-        :param pharmgkb_prefix thing to prepend to pharmgkb id ('PHARMGKB')
+        :param pharmgkb_prefix thing to prepend to pharmgkb id ('pharmgkb.drug')
         :return: preferred_id: preferred cross-referenced ID
         """
         preferred_id = pharmgkb_prefix + ":" + pharmgkb_id
@@ -250,16 +271,22 @@ class PharmGKB(Transform):
                                     fh: TextIO,
                                     chem_id: str,
                                     name: str,
-                                    biolink_type: str
-                                    ) -> None:
-        """Write out node for gene
-        :param fh: file handle to write out gene
-        :param id: pharmgkb gene id
-        :param name: gene name
+                                    biolink_type: str,
+                                    norm_map: dict) -> None:
+        """Write out node for drug/chemical
+        :param fh: file handle to write out drug/chemical
+        :param id: pharmgkb drug id
+        :param name: drug name
         :param biolink_type: biolink type for Chemical
+        :param norm_map: normalization map for drug ids
         :return: None
         """
         preferred_drug_id = self.make_preferred_drug_id(chem_id, self.drug_id_map)
+
+        # Normalize those PharmGKB drugs if we can
+        if (preferred_drug_id.split(":"))[0] == "pharmgkb.drug":
+            preferred_drug_id = norm_map[preferred_drug_id]
+
         data = [preferred_drug_id, name, biolink_type, self.source_name]
         write_node_edge_item(fh=fh, header=self.node_header, data=data)
 
