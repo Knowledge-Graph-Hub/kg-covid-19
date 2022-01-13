@@ -41,4 +41,29 @@ def normalize_curies(map_path: str, entries: List) -> List:
         new_entries.append(new_entry)
 
     return new_entries
-    
+
+def load_ids_from_map(map_path: str, prefix: str) -> List:
+    """ Given a SSSOM map file defining one or more mappings between 
+        subject_id and object_id, 
+        retrieve a list of all ids
+        with a given prefix.
+    :param map_path: path to the mapping file
+    :param prefix: desired id prefix, without the colon
+    """
+
+    new_ids = []
+
+    # Load the map
+    with open(map_path) as map_file:
+        
+        # Load map, skip header
+        for n in range(11):
+            next(map_file)
+        norm_map = csv.DictReader(map_file, delimiter='\t')
+
+        # Filter map to ids
+        for row in norm_map:
+            if (row['subject_id'].split(":"))[0] == prefix:
+                new_ids.append(row['subject_id'])
+
+    return new_ids

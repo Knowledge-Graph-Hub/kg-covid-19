@@ -8,7 +8,7 @@ from collections import defaultdict
 from io import TextIOBase
 from typing import Optional, TextIO
 
-from kg_covid_19.utils import normalize_curies
+from kg_covid_19.utils import normalize_curies, load_ids_from_map
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils.transform_utils import data_to_dict, parse_header, \
     unzip_to_tempdir, write_node_edge_item, get_item_by_priority, ItemInDictNotFound
@@ -94,6 +94,7 @@ class PharmGKB(Transform):
 
             # Set up ID mapping for normalization
             # this gets converted to a flat dict in the end
+            # We need to add DrugBank IDs here too, as PharmGKB has xrefs to those
             all_pharmgkb_drugs = []
             for line in relationships:
                 line_data = self.parse_pharmgkb_line(line, rel_header)
@@ -105,9 +106,17 @@ class PharmGKB(Transform):
                     this_drug_curie = "pharmgkb.drug:" + line_data['Entity2_id']
                     all_pharmgkb_drugs.append({'orig_id':this_drug_curie,
                                              'id':this_drug_curie})
+            # Add the DrugBank IDs here
+            drugbank_ids = load_ids_from_map(map_path="./maps/drugcentral-maps-kg_covid_19-0.1.sssom.tsv",
+                                            prefix="DRUGBANK")
+            for id in drugbank_ids:
+                all_pharmgkb_drugs.append({'orig_id':id,
+                                            'id':id})
+
             normalized_pharmgkb_drugs = normalize_curies(map_path="./maps/drugcentral-maps-kg_covid_19-0.1.sssom.tsv",
                                              entries=all_pharmgkb_drugs)
             pharmgkb_drug_map = {entry['orig_id']:entry['id'] for entry in normalized_pharmgkb_drugs}
+
 
             relationships.seek(0)
             for line in relationships:
@@ -153,7 +162,7 @@ class PharmGKB(Transform):
                                drug_id_map: dict,
                                preferred_ids: dict={'ChEBI:CHEBI': 'CHEBI',
                                                     'CHEMBL': 'CHEMBL',
-                                                    'DrugBank': 'DrugBank',
+                                                    'DrugBank': 'DRUGBANK',
                                                     'PubChem Compound:': 'PUBCHEM'},
                                pharmgkb_prefix: str='pharmgkb.drug') \
             -> str:
@@ -284,8 +293,11 @@ class PharmGKB(Transform):
         preferred_drug_id = self.make_preferred_drug_id(chem_id, self.drug_id_map)
 
         # Normalize those PharmGKB drugs if we can
-        if (preferred_drug_id.split(":"))[0] == "pharmgkb.drug":
-            preferred_drug_id = norm_map[preferred_drug_id]
+        try:
+            if (preferred_drug_id.split(":"))[0] in ["pharmgkb.drug", "DRUGBANK"]:
+                preferred_drug_id = norm_map[preferred_drug_id]
+        except KeyError:
+            pass
 
         data = [preferred_drug_id, name, biolink_type, self.source_name]
         write_node_edge_item(fh=fh, header=self.node_header, data=data)
