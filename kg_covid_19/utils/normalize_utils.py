@@ -36,7 +36,6 @@ def normalize_curies(map_path: str, entries: List) -> List:
             new_id = norm_id_map[entry['id']]
             if new_id != '': # Empty value if there isn't a mapping
                 new_entry['id'] = new_id
-            print(new_entry)
         except KeyError:
             pass
         new_entries.append(new_entry)
