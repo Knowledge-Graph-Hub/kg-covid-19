@@ -95,6 +95,7 @@ class PharmGKB(Transform):
             # Set up ID mapping for normalization
             # this gets converted to a flat dict in the end
             # We need to add DrugBank IDs here too, as PharmGKB has xrefs to those
+            # same for CHEBI IDs
             all_pharmgkb_drugs = []
             for line in relationships:
                 line_data = self.parse_pharmgkb_line(line, rel_header)
@@ -106,11 +107,12 @@ class PharmGKB(Transform):
                     this_drug_curie = "pharmgkb.drug:" + line_data['Entity2_id']
                     all_pharmgkb_drugs.append({'orig_id':this_drug_curie,
                                              'id':this_drug_curie})
-            # Add the DrugBank IDs here
-            drugbank_ids = load_ids_from_map(map_path="./maps/drugcentral-maps-kg_covid_19-0.1.sssom.tsv",
-                                            prefix="DRUGBANK")
-            for id in drugbank_ids:
-                all_pharmgkb_drugs.append({'orig_id':id,
+            # Add the DrugBank and CHEBI IDs here
+            for prefix in ["DRUGBANK", "CHEBI"]:
+                drugbank_ids = load_ids_from_map(map_path="./maps/drugcentral-maps-kg_covid_19-0.1.sssom.tsv",
+                                            prefix=prefix)
+                for id in drugbank_ids:
+                    all_pharmgkb_drugs.append({'orig_id':id,
                                             'id':id})
 
             normalized_pharmgkb_drugs = normalize_curies(map_path="./maps/drugcentral-maps-kg_covid_19-0.1.sssom.tsv",
@@ -294,7 +296,7 @@ class PharmGKB(Transform):
 
         # Normalize those PharmGKB drugs if we can
         try:
-            if (preferred_drug_id.split(":"))[0] in ["pharmgkb.drug", "DRUGBANK"]:
+            if (preferred_drug_id.split(":"))[0] in ["pharmgkb.drug", "DRUGBANK", "CHEBI"]:
                 preferred_drug_id = norm_map[preferred_drug_id]
         except KeyError:
             pass
