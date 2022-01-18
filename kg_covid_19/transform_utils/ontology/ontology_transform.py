@@ -63,7 +63,7 @@ class OntologyTransform(Transform):
                   output=os.path.join(self.output_dir, name),
                   output_format='tsv')
 
-        # Extra step here to add extra edges for mappings
+        # Extra step here to add extra nodes+edges for mappings
         if name == "chebi":
             edgefile_name = name + "_edges.tsv"
             nodefile_name = name + "_nodes.tsv"
@@ -89,16 +89,26 @@ class OntologyTransform(Transform):
                         node_mappings[row['subject_id']] = row['object_id']
 
             # For each node id with a mapping, build a new relation
+            # and its corresponding nodes
             new_match_relations = []
+            all_map_nodes = []
             for subject,object in node_mappings.items():
                 urn = "urn:uuid:" + str(uuid.uuid1())
-                new_relation = f'{urn}	{subject}	biolink:exact_match	{object}	skos:exactMatch	chebi.json.gz\n'
+                new_relation = f'{urn}\t{subject}\tbiolink:exact_match\t{object}\tskos:exactMatch\tchebi.json.gz\n'
                 new_match_relations.append(new_relation)
+                object_iri = "https://drugcentral.org/drugcard/" + (object.split(":"))[1]
+                new_map_node = f'{object}\tbiolink:Drug\t\t\t\t\t\t{object_iri}\t\t\t\t\t\t\t\n'
+                all_map_nodes.append(new_map_node)
 
             # Write all relations to the edge file
             with open(os.path.join(self.output_dir, edgefile_name), 'a') as edgefile:
                 for relation in new_match_relations:
                     edgefile.write(relation)
+            
+            # Write all mapped ids to the node file
+            with open(os.path.join(self.output_dir, nodefile_name), 'a') as nodefile:
+                for node in all_map_nodes:
+                    nodefile.write(node)
 
 
 
