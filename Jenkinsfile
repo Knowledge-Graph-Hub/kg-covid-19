@@ -229,12 +229,6 @@ pipeline {
                     withCredentials([file(credentialsId: 'ansible-bbop-local-slave', variable: 'DEPLOY_LOCAL_IDENTITY')]) {
                         echo 'Push master out to public Blazegraph'
 
-                        // these commands ensure that ansible's ssh command doesn't
-                        // fail (in a very difficult-to-debug way) when it needs
-                        // us to accept the public key of pan.lbl.gov
-                        sh 'mkdir -p ~/.ssh/'
-                        sh 'ssh-keyscan -H pan.lbl.gov >> ~/.ssh/known_hosts'
-
                         retry(3){
                             sh 'HOME=`pwd` && ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.local-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=bbop --extra-vars="endpoint=internal"'
                         }
