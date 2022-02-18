@@ -13,10 +13,10 @@ class TestDownload(TestCase):
         pass
 
     # @mock.patch('requests.get')
-    def test_api_download(self):
-        td = tempfile.gettempdir()
-        download_from_yaml('tests/resources/download/download_api.yaml', td,
-                           ignore_cache=True)
+    #def test_api_download(self):
+    #    td = tempfile.gettempdir()
+    #    download_from_yaml('tests/resources/download/download_api.yaml', td,
+    #                       ignore_cache=True)
 
     # @mock.patch('requests.get')
     # def test_download(self, mock_get):
