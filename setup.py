@@ -84,6 +84,7 @@ setup(
         'sphinx',
         'sphinx_rtd_theme',
         'recommonmark',
+        'black==20.8b1'
     ],
     extras_require=extras,
 )
