@@ -33,10 +33,10 @@
 #
 -
   # drug - target interactions from Drug Central
-  url: http://unmtid-shinyapps.net/download/drug.target.interaction.tsv.gz
+  url: https://unmtid-shinyapps.net/download/DrugCentral/2021_09_01/drug.target.interaction.tsv.gz
   local_name: drug.target.interaction.tsv.gz
 -
-  url: http://unmtid-shinyapps.net/download/tcrd.zip
+  url: http://juniper.health.unm.edu/tcrd/download/TCRDv6.12.4.tsv
   local_name: tcrd.zip
 
 #
