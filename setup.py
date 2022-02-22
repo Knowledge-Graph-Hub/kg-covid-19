@@ -68,7 +68,7 @@ setup(
     # add package dependencies
     install_requires=[
         'rdflib==5.0.0',
-        'kgx==1.5.1',
+        'kgx==1.5.5',
         'tqdm',
         'tabula-py',
         'obonet',
