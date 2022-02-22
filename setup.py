@@ -79,7 +79,7 @@ setup(
         'click',
         'pyyaml',
         'bmt',
-        'SPARQLWrapper',
+        'SPARQLWrapper>=1.8.2',
         'ensmallen_graph==0.4.3',
         'elasticsearch',
         'sphinx',
