@@ -68,23 +68,19 @@ setup(
     # add package dependencies
     install_requires=[
         'rdflib==5.0.0',
-        'kgx==1.5.1',
-        'linkml-model',
+        'kgx==1.5.5',
         'tqdm',
         'tabula-py',
         'obonet',
         'wget',
         'compress_json',
-        'click',
         'pyyaml',
         'bmt',
-        'SPARQLWrapper',
         'ensmallen_graph==0.4.3',
         'elasticsearch',
         'sphinx',
         'sphinx_rtd_theme',
         'recommonmark',
-        'black==20.8b1'
     ],
     extras_require=extras,
 )

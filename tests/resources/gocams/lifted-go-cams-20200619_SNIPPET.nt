@@ -497,4 +497,3 @@
 <https://www.example.org/UNKNOWN/OBO:go/extensions/reacto.owl#REACTO_R-HSA-8941896> <https://w3id.org/biolink/vocab/related_to> <https://www.example.org/UNKNOWN/OBO:go/extensions/reacto.owl#REACTO_R-HSA-8942611> .
 <http://identifiers.org/uniprot/Q5JSK4> <https://w3id.org/biolink/vocab/PositivelyRegulates> <http://identifiers.org/uniprot/Q9UHD2> .
 <https://www.example.org/UNKNOWN/MGI:MGI:1201683> <https://w3id.org/biolink/vocab/related_to> <https://www.example.org/UNKNOWN/MGI:MGI:99783> .
-
