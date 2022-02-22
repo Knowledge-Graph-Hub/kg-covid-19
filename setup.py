@@ -69,6 +69,7 @@ setup(
     install_requires=[
         'rdflib==5.0.0',
         'kgx==1.5.1',
+        'linkml',
         'linkml-model',
         'tqdm',
         'tabula-py',
@@ -84,7 +85,6 @@ setup(
         'sphinx',
         'sphinx_rtd_theme',
         'recommonmark',
-        'black==20.8b1'
     ],
     extras_require=extras,
 )
