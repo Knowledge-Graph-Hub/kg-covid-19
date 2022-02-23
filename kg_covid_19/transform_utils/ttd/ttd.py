@@ -7,7 +7,7 @@ import re
 from typing import Union, List, Dict, Any, Optional
 
 from kg_covid_19.transform_utils.transform import Transform
-from kg_covid_19.utils import write_node_edge_item
+from kg_covid_19.utils import write_node_edge_item, normalize_curies
 from kg_covid_19.utils.transform_utils import get_item_by_priority, \
     ItemInDictNotFound, uniprot_make_name_to_id_mapping
 
@@ -56,6 +56,22 @@ class TTDTransform(Transform):
             node.write("\t".join(self.node_header) + "\n")
             edge.write("\t".join(self.edge_header) + "\n")
 
+            # Set up ID mapping for normalization
+            # this gets converted to a flat dict in the end
+            all_ttd_drugs = []
+            for target_id, data in ttd_data.items():
+                if 'UNIPROID' not in data:
+                    continue
+                if 'DRUGINFO' not in data:
+                    continue
+                for this_drug in data['DRUGINFO']:
+                    this_drug_curie = drug_id_prefix + this_drug[0]
+                    all_ttd_drugs.append({'orig_id':this_drug_curie,
+                                            'id':this_drug_curie})
+            normalized_ttd_drugs = normalize_curies(map_path="./maps/drugcentral-maps-kg_covid_19-0.1.sssom.tsv",
+                                            entries=all_ttd_drugs)
+            ttd_drug_map = {entry['orig_id']:entry['id'] for entry in normalized_ttd_drugs}
+
             for target_id, data in ttd_data.items():
                 # WRITE NODES
 
@@ -84,7 +100,7 @@ class TTDTransform(Transform):
 
                 # for each drug in DRUGINFO:
                 for this_drug in data['DRUGINFO']:
-                    this_drug_curie = drug_id_prefix + this_drug[0]
+                    this_drug_curie = ttd_drug_map[drug_id_prefix + this_drug[0]]
                     #
                     # make node for drug
                     #

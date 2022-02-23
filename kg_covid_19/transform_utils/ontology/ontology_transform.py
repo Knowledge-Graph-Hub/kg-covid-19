@@ -1,6 +1,8 @@
 import os
 
 from typing import Optional
+import csv
+import uuid
 
 from kgx.cli.cli_utils import transform  # type: ignore
 from kg_covid_19.transform_utils.transform import Transform
@@ -60,3 +62,56 @@ class OntologyTransform(Transform):
                   input_compression=compression,
                   output=os.path.join(self.output_dir, name),
                   output_format='tsv')
+
+        # Extra step here to add extra nodes+edges for mappings
+        if name == "chebi":
+            edgefile_name = name + "_edges.tsv"
+            nodefile_name = name + "_nodes.tsv"
+
+            # Retrieve all node ids
+            all_node_ids = []
+            with open(os.path.join(self.output_dir, nodefile_name)) as nodefile:
+                node_rows = csv.DictReader(nodefile, delimiter='\t')
+                for row in node_rows:
+                    all_node_ids.append(row['id'])
+                all_node_ids = list(set(all_node_ids))
+
+            # Get mappings for each node id
+            node_mappings = {}
+            with open("./maps/drugcentral-maps-kg_covid_19-0.1.sssom.tsv") as map_file:
+        
+                for n in range(11):
+                    next(map_file)
+                norm_map = csv.DictReader(map_file, delimiter='\t')
+
+                for row in norm_map:
+                    if row['subject_id'] in all_node_ids and row['object_id'] != '':
+                        node_mappings[row['subject_id']] = row['object_id']
+
+            # For each node id with a mapping, build a new relation
+            # and its corresponding nodes
+            new_match_relations = []
+            all_map_nodes = []
+            for subject,object in node_mappings.items():
+                urn = "urn:uuid:" + str(uuid.uuid1())
+                new_relation = f'{urn}\t{subject}\tbiolink:exact_match\t{object}\tskos:exactMatch\tchebi.json.gz\n'
+                new_match_relations.append(new_relation)
+                object_iri = "https://drugcentral.org/drugcard/" + (object.split(":"))[1]
+                new_map_node = f'{object}\tbiolink:Drug\t\t\t\t\t\t{object_iri}\t\t\t\t\t\t\t\n'
+                all_map_nodes.append(new_map_node)
+
+            # Write all relations to the edge file
+            with open(os.path.join(self.output_dir, edgefile_name), 'a') as edgefile:
+                for relation in new_match_relations:
+                    edgefile.write(relation)
+            
+            # Write all mapped ids to the node file
+            with open(os.path.join(self.output_dir, nodefile_name), 'a') as nodefile:
+                for node in all_map_nodes:
+                    nodefile.write(node)
+
+
+
+
+
+
