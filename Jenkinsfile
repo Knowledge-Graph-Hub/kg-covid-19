@@ -230,7 +230,7 @@ pipeline {
                         echo 'Push master out to public Blazegraph'
 
                         retry(3){
-                            sh 'HOME=`pwd` && ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.local-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=bbop --extra-vars="endpoint=internal"'
+                            sh 'HOME=`pwd` && ansible-playbook update-kg-hub-endpoint.yaml --inventory=hosts.remote-rdf-endpoint --private-key="$DEPLOY_LOCAL_IDENTITY" -e target_user=ubuntu --extra-vars="endpoint=internal"'
                         }
                     }
                 }
