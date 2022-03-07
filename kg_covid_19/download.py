@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-from .utils import download_from_yaml
+from kghub_downloader.download_utils import download_from_yaml
 
 
 def download(yaml_file: str, output_dir: str, ignore_cache: bool = False) -> None:
