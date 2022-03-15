@@ -81,7 +81,8 @@ setup(
         'sphinx',
         'sphinx_rtd_theme',
         'recommonmark',
-        'kghub-downloader'
+        'kghub-downloader',
+        'multi-indexer'
     ],
     extras_require=extras,
 )
