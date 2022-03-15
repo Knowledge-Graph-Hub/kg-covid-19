@@ -77,7 +77,7 @@ setup(
         'pyyaml',
         'bmt',
         'ensmallen_graph==0.4.3',
-        'elasticsearch',
+        'elasticsearch==7.17.1',
         'sphinx',
         'sphinx_rtd_theme',
         'recommonmark',
