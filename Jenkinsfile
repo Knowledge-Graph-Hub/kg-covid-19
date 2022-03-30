@@ -198,11 +198,6 @@ pipeline {
 
                                 sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG put -pr --acl-public --cf-invalidate $S3PROJECTDIR s3://kg-hub-public-data/'
 
-                                // Build the top level index.html
-                                // "External" packages required to run these scripts.
-                                sh '. venv/bin/activate && multi_indexer --bucket kg-hub-public-data --prefix https://kg-hub.berkeleybop.io/ > top-level-index.html'
-                                sh '. venv/bin/activate && s3cmd -c $S3CMD_CFG put --acl-public --mime-type=text/html --cf-invalidate top-level-index.html s3://kg-hub-public-data/index.html'
-
                                 // Invalidate the CDN now that the new files are up.
                                 sh 'echo "[preview]" > ./awscli_config.txt && echo "cloudfront=true" >> ./awscli_config.txt'
                                 sh '. venv/bin/activate && AWS_CONFIG_FILE=./awscli_config.txt python3.8 ./venv/bin/aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"'
