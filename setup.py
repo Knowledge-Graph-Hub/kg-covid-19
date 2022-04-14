@@ -76,7 +76,7 @@ setup(
         'compress_json',
         'pyyaml',
         'bmt',
-        'ensmallen_graph==0.4.3',
+        'ensmallen>=0.7.0.dev12',
         'elasticsearch==7.17.1',
         'sphinx',
         'sphinx_rtd_theme',
