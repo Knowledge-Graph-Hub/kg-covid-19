@@ -6,18 +6,18 @@ configuration:
 merged_graph:
   name: KG-COVID-19 Graph
   source:
-#     drug-central:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/drug_central/nodes.tsv
-#           - data/transformed/drug_central/edges.tsv
-#     pharmgkb:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/pharmgkb/nodes.tsv
-#           - data/transformed/pharmgkb/edges.tsv
+    drug-central:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/drug_central/nodes.tsv
+          - data/transformed/drug_central/edges.tsv
+    pharmgkb:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/pharmgkb/nodes.tsv
+          - data/transformed/pharmgkb/edges.tsv
     STRING:
       input:
         format: tsv
@@ -45,72 +45,72 @@ merged_graph:
             category: biolink:Protein
             alternative_property: xrefs
             prefix: UniProtKB
-#     ttd:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/ttd/nodes.tsv
-#           - data/transformed/ttd/edges.tsv
-#     zhou-host-proteins:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/zhou_host_proteins/nodes.tsv
-#           - data/transformed/zhou_host_proteins/edges.tsv
-#     SciBite-CORD-19:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/SciBite-CORD-19/nodes.tsv
-#           - data/transformed/SciBite-CORD-19/edges.tsv
-#     sars-cov-2-gene-annot:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/sars_cov_2_gene_annot/nodes.tsv
-#           - data/transformed/sars_cov_2_gene_annot/edges.tsv
-#     intact:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/intact/nodes.tsv
-#           - data/transformed/intact/edges.tsv
-#     chembl:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/ChEMBL/nodes.tsv
-#           - data/transformed/ChEMBL/edges.tsv
-#     gene-ontology:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/ontologies/go-plus_nodes.tsv
-#           - data/transformed/ontologies/go-plus_edges.tsv
-#     mondo-ontology:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/ontologies/mondo_nodes.tsv
-#           - data/transformed/ontologies/mondo_edges.tsv
-#     chebi:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/ontologies/chebi_nodes.tsv
-#           - data/transformed/ontologies/chebi_edges.tsv
-#     hp-ontology:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/ontologies/hp_nodes.tsv
-#           - data/transformed/ontologies/hp_edges.tsv
-#     go-cams:
-#       input:
-#         format: tsv
-#         filename:
-#           - data/transformed/GOCAMs/GOCAMs_nodes.tsv
-#           - data/transformed/GOCAMs/GOCAMs_edges.tsv
+    ttd:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/ttd/nodes.tsv
+          - data/transformed/ttd/edges.tsv
+    zhou-host-proteins:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/zhou_host_proteins/nodes.tsv
+          - data/transformed/zhou_host_proteins/edges.tsv
+    SciBite-CORD-19:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/SciBite-CORD-19/nodes.tsv
+          - data/transformed/SciBite-CORD-19/edges.tsv
+    sars-cov-2-gene-annot:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/sars_cov_2_gene_annot/nodes.tsv
+          - data/transformed/sars_cov_2_gene_annot/edges.tsv
+    intact:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/intact/nodes.tsv
+          - data/transformed/intact/edges.tsv
+    chembl:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/ChEMBL/nodes.tsv
+          - data/transformed/ChEMBL/edges.tsv
+    gene-ontology:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/ontologies/go-plus_nodes.tsv
+          - data/transformed/ontologies/go-plus_edges.tsv
+    mondo-ontology:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/ontologies/mondo_nodes.tsv
+          - data/transformed/ontologies/mondo_edges.tsv
+    chebi:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/ontologies/chebi_nodes.tsv
+          - data/transformed/ontologies/chebi_edges.tsv
+    hp-ontology:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/ontologies/hp_nodes.tsv
+          - data/transformed/ontologies/hp_edges.tsv
+    go-cams:
+      input:
+        format: tsv
+        filename:
+          - data/transformed/GOCAMs/GOCAMs_nodes.tsv
+          - data/transformed/GOCAMs/GOCAMs_edges.tsv
   operations:
     - name: kgx.graph_operations.summarize_graph.generate_graph_stats
       args:
@@ -124,7 +124,7 @@ merged_graph:
     merged-kg-tsv:
       format: tsv
       compression: tar.gz
-      filename: merged-kg-1
+      filename: merged-kg
       property_types:
         # define the type for non-canonical node/edge properties
         combined_score: 'xsd:float'
