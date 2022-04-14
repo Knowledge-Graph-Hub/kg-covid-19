@@ -44,14 +44,12 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
 
     # make positive edges
     logging.info("Making positive edges")
-    pos_train_edges, pos_test_edges = graph.random_holdout(seed=seed,
-                                                           train_size=42,
-                                                           train_percentage=train_fraction)
+    pos_train_edges, pos_test_edges = graph.random_holdout(
+                                                           train_size=0.5)
     if validation:
         pos_valid_edges, pos_test_edges = \
-            pos_test_edges.random_holdout(seed=seed,
-                                          train_size=42,
-                                          train_percentage=0.5)
+            pos_test_edges.random_holdout(
+                                          train_size=0.5)
 
     # make negative edges
     logging.info("Making negative edges")
@@ -62,10 +60,10 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
                                          negatives_number=graph.get_edges_number()
                                          )
     neg_train_edges, neg_test_edges = \
-        all_negative_edges.random_holdout(seed=seed, train_percentage=train_fraction)
+        all_negative_edges.random_holdout(train_size=0.5)
     if validation:
         neg_test_edges, neg_valid_edges = \
-            neg_test_edges.random_holdout(seed=seed, train_percentage=0.5)
+            neg_test_edges.random_holdout(train_size=0.5)
 
     #
     # write out positive edges
