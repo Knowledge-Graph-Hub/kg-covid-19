@@ -56,7 +56,7 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
 
     # TODO all self loops removed - notify Harry - some more development coming here.
     all_negative_edges = \
-        pos_train_edges.sample_negatives(seed=seed,
+        pos_train_edges.sample_negatives(
                                          negatives_number=graph.get_edges_number()
                                          )
     neg_train_edges, neg_test_edges = \
