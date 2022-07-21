@@ -7,7 +7,7 @@ from typing import List, Union, Tuple, Optional
 import pandas as pd  # type: ignore
 import numpy as np  # type: ignore
 from tqdm import tqdm  # type: ignore
-from ensmallen_graph import EnsmallenGraph  # type: ignore
+from ensmallen import Graph  # type: ignore
 
 
 def make_holdouts(nodes: str, edges: str, output_dir: str,
@@ -27,42 +27,43 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
     """
     logging.basicConfig(level=logging.INFO)
     logging.info("Loading graph from nodes %s and edges %s files" % (nodes, edges))
-    graph = EnsmallenGraph.from_unsorted_csv(
+    graph = Graph.from_csv(
         edge_path=edges,
         sources_column='subject',
         destinations_column='object',
         directed=False,
-        edge_types_column='predicate',
+        edge_list_edge_types_column='predicate',
         default_edge_type='biolink:Association',
         node_path=nodes,
         nodes_column='id',
         default_node_type='biolink:NamedThing',
-        node_types_column='category'
-        );
+        node_list_node_types_column='category'
+    )
 
     os.makedirs(output_dir, exist_ok=True)
 
     # make positive edges
     logging.info("Making positive edges")
-    pos_train_edges, pos_test_edges = graph.random_holdout(seed=seed,
-                                                           train_percentage=train_fraction)
+    pos_train_edges, pos_test_edges = graph.random_holdout(
+                                                           train_size=0.8)
     if validation:
         pos_valid_edges, pos_test_edges = \
-            pos_test_edges.random_holdout(seed=seed,
-                                          train_percentage=0.5)
+            pos_test_edges.random_holdout(
+                                          train_size=0.8)
 
     # make negative edges
     logging.info("Making negative edges")
 
+    # TODO all self loops removed - notify Harry - some more development coming here.
     all_negative_edges = \
-        pos_train_edges.sample_negatives(seed=seed,
-                                         negatives_number=graph.get_edges_number(),
-                                         allow_selfloops=False)
+        pos_train_edges.sample_negatives(
+                                         negatives_number=graph.get_edges_number()
+                                         )
     neg_train_edges, neg_test_edges = \
-        all_negative_edges.random_holdout(seed=seed, train_percentage=train_fraction)
+        all_negative_edges.random_holdout(train_size=0.8)
     if validation:
         neg_test_edges, neg_valid_edges = \
-            neg_test_edges.random_holdout(seed=seed, train_percentage=0.5)
+            neg_test_edges.random_holdout(train_size=0.8)
 
     #
     # write out positive edges
