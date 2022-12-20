@@ -1,3 +1,5 @@
+"""Tests for parsing IntAct data."""
+
 import unittest
 from xml.dom import minidom
 
@@ -8,9 +10,11 @@ from kg_covid_19.transform_utils.intact.intact import IntAct
 
 class TestIntAct(unittest.TestCase):
     def setUp(self) -> None:
+        """Set up for IntAct tests."""
         self.intact = IntAct()
 
     def test_intact_instance(self):
+        """Test structure of IntAct input."""
         self.assertEqual(
             self.intact.node_header,
             ["id", "name", "category", "ncbi_taxid", "provided_by"],
@@ -34,6 +38,7 @@ class TestIntAct(unittest.TestCase):
         )
 
     def test_struct_parse_xml_to_nodes_edges(self):
+        """Test structure of parsed IntAct input in nodes and edges."""
         parsed = self.intact.parse_xml_to_nodes_edges("tests/resources/intact_test.xml")
         self.assertTrue(isinstance(parsed, dict))
         self.assertTrue(isinstance(parsed["nodes"], list))
@@ -45,8 +50,10 @@ class TestIntAct(unittest.TestCase):
                 "tests/resources/intact_test.xml",
                 5,
                 8,  # node and edge count, respectively
-                # nodes and edges given here are checked against the first values in
-                # parsed['nodes'] and parsed['edges']. Extra items in parsed['nodes'] and
+                # nodes and edges given here are checked 
+                # against the first values in
+                # parsed['nodes'] and parsed['edges']. 
+                # Extra items in parsed['nodes'] and
                 # parsed['edges'] are ignored
                 {
                     "nodes": [
@@ -84,9 +91,12 @@ class TestIntAct(unittest.TestCase):
                 },
             ),
             (
-                "tests/resources/intact_3_participants.xml",  # test interactions with 3 participants
+                "tests/resources/intact_3_participants.xml",  
+                # test interactions with 3 participants
                 3,
-                3,  # interaction with 3 participants yields 3 edges (1<->2, 2<->3, 1<->3)
+                3,  
+                # interaction with 3 participants yields 3 edges
+                #  (1<->2, 2<->3, 1<->3)
                 {
                     "nodes": [],
                     "edges": [
@@ -112,6 +122,7 @@ class TestIntAct(unittest.TestCase):
     def test_nodes_parse_xml_to_nodes_edges(
         self, xml_file, node_count, edge_count, expect_nodes_edges
     ):
+        """Test structure of nodes when parsed from XML."""
         parsed = self.intact.parse_xml_to_nodes_edges(xml_file)
         self.assertEqual(
             node_count, len(parsed["nodes"]), "Didn't get the expected number of nodes"
@@ -143,6 +154,7 @@ class TestIntAct(unittest.TestCase):
         ]
     )
     def test_parse_experiment_info(self, xml_file, exp_id, correct_data):
+        """Test parsing experiment info from XML."""
         xmldoc = minidom.parse(xml_file)
         parsed = self.intact.parse_experiment_info(xmldoc)
         self.assertTrue(isinstance(parsed, dict))
@@ -152,7 +164,8 @@ class TestIntAct(unittest.TestCase):
             self.assertEqual(parsed[exp_id][key], correct_data[key])
 
     def test_fix_for_chebi_id(self):
-        chebi_test_xml = "tests/resources/31315999_weird_chebi_id.xml"  # weird CHEBI id
+        """Test case when CHEBI IDs aren't in the correct format."""
+        chebi_test_xml = "tests/resources/31315999_weird_chebi_id.xml"
         parsed = self.intact.parse_xml_to_nodes_edges(chebi_test_xml)
         self.assertEqual(parsed["nodes"][0][0], "CHEBI:28304")
         self.assertEqual(parsed["edges"][0][0], "CHEBI:28304")

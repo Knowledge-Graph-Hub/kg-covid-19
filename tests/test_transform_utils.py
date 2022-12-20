@@ -1,6 +1,11 @@
+"""Test the transformation utilities."""
+
 import unittest
+
 from parameterized import parameterized
-from kg_covid_19.utils.transform_utils import guess_bl_category, collapse_uniprot_curie
+
+from kg_covid_19.utils.transform_utils import (collapse_uniprot_curie,
+                                               guess_bl_category)
 
 
 class TestTransformUtils(unittest.TestCase):
@@ -13,6 +18,7 @@ class TestTransformUtils(unittest.TestCase):
         ]
     )
     def test_guess_bl_category(self, curie, category):
+        """Test inference of Biolink categories for a CURIE."""
         self.assertEqual(category, guess_bl_category(curie))
 
     @parameterized.expand(
@@ -25,4 +31,5 @@ class TestTransformUtils(unittest.TestCase):
         ]
     )
     def test_collapse_uniprot_curie(self, curie, collapsed_curie):
+        """Test for collapsing a UniProtKB curie."""
         self.assertEqual(collapsed_curie, collapse_uniprot_curie(curie))

@@ -1,3 +1,5 @@
+"""Transform class for DrugCentral drug vs target interactions."""
+
 import gzip
 import logging
 import os
@@ -23,6 +25,7 @@ And extracts Drug -> Protein interactions
 
 class DrugCentralTransform(Transform):
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
+        """Initialize."""
         source_name = "drug_central"
         super().__init__(source_name, input_dir, output_dir)  # set some variables
         self.node_header = ["id", "name", "category", "TDL", "provided_by"]
@@ -30,10 +33,12 @@ class DrugCentralTransform(Transform):
     def run(
         self, data_file: Optional[str] = None, species: str = "Homo sapiens"
     ) -> None:
-        """Method is called and performs needed transformations to process the Drug
-        Central data, additional information
-        on this data can be found in the comment at the top of this script"""
-
+        """
+        Call method and perform needed transformations.
+        
+        Process the Drug Central data, additional information
+        on this data can be found in the comment at the top of this script.
+        """
         if data_file is None:
             data_file = "drug.target.interaction.tsv.gz"
         interactions_file = os.path.join(self.input_base_dir, data_file)
@@ -140,16 +145,14 @@ class DrugCentralTransform(Transform):
 
 
 def parse_drug_central_line(this_line: str, header_items: List) -> Dict:
-    """Methods processes a line of text from Drug Central.
+    """Process a line of text from Drug Central.
 
     Args:
         this_line: A string containing a line of text.
         header_items: A list of header items.
-
     Returns:
         item_dict: A dictionary of header items and a processed Drug Central string.
     """
-
     data = this_line.strip().split("\t")
     data = [i.replace('"', "") for i in data]
     item_dict = data_to_dict(header_items, data)
@@ -158,10 +161,12 @@ def parse_drug_central_line(this_line: str, header_items: List) -> Dict:
 
 
 def items_dict_to_protein_data_dict(items_dict: dict) -> dict:
-    """Given a parsed line from parse_drug_central_line, split up pipe-separated entries
-    for several related proteins and their names and TDL info into separate protein
-    entries
+    """
+    Convert an items_dict to a dictionary of protein data.
 
+    Given a parsed line from parse_drug_central_line, split up pipe-separated entries
+    for several related proteins and their names and TDL info into separate protein
+    entries.
     :param items_dict: dictionary of data from a line, output by parse_drug_central_line
     :return: a dict with information about each protein
     """

@@ -1,3 +1,5 @@
+"""Tests for parsing PharmGKB data."""
+
 import types
 from unittest import TestCase
 
@@ -10,6 +12,7 @@ class TestPharmGKB(TestCase):
     """Tests the ttd transform"""
 
     def setUp(self) -> None:
+        """Set up for PharmGKB tests."""
         self.pharmgkb = PharmGKB()
         self.pharmgkb_relationships_snippet = (
             "tests/resources/relationships_SNIPPET.tsv"
@@ -29,6 +32,7 @@ class TestPharmGKB(TestCase):
         )
 
     def test_parse_pharmgkb_line(self) -> None:
+        """Test parsing of pharmgkb line."""
         self.assertTrue(
             isinstance(getattr(self.pharmgkb, "parse_pharmgkb_line"), types.MethodType)
         )
@@ -54,6 +58,7 @@ class TestPharmGKB(TestCase):
         self.assertTrue(parsed_result["Entity1_name"], "ANKFN1")
 
     def test_make_id_mapping_file(self) -> None:
+        """Test production of ID mapping file."""
         self.assertTrue(
             isinstance(getattr(self.pharmgkb, "make_id_mapping_file"), types.MethodType)
         )
@@ -70,10 +75,13 @@ class TestPharmGKB(TestCase):
         [("PA164712302", "pharmgkb.drug:PA164712302"), ("PA131887008", "CHEBI:1391")]
     )
     def test_make_preferred_drug_id(self, pharmgkb_id, preferred_id) -> None:
+        """Test conversion of PharmGKB ID to preferred drug ID."""
         self.assertEqual(
             self.pharmgkb.make_preferred_drug_id(pharmgkb_id, self.drug_id_map),
             preferred_id,
         )
 
     def test_run(self) -> None:
-        self.assertTrue(isinstance(getattr(self.pharmgkb, "run"), types.MethodType))
+        """Test successful execution of the run command."""
+        inst_type = "run"
+        self.assertTrue(isinstance(self.pharmgkb, inst_type), types.MethodType)

@@ -1,30 +1,21 @@
+"""Test the parent Transform class."""
+
 import os
 from unittest import TestCase
 
 from parameterized import parameterized
 
 from kg_covid_19.transform import DATA_SOURCES
-from kg_covid_19.transform_utils.drug_central.drug_central import \
-    DrugCentralTransform
-from kg_covid_19.transform_utils.intact.intact import IntAct
-from kg_covid_19.transform_utils.ontology import OntologyTransform
-from kg_covid_19.transform_utils.ontology.ontology_transform import ONTOLOGIES
-from kg_covid_19.transform_utils.pharmgkb import PharmGKB
-from kg_covid_19.transform_utils.sars_cov_2_gene_annot.sars_cov_2_gene_annot import \
-    SARSCoV2GeneAnnot
-from kg_covid_19.transform_utils.scibite_cord import ScibiteCordTransform
-from kg_covid_19.transform_utils.string_ppi import StringTransform
 from kg_covid_19.transform_utils.transform import Transform
-from kg_covid_19.transform_utils.ttd.ttd import TTDTransform
-from kg_covid_19.transform_utils.zhou_host_proteins.zhou_transform import \
-    ZhouTransform
 
 
 class TestTransform(TestCase):
     def setUp(self) -> None:
+        """Set up the transform tests."""
         self.transform_instance = TransformChildClass()
 
     def test_reality(self):
+        """Test the nature of reality."""
         self.assertEqual(1, 1)
 
     @parameterized.expand(
@@ -55,6 +46,7 @@ class TestTransform(TestCase):
         ]
     )
     def test_attributes(self, attr, default):
+        """Test the attributes of a Transform instance."""
         self.transform_instance
         self.assertTrue(hasattr(self.transform_instance, attr))
         self.assertEqual(getattr(self.transform_instance, attr), default)
@@ -63,6 +55,7 @@ class TestTransform(TestCase):
         [("DEFAULT_INPUT_DIR", "data/raw"), ("DEFAULT_OUTPUT_DIR", "data/transformed")]
     )
     def test_default_dir(self, dir_var_name, dir_var_value):
+        """Test the default directory."""
         self.assertEqual(getattr(Transform, dir_var_name), dir_var_value)
 
     @parameterized.expand(
@@ -70,11 +63,12 @@ class TestTransform(TestCase):
     )
     def test_transform_child_classes(self, src_name):
         """
+        Test whether Transform child classes work as expected.
+
         Make sure Transform child classes:
         - properly set default input_dir and output_dir
         - properly pass and set input_dir and output from constructor
         - implement run()
-
         :param src_name:
         :return: None
         """
@@ -92,5 +86,7 @@ class TestTransform(TestCase):
 
 
 class TransformChildClass(Transform):
+    """An example Transform class."""
     def __init__(self):
+        """Initialize a Transform child class."""
         super().__init__(source_name="test_transform")

@@ -1,5 +1,6 @@
+"""Test parsing GO-CAMs inputs."""
+
 import io
-import os
 import sys
 import tempfile
 import unittest
@@ -10,6 +11,7 @@ from kg_covid_19.transform_utils.gocam_transform import GocamTransform
 
 class TestGOCams(unittest.TestCase):
     def setUp(self) -> None:
+        """Set up for GO-CAM transform tests."""
         self.gc_nt_file = "tests/resources/gocams/lifted-go-cams-20200619_SNIPPET.nt"
         self.input_dir = "tests/resources/gocams/"
         self.output_dir = tempfile.mkdtemp()
@@ -18,10 +20,12 @@ class TestGOCams(unittest.TestCase):
         )
 
     def test_run(self):
+        """Test running the GO-CAM transformation."""
         # Suppress chatter
         with mock.patch("sys.stdout", new=io.StringIO()) as std_out:
             self.gocams_t.run(data_file=self.gc_nt_file)
             sys.stdout = sys.__stdout__
 
     def test_run_exists(self):
+        """Test if the transform exists."""
         self.assertTrue(isinstance(self.gocams_t.run, object))
