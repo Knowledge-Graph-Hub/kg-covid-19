@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "kg-covid-19"
+version = "0.1.1"
+description = "KG-Hub project to produce a knowledge graph for COVID-19 and SARS-CoV-2."
+authors = ["Justin Reese <justaddcoffee+github@gmail.com>, caufieldjh <j.harry.caufield@gmail.com>"]
+license = "BSD-3"
+readme = "README.md"
+packages = [{include = "kg_covid_19"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+compress-json = "^1.0.8"
+elasticsearch = "7.17.1"
+grape = "^0.1.29"
+kghub-downloader = "^0.3.3"
+kgx = "^1.7.2"
+multi-indexer = "^0.0.5"
+obonet = "^0.3.1"
+PyYAML = "^6.0"
+recommonmark = "^0.7.1"
+Sphinx = "^5.3.0"
+sphinx-rtd-theme = "^1.1.1"
+tabula-py = "^2.6.0"
+tqdm = "^4.64.1"
+wget = "^3.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
+coverage = "^7.0.0"
+parameterized = "^0.8.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
