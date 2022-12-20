@@ -1,11 +1,12 @@
+"""Functions for querying data."""
 import logging
 import re
 
-from SPARQLWrapper import (CSV, JSON, N3, RDF, RDFXML, TSV,  # type: ignore
-                           TURTLE, XML, SPARQLWrapper)
+from SPARQLWrapper import JSON, N3, SPARQLWrapper
 
 
 def run_query(query: str, endpoint: str, return_format=JSON) -> dict:
+    """Run a query."""
     sparql = SPARQLWrapper(endpoint)
     sparql.setQuery(query)
     sparql.setReturnFormat(return_format)
@@ -16,12 +17,12 @@ def run_query(query: str, endpoint: str, return_format=JSON) -> dict:
 
 def parse_query_rq(rq_file) -> dict:
     """
+    Parse a SPARQL query file in grlc rq format.
 
     Args:
         rq_file: sparql query in grlc rq format
 
     Returns: dict with parsed info about sparql query
-
     """
     parsed_rq = dict()
     with open(rq_file) as r:
@@ -29,9 +30,9 @@ def parse_query_rq(rq_file) -> dict:
         for line in r:
             if line.isspace():
                 continue
-            elif re.match("^\=\+ ", line):
+            elif re.match(r"^\=\+ ", line):
                 (key, value) = (
-                    re.sub("^\=\+ ", "", line).rstrip().split(" ", maxsplit=1)
+                    re.sub(r"^\=\+ ", "", line).rstrip().split(" ", maxsplit=1)
                 )
                 parsed_rq[key] = value
             else:
@@ -41,6 +42,7 @@ def parse_query_rq(rq_file) -> dict:
 
 
 def result_dict_to_tsv(result_dict: dict, outfile: str) -> None:
+    """Convert a result_dict to a TSV for output."""
     with open(outfile, "wt") as f:
         # header
         f.write("\t".join(result_dict["head"]["vars"]) + "\n")

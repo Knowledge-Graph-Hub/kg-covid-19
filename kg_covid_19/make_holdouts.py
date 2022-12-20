@@ -20,9 +20,9 @@ def make_holdouts(
     validation: bool,
     seed=42,
 ) -> None:
-    """Prepare positive and negative edges for testing and training (see run.py holdouts
-    command for documentation)
+    """Prepare positive and negative edges for testing and training.
 
+    (See run.py holdouts command for documentation.)
     Args:
         :param nodes    nodes of input graph, in KGX TSV format [data/merged/nodes.tsv]
         :param edges:   edges for input graph, in KGX TSV format [data/merged/edges.tsv]
@@ -105,6 +105,7 @@ def make_holdouts(
 
 
 def df_to_tsv(df: pd.DataFrame, outfile: str, sep="\t", index=False) -> None:
+    """Convert data frame to CSV, and usually a TSV."""
     df.to_csv(outfile, sep=sep, index=index)
 
 
@@ -114,9 +115,11 @@ def make_negative_edges(
     edge_label: str = "negative_edge",
     relation: str = "negative_edge",
 ) -> pd.DataFrame:
-    """Given a graph (as nodes and edges pandas dataframes), select num_edges holdouts that
-    are NOT present in the graph
-
+    """
+    Produce negative holdout set.
+    
+    Given a graph (as nodes and edges pandas dataframes),
+    select num_edges holdouts that are NOT present in the graph.
     :param nodes_df: pandas dataframe containing node info
     :param edges_df: pandas dataframe containing edge info
     :param relation: string to put in relation column
@@ -227,12 +230,14 @@ def _generate_negative_edges(
 def make_positive_edges(
     nodes_df: pd.DataFrame, edges_df: pd.DataFrame, train_fraction: float
 ) -> List[pd.DataFrame]:
-    """Positive edges are randomly selected from the edges in the graph, IFF both nodes
+    """
+    Produce holdout set of positive edges.
+    
+    Positive edges are randomly selected from the edges in the graph, IFF both nodes
     participating in the edge have a degree greater than min_degree (to avoid creating
     disconnected components). This edge is then removed in the output graph. Negative
     edges are selected by randomly selecting pairs of nodes that are not connected by an
     edge.
-
     :param nodes_df: pandas dataframe with node info, generated from KGX TSV file
     :param edges_df: pandas dataframe with edge info, generated from KGX TSV file
     :param train_fraction: fraction of input edges to emit as test (and optionally
@@ -294,7 +299,7 @@ def make_positive_edges(
 
 
 def tsv_to_df(tsv_file: str, *args, **kwargs) -> pd.DataFrame:
-    """Read in a TSV file and return a pandas dataframe
+    """Read in a TSV file and return a pandas dataframe.
 
     :param tsv_file: file to read in
     :return: pandas dataframe

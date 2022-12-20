@@ -1,3 +1,5 @@
+"""Transform class for CHEMBL data."""
+
 import json
 from typing import Dict, List, Optional, Set
 
@@ -11,11 +13,10 @@ TAXON_MAP = {
 
 
 class ChemblTransform(Transform):
-    """
-    Parse ChEMBL and transform them into a property graph representation.
-    """
+    """Parse ChEMBL and transform into a property graph representation."""
 
     def __init__(self, input_dir: str = None, output_dir: str = None):
+        """Initialize."""
         source_name = "ChEMBL"
         super().__init__(source_name, input_dir, output_dir)
         self.subset = "SARS-CoV-2 subset"
@@ -26,11 +27,10 @@ class ChemblTransform(Transform):
     def run(
         self, data_file: Optional[str] = None, chembl_data_files: Optional[dict] = None
     ) -> None:
-        """Method is called and performs needed transformations to process
-        SARS-CoV-2 subset of ChEMBL.
-
+        """Call method and perform needed transformations.
+        
+        Process SARS-CoV-2 subset of ChEMBL.
         http://chembl.blogspot.com/2020/05/chembl27-sars-cov-2-release.html
-
         Args:
             data_file: NOT USED - preserves to placate mypy. Use "data_files" instead
             chembl_data_files: data files to parse
@@ -135,14 +135,12 @@ class ChemblTransform(Transform):
             - document
             - target
             - molecule
-
         Each of the activity document will be converted to an edge that links
         a molecule to a target with biolink:interacts_with edge_label.
         The edge itself will have additional properties like 'publications' and 'assay'
         that references the publication and assay, respectively.
         The edge will also have measurements as edge properties that describe the
         activity/interaction further.
-
         Args:
             data: A list of ChEMBL Activity records
 
@@ -208,7 +206,6 @@ class ChemblTransform(Transform):
 
         Args:
             data: A list of ChEMBL Molecule records
-
         Returns:
             A list
         """
@@ -348,9 +345,7 @@ class ChemblTransform(Transform):
         properties: Dict = {}
 
         def update_properties(key, value):
-            """update properties dictionary in a
-            sensible manner.
-            """
+            """Update properties dictionary in a sensible manner."""
             if key in properties:
                 if isinstance(properties[key], str):
                     properties[key] = [properties[key]]
@@ -396,11 +391,10 @@ class ChemblTransform(Transform):
         return properties
 
     def read_json(self, json_file):
-        """Read in json files
+        """Read in json files.
 
         Args:
             data_file: json_file to parse
-
         Returns:
             A list of records
         """
