@@ -4,14 +4,14 @@ version = "0.1.1"
 description = "KG-Hub project to produce a knowledge graph for COVID-19 and SARS-CoV-2."
 authors = ["Justin Reese <justaddcoffee+github@gmail.com>, caufieldjh <j.harry.caufield@gmail.com>"]
 license = "BSD-3"
-readme = "README.md"
+readme = "README.rst"
 packages = [{include = "kg_covid_19"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
 compress-json = "^1.0.8"
 elasticsearch = "7.17.1"
-grape = "^0.1.29"
+ensmallen = "0.8.35"
 kghub-downloader = "^0.3.3"
 kgx = "^1.7.2"
 multi-indexer = "^0.0.5"
