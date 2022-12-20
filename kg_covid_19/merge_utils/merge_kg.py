@@ -1,6 +1,7 @@
 from typing import Dict
-import yaml
+
 import networkx as nx  # type: ignore
+import yaml
 from kgx.cli.cli_utils import merge  # type: ignore
 
 

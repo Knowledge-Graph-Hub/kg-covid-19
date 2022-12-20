@@ -1,8 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-
-from kghub_downloader.download_utils import download_from_yaml # type: ignore
+from kghub_downloader.download_utils import download_from_yaml  # type: ignore
 
 
 def download(yaml_file: str, output_dir: str, ignore_cache: bool = False) -> None:
@@ -17,7 +13,8 @@ def download(yaml_file: str, output_dir: str, ignore_cache: bool = False) -> Non
         None.
     """
 
-    download_from_yaml(yaml_file=yaml_file, output_dir=output_dir,
-                       ignore_cache=ignore_cache)
+    download_from_yaml(
+        yaml_file=yaml_file, output_dir=output_dir, ignore_cache=ignore_cache
+    )
 
     return None

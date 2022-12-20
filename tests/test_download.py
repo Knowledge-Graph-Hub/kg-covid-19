@@ -1,19 +1,19 @@
-import os
-import tempfile
-from unittest import TestCase, mock
+
+from unittest import TestCase
 
 from kg_covid_19 import download
-from kg_covid_19.utils.download_utils import download_from_api, download_from_yaml
+from kg_covid_19.utils.download_utils import (download_from_api,
+                                              download_from_yaml)
 
 
 class TestDownload(TestCase):
-    """Tests kg_emerging_viruses.download
-    """
+    """Tests kg_emerging_viruses.download"""
+
     def setUp(self) -> None:
         pass
 
     # @mock.patch('requests.get')
-    #def test_api_download(self):
+    # def test_api_download(self):
     #    td = tempfile.gettempdir()
     #    download_from_yaml('tests/resources/download/download_api.yaml', td,
     #                       ignore_cache=True)
@@ -26,5 +26,3 @@ class TestDownload(TestCase):
     #     tmpdir = tempfile.mkdtemp()
     #     download(yaml_file='tests/resources/download.yaml', output_dir=tmpdir)
     #     self.assertTrue(mock_get.called)
-
-
