@@ -1,0 +1,48 @@
+name: KG-COVID-19 QC
+
+on:
+  # Triggers the workflow on push or pull request events
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, '3.10']
+        os: [ ubuntu-latest ]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    #----------------------------------------------
+    #          install & configure poetry
+    #----------------------------------------------
+    - name: Install Poetry
+      uses: snok/install-poetry@v1.3
+    
+
+    #----------------------------------------------
+    #    install your root project, if required 
+    #----------------------------------------------      
+    - name: Install library
+      run: poetry install --no-interaction
+
+    #----------------------------------------------
+    #              run tox
+    #----------------------------------------------
+    - name: Lint with flake8
+      run: poetry run tox -e flake8
+    - name: Test with MyPy
+      run: poetry run tox -e mypy
+    - name: Test with pytest
+      run: poetry run pytest
