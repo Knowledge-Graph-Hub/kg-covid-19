@@ -1,8 +1,9 @@
+"""Functions for graph merging."""
 from typing import Dict
 
-import networkx as nx  # type: ignore
+import networkx as nx
 import yaml
-from kgx.cli.cli_utils import merge  # type: ignore
+from kgx.cli.cli_utils import merge
 
 
 def parse_load_config(yaml_file: str) -> Dict:
@@ -10,13 +11,11 @@ def parse_load_config(yaml_file: str) -> Dict:
 
     Args:
         yaml_file: A string pointing to a KGX compatible config YAML.
-
     Returns:
         Dict: The config as a dictionary.
-
     """
-    with open(yaml_file) as YML:
-        config = yaml.load(YML, Loader=yaml.FullLoader)
+    with open(yaml_file) as yaml_file_in:
+        config = yaml.load(yaml_file_in, Loader=yaml.FullLoader)
     return config
 
 

@@ -1,26 +1,31 @@
+"""Helper functions for normalizing CURIEs."""
+
 import csv
 from typing import List
 
 
 def normalize_curies(map_path: str, entries: List) -> List:
-    """Given a SSSOM map file defining one or more mappings between
-        subject_id and object_id,
-        take a list of dicts
-        and produce an identical list with the ids replaced
-        with their equivalents, as per the map.
-        Items without mappings retain their original id values.
+    """
+    Normalize CURIEs baded on a map file.
+    
+    Given a SSSOM map file defining one or more 
+    mappings between
+    subject_id and object_id,
+    take a list of dicts
+    and produce an identical list with the ids replaced
+    with their equivalents, as per the map.
+    Items without mappings retain their original id values.
     :param map_path: path to the mapping file
     :param entries: list of entries (dicts) to normalize
                     with ids as prefix:value
     """
-
     new_entries = []
 
     # Load the map
     with open(map_path) as map_file:
 
         # Load map, skip header
-        for n in range(11):
+        for _ in range(11):
             next(map_file)
         norm_map = csv.DictReader(map_file, delimiter="\t")
 
@@ -42,21 +47,23 @@ def normalize_curies(map_path: str, entries: List) -> List:
 
 
 def load_ids_from_map(map_path: str, prefix: str) -> List:
-    """Given a SSSOM map file defining one or more mappings between
-        subject_id and object_id,
-        retrieve a list of all ids
-        with a given prefix.
+    """
+    Load the full set of IDs from a map file.
+    
+    Given a SSSOM map file defining one or more mappings between
+    subject_id and object_id,
+    retrieve a list of all ids
+    with a given prefix.
     :param map_path: path to the mapping file
     :param prefix: desired id prefix, without the colon
     """
-
     new_ids = []
 
     # Load the map
     with open(map_path) as map_file:
 
         # Load map, skip header
-        for n in range(11):
+        for _ in range(11):
             next(map_file)
         norm_map = csv.DictReader(map_file, delimiter="\t")
 

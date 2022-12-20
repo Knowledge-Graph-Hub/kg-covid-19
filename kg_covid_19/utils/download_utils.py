@@ -1,3 +1,5 @@
+"""Download utilities."""
+
 import json
 import logging
 import os
@@ -15,17 +17,22 @@ from tqdm.auto import tqdm  # type: ignore
 def download_from_yaml(
     yaml_file: str, output_dir: str, ignore_cache: bool = False
 ) -> None:
-    """Given an download info from an download.yaml file, download all files
-
+    """
+    Download files specified in an input yaml.
+    
+    Given an download info from an download.yaml file,
+    download all files.
     Args:
-        yaml_file: A string pointing to the download.yaml file, to be parsed for things to download.
-        output_dir: A string pointing to where to write out downloaded files.
-        ignore_cache: Ignore cache and download files even if they exist [false]
-
+        yaml_file: A string pointing to the
+        download.yaml file, to be parsed for things
+        to download.
+        output_dir: A string pointing to where to write
+        out downloaded files.
+        ignore_cache: Ignore cache and download files
+        even if they exist [false]
     Returns:
         None.
     """
-
     os.makedirs(output_dir, exist_ok=True)
     with open(yaml_file) as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
@@ -62,13 +69,12 @@ def download_from_yaml(
 
 def download_from_api(yaml_item, outfile) -> None:
     """
+    Download from an Elasticsearch API.
 
     Args:
         yaml_item: item to be download, parsed from yaml
         outfile: where to write out file
-
     Returns:
-
     """
     if yaml_item["api"] == "elasticsearch":
         es_conn = elasticsearch.Elasticsearch(hosts=[yaml_item["url"]])
@@ -93,7 +99,8 @@ def elastic_search_query(
     request_timeout: int = 60,
     preserve_order: bool = True,
 ):
-    """Fetch records from the given URL and query parameters.
+    """
+    Fetch records from the given URL and query parameters.
 
     Args:
         es_connection: elastic search connection

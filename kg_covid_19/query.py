@@ -2,7 +2,7 @@
 import logging
 import re
 
-from SPARQLWrapper import JSON, N3, SPARQLWrapper
+from SPARQLWrapper import JSON, SPARQLWrapper
 
 
 def run_query(query: str, endpoint: str, return_format=JSON) -> dict:
@@ -59,5 +59,5 @@ def result_dict_to_tsv(result_dict: dict, outfile: str) -> None:
                     row_items.append("ERROR")
             try:
                 f.write("\t".join(row_items) + "\n")
-            except:
-                pass
+            except OSError as e:
+                print(f"Encountered error: {e}")

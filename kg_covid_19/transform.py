@@ -1,3 +1,5 @@
+"""Top-level functions for transforming data."""
+
 import logging
 from typing import List
 
@@ -36,11 +38,13 @@ DATA_SOURCES = {
 }
 
 
-def transform(input_dir: str, output_dir: str, sources: List[str] = None) -> None:
-    """Call scripts in kg_covid_19/transform/[source name]/ to transform each source into a graph format that
-    KGX can ingest directly, in either TSV or JSON format:
-    https://github.com/NCATS-Tangerine/kgx/blob/master/data-preparation.md
+def transform(input_dir: str,
+              output_dir: str,
+              sources: List[str] = None
+             ) -> None:
+    """Call scripts in kg_covid_19/transform/[source name]/ to transform data.
 
+    KGX can ingest each directly, in either TSV or JSON format.
     Args:
         input_dir: A string pointing to the directory to import data from.
         output_dir: A string pointing to the directory to output data to.
@@ -48,7 +52,6 @@ def transform(input_dir: str, output_dir: str, sources: List[str] = None) -> Non
 
     Returns:
         None.
-
     """
     if not sources:
         # run all sources

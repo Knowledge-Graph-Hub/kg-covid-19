@@ -1,3 +1,4 @@
+"""Utilities for assisting data transformations."""
 import gzip
 import logging
 import os
@@ -10,13 +11,13 @@ from tqdm import tqdm  # type: ignore
 
 
 class TransformError(Exception):
-    """Base class for other exceptions"""
+    """Base class for other exceptions."""
 
     pass
 
 
-class ItemInDictNotFound(TransformError):
-    """Raised when the input value is too small"""
+class ItemInDictNotFoundError(TransformError):
+    """Raised when the input value is too small."""
 
     pass
 
@@ -25,16 +26,16 @@ class ItemInDictNotFound(TransformError):
 
 
 def multi_page_table_to_list(multi_page_table: Any) -> List[Dict]:
-    """Method to turn table data returned from tabula.io.read_pdf(), possibly broken over several pages, into a list
+    """
+    Convert multi-page tables to lists of dicts.
+    
+    Method to turn table data returned from tabula.io.read_pdf(), possibly broken over several pages, into a list
     of dicts, one dict for each row.
-
     Args:
         multi_page_table:
-
     Returns:
         table_data: A list of dicts, where each dict is item from one row.
     """
-
     # iterate through data for each of 3 pages
     table_data: List[Dict] = []
 
@@ -53,15 +54,13 @@ def multi_page_table_to_list(multi_page_table: Any) -> List[Dict]:
 
 
 def get_header_items(table_data: Any) -> List:
-    """Utility fxn to get header from (first page of) a table.
+    """Get header from (first page of) a table.
 
     Args:
         table_data: Data, as list of dicts from tabula.io.read_pdf().
-
     Returns:
         header_items: An array of header items.
     """
-
     header = table_data["data"].pop(0)
     header_items = [d["text"] for d in header]
 
@@ -69,7 +68,9 @@ def get_header_items(table_data: Any) -> List:
 
 
 def write_node_edge_item(fh: Any, header: List, data: List, sep: str = "\t"):
-    """Write out a single line for a node or an edge in *.tsv
+    """
+    Write out a single line for a node or an edge in *.tsv.
+
     :param fh: file handle of node or edge file
     :param header: list of header items
     :param data: data for line to write out
@@ -84,8 +85,10 @@ def write_node_edge_item(fh: Any, header: List, data: List, sep: str = "\t"):
 
 
 def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
-    """Retrieve item from a dict using a list of keys, in descending order of priority
-
+    """
+    Retrieve item from a dict using a list of keys. 
+    
+    Keys should be in descending order of priority.
     :param items_dict:
     :param keys_by_priority: list of keys to use to find values
     :return: str: first value in dict for first item in keys_by_priority
@@ -97,12 +100,14 @@ def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
             value = items_dict[key]
             break
     if value is None:
-        raise ItemInDictNotFound("Can't find item in items_dict {}".format(items_dict))
+        raise ItemInDictNotFoundError(
+            "Can't find item in items_dict {}".format(items_dict)
+        )
     return value
 
 
 def data_to_dict(these_keys, these_values) -> dict:
-    """Zip up two lists to make a dict
+    """Zip up two lists to make a dict.
 
     :param these_keys: keys for new dict
     :param these_values: values for new dict
@@ -112,10 +117,14 @@ def data_to_dict(these_keys, these_values) -> dict:
 
 
 def uniprot_make_name_to_id_mapping(dat_gz_file: str) -> dict:
-    """Given a Uniprot dat.gz file, like this:
-    ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/idmapping/by_organism/HUMAN_9606_idmapping.dat.gz
-     makes dict with name to id mapping
+    """
+    Convert UniProtKB id maps to dict of maps.
     
+    Given a Uniprot dat.gz file, like this:
+    ftp://ftp.uniprot.org/pub/databases/uniprot/
+    current_release/knowledgebase/idmapping/by_organism/
+    HUMAN_9606_idmapping.dat.gz
+     makes dict with name to id mapping
     :param dat_gz_file: 
     :return: dict with mapping
     """ ""
@@ -129,7 +138,7 @@ def uniprot_make_name_to_id_mapping(dat_gz_file: str) -> dict:
 
 
 def uniprot_name_to_id(name_to_id_map: dict, name: str) -> Union[str, None]:
-    """Uniprot name to ID mapping
+    """Set up Uniprot name to ID mapping.
 
     :param name_to_id_map: mapping dict[name] -> id
     :param name: name
@@ -142,7 +151,7 @@ def uniprot_name_to_id(name_to_id_map: dict, name: str) -> Union[str, None]:
 
 
 def parse_header(header_string: str, sep: str = "\t") -> List:
-    """Parses header data.
+    """Parse header data from a file.
 
     Args:
         header_string: A string containing header items.
@@ -157,11 +166,13 @@ def parse_header(header_string: str, sep: str = "\t") -> List:
 
 
 def unzip_to_tempdir(zip_file_name: str, tempdir: str) -> None:
+    """Decompress a zip file into a temp directory."""
     with zipfile.ZipFile(zip_file_name, "r") as z:
         z.extractall(tempdir)
 
 
 def ungzip_to_tempdir(gzipped_file: str, tempdir: str) -> str:
+    """Decompress a GZIP file into a temp directory."""
     ungzipped_file = os.path.join(tempdir, os.path.basename(gzipped_file))
     if ungzipped_file.endswith(".gz"):
         ungzipped_file = os.path.splitext(ungzipped_file)[0]
@@ -172,16 +183,14 @@ def ungzip_to_tempdir(gzipped_file: str, tempdir: str) -> str:
 
 
 def guess_bl_category(identifier: str) -> str:
-    """Guess category for a given identifier.
+    """Guess Biolink category for a given identifier.
 
-    Note: This is a temporary solution and should not be used long term.
-
+    Note: This is a temporary solution
+    and should not be used long term.
     Args:
         identifier: A CURIE
-
     Returns:
         The category for the given CURIE
-
     """
     prefix = identifier.split(":")[0]
     if prefix in {"UniProtKB", "ComplexPortal"}:
@@ -194,10 +203,13 @@ def guess_bl_category(identifier: str) -> str:
 
 
 def collapse_uniprot_curie(uniprot_curie: str) -> str:
-    """Given a UniProtKB curie for an isoform such as UniprotKB:P63151-1
+    """ 
+    Collapse a UniProtKB isoform ID to a parent ID.
+    
+    Given a UniProtKB curie for an
+    isoform such as UniprotKB:P63151-1
     or UniprotKB:P63151-2, collapse to parent protein
     (UniprotKB:P63151 / UniprotKB:P63151)
-
     :param uniprot_curie:
     :return: collapsed UniProtKB ID
     """

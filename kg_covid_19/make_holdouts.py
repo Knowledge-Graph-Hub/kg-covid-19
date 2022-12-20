@@ -117,7 +117,7 @@ def make_negative_edges(
 ) -> pd.DataFrame:
     """
     Produce negative holdout set.
-    
+
     Given a graph (as nodes and edges pandas dataframes),
     select num_edges holdouts that are NOT present in the graph.
     :param nodes_df: pandas dataframe containing node info
@@ -232,7 +232,7 @@ def make_positive_edges(
 ) -> List[pd.DataFrame]:
     """
     Produce holdout set of positive edges.
-    
+
     Positive edges are randomly selected from the edges in the graph, IFF both nodes
     participating in the edge have a degree greater than min_degree (to avoid creating
     disconnected components). This edge is then removed in the output graph. Negative
