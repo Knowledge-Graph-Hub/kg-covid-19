@@ -7,7 +7,7 @@ from typing import List, Union, Tuple, Optional
 import pandas as pd  # type: ignore
 import numpy as np  # type: ignore
 from tqdm import tqdm  # type: ignore
-from ensmallen_graph import EnsmallenGraph  # type: ignore
+from grape import Graph
 
 
 def make_holdouts(nodes: str, edges: str, output_dir: str,
@@ -27,7 +27,7 @@ def make_holdouts(nodes: str, edges: str, output_dir: str,
     """
     logging.basicConfig(level=logging.INFO)
     logging.info("Loading graph from nodes %s and edges %s files" % (nodes, edges))
-    graph = EnsmallenGraph.from_unsorted_csv(
+    graph = Graph.from_csv(
         edge_path=edges,
         sources_column='subject',
         destinations_column='object',
