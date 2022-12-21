@@ -9,7 +9,7 @@ from kg_covid_19.transform_utils.pharmgkb import PharmGKB
 
 
 class TestPharmGKB(TestCase):
-    """Tests the ttd transform"""
+    """Test the ttd transform."""
 
     def setUp(self) -> None:
         """Set up for PharmGKB tests."""
@@ -34,7 +34,7 @@ class TestPharmGKB(TestCase):
     def test_parse_pharmgkb_line(self) -> None:
         """Test parsing of pharmgkb line."""
         self.assertTrue(
-            isinstance(getattr(self.pharmgkb, "parse_pharmgkb_line"), types.MethodType)
+            isinstance((self.pharmgkb, "parse_pharmgkb_line"), types.MethodType)
         )
         parsed_result = self.pharmgkb.parse_pharmgkb_line(
             self.rel_file_lines[0], self.rel_file_header
@@ -60,7 +60,7 @@ class TestPharmGKB(TestCase):
     def test_make_id_mapping_file(self) -> None:
         """Test production of ID mapping file."""
         self.assertTrue(
-            isinstance(getattr(self.pharmgkb, "make_id_mapping_file"), types.MethodType)
+            isinstance((self.pharmgkb, "make_id_mapping_file"), types.MethodType)
         )
         parsed_result = self.pharmgkb.make_id_mapping_file(
             self.pharmgkb_gene_map_snippet

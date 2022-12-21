@@ -1,3 +1,4 @@
+"""Tests for the CHEMBL data parsing."""
 
 from unittest import TestCase
 
@@ -5,10 +6,11 @@ from kg_covid_19.transform_utils.chembl import ChemblTransform
 
 
 class TestChembl(TestCase):
-    """Tests the ChEMBL transform"""
+    """Tests for the ChEMBL transform."""
 
     @classmethod
     def setUpClass(cls) -> None:
+        """Set up the tests."""
         cls.chembl = ChemblTransform()
         cls.chembl_data_files = {
             "molecules_data": "tests/resources/chembl/chembl_molecule_records.json",
@@ -41,16 +43,20 @@ class TestChembl(TestCase):
         ]
 
     def setUp(self) -> None:
+        """Set up the tests, but actually do that in setUpClass."""
         pass
 
     def test_run(self) -> None:
+        """Test the CHEMBL transform."""
         self.assertTrue(hasattr(self.chembl, "run"))
         self.chembl.run(chembl_data_files=self.chembl_data_files)
 
     def test_source_name(self) -> None:
+        """Test that the source name is ChEMBL."""
         self.assertEqual(self.chembl.source_name, "ChEMBL")
 
     def test_parse_chembl_activity(self):
+        """Test that the input includes chembl activity."""
         self.chembl.input_base_dir = "."
         self.assertTrue(hasattr(self.chembl, "parse_chembl_activity"))
 

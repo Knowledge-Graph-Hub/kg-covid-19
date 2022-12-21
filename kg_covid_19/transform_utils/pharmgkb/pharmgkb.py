@@ -1,3 +1,5 @@
+"""Transform for PharmGKB drug to drug target data."""
+
 import logging
 import os
 import re
@@ -13,16 +15,18 @@ from kg_covid_19.utils.transform_utils import (ItemInDictNotFound,
                                                parse_header, unzip_to_tempdir,
                                                write_node_edge_item)
 
-"""Ingest PharmGKB drug -> drug target info
-
+"""
+Ingest PharmGKB drug -> drug target info
 Dataset location: https://api.pharmgkb.org/v1/download/file/data/relationships.zip
 GitHub Issue: https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/7
-
 """
 
 
 class PharmGKB(Transform):
+    """Class for PharmGKB transformation."""
+
     def __init__(self, input_dir: str = None, output_dir: str = None):
+        """Initialize the transformation."""
         source_name = "pharmgkb"
         super().__init__(source_name, input_dir, output_dir)
         self.edge_header = [
@@ -49,6 +53,7 @@ class PharmGKB(Transform):
         self.key_parsed_ids = "parsed_ids"  # key to put ids in after parsing
 
     def run(self, data_file: Optional[str] = None):
+        """Run the transformation."""
         rel_zip_file_name = os.path.join(self.input_base_dir, "relationships.zip")
         relationship_file_name = "relationships.tsv"
         gene_mapping_zip_file = os.path.join(self.input_base_dir, "pharmgkb_genes.zip")
@@ -172,7 +177,7 @@ class PharmGKB(Transform):
                                 norm_map=pharmgkb_drug_map,
                             )
                         else:
-                            raise PharmKGBInvalidNodeType(
+                            raise PharmKGBInvalidNodeTypeError(
                                 "Node type isn't gene or chemical!"
                             )
 
@@ -193,10 +198,10 @@ class PharmGKB(Transform):
         },
         pharmgkb_prefix: str = "pharmgkb.drug",
     ) -> str:
-        """Given a drug id, convert it to a cross-referenced ID, in this order of
-        preference:
-         CHEBI > CHEMBL > DRUGBANK > PUBCHEM
-
+        """Convert a drug ID to a cross-referenced ID. 
+        
+        Use this order of preference:
+        CHEBI > CHEMBL > DRUGBANK > PUBCHEM
         :param pharmgkb_id
         :param drug_id_map - map of pharmgkb ids to cross-referenced IDs
         :param preferred_ids - dict of preferred ids in desc order of preference
@@ -243,11 +248,11 @@ class PharmGKB(Transform):
         return preferred_id
 
     def make_pharmgkb_edge(self, fh: TextIO, line_data: dict) -> None:
-
+        """Produce a single edge from PharmGKB relation."""
         if set(self.edge_of_interest) != set(
             [line_data["Entity1_type"], line_data["Entity2_type"]]
         ):
-            raise PharmGKBInvalidEdge(
+            raise PharmGKBInvalidEdgeError(
                 "Trying to make edge that's not an edge of interest"
             )
 
@@ -279,7 +284,9 @@ class PharmGKB(Transform):
     def make_pharmgkb_gene_node(
         self, fh: TextIO, this_id: str, name: str, biolink_type: str
     ) -> None:
-        """Write out node for gene
+        """
+        Write out node for a gene.
+
         :param fh: file handle to write out gene
         :param this_id: pharmgkb gene id
         :param name: gene name
@@ -304,7 +311,9 @@ class PharmGKB(Transform):
     def make_pharmgkb_chemical_node(
         self, fh: TextIO, chem_id: str, name: str, biolink_type: str, norm_map: dict
     ) -> None:
-        """Write out node for drug/chemical
+        """
+        Write out node for a drug/chemical.
+
         :param fh: file handle to write out drug/chemical
         :param id: pharmgkb drug id
         :param name: drug name
@@ -329,7 +338,8 @@ class PharmGKB(Transform):
         write_node_edge_item(fh=fh, header=self.node_header, data=data)
 
     def parse_pharmgkb_line(self, this_line: str, header_items) -> dict:
-        """Parse a single line from relationships.tsv and return a dict with data
+        """
+        Parse a single line from relationships.tsv, return a dict with data.
 
         :param this_line: line from relationship.tsv to parse
         :param header_items: header from relationships.tsv
@@ -347,9 +357,9 @@ class PharmGKB(Transform):
         id_sep: str = ",",
         id_key_val_sep: str = ":",
     ) -> dict:
-        """Fxn to parse gene ID mappings or drug ID mapping for PharmGKB ids
-        This is to parse both genes.tsv and drugs.tsv files
+        """Parse gene ID mappings or drug ID mapping for PharmGKB IDs.
 
+        This is to parse both genes.tsv and drugs.tsv files.
         :param map_file: genes.tsv file, containing mappings
         :param pharmgkb_id_col: column containing pharmgkb, to be used as key for map
         :param sep: separator between columns [\t]
@@ -362,7 +372,7 @@ class PharmGKB(Transform):
         with open(map_file) as f:
             header_items = f.readline().split(sep)
             if pharmgkb_id_col not in header_items:
-                raise CantFindPharmGKBKey("Can't find PharmGKB id in map file!")
+                raise CantFindPharmGKBKeyError("Can't find PharmGKB id in map file!")
             for line in f:
                 items = line.strip().split(sep)
                 dat = data_to_dict(header_items, items)
@@ -379,11 +389,11 @@ class PharmGKB(Transform):
         return map
 
 
-class CantFindPharmGKBKey(Exception):
+class CantFindPharmGKBKeyError(Exception):
     pass
 
 
-class PharmKGBInvalidNodeType(Exception):
+class PharmKGBInvalidNodeTypeError(Exception):
     pass
 
 
@@ -391,5 +401,5 @@ class PharmGKBFileError(Exception):
     pass
 
 
-class PharmGKBInvalidEdge(Exception):
+class PharmGKBInvalidEdgeError(Exception):
     pass

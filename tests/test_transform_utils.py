@@ -9,6 +9,8 @@ from kg_covid_19.utils.transform_utils import (collapse_uniprot_curie,
 
 
 class TestTransformUtils(unittest.TestCase):
+    """Tests for running transform utilities."""
+
     @parameterized.expand(
         [
             ["", "biolink:NamedThing"],

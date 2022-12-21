@@ -10,6 +10,8 @@ from kg_covid_19.transform_utils.transform import Transform
 
 
 class TestTransform(TestCase):
+    """Tests for all transform child classes."""
+
     def setUp(self) -> None:
         """Set up the transform tests."""
         self.transform_instance = TransformChildClass()
@@ -87,6 +89,7 @@ class TestTransform(TestCase):
 
 class TransformChildClass(Transform):
     """An example Transform class."""
+
     def __init__(self):
         """Initialize a Transform child class."""
         super().__init__(source_name="test_transform")

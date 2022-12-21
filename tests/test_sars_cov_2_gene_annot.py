@@ -1,3 +1,5 @@
+"""Tests for the SARS-CoV-2 gene annotation parsing."""
+
 import types
 from typing import Iterable
 from unittest import TestCase
@@ -10,9 +12,10 @@ from kg_covid_19.transform_utils.sars_cov_2_gene_annot.sars_cov_2_gene_annot imp
 
 
 class TestSarsGeneAnnot(TestCase):
-    """Tests the SARS-CoV-2 gene annotation transform"""
+    """Tests for the SARS-CoV-2 gene annotation transform."""
 
     def setUp(self) -> None:
+        """Set up for the tests."""
         self.sc2ga = SARSCoV2GeneAnnot()
         self.gpi_snippet = "tests/resources/uniprot_sars-cov-2_SNIPPET.gpi"
         self.gpa_snippet = "tests/resources/uniprot_sars-cov-2_SNIPPET.gpa"
@@ -20,6 +23,7 @@ class TestSarsGeneAnnot(TestCase):
         self.gpa_fh = open(self.gpa_snippet)
 
     def test_gpi12iterator_instance(self):
+        """Test that the gpi parser provides an iterator instance."""
         gpi_iter = _gpi12iterator(self.gpi_fh)
         self.assertTrue(isinstance(gpi_iter, Iterable))
 
@@ -35,13 +39,15 @@ class TestSarsGeneAnnot(TestCase):
             ("Taxon", "taxon:2697049"),
         ]
     )
-    def test_gpi12iterator_instance(self, key, value):
+    def test_gpi12iterator_keys(self, key, value):
+        """Test that the gpi iterator is not empty."""
         gpi_iter = _gpi12iterator(self.gpi_fh)
         item = next(gpi_iter)
         self.assertTrue(key in item)
         self.assertEqual(value, item[key])
 
     def test_gpi_to_gene_node(self):
+        """Test that the gpi iterator parses names to nodes."""
         gpi_iter = _gpi12iterator(self.gpi_fh)
         item = next(gpi_iter)
         node = self.sc2ga.gpi_to_gene_node_data(item)
@@ -61,6 +67,7 @@ class TestSarsGeneAnnot(TestCase):
         )
 
     def test_gpa_to_edge_data(self):
+        """Test that the gpi iterator parses edges."""
         gpa_iter = _gpa11iterator(self.gpa_fh)
         edge1 = self.sc2ga.gpa_to_edge_data(next(gpa_iter))
         edge2 = self.sc2ga.gpa_to_edge_data(next(gpa_iter))
@@ -91,4 +98,5 @@ class TestSarsGeneAnnot(TestCase):
         self.assertEqual(edge2[3], "RO:0002331")
 
     def test_run(self) -> None:
+        """Test the full gene annotation transform."""
         self.assertTrue(isinstance(getattr(self.sc2ga, "run"), types.MethodType))

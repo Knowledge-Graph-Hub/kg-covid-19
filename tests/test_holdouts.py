@@ -1,3 +1,5 @@
+"""Tests for producing holdout sets."""
+
 import os
 import tempfile
 import unittest
@@ -13,8 +15,11 @@ from kg_covid_19.make_holdouts import (df_to_tsv, make_holdouts,
 
 
 class TestEdges(unittest.TestCase):
+    """Tests for producing edge holdouts."""
+
     @classmethod
     def setUpClass(cls) -> None:
+        """Set up the class."""
         cls.nodes_file = "tests/resources/holdouts/bigger_graph_nodes.tsv"
         cls.edges_file = "tests/resources/holdouts/bigger_graph_edges.tsv"
         cls.edges = tsv_to_df(cls.edges_file)
@@ -30,15 +35,18 @@ class TestEdges(unittest.TestCase):
         )
 
     def setUp(self) -> None:
+        """Set up, but that's actually in setUpClass."""
         pass
 
     def test_tsv_to_df(self):
+        """Test conversion of tsv to dataframe."""
         df = tsv_to_df(self.edges_file)
         self.assertTrue(isinstance(df, pd.DataFrame))
         self.assertEqual((150, 5), df.shape)
         self.assertEqual(df["subject"][0], "g1")
 
     def test_df_to_tsv(self):
+        """Test conversion of dataframe to TSV."""
         path = os.path.join(tempfile.mkdtemp(), "some.tsv")
         df = tsv_to_df(self.edges_file)
         df_to_tsv(df, path)
@@ -47,6 +55,7 @@ class TestEdges(unittest.TestCase):
         self.assertEqual(df.shape, df_roundtrip.shape)
 
     def test_make_edges_exists(self):
+        """Test whether edge set is produced."""
         self.assertTrue(isinstance(make_holdouts, object))
 
     #
@@ -74,6 +83,15 @@ class TestEdges(unittest.TestCase):
         file_should_exist: bool,
         expected_fract: float,
     ):
+        """
+        Test that holdout edges are valid.
+
+        Args:
+            output_file (str):
+            make_validation (bool):
+            file_should_exist (bool):
+            expected_fract (float):
+        """
         me_output_dir = tempfile.mkdtemp()
         output_file_with_path = os.path.join(me_output_dir, output_file)
         input_edges = tsv_to_df(self.edges_file)
@@ -105,6 +123,7 @@ class TestEdges(unittest.TestCase):
         ]
     )
     def test_make_edges_pos_train_test_valid_edges_distinct(self, train, test, valid):
+        """Test that making holdout edges produces distinct train vs test split."""
         output_dir = tempfile.mkdtemp()
         input_edges = tsv_to_df(self.edges_file)
         make_holdouts(
@@ -134,6 +153,7 @@ class TestEdges(unittest.TestCase):
         self.assertTrue(set(valid_edges) <= set(input_edges))
 
     def test_make_edges_check_node_output_file(self):
+        """Test that making holdout edges produces correct output."""
         output_dir = tempfile.mkdtemp()
         output_file_with_path = os.path.join(output_dir, "pos_train_nodes.tsv")
         input_nodes = tsv_to_df(self.nodes_file)
@@ -157,12 +177,15 @@ class TestEdges(unittest.TestCase):
     #
 
     def test_make_positives_edges_check_test_edge_instance_type(self):
+        """Test that positive edges are in a dataframe."""
         self.assertTrue(isinstance(self.test_edges, pd.DataFrame))
 
     def test_make_positives_edges_check_new_edges_instance_type(self):
+        """Test that new positive edges are in a dataframe."""
         self.assertTrue(isinstance(self.train_edges, pd.DataFrame))
 
     def test_make_positive_edges_check_num_train_edges_returned(self):
+        """Test that positive test edges have an expected count."""
         num_train_edges = self.train_edges.shape[0]
         expected_edges = self.edges.shape[0] * self.train_fraction
         self.assertTrue(
@@ -172,6 +195,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_positive_edges_check_num_test_edges_returned(self):
+        """Test that positive train edges have an expected count."""
         num_test_edges = self.test_edges.shape[0]
         expected_edges = self.edges.shape[0] * (1 - self.train_fraction)
         self.assertTrue(
@@ -181,6 +205,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_positive_edges_check_train_edges_column_num(self):
+        """Test that positive train edges have an expected structure."""
         self.assertEqual(
             self.edges.shape[1],
             self.train_edges.shape[1],
@@ -188,6 +213,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_positive_edges_check_train_edges_columns(self):
+        """Test that positive train edges have an expected structure, in column number."""
         self.assertListEqual(
             list(self.edges.columns),
             list(self.train_edges.columns),
@@ -195,6 +221,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_positive_edges_check_test_edges_column_names(self):
+        """Test that positive train edges have an expected naming."""
         expected_columns = [
             "subject",
             "predicate",
@@ -212,6 +239,7 @@ class TestEdges(unittest.TestCase):
         self.assertListEqual(expected_columns, list(self.test_edges.columns))
 
     def test_make_positive_edges_check_test_edge_label_column(self):
+        """Test that positive train edges have an expected labeling."""
         expected_edge_label = "positive_edge"
         self.assertListEqual(
             [expected_edge_label] * self.test_edges.shape[0],
@@ -220,6 +248,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_positive_edges_check_test_edge_relation_column(self):
+        """Test that positive train edges have relations in expected location."""
         expected_relation = "positive_edge"
         self.assertListEqual(
             [expected_relation] * self.test_edges.shape[0],
@@ -228,6 +257,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_positive_edges_check_nodes(self):
+        """Test that positive train edges contain expected nodes."""
         unique_node_ids = list(np.unique(self.nodes.id))
         pos_nodes = list(
             np.unique(np.concatenate((self.test_edges.subject, self.test_edges.object)))
@@ -238,6 +268,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_positive_edges_test_repeated_edges(self):
+        """Test that positive train edges don't contain unexpected duplicates."""
         count_info = (
             self.test_edges.groupby(["subject", "object"])
             .size()
@@ -252,6 +283,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_positive_edges_test_pos_edges_are_in_input_edge_df(self):
+        """Test that positive test edges are in the input dataframe."""
         overlap_pe_edges = self.test_edges.merge(self.edges, on=["subject", "object"])
         self.assertEqual(
             overlap_pe_edges.shape[0],
@@ -261,6 +293,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_positive_edges_test_pos_edges_are_removed_from_train_edges(self):
+        """Test that positive test edges are not present in the training set."""
         overlap_test_train = self.test_edges.merge(
             self.train_edges, on=["subject", "object"]
         )
@@ -275,16 +308,18 @@ class TestEdges(unittest.TestCase):
     # negative edge tests
     #
     def test_make_negative_edges_check_instance_type(self):
+        """Test that negative edges are in a dataframe."""
         self.assertTrue(isinstance(self.ne, pd.DataFrame))
 
     def test_make_negative_edges_check_num_edges_returned(self):
-        # make sure we don't create duplicate negative edges
+        """Test to make sure we don't create duplicate negative edges."""
         repeat_test = 20  # repeat to ensure we aren't sometimes truncating
         for _ in range(repeat_test):
             ne = make_negative_edges(nodes_df=self.nodes, edges_df=self.edges)
             self.assertEqual(self.edges.shape[0], ne.shape[0])
 
     def test_make_negative_edges_check_column_names(self):
+        """Test to check column names of negative edges."""
         expected_columns = ["subject", "predicate", "object", "relation"]
         self.assertEqual(
             len(expected_columns),
@@ -294,6 +329,7 @@ class TestEdges(unittest.TestCase):
         self.assertListEqual(expected_columns, list(self.ne.columns))
 
     def test_make_negative_edges_check_edge_label_column(self):
+        """Test to check edge labels of negative edges."""
         expected_edge_label = "negative_edge"
         self.assertListEqual(
             [expected_edge_label] * self.ne.shape[0],
@@ -302,6 +338,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_negative_edges_check_relation_column(self):
+        """Test to check location of relation column in negative edges."""
         expected_relation = "negative_edge"
         self.assertListEqual(
             [expected_relation] * self.ne.shape[0],
@@ -310,6 +347,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_negative_edges_check_neg_nodes(self):
+        """Test to check presence of nodes in negative edges."""
         unique_node_ids = list(np.unique(self.nodes.id))
         neg_nodes = list(np.unique(np.concatenate((self.ne.subject, self.ne.object))))
         self.assertTrue(
@@ -318,13 +356,14 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_negative_edges_no_reflexive_edges(self):
+        """Test for presence of reflexive (self) edges in negative edges."""
         reflexive_es = self.ne.loc[(self.ne["subject"] == self.ne["object"])]
         self.assertEqual(
             0, reflexive_es.shape[0], "%i edges are reflexive" % reflexive_es.shape[0]
         )
 
     def test_make_negative_edges_test_repeated_edges(self):
-        # make sure we don't create duplicate negative edges
+        """Test to make sure we don't create duplicate negative edges."""
         repeat_test = 20  # repeat to ensure we aren't sometimes generating dups
         for _ in range(repeat_test):
             ne = make_negative_edges(nodes_df=self.nodes, edges_df=self.edges)
@@ -342,7 +381,7 @@ class TestEdges(unittest.TestCase):
             )
 
     def test_make_negative_edges_ensure_neg_edges_are_actually_negative(self):
-        # make sure our negative edges are actually negative, i.e. not in edges_df
+        """Test to make sure our negative edges are negative, i.e. not in edges_df."""
         non_neg_edges = self.ne.merge(
             self.edges,
             how="inner",

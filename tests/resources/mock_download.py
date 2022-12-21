@@ -1,5 +1,6 @@
 """This method mocks requests.get."""
 
+
 def mocked_requests_get(*args, **kwargs):
     """Mock the requests.get method."""
     class MockResponse:

@@ -1,3 +1,5 @@
+"""The SciBite CORD transform."""
+
 import gzip
 import json
 import os
@@ -25,11 +27,11 @@ CUSTOM_CMAP = {
 
 class ScibiteCordTransform(Transform):
     """
-    ScibiteCordTransform parses the SciBite annotations on CORD-19 dataset
-    to extract concept to publication annotations and co-occurrences.
+    ScibiteCordTransform parses the SciBite annotations on CORD-19 dataset.
     """
 
     def __init__(self, input_dir: str = None, output_dir: str = None):
+        """Initialize the transform."""
         source_name = "SciBite-CORD-19"
         super().__init__(source_name, input_dir, output_dir)
         self.concept_name_map: Dict = {}
@@ -46,8 +48,7 @@ class ScibiteCordTransform(Transform):
         pmc_zipfile: Optional[str] = None,
         co_occur_zipfile: Optional[str] = None,
     ) -> None:
-        """Method is called and performs needed transformations to process
-        annotations from SciBite CORD-19
+        """Perform transformations to process annotations from SciBite CORD-19.
 
         Args:
             pdf_zipfile_1: PDF zip file part 1 [pdf_json_part_1.zip]
@@ -110,10 +111,8 @@ class ScibiteCordTransform(Transform):
             data_file1: Path to pdf_json_part_1.zip
             data_file2: Path to pdf_json_part_2.zip
             data_file2: Path to pmc_json.zip
-
         Returns:
              None.
-
         """
         pbar = tqdm(total=3, desc="Unzipping files")
 
@@ -147,10 +146,8 @@ class ScibiteCordTransform(Transform):
             edge_handle: File handle for edges.csv.
             doc: JSON document as dict.
             subset: The subset name for this dataset.
-
         Returns:
             None.
-
         """
         terms = set()
         paper_id = doc["paper_id"]
@@ -243,10 +240,8 @@ class ScibiteCordTransform(Transform):
             node_handle: File handle for nodes.csv.
             edge_handle: File handle for edges.csv.
             data_file: Path to cv19_scc.zip.
-
         Returns:
              None.
-
         """
         with ZipFile(data_file, "r") as ZF, tempfile.TemporaryDirectory(
             dir=self.input_base_dir
@@ -267,10 +262,8 @@ class ScibiteCordTransform(Transform):
             node_handle: File handle for nodes.csv.
             edge_handle: File handle for edges.csv.
             record: A dictionary corresponding to a row from a table.
-
         Returns:
              None.
-
         """
         terms = set()
         paper_id = record["document_id"]
@@ -345,58 +338,15 @@ class ScibiteCordTransform(Transform):
                         )
                         self.seen.add((curie, paper_curie))
 
-            # This is an earlier style of modeling that involves an InformationContentEntity for every instance of
-            # co-occurrence between a Publication and a set of OntologyClass
-            #
-            # information_entity = uuid.uuid1()
-            # write_node_edge_item(
-            #     fh=node_handle,
-            #     header=self.node_header,
-            #     data=[
-            #         f"{uuid.uuid1()}",
-            #         "",
-            #         "biolink:InformationContentEntity",
-            #         ""
-            #     ]
-            # )
-            # add has_annotation edge between co-occurrence entity and publication
-            # write_node_edge_item(
-            #     fh=edge_handle,
-            #     header=self.edge_header,
-            #     data=[
-            #         f"{information_entity}",
-            #         "biolink:related_to",
-            #         f"{record['document_id']}",
-            #         "SIO:000255", # 'has annotation'
-            #         f"{self.source_name}"
-            #     ]
-            # )
-            # for t in terms:
-            #     curie = self.contract_uri(t)
-            #     # add has_member edges between co-occurrence entity and each term
-            #     write_node_edge_item(
-            #         fh=edge_handle,
-            #         header=self.edge_header,
-            #         data=[
-            #             f"{information_entity}",
-            #             "biolink:related_to",
-            #             f"{curie}",
-            #             f"SIO:000059", # 'has member'
-            #             f"{self.source_name}"
-            #         ]
-            #     )
-
     def extract_termite_hits(self, data: Dict) -> Set:
-        """Parse termite hits
+        """Parse termite hits.
 
         Args:
             node_handle: File handle for nodes.csv.
             edge_handle: File handle for edges.csv.
             data: A dictionary.
-
         Returns:
              None.
-
         """
         terms = set()
         termite_hits = data["termite_hits"]
@@ -412,13 +362,10 @@ class ScibiteCordTransform(Transform):
 
         Contract a given IRI, with special parsing and transformations
         depending on the nature of the IRI.
-
         Args:
             iri: IRI as string
-
         Returns:
             str.
-
         """
         curie = ""
         if "http://www.genenames.org/cgi-bin/gene_symbol_report?match=" in iri:
@@ -451,24 +398,20 @@ class ScibiteCordTransform(Transform):
 
         Args:
             s: string
-
         Returns:
             bool.
-
         """
         m = re.match(r"^[^ :]+:[^/ :]+$", s)
         return bool(m)
 
     @staticmethod
     def is_iri(s) -> bool:
-        """Check ig a given string is an IRI.
+        """Check if a given string is an IRI.
 
         Args:
             s: string
-
         Returns:
             bool.
-
         """
         m = re.match(r"^http[s]?://", s)
         return bool(m)
@@ -482,10 +425,8 @@ class ScibiteCordTransform(Transform):
             input_dir: A string pointing to the directory to import data from.
             output_dir: A string pointing to the directory to output data to.
             species_id: A list with the species IDs.
-
         Returns:
             None.
-
         """
         if not species_id:
             # default to just human
@@ -528,10 +469,8 @@ class ScibiteCordTransform(Transform):
         Args:
             record: record from NCBI gene_info.
             prefix: prefix of the identifier to extract.
-
         Returns:
             str
-
         """
         identifier = None
         element = record.split("|")

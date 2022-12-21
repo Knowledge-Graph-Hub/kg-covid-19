@@ -1,3 +1,5 @@
+"""Test for parsing DrugCentral data."""
+
 import os
 import tempfile
 import unittest
@@ -12,7 +14,10 @@ from kg_covid_19.utils.transform_utils import parse_header
 
 
 class TestDrugCentral(unittest.TestCase):
+    """Tests for DrugCentral data."""
+
     def setUp(self) -> None:
+        """Set up the tests."""
         self.dti_fh = open(
             "tests/resources/drug_central/drug.target.interaction_SNIPPET.tsv", "rt"
         )
@@ -50,6 +55,7 @@ class TestDrugCentral(unittest.TestCase):
         ]
     )
     def test_parse_drug_central_line(self, key, value):
+        """Test parsing of DrugCentral data, by lines."""
         header = parse_header(self.dti_fh.readline())
         line = self.dti_fh.readline()
         parsed = parse_drug_central_line(line, header)
@@ -57,11 +63,13 @@ class TestDrugCentral(unittest.TestCase):
         self.assertEqual(value, parsed[key])
 
     def test_run(self):
+        """Test the full DrugCentral transformation."""
         self.assertTrue(isinstance(self.drug_central.run, object))
         self.drug_central.run(data_file="drug.target.interaction_SNIPPET.tsv.gz")
         self.assertTrue(os.path.isdir(self.dc_output_dir))
 
     def test_nodes_file(self):
+        """Test the integrity of the nodes file."""
         self.drug_central.run(data_file="drug.target.interaction_SNIPPET.tsv.gz")
         node_file = os.path.join(self.dc_output_dir, "nodes.tsv")
         self.assertTrue(os.path.isfile(node_file))
@@ -100,6 +108,7 @@ class TestDrugCentral(unittest.TestCase):
         )
 
     def test_nodes_are_not_repeated(self):
+        """Test that nodes are not repeated in the output."""
         self.drug_central.run(data_file="drug.target.interaction_SNIPPET.tsv.gz")
         node_file = os.path.join(self.dc_output_dir, "nodes.tsv")
         node_df = pd.read_csv(node_file, sep="\t", header=0)
@@ -108,6 +117,7 @@ class TestDrugCentral(unittest.TestCase):
         self.assertCountEqual(nodes, unique_nodes)
 
     def test_edges_file(self):
+        """Test integrity of the edges file."""
         self.drug_central.run(data_file="drug.target.interaction_SNIPPET.tsv.gz")
         edge_file = os.path.join(self.dc_output_dir, "edges.tsv")
         self.assertTrue(os.path.isfile(edge_file))

@@ -59,5 +59,5 @@ def result_dict_to_tsv(result_dict: dict, outfile: str) -> None:
                     row_items.append("ERROR")
             try:
                 f.write("\t".join(row_items) + "\n")
-            except OSError as e:
+            except Exception as e:
                 print(f"Encountered error: {e}")

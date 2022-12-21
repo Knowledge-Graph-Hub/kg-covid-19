@@ -1,13 +1,18 @@
+"""Tests for the TTD transformation."""
+
 import types
 from unittest import TestCase
+
 from parameterized import parameterized
+
 from kg_covid_19.transform_utils.ttd.ttd import TTDTransform
 
 
 class TestTTD(TestCase):
-    """Tests the ttd transform"""
+    """Tests for the ttd transform."""
 
     def setUp(self) -> None:
+        """Set up the tests."""
         self.ttd_dl_snippet = "tests/resources/P1-01-TTD_target_download_SNIPPET.txt"
         self.ttd_dl_mult_ids = (
             "tests/resources/P1-01-TTD_target_download_MULTIPLE_IDS.txt"
@@ -38,6 +43,7 @@ class TestTTD(TestCase):
         ]
 
     def test_parse_ttd_file_fxn(self) -> None:
+        """Test parsing the TTD input file."""
         self.assertTrue(
             isinstance(getattr(self.ttd, "parse_ttd_file"), types.MethodType)
         )
@@ -66,6 +72,7 @@ class TestTTD(TestCase):
         ]
     )
     def test_parse_ttd_file_values(self, target_id, abbrev, value):
+        """Tests in parsing values found in the TTD input."""
         parsed_result = self.ttd.parse_ttd_file(self.ttd_dl_snippet)
         self.assertCountEqual(
             parsed_result.get(target_id).get(abbrev),
@@ -74,4 +81,5 @@ class TestTTD(TestCase):
         )
 
     def test_run(self) -> None:
+        """Test the full TTD transformation."""
         self.assertTrue(isinstance(getattr(self.ttd, "run"), types.MethodType))

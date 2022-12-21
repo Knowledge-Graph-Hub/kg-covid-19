@@ -9,6 +9,7 @@ from kg_covid_19.transform_utils.sars_cov_2_gene_annot.sars_cov_2_gene_annot imp
 
 class TestGpiFile(unittest.TestCase):
     """Test parsing GPI files."""
+    
     def setUp(self) -> None:
         """Set up the tests."""
         self.gpi_file = "curated/ORFs/uniprot_sars-cov-2.gpi"

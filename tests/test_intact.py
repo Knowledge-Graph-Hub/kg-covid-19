@@ -9,6 +9,8 @@ from kg_covid_19.transform_utils.intact.intact import IntAct
 
 
 class TestIntAct(unittest.TestCase):
+    """Tests for IntAct data parsing."""
+
     def setUp(self) -> None:
         """Set up for IntAct tests."""
         self.intact = IntAct()
@@ -50,9 +52,9 @@ class TestIntAct(unittest.TestCase):
                 "tests/resources/intact_test.xml",
                 5,
                 8,  # node and edge count, respectively
-                # nodes and edges given here are checked 
+                # nodes and edges given here are checked
                 # against the first values in
-                # parsed['nodes'] and parsed['edges']. 
+                # parsed['nodes'] and parsed['edges'].
                 # Extra items in parsed['nodes'] and
                 # parsed['edges'] are ignored
                 {
@@ -91,10 +93,10 @@ class TestIntAct(unittest.TestCase):
                 },
             ),
             (
-                "tests/resources/intact_3_participants.xml",  
+                "tests/resources/intact_3_participants.xml",
                 # test interactions with 3 participants
                 3,
-                3,  
+                3,
                 # interaction with 3 participants yields 3 edges
                 #  (1<->2, 2<->3, 1<->3)
                 {

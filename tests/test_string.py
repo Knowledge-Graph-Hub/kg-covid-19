@@ -1,3 +1,5 @@
+"""Tests for parsing STRING prortein interaction data."""
+
 import os
 import tempfile
 from unittest import TestCase
@@ -9,9 +11,10 @@ from kg_covid_19.transform_utils.string_ppi import StringTransform
 
 
 class TestString(TestCase):
-    """Tests the string ingest"""
+    """Tests for the STRING ingest."""
 
     def setUp(self) -> None:
+        """Set up for the STRING ingest tests."""
         self.input_dir = "tests/resources/string/"
         self.output_dir = tempfile.gettempdir()
         self.string_output_dir = os.path.join(self.output_dir, "STRING")
@@ -34,38 +37,46 @@ class TestString(TestCase):
         ]
     )
     def test_instance_vars(self, variable, type, key, val):
+        """Test existence of instance variables."""
         this_var = getattr(self.string, variable)
         self.assertTrue(isinstance(this_var, type))
         self.assertTrue(key in this_var)
         self.assertTrue(this_var[key], val)
 
     def test_output_dir(self):
+        """Test the output directory."""
         self.assertEqual(self.string.output_dir, self.string_output_dir)
 
     def test_input_dir(self):
+        """Test the input directory."""
         self.assertEqual(self.string.input_base_dir, self.input_dir)
 
     def test_output_edge_file(self):
+        """Test creation of the output edge file."""
         self.assertEqual(
             self.string.output_edge_file,
             os.path.join(self.string_output_dir, "edges.tsv"),
         )
 
     def test_output_node_file(self):
+        """Test creation of the output node file."""
         self.assertEqual(
             self.string.output_node_file,
             os.path.join(self.string_output_dir, "nodes.tsv"),
         )
 
     def test_source_name(self):
+        """Test whether the source is named STRING."""
         self.assertEqual(self.string.source_name, "STRING")
 
     def test_run(self):
+        """Test the full STRING transformation."""
         self.assertTrue(isinstance(self.string.run, object))
         self.string.run()
         self.assertTrue(os.path.isdir(self.string_output_dir))
 
     def test_nodes_file(self):
+        """Test integrity of the nodes file."""
         self.string.run()
         node_file = os.path.join(self.string_output_dir, "nodes.tsv")
         self.assertTrue(os.path.isfile(node_file))
@@ -96,6 +107,7 @@ class TestString(TestCase):
         )
 
     def test_edges_file(self):
+        """Test integrity of the dges file."""
         self.string.run()
         edge_file = os.path.join(self.string_output_dir, "edges.tsv")
         self.assertTrue(os.path.isfile(edge_file))

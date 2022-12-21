@@ -13,6 +13,7 @@ from kg_covid_19.query import parse_query_rq, result_dict_to_tsv
 
 class TestQuery(TestCase):
     """Test query functions."""
+
     def setUp(self) -> None:
         """Set up for query function tests."""
         self.test_rq = "tests/resources/query/test_template.yaml"
