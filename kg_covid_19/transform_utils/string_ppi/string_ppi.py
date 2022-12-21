@@ -21,13 +21,13 @@ GitHub Issue: https://github.com/kg-emerging-viruses/kg-emerging-viruses/issues/
 
 Write node and edge headers that look something like:
 
-Node: 
+Node:
 id  name    category    xrefs   provided_by
-protein:1234    TBX4    biolink:Protein UniProtKB:123456    STRING 
+protein:1234    TBX4    biolink:Protein UniProtKB:123456    STRING
 
 xrefs contains the UniProtKB id for the protein, if available
 
-Edge: 
+Edge:
 subject predicate  object  relation
 protein:1234    interacts_with  protein:4567    RO:0002434
 """
@@ -110,8 +110,8 @@ class StringTransform(Transform):
             species_id = ["9606"]
         file_path = os.path.join(self.input_base_dir, GENE_INFO_FILE)
 
-        with gzip.open(file_path, "rt") as FH:
-            for line in FH:
+        with gzip.open(file_path, "rt") as filehandler:
+            for line in filehandler:
                 records = line.split("\t")
                 if records[0] not in species_id:
                     continue
@@ -130,7 +130,7 @@ class StringTransform(Transform):
                     ] = description
 
     def run(self, data_file: Optional[str] = None) -> None:
-        """Performs transformations to process protein-protein interactions.
+        """Perform transformations to process protein-protein interactions.
 
         Args:
             data_file: data file to parse
@@ -270,7 +270,6 @@ def parse_stringdb_interactions(this_line: str, header_items: List) -> Dict:
     Returns:
         item_dict: A dictionary of header items and a processed string.
     """
-
     items = this_line.strip().split(" ")
     item_dict = dict(zip(header_items, items))
     return item_dict
@@ -286,7 +285,6 @@ def parse_header(header_string: str, sep: str = " ") -> List:
     Returns:
         A list of header items.
     """
-
     header = header_string.strip().split(sep)
 
     return [i.replace('"', "") for i in header]

@@ -120,13 +120,13 @@ def data_to_dict(these_keys, these_values) -> dict:
 def uniprot_make_name_to_id_mapping(dat_gz_file: str) -> dict:
     """
     Convert UniProtKB id maps to dict of maps.
-    
+
     Given a Uniprot dat.gz file, like this:
     ftp://ftp.uniprot.org/pub/databases/uniprot/
     current_release/knowledgebase/idmapping/by_organism/
     HUMAN_9606_idmapping.dat.gz
-     makes dict with name to id mapping
-    :param dat_gz_file: 
+    makes dict with name to id mapping
+    :param dat_gz_file:
     :return: dict with mapping
     """ ""
     name_to_id_map = dict()
@@ -161,7 +161,6 @@ def parse_header(header_string: str, sep: str = "\t") -> List:
     Returns:
         A list of header items.
     """
-
     header = header_string.strip().split(sep)
     return [i.replace('"', "") for i in header]
 

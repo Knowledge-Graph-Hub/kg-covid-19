@@ -11,6 +11,7 @@ class Transform:
     DEFAULT_OUTPUT_DIR = os.path.join("data", "transformed")
 
     def __init__(self, source_name, input_dir: str = None, output_dir: str = None):
+        """Initialize."""
         # default columns, can be appended to or overwritten as necessary
         self.source_name = source_name
         self.node_header = ["id", "name", "category"]

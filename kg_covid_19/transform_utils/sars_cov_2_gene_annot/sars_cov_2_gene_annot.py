@@ -11,7 +11,7 @@ from kg_covid_19.utils.transform_utils import (ItemInDictNotFound,
                                                guess_bl_category)
 
 """Parse the GPA and GPI files for SARS-CoV-2 gene annotations, including GO annotations
-and more. Make a node for each gene using GPI lines, and make an edge for 
+and more. Make a node for each gene using GPI lines, and make an edge for
 each gene -> annotation described in GPA.
 """
 
@@ -172,7 +172,8 @@ class SARSCoV2GeneAnnot(Transform):
         :param rec: record from gpi iterator
         :return: list of node items, one for each thing in self.node_header
         """
-        # ['id', 'name', 'category', 'full_name', 'synonym', 'in_taxon', 'xrefs', 'provided_by']
+        # ['id', 'name', 'category', 'full_name',
+        # 'synonym', 'in_taxon', 'xrefs', 'provided_by']
         id: str = self._rec_to_id(rec)
 
         try:

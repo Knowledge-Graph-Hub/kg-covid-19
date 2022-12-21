@@ -10,18 +10,18 @@ from kg_covid_19.utils.transform_utils import (multi_page_table_to_list,
                                                write_node_edge_item)
 
 """
-Ingest Covid-19 associated host proteins from Suppl Fig 3 of this paper: 
+Ingest Covid-19 associated host proteins from Suppl Fig 3 of this paper:
 https://www.nature.com/articles/s41421-020-0153-3
 
 GitHub Issue: https://github.com/kg-emerging-viruses/kg-emerging-viruses/issues/2
 
 Write node and edge headers that look something like:
 
-Node: 
+Node:
 id  name    category
-gene:1234   TBX4    Gene 
+gene:1234   TBX4    Gene
 
-Edge: 
+Edge:
 subject predicate  object   relation
 gene:1234  contributes_to_condition    MONDO:0005002   RO:0003304
 """
