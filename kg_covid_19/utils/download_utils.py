@@ -10,7 +10,6 @@ import compress_json  # type: ignore
 import elasticsearch
 import elasticsearch.helpers
 import yaml
-from compress_json import compress_json
 from tqdm.auto import tqdm  # type: ignore
 
 
@@ -19,7 +18,7 @@ def download_from_yaml(
 ) -> None:
     """
     Download files specified in an input yaml.
-    
+
     Given an download info from an download.yaml file,
     download all files.
     Args:
@@ -60,7 +59,7 @@ def download_from_yaml(
                 download_from_api(item, outfile)
             else:
                 req = Request(item["url"], headers={"User-Agent": "Mozilla/5.0"})
-                with urlopen(req) as response, open(outfile, "wb") as out_file:  # type: ignore
+                with urlopen(req) as response, open(outfile, "wb") as out_file:
                     data = response.read()  # a `bytes` object
                     out_file.write(data)
 

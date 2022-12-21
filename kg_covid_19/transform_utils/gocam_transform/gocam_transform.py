@@ -1,3 +1,5 @@
+"""Transform GO-CAM data."""
+
 import os
 from typing import Dict, Optional
 
@@ -10,24 +12,24 @@ from kg_covid_19.transform_utils.transform import Transform
 
 class GocamTransform(Transform):
     """
-    GocamTransform parses GO-CAMs that have been subjected to
+    Parse GO-CAMs.
+
+    This assumes they have been subjected to
     RDF edge project (REP) pattern.
     """
 
     def __init__(self, input_dir: str = None, output_dir: str = None):
+        """Initialize."""
         source_name = "GOCAMs"
         super().__init__(source_name, input_dir, output_dir)
 
     def run(self, data_file: Optional[str] = None, **kwargs) -> None:
-        """Method is called and performs needed transformations to process
-        an ontology.
+        """Perform transformations to process GO-CAMs.
 
         Args:
             data_file: data file to parse
-
         Returns:
             None.
-
         """
         if not data_file:
             data_file = os.path.join(self.input_base_dir, "lifted-go-cams-20200619.nt")
@@ -43,16 +45,14 @@ class GocamTransform(Transform):
     def parse(
         self, data_file: str, input_format: str, compression: Optional[str] = None
     ) -> None:
-        """Processes the data_file.
+        """Process the data_file.
 
         Args:
             data_file: data file to parse
             input_format: format of input file
             compression: compression
-
         Returns:
              None
-
         """
         print(f"Parsing {data_file}")
 

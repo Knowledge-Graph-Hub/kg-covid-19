@@ -1,3 +1,5 @@
+"""Transform TTD data."""
+
 import collections
 import logging
 import os
@@ -11,23 +13,29 @@ from kg_covid_19.utils.transform_utils import (ItemInDictNotFound,
                                                uniprot_make_name_to_id_mapping)
 
 """Ingest TTD - Therapeutic Targets Database
-# drug targets, and associated data for each (drugs, ids, etc)
-#
+drug targets, and associated data for each (drugs, ids, etc)
+
 Dataset location: http://db.idrblab.net/ttd/sites/default/files/ttd_database/P1-01-TTD_target_download.txt
 GitHub Issue: https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/6
 """
 
 
-class TTDNotEnoughFields(Exception):
+class TTDNotEnoughFieldsException(Exception):
+    """Exception raised when number of fields is less than expected."""
+
     pass
 
 
 class TTDTransform(Transform):
+    """Transforms TTD data."""
+
     def __init__(self, input_dir: str = None, output_dir: str = None):
+        """Initialize."""
         source_name = "ttd"
         super().__init__(source_name, input_dir, output_dir)
 
     def run(self, data_file: Optional[str] = None):
+        """Run the transformation."""
         ttd_file_name = os.path.join(
             self.input_base_dir, "P1-01-TTD_target_download.txt"
         )
@@ -159,6 +167,7 @@ class TTDTransform(Transform):
     def get_uniproids(
         self, data: dict, name_2_id_map: dict, uniprot_curie_prefix: str
     ) -> List[str]:
+        """Get a list of UniProtKB IDs from names."""
         ids = []
         try:
             uniproid_struct = get_item_by_priority(data, ["UNIPROID"])
@@ -173,6 +182,7 @@ class TTDTransform(Transform):
         return ids
 
     def get_gene_name(self, data: dict) -> str:
+        """Get the name of a gene."""
         gene_name = ""
         try:
             gene_names = get_item_by_priority(data, ["GENENAME"])
@@ -182,6 +192,7 @@ class TTDTransform(Transform):
         return gene_name
 
     def get_targ_type(self, data: dict) -> str:
+        """Get the target type for a target."""
         targ_type = ""
         try:
             targ_types = get_item_by_priority(data, ["TARGTYPE"])
@@ -191,17 +202,16 @@ class TTDTransform(Transform):
         return targ_type
 
     def parse_ttd_file(self, file: str) -> dict:
-        """Parse entire TTD download file (a few megs, not very mem efficient, but
+        """Parse entire TTD download file.
+        
+        (a few megs, not very mem efficient, but
         should be okay), and return a dict of dicts of lists
-
         [target_id] -> [abbreviation] -> [list with data]
-
         where 'abbreviation' is one of:
         ['TARGETID', 'FORMERID', 'UNIPROID', 'TARGNAME', 'GENENAME', 'TARGTYPE',
          'SYNONYMS', 'FUNCTION', 'PDBSTRUC', 'BIOCLASS', 'ECNUMBER', 'SEQUENCE',
          'DRUGINFO', 'KEGGPATH', 'WIKIPATH', 'WHIZPATH', 'REACPATH', 'NET_PATH',
          'INTEPATH', 'PANTPATH', 'BIOCPATH']
-
         :param file
         :return: dict of dicts of lists
         """
@@ -234,23 +244,23 @@ class TTDTransform(Transform):
         return parsed_data
 
     def parse_line(self, line: str, id_sep="; ") -> list:
-        """Parse one line of data from  P1-01-TTD_target_download, and return
-        list comprised of:
-
+        r"""Parse one line of data from P1-01-TTD_target_download.
+        
+        Return list of:
         [target_id, abbrev, data_list]
-
         where:
         target_id is the target_id
         abbrev is a member of 'TARGETID', 'FORMERID', etc] (see above)
         data_list is a list of all items in field3 ... last field, split on '\t'
-
         :param line: line from P1-01-TTD_target_download
         :return: [target_id, abbrev, data_list]
         :param id_sep: character string that separates ID strings, as in ID1; ID2 ["; "]
         """
         fields = line.rstrip().split("\t")
         if len(fields) < 3:
-            raise TTDNotEnoughFields("Not enough fields in line {}".format(line))
+            raise TTDNotEnoughFieldsException(
+                "Not enough fields in line {}".format(line)
+            )
         target_id = fields[0]
         abbrev = fields[1]
 

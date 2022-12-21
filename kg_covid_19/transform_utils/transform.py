@@ -1,9 +1,11 @@
+"""Defines the parent class for all transforms."""
+
 import os
 from typing import Optional
 
 
 class Transform:
-    """Parent class for transforms, that sets up a lot of default file info."""
+    """Parent class for transforms to set up of default file info."""
 
     DEFAULT_INPUT_DIR = os.path.join("data", "raw")
     DEFAULT_OUTPUT_DIR = os.path.join("data", "transformed")
@@ -26,4 +28,5 @@ class Transform:
         self.output_json_file = os.path.join(self.output_dir, "nodes_edges.json")
 
     def run(self, data_file: Optional[str] = None):
+        """Run the transformation."""
         pass

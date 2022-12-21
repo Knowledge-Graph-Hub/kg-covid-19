@@ -28,7 +28,7 @@ class ChemblTransform(Transform):
         self, data_file: Optional[str] = None, chembl_data_files: Optional[dict] = None
     ) -> None:
         """Call method and perform needed transformations.
-        
+
         Process SARS-CoV-2 subset of ChEMBL.
         http://chembl.blogspot.com/2020/05/chembl27-sars-cov-2-release.html
         Args:

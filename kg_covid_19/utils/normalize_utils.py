@@ -7,8 +7,8 @@ from typing import List
 def normalize_curies(map_path: str, entries: List) -> List:
     """
     Normalize CURIEs baded on a map file.
-    
-    Given a SSSOM map file defining one or more 
+
+    Given a SSSOM map file defining one or more
     mappings between
     subject_id and object_id,
     take a list of dicts
@@ -49,7 +49,7 @@ def normalize_curies(map_path: str, entries: List) -> List:
 def load_ids_from_map(map_path: str, prefix: str) -> List:
     """
     Load the full set of IDs from a map file.
-    
+
     Given a SSSOM map file defining one or more mappings between
     subject_id and object_id,
     retrieve a list of all ids

@@ -1,7 +1,9 @@
+"""Transform for STRING PPI."""
+
 import gzip
 import logging
 import os
-from typing import IO, Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set
 
 import compress_json  # type: ignore
 
@@ -17,7 +19,6 @@ Ingest protein-protein interactions from STRING DB.
 Dataset location: https://string-db.org/cgi/download.pl
 GitHub Issue: https://github.com/kg-emerging-viruses/kg-emerging-viruses/issues/10
 
-
 Write node and edge headers that look something like:
 
 Node: 
@@ -29,8 +30,6 @@ xrefs contains the UniProtKB id for the protein, if available
 Edge: 
 subject predicate  object  relation
 protein:1234    interacts_with  protein:4567    RO:0002434
-
-
 """
 
 NCBI_FTP_URL = "https://ftp.ncbi.nlm.nih.gov/gene/DATA/"
@@ -42,11 +41,10 @@ UNIPROT_ID_MAPPING = "HUMAN_9606_idmapping.dat.gz"
 
 
 class StringTransform(Transform):
-    """
-    StringTransform parses interactions from STRING DB into nodes and edges.
-    """
+    """Parse interactions from STRING DB into nodes and edges."""
 
     def __init__(self, input_dir: str = None, output_dir: str = None):
+        """Initialize."""
         source_name = "STRING"
         super().__init__(source_name, input_dir, output_dir)
 
@@ -67,17 +65,15 @@ class StringTransform(Transform):
             input_dir: A string pointing to the directory to import data from.
             output_dir: A string pointing to the directory to output data to.
             species_id: A list with the species IDs.
-
         Returns:
             None.
-
         """
         if not species_id:
             # default to just human
             species_id = ["9606"]
         file_path = os.path.join(input_dir, PROTEIN_MAPPING_FILE)
-        with gzip.open(file_path, "rt") as FH:
-            for line in FH:
+        with gzip.open(file_path, "rt") as filehandler:
+            for line in filehandler:
                 records = line.split("\t")
                 if records[0] not in species_id:
                     continue
@@ -106,10 +102,8 @@ class StringTransform(Transform):
             input_dir: A string pointing to the directory to import data from.
             output_dir: A string pointing to the directory to output data to.
             species_id: A list with the species IDs.
-
         Returns:
             None.
-
         """
         if not species_id:
             # default to just human
@@ -136,15 +130,12 @@ class StringTransform(Transform):
                     ] = description
 
     def run(self, data_file: Optional[str] = None) -> None:
-        """Method is called and performs needed transformations to process
-        protein-protein interactions from the STRING DB data.
+        """Performs transformations to process protein-protein interactions.
 
         Args:
             data_file: data file to parse
-
         Returns:
             None.
-
         """
         if not data_file:
             data_file = os.path.join(
@@ -269,14 +260,15 @@ class StringTransform(Transform):
 
 
 def parse_stringdb_interactions(this_line: str, header_items: List) -> Dict:
-    """Methods processes a line of text from Drug Central.
+    """Process a line of text from STRING.
 
+    That is, a STRING string.
     Args:
         this_line: A string containing a line of text.
         header_items: A list of header items.
 
     Returns:
-        item_dict: A dictionary of header items and a processed Drug Central string.
+        item_dict: A dictionary of header items and a processed string.
     """
 
     items = this_line.strip().split(" ")
@@ -285,7 +277,7 @@ def parse_stringdb_interactions(this_line: str, header_items: List) -> Dict:
 
 
 def parse_header(header_string: str, sep: str = " ") -> List:
-    """Parses header data.
+    """Parse header data.
 
     Args:
         header_string: A string containing header items.

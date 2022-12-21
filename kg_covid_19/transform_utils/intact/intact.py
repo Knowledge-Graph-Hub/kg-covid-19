@@ -1,3 +1,5 @@
+"""Transform IntAct PPI data."""
+
 import fnmatch
 import logging
 import os
@@ -27,7 +29,10 @@ https://github.com/HUPO-PSI/miXML
 
 
 class IntAct(Transform):
+    """Transform IntAct PPI data."""
+
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
+        """Initialize."""
         source_name = "intact"
         super().__init__(source_name, input_dir, output_dir)
         # interactor type to biolink category
@@ -73,8 +78,7 @@ class IntAct(Transform):
         ]
 
     def run(self, data_file: Optional[str] = None):
-        """Method to run transform to ingest data from IntAct for viral/human PPIs"""
-
+        """Run transform to ingest data from IntAct for viral/human PPIs."""
         data_files = list()
         if not data_file:
             data_files.append(
@@ -123,15 +127,14 @@ class IntAct(Transform):
                     )
 
     def parse_xml_to_nodes_edges(self, xml_file: str) -> dict:
+        """Parse XML to nodes and edges."""
         parsed: Dict[str, list] = dict()
         parsed["nodes"] = []
         parsed["edges"] = []
 
         xmldoc = minidom.parse(xml_file)
 
-        #
         # nodes
-        #
 
         # store by interactor id, since this is what is referenced in edges
         nodes_dict = dict()
@@ -158,7 +161,7 @@ class IntAct(Transform):
     def interaction_to_edge(
         self, interaction: object, nodes_dict: dict, exp_dict: dict
     ) -> list:
-
+        """Parse an interaction to an edge."""
         edges: List[list] = []
         try:
             interaction_type = interaction.getElementsByTagName("interactionType")  # type: ignore
@@ -224,6 +227,7 @@ class IntAct(Transform):
         return edges
 
     def participant_experimental_role(self, participant: object) -> str:
+        """Parse an experimental role."""
         try:
             # xml why are you like this
             role = (
@@ -238,6 +242,7 @@ class IntAct(Transform):
     def participant_to_node(
         self, participant: object, nodes_dict: dict
     ) -> Union[str, None]:
+        """Parse an interation participant as a node."""
         try:
             interact_ref = (
                 participant.getElementsByTagName("interactorRef")[0]  # type: ignore
@@ -250,6 +255,7 @@ class IntAct(Transform):
             return None
 
     def interactor_to_node(self, interactor) -> List[Union[int, list]]:
+        """Parse an interactor as a list of nodes."""
         interactor_id = interactor.attributes["id"].value
 
         this_id = ""
@@ -314,7 +320,7 @@ class IntAct(Transform):
         return [interactor_id, [this_id, name, category, tax_id, self.source_name]]
 
     def parse_experiment_info(self, xmldoc: object) -> Dict[int, str]:
-        """Extract info about experiment from miXML doc
+        """Extract info about experiment from miXML doc.
 
         :param self: IntAct instance
         :param xmldoc: a minidom object containing a miXML doc

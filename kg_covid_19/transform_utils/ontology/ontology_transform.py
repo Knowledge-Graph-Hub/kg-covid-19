@@ -1,3 +1,5 @@
+"""Transform an ontology in Obograph JSON format."""
+
 import csv
 import os
 import uuid
@@ -16,17 +18,15 @@ ONTOLOGIES = {
 
 
 class OntologyTransform(Transform):
-    """
-    OntologyTransform parses an Obograph JSON form of an Ontology into nodes nad edges.
-    """
+    """Parse an Obograph JSON form of an Ontology into nodes and edges."""
 
     def __init__(self, input_dir: str = None, output_dir: str = None):
+        """Initialize."""
         source_name = "ontologies"
         super().__init__(source_name, input_dir, output_dir)
 
     def run(self, data_file: Optional[str] = None) -> None:
-        """Method is called and performs needed transformations to process
-        an ontology.
+        """Perform needed transformations to process an ontology.
         Args:
             data_file: data file to parse
         Returns:
@@ -43,7 +43,8 @@ class OntologyTransform(Transform):
                 self.parse(k, data_file, k)
 
     def parse(self, name: str, data_file: str, source: str) -> None:
-        """Processes the data_file.
+        """Process the data_file.
+
         Args:
             name: Name of the ontology
             data_file: data file to parse

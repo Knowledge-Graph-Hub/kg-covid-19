@@ -1,3 +1,5 @@
+"""Transform for Zhou et al virus-host protein data."""
+
 import os
 from typing import Optional
 
@@ -13,7 +15,6 @@ https://www.nature.com/articles/s41421-020-0153-3
 
 GitHub Issue: https://github.com/kg-emerging-viruses/kg-emerging-viruses/issues/2
 
-
 Write node and edge headers that look something like:
 
 Node: 
@@ -27,7 +28,10 @@ gene:1234  contributes_to_condition    MONDO:0005002   RO:0003304
 
 
 class ZhouTransform(Transform):
+    """Transform for Zhou host protein data."""
+
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
+        """Init the transformation."""
         source_name = "zhou_host_proteins"
         super().__init__(source_name, input_dir, output_dir)
         self.node_header = ["id", "name", "category", "provided_by"]
@@ -42,14 +46,11 @@ class ZhouTransform(Transform):
         ]
 
     def run(self, data_file: Optional[str] = None):
-        """Method is called and performs needed transformations to process the zhou host protein data, additional
-        information on this data can be found in the comment at the top of this script."""
-
+        """Perform transformations to process the Zhou host protein data."""
         input_file = os.path.join(self.input_base_dir, "41421_2020_153_MOESM1_ESM.pdf")
 
         pubmed_curie_prefix = "PMID:"
         gene_curie_prefix = "NCBIGene:"
-        publication_node_type = "biolink:Publication"
         gene_node_type = "biolink:Gene"
         virus_node_type = "biolink:OrganismalEntity"
 

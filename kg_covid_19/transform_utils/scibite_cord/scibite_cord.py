@@ -26,9 +26,7 @@ CUSTOM_CMAP = {
 
 
 class ScibiteCordTransform(Transform):
-    """
-    ScibiteCordTransform parses the SciBite annotations on CORD-19 dataset.
-    """
+    """Parse the SciBite annotations on CORD-19 dataset."""
 
     def __init__(self, input_dir: str = None, output_dir: str = None):
         """Initialize the transform."""
@@ -223,7 +221,7 @@ class ScibiteCordTransform(Transform):
                 header=self.edge_header,
                 data=[
                     f"CORD:{paper_id}",
-                    f"biolink:mentions",
+                    "biolink:mentions",
                     f"{curie}",
                     "SIO:000255",
                     provided_by,
@@ -243,10 +241,10 @@ class ScibiteCordTransform(Transform):
         Returns:
              None.
         """
-        with ZipFile(data_file, "r") as ZF, tempfile.TemporaryDirectory(
+        with ZipFile(data_file, "r") as zipfilehandler, tempfile.TemporaryDirectory(
             dir=self.input_base_dir
         ) as tmpdir:
-            ZF.extractall(path=tmpdir)
+            zipfilehandler.extractall(path=tmpdir)
             df = pd.read_csv(
                 os.path.join(tmpdir, "cv19_scc.tsv"), delimiter="\t", encoding="utf-8"
             )
@@ -331,7 +329,7 @@ class ScibiteCordTransform(Transform):
                                 f"{curie}",
                                 "biolink:correlated_with",
                                 f"{paper_curie}",
-                                f"RO:0002610",  # 'correlated with'
+                                "RO:0002610",  # 'correlated with'
                                 f"{self.source_name} co-occurrences",
                                 "biolink:Association",
                             ],
@@ -350,7 +348,7 @@ class ScibiteCordTransform(Transform):
         """
         terms = set()
         termite_hits = data["termite_hits"]
-        for k, v in termite_hits.items():
+        for _, v in termite_hits.items():
             for hit in v:
                 terms.update([hit["id"]])
                 if hit["id"] not in self.concept_name_map:
@@ -433,8 +431,8 @@ class ScibiteCordTransform(Transform):
             species_id = ["9606"]
         file_path = os.path.join(self.input_base_dir, "gene_info.gz")
 
-        with gzip.open(file_path, "rt") as FH:
-            for line in tqdm(FH, desc="Loading gene info"):
+        with gzip.open(file_path, "rt") as filehandler:
+            for line in tqdm(filehandler, desc="Loading gene info"):
                 records = line.split("\t")
                 if records[0] not in species_id:
                     continue
@@ -453,8 +451,8 @@ class ScibiteCordTransform(Transform):
     def load_country_code(self, input_dir: str, output_dir: str) -> None:
         file_path = os.path.join(input_dir, "wikidata_country_codes.tsv")
         if os.path.exists(file_path):
-            with open(file_path, "r") as FH:
-                for line in tqdm(FH, desc="Loading country codes"):
+            with open(file_path, "r") as filehandler:
+                for line in tqdm(filehandler, desc="Loading country codes"):
                     if line.startswith("item"):
                         continue
                     records = line.rstrip().split("\t")

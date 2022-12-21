@@ -14,16 +14,18 @@ from kg_covid_19.utils.transform_utils import (ItemInDictNotFound,
                                                write_node_edge_item)
 
 """
-Ingest drug - drug target interactions from Drug Central
+Ingest drug - drug target interactions from Drug Central.
 
 Essentially just ingests and transforms this file:
 http://unmtid-shinyapps.net/download/drug.target.interaction.tsv.gz
 
-And extracts Drug -> Protein interactions
+And extracts Drug -> Protein interactions.
 """
 
 
 class DrugCentralTransform(Transform):
+    """Transform DrugCentral interaction data."""
+
     def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
         """Initialize."""
         source_name = "drug_central"
@@ -34,8 +36,8 @@ class DrugCentralTransform(Transform):
         self, data_file: Optional[str] = None, species: str = "Homo sapiens"
     ) -> None:
         """
-        Call method and perform needed transformations.
-        
+        Call method and perform transformations.
+
         Process the Drug Central data, additional information
         on this data can be found in the comment at the top of this script.
         """
@@ -109,7 +111,7 @@ class DrugCentralTransform(Transform):
                     )
                     seen_drugs[drug_id] += 1
 
-                for key, (uniprot_id, name, tdl) in protein_dict.items():
+                for _, (uniprot_id, name, tdl) in protein_dict.items():
                     protein_id = uniprot_curie_prefix + uniprot_id
 
                     if protein_id not in seen_proteins:
@@ -173,7 +175,7 @@ def items_dict_to_protein_data_dict(items_dict: dict) -> dict:
     protein_ids_string = get_item_by_priority(items_dict, ["ACCESSION"])
     protein_ids = protein_ids_string.split("|")
     gene_name = get_item_by_priority(items_dict, ["GENE"]).split("|")
-    TDL_values = get_item_by_priority(items_dict, ["TDL"]).split("|")
+    tdl_values = get_item_by_priority(items_dict, ["TDL"]).split("|")
 
     if len(protein_ids) != len(gene_name):
         logging.warning(
@@ -181,11 +183,11 @@ def items_dict_to_protein_data_dict(items_dict: dict) -> dict:
         )
         gene_name = [""] * len(protein_ids)
 
-    if len(protein_ids) != len(TDL_values):
+    if len(protein_ids) != len(tdl_values):
         # this happens - repeat TDL designation for all protein IDs
-        TDL_values = TDL_values * len(protein_ids)
+        tdl_values = tdl_values * len(protein_ids)
 
     protein_dict = defaultdict(list)
     for i in range(len(protein_ids)):
-        protein_dict[protein_ids[i]] = [protein_ids[i], gene_name[i], TDL_values[i]]
+        protein_dict[protein_ids[i]] = [protein_ids[i], gene_name[i], tdl_values[i]]
     return protein_dict

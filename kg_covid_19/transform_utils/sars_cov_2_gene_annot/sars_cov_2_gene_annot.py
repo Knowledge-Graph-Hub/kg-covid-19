@@ -1,3 +1,5 @@
+"""Transform for SARS-CoV-2 gene annotation data."""
+
 import logging
 import os
 from typing import Generator, List, Optional, TextIO
@@ -10,12 +12,15 @@ from kg_covid_19.utils.transform_utils import (ItemInDictNotFound,
 
 """Parse the GPA and GPI files for SARS-CoV-2 gene annotations, including GO annotations
 and more. Make a node for each gene using GPI lines, and make an edge for 
-each gene -> annotation described in GPA 
+each gene -> annotation described in GPA.
 """
 
 
 class SARSCoV2GeneAnnot(Transform):
+    """Transform for SARS-CoV-2 gene annotations."""
+
     def __init__(self, input_dir: Optional[str] = None, output_dir: str = None):
+        """Initialize."""
         source_name = "sars_cov_2_gene_annot"
         super().__init__(source_name, input_dir, output_dir)
 
@@ -58,7 +63,7 @@ class SARSCoV2GeneAnnot(Transform):
         }
 
     def run(self, data_file: str = None):
-
+        """Run the transform."""
         # file housekeeping
         os.makedirs(self.output_dir, exist_ok=True)
 
@@ -104,7 +109,7 @@ class SARSCoV2GeneAnnot(Transform):
                     write_node_edge_item(edge, self.edge_header, edge_data)
 
     def gpa_to_edge_data(self, rec: dict) -> list:
-        """given a parsed gpa entry, return an edge with the annotations
+        """Return an edge with annotations given a parsed gpa entry.
 
         :param rec: record from gpa iterator
         :return:
@@ -161,9 +166,9 @@ class SARSCoV2GeneAnnot(Transform):
         return this_id
 
     def gpi_to_gene_node_data(self, rec: dict) -> list:
-        """given a parsed gpi entry, return a node that can be passed to
-        write_node_edge_item()
+        """Return node that can be passed to write_node_edge_item().
 
+        Uses a parsed gpi entry.
         :param rec: record from gpi iterator
         :return: list of node items, one for each thing in self.node_header
         """
@@ -227,7 +232,7 @@ def _gpi12iterator(handle: TextIO) -> Generator:
     """
     logging.getLogger().setLevel(logging.WARNING)
     # GPI version 1.2
-    GPI11FIELDS = [
+    gpi11fields = [
         "DB",
         "DB_Object_ID",
         "DB_Object_Symbol",
@@ -260,7 +265,7 @@ def _gpi12iterator(handle: TextIO) -> Generator:
         except IndexError:
             logging.debug("No index for Properties for this record")
 
-        yield dict(zip(GPI11FIELDS, inrec))
+        yield dict(zip(gpi11fields, inrec))
 
 
 # from biopython, to avoid dependency
@@ -272,7 +277,7 @@ def _gpa11iterator(handle):
     use the gpa_iterator function
     """
     # GPA version 1.1
-    GPA11FIELDS = [
+    gpa11fields = [
         "DB",
         "DB_Object_ID",
         "Qualifier",
@@ -296,4 +301,4 @@ def _gpa11iterator(handle):
         inrec[4] = inrec[4].split("|")  # DB:Reference(s)
         inrec[6] = inrec[6].split("|")  # With
         inrec[10] = inrec[10].split("|")  # Annotation extension
-        yield dict(zip(GPA11FIELDS, inrec))
+        yield dict(zip(gpa11fields, inrec))

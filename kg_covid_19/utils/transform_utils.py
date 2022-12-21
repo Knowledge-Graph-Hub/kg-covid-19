@@ -28,8 +28,9 @@ class ItemInDictNotFoundError(TransformError):
 def multi_page_table_to_list(multi_page_table: Any) -> List[Dict]:
     """
     Convert multi-page tables to lists of dicts.
-    
-    Method to turn table data returned from tabula.io.read_pdf(), possibly broken over several pages, into a list
+
+    Method to turn table data returned from tabula.io.read_pdf(),
+    possibly broken over several pages, into a list
     of dicts, one dict for each row.
     Args:
         multi_page_table:
@@ -68,7 +69,7 @@ def get_header_items(table_data: Any) -> List:
 
 
 def write_node_edge_item(fh: Any, header: List, data: List, sep: str = "\t"):
-    """
+    r"""
     Write out a single line for a node or an edge in *.tsv.
 
     :param fh: file handle of node or edge file
@@ -86,8 +87,8 @@ def write_node_edge_item(fh: Any, header: List, data: List, sep: str = "\t"):
 
 def get_item_by_priority(items_dict: dict, keys_by_priority: list) -> str:
     """
-    Retrieve item from a dict using a list of keys. 
-    
+    Retrieve item from a dict using a list of keys.
+
     Keys should be in descending order of priority.
     :param items_dict:
     :param keys_by_priority: list of keys to use to find values
@@ -203,9 +204,9 @@ def guess_bl_category(identifier: str) -> str:
 
 
 def collapse_uniprot_curie(uniprot_curie: str) -> str:
-    """ 
+    """
     Collapse a UniProtKB isoform ID to a parent ID.
-    
+
     Given a UniProtKB curie for an
     isoform such as UniprotKB:P63151-1
     or UniprotKB:P63151-2, collapse to parent protein
