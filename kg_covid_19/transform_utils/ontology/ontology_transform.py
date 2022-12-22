@@ -20,7 +20,7 @@ ONTOLOGIES = {
 class OntologyTransform(Transform):
     """Parse an Obograph JSON form of an Ontology into nodes and edges."""
 
-    def __init__(self, input_dir: str = None, output_dir: str = None):
+    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None):
         """Initialize."""
         source_name = "ontologies"
         super().__init__(source_name, input_dir, output_dir)

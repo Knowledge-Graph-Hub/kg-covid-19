@@ -4,7 +4,7 @@ import logging
 import os
 import random
 import warnings
-from typing import List
+from typing import Optional, List
 
 import numpy as np  # type: ignore
 import pandas as pd  # type: ignore
@@ -145,7 +145,7 @@ def _generate_negative_edges(
     edges_df: pd.DataFrame,
     edge_label: str,
     relation: str,
-    rseed: str = None,
+    rseed: Optional[str] = None,
 ) -> pd.DataFrame:
     if rseed:
         logging.debug("Setting random seed")

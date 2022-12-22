@@ -43,7 +43,7 @@ UNIPROT_ID_MAPPING = "HUMAN_9606_idmapping.dat.gz"
 class StringTransform(Transform):
     """Parse interactions from STRING DB into nodes and edges."""
 
-    def __init__(self, input_dir: str = None, output_dir: str = None):
+    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None):
         """Initialize."""
         source_name = "STRING"
         super().__init__(source_name, input_dir, output_dir)
@@ -57,7 +57,7 @@ class StringTransform(Transform):
         self.load_gene_info(self.input_base_dir, self.output_dir, ["9606"])
 
     def load_mapping(
-        self, input_dir: str, output_dir: str, species_id: List = None
+        self, input_dir: str, output_dir: str, species_id: Optional[List] = None
     ) -> None:
         """Load Ensembl Gene to Protein mapping from NCBI gene2ensembl (gene2ensembl.gz).
 
@@ -94,7 +94,7 @@ class StringTransform(Transform):
                     ] = ncbi_gene_identifier
 
     def load_gene_info(
-        self, input_dir: str, output_dir: str, species_id: List = None
+        self, input_dir: str, output_dir: str, species_id: Optional[List] = None
     ) -> None:
         """Load mappings from NCBI gene_info (gene_info.gz).
 

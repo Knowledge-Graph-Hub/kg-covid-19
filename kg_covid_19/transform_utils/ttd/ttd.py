@@ -31,7 +31,7 @@ class TTDNotEnoughFieldsError(Exception):
 class TTDTransform(Transform):
     """Transforms TTD data."""
 
-    def __init__(self, input_dir: str = None, output_dir: str = None):
+    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None):
         """Initialize."""
         source_name = "ttd"
         super().__init__(source_name, input_dir, output_dir)

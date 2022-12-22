@@ -18,7 +18,7 @@ class GocamTransform(Transform):
     RDF edge project (REP) pattern.
     """
 
-    def __init__(self, input_dir: str = None, output_dir: str = None):
+    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None):
         """Initialize."""
         source_name = "GOCAMs"
         super().__init__(source_name, input_dir, output_dir)

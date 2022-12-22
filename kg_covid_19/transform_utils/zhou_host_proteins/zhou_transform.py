@@ -30,7 +30,7 @@ gene:1234  contributes_to_condition    MONDO:0005002   RO:0003304
 class ZhouTransform(Transform):
     """Transform for Zhou host protein data."""
 
-    def __init__(self, input_dir: str = None, output_dir: str = None) -> None:
+    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None) -> None:
         """Init the transformation."""
         source_name = "zhou_host_proteins"
         super().__init__(source_name, input_dir, output_dir)

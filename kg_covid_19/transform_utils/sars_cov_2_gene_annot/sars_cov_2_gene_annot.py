@@ -19,7 +19,7 @@ each gene -> annotation described in GPA.
 class SARSCoV2GeneAnnot(Transform):
     """Transform for SARS-CoV-2 gene annotations."""
 
-    def __init__(self, input_dir: Optional[str] = None, output_dir: str = None):
+    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None):
         """Initialize."""
         source_name = "sars_cov_2_gene_annot"
         super().__init__(source_name, input_dir, output_dir)
@@ -62,7 +62,7 @@ class SARSCoV2GeneAnnot(Transform):
             "part_of": "BFO:0000050",
         }
 
-    def run(self, data_file: str = None):
+    def run(self, data_file: Optional[str] = None):
         """Run the transform."""
         # file housekeeping
         os.makedirs(self.output_dir, exist_ok=True)

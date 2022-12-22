@@ -28,7 +28,7 @@ CUSTOM_CMAP = {
 class ScibiteCordTransform(Transform):
     """Parse the SciBite annotations on CORD-19 dataset."""
 
-    def __init__(self, input_dir: str = None, output_dir: str = None):
+    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None):
         """Initialize the transform."""
         source_name = "SciBite-CORD-19"
         super().__init__(source_name, input_dir, output_dir)
@@ -416,7 +416,7 @@ class ScibiteCordTransform(Transform):
         return bool(m)
 
     def load_gene_info(
-        self, input_dir: str, output_dir: str, species_id: List = None
+        self, input_dir: str, output_dir: str, species_id: Optional[List] = None
     ) -> None:
         """Load mappings from NCBI gene_info (gene_info.gz).
 
