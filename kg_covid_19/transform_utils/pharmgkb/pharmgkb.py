@@ -329,7 +329,9 @@ class PharmGKB(Transform):
         :param norm_map: normalization map for drug ids
         :return: None
         """
-        preferred_drug_id = self.make_preferred_drug_id(chem_id, self.drug_id_map)
+        preferred_drug_id = self.make_preferred_drug_id(
+            chem_id, self.drug_id_map, preferred_ids={}
+        )
 
         # Normalize those PharmGKB drugs if we can
         try:
