@@ -36,16 +36,20 @@ def make_holdouts(
     logging.basicConfig(level=logging.INFO)
     logging.info("Loading graph from nodes %s and edges %s files" % (nodes, edges))
     graph = Graph.from_csv(
-        edge_path=edges,
-        sources_column="subject",
+        default_edge_type="biolink:Association",
+        default_node_type="biolink:NamedThing",
         destinations_column="object",
         directed=False,
-        edge_types_column="predicate",
-        default_edge_type="biolink:Association",
+        edge_list_header=True,
+        edge_list_separator="\t",
+        edge_path=edges,
+        edge_list_edge_types_column="predicate",
+        node_list_header=True,
+        node_list_node_types_column="category",
+        node_list_separator="\t",
         node_path=nodes,
         nodes_column="id",
-        default_node_type="biolink:NamedThing",
-        node_types_column="category",
+        sources_column="subject",
     )
 
     os.makedirs(output_dir, exist_ok=True)
@@ -53,25 +57,25 @@ def make_holdouts(
     # make positive edges
     logging.info("Making positive edges")
     pos_train_edges, pos_test_edges = graph.random_holdout(
-        seed=seed, train_percentage=train_fraction
+        random_state=seed, train_size=train_fraction
     )
     if validation:
         pos_valid_edges, pos_test_edges = pos_test_edges.random_holdout(
-            seed=seed, train_percentage=0.5
+            random_state=seed, train_size=0.5
         )
 
     # make negative edges
     logging.info("Making negative edges")
 
-    all_negative_edges = pos_train_edges.sample_negatives(
-        seed=seed, negatives_number=graph.get_edges_number(), allow_selfloops=False
+    all_negative_edges = pos_train_edges.sample_negative_graph(
+        random_state=seed, number_of_negative_samples=graph.get_number_of_edges()
     )
     neg_train_edges, neg_test_edges = all_negative_edges.random_holdout(
-        seed=seed, train_percentage=train_fraction
+        random_state=seed, train_size=train_fraction
     )
     if validation:
         neg_test_edges, neg_valid_edges = neg_test_edges.random_holdout(
-            seed=seed, train_percentage=0.5
+            random_state=seed, train_size=0.5
         )
 
     #
