@@ -98,5 +98,5 @@ class TestSarsGeneAnnot(TestCase):
         self.assertEqual(edge2[3], "RO:0002331")
 
     def test_run(self) -> None:
-        """Test the full gene annotation transform."""
-        self.assertTrue(isinstance((self.sc2ga, "run"), types.MethodType))
+        """Test the existence of the full gene annotation method."""
+        self.assertTrue(hasattr(self.sc2ga, "run"))
