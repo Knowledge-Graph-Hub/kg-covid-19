@@ -36,8 +36,6 @@ jobs:
     #----------------------------------------------      
     - name: Install library
       run: poetry install --no-interaction
-    - name: Install extra dependencies
-      run: pip install grape
 
     #----------------------------------------------
     #              run tox

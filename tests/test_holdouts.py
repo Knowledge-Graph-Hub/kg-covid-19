@@ -5,6 +5,7 @@ import tempfile
 import unittest
 
 import pandas as pd
+import pytest
 from numpy import NaN
 from pandas import np
 from parameterized import parameterized
@@ -14,6 +15,7 @@ from kg_covid_19.make_holdouts import (df_to_tsv, make_holdouts,
                                        make_positive_edges, tsv_to_df)
 
 
+@pytest.mark.skip(reason="Skipped due to issues with Ensmallen.")
 class TestEdges(unittest.TestCase):
     """Tests for producing edge holdouts."""
 
