@@ -30,9 +30,7 @@ class TestEdges(unittest.TestCase):
         # make positive edges for small graph
         self.train_fraction = 0.8
         (self.train_edges, self.test_edges) = make_positive_edges(
-            nodes_df=self.nodes,
-            edges_df=self.edges,
-            train_fraction=self.train_fraction
+            nodes_df=self.nodes, edges_df=self.edges, train_fraction=self.train_fraction
         )
 
     def test_tsv_to_df(self):
@@ -131,12 +129,9 @@ class TestEdges(unittest.TestCase):
             validation=True,
         )
         input_edges = tsv_to_df(self.edges_file)[["subject", "object"]]
-        train_edges = tsv_to_df(os.path.join(output_dir,
-          train))[["subject", "object"]]
-        test_edges = tsv_to_df(os.path.join(output_dir,
-          test))[["subject", "object"]]
-        valid_edges = tsv_to_df(os.path.join(output_dir,
-          valid))[["subject", "object"]]
+        train_edges = tsv_to_df(os.path.join(output_dir, train))[["subject", "object"]]
+        test_edges = tsv_to_df(os.path.join(output_dir, test))[["subject", "object"]]
+        valid_edges = tsv_to_df(os.path.join(output_dir, valid))[["subject", "object"]]
 
         # train should not share any members with test
         self.assertTrue(not set(train_edges).isdisjoint(test_edges))
@@ -258,7 +253,7 @@ class TestEdges(unittest.TestCase):
         unique_node_ids = list(np.unique(self.nodes.id))
         pos_nodes = list(
             np.unique(np.concatenate((self.test_edges.subject,
-              self.test_edges.object)))
+                                      self.test_edges.object)))
         )
         self.assertTrue(
             set(pos_nodes) <= set(unique_node_ids),
