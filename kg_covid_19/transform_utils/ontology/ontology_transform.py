@@ -26,7 +26,8 @@ class OntologyTransform(Transform):
         super().__init__(source_name, input_dir, output_dir)
 
     def run(self, data_file: Optional[str] = None) -> None:
-        """Perform needed transformations to process an ontology.
+        """Perform transformations to process an ontology.
+
         Args:
             data_file: data file to parse
         Returns:
@@ -84,7 +85,7 @@ class OntologyTransform(Transform):
             node_mappings = {}
             with open("./maps/drugcentral-maps-kg_covid_19-0.1.sssom.tsv") as map_file:
 
-                for n in range(11):
+                for _ in range(11):
                     next(map_file)
                 norm_map = csv.DictReader(map_file, delimiter="\t")
 
@@ -98,7 +99,7 @@ class OntologyTransform(Transform):
             all_map_nodes = []
             for subject, object in node_mappings.items():
                 urn = "urn:uuid:" + str(uuid.uuid1())
-                new_relation = f"{urn}\t{subject}\tbiolink:exact_match\t{object}\tskos:exactMatch\tchebi.json.gz\n"
+                new_relation = f"{urn}\t{subject}\tbiolink:exact_match\t{object}\tskos:exactMatch\tchebi.json.gz\n" # noqa: E501
                 new_match_relations.append(new_relation)
                 object_iri = (
                     "https://drugcentral.org/drugcard/" + (object.split(":"))[1]

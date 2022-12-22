@@ -15,12 +15,14 @@ from kg_covid_19.utils.transform_utils import (ItemInDictNotFound,
 """Ingest TTD - Therapeutic Targets Database
 drug targets, and associated data for each (drugs, ids, etc)
 
-Dataset location: http://db.idrblab.net/ttd/sites/default/files/ttd_database/P1-01-TTD_target_download.txt
-GitHub Issue: https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/6
+Dataset location:
+http://db.idrblab.net/ttd/sites/default/files/ttd_database/P1-01-TTD_target_download.txt
+GitHub Issue:
+https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/6
 """
 
 
-class TTDNotEnoughFieldsException(Exception):
+class TTDNotEnoughFieldsError(Exception):
     """Exception raised when number of fields is less than expected."""
 
     pass
@@ -75,7 +77,7 @@ class TTDTransform(Transform):
             # Set up ID mapping for normalization
             # this gets converted to a flat dict in the end
             all_ttd_drugs = []
-            for target_id, data in ttd_data.items():
+            for _, data in ttd_data.items():
                 if "UNIPROID" not in data:
                     continue
                 if "DRUGINFO" not in data:
@@ -203,7 +205,7 @@ class TTDTransform(Transform):
 
     def parse_ttd_file(self, file: str) -> dict:
         """Parse entire TTD download file.
-        
+
         (a few megs, not very mem efficient, but
         should be okay), and return a dict of dicts of lists
         [target_id] -> [abbreviation] -> [list with data]
@@ -245,7 +247,7 @@ class TTDTransform(Transform):
 
     def parse_line(self, line: str, id_sep="; ") -> list:
         r"""Parse one line of data from P1-01-TTD_target_download.
-        
+
         Return list of:
         [target_id, abbrev, data_list]
         where:
@@ -258,7 +260,7 @@ class TTDTransform(Transform):
         """
         fields = line.rstrip().split("\t")
         if len(fields) < 3:
-            raise TTDNotEnoughFieldsException(
+            raise TTDNotEnoughFieldsError(
                 "Not enough fields in line {}".format(line)
             )
         target_id = fields[0]
@@ -266,7 +268,7 @@ class TTDTransform(Transform):
 
         data: Union[List, str]
         if len(fields[2:]) == 1:
-            if fields[1] == "UNIPROID" and bool(re.search("\; ", fields[2])):
+            if fields[1] == "UNIPROID" and bool(re.search("; ", fields[2])):
                 data = fields[2].split(id_sep)
             else:
                 data = fields[2]

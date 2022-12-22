@@ -213,7 +213,7 @@ class TestEdges(unittest.TestCase):
         )
 
     def test_make_positive_edges_check_train_edges_columns(self):
-        """Test that positive train edges have an expected structure, in column number."""
+        """Test that positive train edges have an expected column number."""
         self.assertListEqual(
             list(self.edges.columns),
             list(self.train_edges.columns),

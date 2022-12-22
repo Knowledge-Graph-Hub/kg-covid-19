@@ -14,16 +14,16 @@ from kg_covid_19.utils.transform_utils import (unzip_to_tempdir,
                                                write_node_edge_item)
 
 """
-Ingest IntAct protein/protein interaction data 
+Ingest IntAct protein/protein interaction data
 https://www.ebi.ac.uk/intact/
-specifically about coronavirus viral protein/host protein interactions. 
+specifically about coronavirus viral protein/host protein interactions.
 
 The file at this URL:
 https://t.co/OUGKWbpQHG?amp=1
 is zip file containing XML files that describe coronavirus interactions shown in a
-publication. 
+publication.
 
-Each XML file is an miXML following this spec: 
+Each XML file is an miXML following this spec:
 https://github.com/HUPO-PSI/miXML
 """
 
@@ -145,7 +145,7 @@ class IntAct(Transform):
         experiment_dict = self.parse_experiment_info(xmldoc)
 
         # write nodes
-        for key, value in nodes_dict.items():
+        for _, value in nodes_dict.items():
             parsed["nodes"].append(value)
 
         #
@@ -164,19 +164,19 @@ class IntAct(Transform):
         """Parse an interaction to an edge."""
         edges: List[list] = []
         try:
-            interaction_type = interaction.getElementsByTagName("interactionType")  # type: ignore
+            interaction_type = interaction.getElementsByTagName("interactionType")
             interaction_type_str = (
                 interaction_type[0]
                 .getElementsByTagName("shortLabel")[0]
                 .firstChild._data
             )
 
-            participants = interaction.getElementsByTagName("participant")  # type: ignore
+            participants = interaction.getElementsByTagName("participant")
             # skip interactions with < 2 or > 3 participants
             if len(participants) not in [2, 3]:
                 return edges
 
-            experiment_ref = interaction.getElementsByTagName("experimentRef")[0].childNodes[0].data  # type: ignore
+            experiment_ref = interaction.getElementsByTagName("experimentRef")[0].childNodes[0].data
         except (KeyError, IndexError, AttributeError) as e:
             logging.warning("Problem getting interactors from interaction: %s" % e)
 
@@ -287,7 +287,7 @@ class IntAct(Transform):
                 .attributes["ncbiTaxId"]
                 .value
             )
-        except (KeyError, IndexError, AttributeError) as e:
+        except (KeyError, IndexError, AttributeError):
             tax_id = "NA"
 
         try:
@@ -327,7 +327,7 @@ class IntAct(Transform):
         :return: dictionary with parsed info about experiments (publication, exp type)
         """
         exp_dict: dict = defaultdict(lambda: defaultdict(str))
-        for experiment in xmldoc.getElementsByTagName("experimentDescription"):  # type: ignore
+        for experiment in xmldoc.getElementsByTagName("experimentDescription"):
             if experiment.hasAttribute("id"):
                 exp_id = experiment.getAttribute("id")
             else:

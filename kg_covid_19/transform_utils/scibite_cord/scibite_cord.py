@@ -248,7 +248,7 @@ class ScibiteCordTransform(Transform):
             df = pd.read_csv(
                 os.path.join(tmpdir, "cv19_scc.tsv"), delimiter="\t", encoding="utf-8"
             )
-        for index, row in df.iterrows():
+        for _, row in df.iterrows():
             self.parse_cooccurrence_record(node_handle, edge_handle, row)
 
     def parse_cooccurrence_record(
@@ -318,7 +318,8 @@ class ScibiteCordTransform(Transform):
                     )
                     self.seen.add(curie)
 
-                    # simplified generation of edges between OntologyClass and the publication where
+                    # simplified generation of edges between
+                    # OntologyClass and the publication where
                     # OntologyClass -> correlated_with -> Publication
                     # with the edge having relation RO:0002610
                     if (curie, paper_curie) not in self.seen:
@@ -449,6 +450,7 @@ class ScibiteCordTransform(Transform):
                     }
 
     def load_country_code(self, input_dir: str, output_dir: str) -> None:
+        """Load Wikidata country codes."""
         file_path = os.path.join(input_dir, "wikidata_country_codes.tsv")
         if os.path.exists(file_path):
             with open(file_path, "r") as filehandler:

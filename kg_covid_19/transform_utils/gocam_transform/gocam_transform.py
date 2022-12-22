@@ -3,8 +3,8 @@
 import os
 from typing import Dict, Optional
 
-from kgx.cli.cli_utils import (prepare_input_args,  # type: ignore
-                               prepare_output_args)
+from kgx.cli.cli_utils import prepare_input_args  # type: ignore
+from kgx.cli.cli_utils import prepare_output_args
 from kgx.transformer import Transformer  # type: ignore
 
 from kg_covid_19.transform_utils.transform import Transform

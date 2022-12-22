@@ -21,7 +21,7 @@ class TestRun(TestCase):
 
     def test_merge_missing_file_error(self):
         """Test case in which a file is missing."""
-        with self.assertRaises(FileNotFoundError) as context:
+        with self.assertRaises(FileNotFoundError):
             result = self.runner.invoke(
                 catch_exceptions=False,
                 cli=merge,

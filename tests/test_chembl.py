@@ -1,5 +1,6 @@
 """Tests for the CHEMBL data parsing."""
 
+import ast
 from unittest import TestCase
 
 from kg_covid_19.transform_utils.chembl import ChemblTransform
@@ -63,7 +64,7 @@ class TestChembl(TestCase):
         with open(self.chembl_activities_snippet_file) as f:
             self.chembl_activities = []
             for line in f:
-                self.chembl_activities.append(eval(line))
+                self.chembl_activities.append(ast.literal_eval(line))
         ca = self.chembl.parse_chembl_activity(self.chembl_activities)
         self.assertEqual(len(ca), 5)
         self.assertEqual(self.expected_ca_keys, list(ca[0].keys()))

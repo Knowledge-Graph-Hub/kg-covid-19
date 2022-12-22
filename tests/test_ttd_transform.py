@@ -45,7 +45,7 @@ class TestTTD(TestCase):
     def test_parse_ttd_file_fxn(self) -> None:
         """Test parsing the TTD input file."""
         self.assertTrue(
-            isinstance(getattr(self.ttd, "parse_ttd_file"), types.MethodType)
+            isinstance((self.ttd, "parse_ttd_file"), types.MethodType)
         )
         parsed_result = self.ttd.parse_ttd_file(self.ttd_dl_snippet)
         self.assertTrue(isinstance(parsed_result, dict))
@@ -82,4 +82,4 @@ class TestTTD(TestCase):
 
     def test_run(self) -> None:
         """Test the full TTD transformation."""
-        self.assertTrue(isinstance(getattr(self.ttd, "run"), types.MethodType))
+        self.assertTrue(isinstance((self.ttd, "run"), types.MethodType))

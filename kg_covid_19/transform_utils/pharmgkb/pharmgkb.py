@@ -190,16 +190,11 @@ class PharmGKB(Transform):
         self,
         pharmgkb_id: str,
         drug_id_map: dict,
-        preferred_ids: dict = {
-            "ChEBI:CHEBI": "CHEBI",
-            "CHEMBL": "CHEMBL",
-            "DrugBank": "DRUGBANK",
-            "PubChem Compound:": "PUBCHEM",
-        },
+        preferred_ids: dict,
         pharmgkb_prefix: str = "pharmgkb.drug",
     ) -> str:
-        """Convert a drug ID to a cross-referenced ID. 
-        
+        """Convert a drug ID to a cross-referenced ID.
+
         Use this order of preference:
         CHEBI > CHEMBL > DRUGBANK > PUBCHEM
         :param pharmgkb_id
@@ -210,6 +205,14 @@ class PharmGKB(Transform):
         :param pharmgkb_prefix thing to prepend to pharmgkb id ('pharmgkb.drug')
         :return: preferred_id: preferred cross-referenced ID
         """
+        if not preferred_ids:
+            preferred_ids = {
+            "ChEBI:CHEBI": "CHEBI",
+            "CHEMBL": "CHEMBL",
+            "DrugBank": "DRUGBANK",
+            "PubChem Compound:": "PUBCHEM",
+            }
+
         preferred_id = pharmgkb_prefix + ":" + pharmgkb_id
         if pharmgkb_id in drug_id_map:
             if "Cross-references" not in drug_id_map[pharmgkb_id]:
@@ -299,6 +302,7 @@ class PharmGKB(Transform):
         write_node_edge_item(fh=fh, header=self.node_header, data=data)
 
     def get_uniprot_id(self, this_id: str, pharmgkb_prefix: str = "PHARMGKB"):
+        """Retrieve a UniProtKB ID for a PharmGKB gene ID."""
         try:
             gene_id = (
                 self.uniprot_curie_prefix
@@ -357,7 +361,7 @@ class PharmGKB(Transform):
         id_sep: str = ",",
         id_key_val_sep: str = ":",
     ) -> dict:
-        """Parse gene ID mappings or drug ID mapping for PharmGKB IDs.
+        r"""Parse gene ID mappings or drug ID mapping for PharmGKB IDs.
 
         This is to parse both genes.tsv and drugs.tsv files.
         :param map_file: genes.tsv file, containing mappings
@@ -390,16 +394,20 @@ class PharmGKB(Transform):
 
 
 class CantFindPharmGKBKeyError(Exception):
+    """Error for when a key is missing in parsed data."""
     pass
 
 
 class PharmKGBInvalidNodeTypeError(Exception):
+    """Error for when a node type is invalid."""
     pass
 
 
 class PharmGKBFileError(Exception):
+    """Error for when file is unreadable."""
     pass
 
 
 class PharmGKBInvalidEdgeError(Exception):
+    """Error for when edge is invalid."""
     pass

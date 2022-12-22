@@ -99,4 +99,4 @@ class TestSarsGeneAnnot(TestCase):
 
     def test_run(self) -> None:
         """Test the full gene annotation transform."""
-        self.assertTrue(isinstance(getattr(self.sc2ga, "run"), types.MethodType))
+        self.assertTrue(isinstance((self.sc2ga, "run"), types.MethodType))
