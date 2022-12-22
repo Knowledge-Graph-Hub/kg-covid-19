@@ -77,11 +77,8 @@ class TestPharmGKB(TestCase):
     def test_make_preferred_drug_id(self, pharmgkb_id, preferred_id) -> None:
         """Test conversion of PharmGKB ID to preferred drug ID."""
         self.assertEqual(
-            self.pharmgkb.make_preferred_drug_id(pharmgkb_id, self.drug_id_map),
+            self.pharmgkb.make_preferred_drug_id(
+                pharmgkb_id, self.drug_id_map, preferred_ids={}
+            ),
             preferred_id,
         )
-
-    def test_run(self) -> None:
-        """Test successful execution of the run command."""
-        inst_type = "run"
-        self.assertTrue(isinstance(self.pharmgkb, inst_type), types.MethodType)

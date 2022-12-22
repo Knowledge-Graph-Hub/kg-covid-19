@@ -272,7 +272,9 @@ class PharmGKB(Transform):
 
         evidence = line_data["Evidence"]
 
-        preferred_drug_id = self.make_preferred_drug_id(drug_id, self.drug_id_map)
+        preferred_drug_id = self.make_preferred_drug_id(
+            drug_id, self.drug_id_map, preferred_ids={}
+        )
 
         data = [
             preferred_drug_id,

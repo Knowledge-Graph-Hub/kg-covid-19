@@ -21,7 +21,7 @@ class TestGpiFile(unittest.TestCase):
 
     def test_gpi_parsing(self):
         """Test if GPI input file can be parsed."""
-        count: int = 0
+        count = 0
         with open(self.gpi_file, "r") as gpi_fh:
             for _ in _gpi12iterator(gpi_fh):
                 count += 1
