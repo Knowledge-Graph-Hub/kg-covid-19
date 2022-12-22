@@ -1,6 +1,5 @@
 """Tests for the SARS-CoV-2 gene annotation parsing."""
 
-import types
 from typing import Iterable
 from unittest import TestCase
 

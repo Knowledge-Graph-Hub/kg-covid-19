@@ -1,6 +1,5 @@
 """Tests for the TTD transformation."""
 
-import types
 from unittest import TestCase
 
 from parameterized import parameterized

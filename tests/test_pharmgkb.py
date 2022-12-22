@@ -1,6 +1,5 @@
 """Tests for parsing PharmGKB data."""
 
-import types
 from unittest import TestCase
 
 from parameterized import parameterized
