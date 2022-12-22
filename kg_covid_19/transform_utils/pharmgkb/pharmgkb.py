@@ -247,7 +247,7 @@ class PharmGKB(Transform):
                         )
                         preferred_id = curie_prefix + ":" + this_id
                         break
-                    except ItemInDictNotFound:
+                    except ItemInDictNotFoundError:
                         pass
 
         return preferred_id

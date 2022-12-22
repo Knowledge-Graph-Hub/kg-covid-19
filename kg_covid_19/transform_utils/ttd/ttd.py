@@ -181,7 +181,7 @@ class TTDTransform(Transform):
                 # use uniprotkb accession if we can find it
                 if this_name in name_2_id_map:
                     ids.append(uniprot_curie_prefix + name_2_id_map[this_name])
-        except ItemInDictNotFound:
+        except ItemInDictNotFoundError:
             logging.warning("Problem with UNIPROID for this target id {}".format(data))
         return ids
 
@@ -191,7 +191,7 @@ class TTDTransform(Transform):
         try:
             gene_names = get_item_by_priority(data, ["GENENAME"])
             gene_name = gene_names[0]
-        except ItemInDictNotFound:
+        except ItemInDictNotFoundError:
             logging.warning("Problem with UNIPROID for this target id  {}".format(data))
         return gene_name
 
@@ -201,7 +201,7 @@ class TTDTransform(Transform):
         try:
             targ_types = get_item_by_priority(data, ["TARGTYPE"])
             targ_type = targ_types[0]
-        except ItemInDictNotFound:
+        except ItemInDictNotFoundError:
             pass
         return targ_type
 
