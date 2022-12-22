@@ -1,17 +1,17 @@
 """Tests for producing holdout sets."""
 
-import os
-import tempfile
+# import os
+# import tempfile
 import unittest
 
-import pandas as pd
-from numpy import NaN
-from pandas import np
-from parameterized import parameterized
+# import pandas as pd
+# from numpy import NaN
+# from pandas import np
+# from parameterized import parameterized
 
-from kg_covid_19.make_holdouts import (df_to_tsv, make_holdouts,
-                                       make_negative_edges,
-                                       make_positive_edges, tsv_to_df)
+# from kg_covid_19.make_holdouts import (df_to_tsv, make_holdouts,
+#                                        make_negative_edges,
+#                                        make_positive_edges, tsv_to_df)
 
 
 # Disabled for now
@@ -22,17 +22,17 @@ class TestEdges(unittest.TestCase):
         """Set up."""
         self.nodes_file = "tests/resources/holdouts/bigger_graph_nodes.tsv"
         self.edges_file = "tests/resources/holdouts/bigger_graph_edges.tsv"
-        self.edges = tsv_to_df(self.edges_file)
-        self.nodes = tsv_to_df(self.nodes_file)
+        # self.edges = tsv_to_df(self.edges_file)
+        # self.nodes = tsv_to_df(self.nodes_file)
 
-        # make negative edges for small graph
-        self.ne = make_negative_edges(nodes_df=self.nodes, edges_df=self.edges)
+        # # make negative edges for small graph
+        # self.ne = make_negative_edges(nodes_df=self.nodes, edges_df=self.edges)
 
-        # make positive edges for small graph
-        self.train_fraction = 0.8
-        (self.train_edges, self.test_edges) = make_positive_edges(
-            nodes_df=self.nodes, edges_df=self.edges, train_fraction=self.train_fraction
-        )
+        # # make positive edges for small graph
+        # self.train_fraction = 0.8
+        # (self.train_edges, self.test_edges) = make_positive_edges(
+        #     nodes_df=self.nodes, edges_df=self.edges, train_fraction=self.train_fraction
+        # )
 
     # def test_tsv_to_df(self):
     #     """Test conversion of tsv to dataframe."""
