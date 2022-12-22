@@ -8,7 +8,7 @@ from typing import List, Optional
 
 import numpy as np  # type: ignore
 import pandas as pd  # type: ignore
-from grape import Graph
+from ensmallen import Graph
 from tqdm import tqdm  # type: ignore
 
 

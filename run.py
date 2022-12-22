@@ -4,7 +4,7 @@ import click
 
 from kg_covid_19 import download as kg_download
 from kg_covid_19 import transform as kg_transform
-# from kg_covid_19.make_holdouts import make_holdouts
+from kg_covid_19.make_holdouts import make_holdouts
 from kg_covid_19.merge_utils.merge_kg import load_and_merge
 from kg_covid_19.query import parse_query_rq, result_dict_to_tsv, run_query
 from kg_covid_19.transform import DATA_SOURCES
@@ -127,75 +127,75 @@ def query(
     result_dict_to_tsv(result_dict, outfile)
 
 
-# @cli.command()
-# @click.option(
-#     "nodes",
-#     "-n",
-#     help="nodes KGX TSV file",
-#     default="data/merged/nodes.tsv",
-#     type=click.Path(exists=True),
-# )
-# @click.option(
-#     "edges",
-#     "-e",
-#     help="edges KGX TSV file",
-#     default="data/merged/edges.tsv",
-#     type=click.Path(exists=True),
-# )
-# @click.option(
-#     "output_dir",
-#     "-o",
-#     help="output directory",
-#     default="data/holdouts/",
-#     type=click.Path(),
-# )
-# @click.option(
-#     "train_fraction",
-#     "-t",
-#     help="fraction of input graph to use in training graph [0.8]",
-#     default=0.8,
-#     type=float,
-# )
-# @click.option(
-#     "validation", "-v", help="make validation set", is_flag=True, default=False
-# )
-# def holdouts(*args, **kwargs) -> None:
-#     """Make holdouts for ML training
+@cli.command()
+@click.option(
+    "nodes",
+    "-n",
+    help="nodes KGX TSV file",
+    default="data/merged/nodes.tsv",
+    type=click.Path(exists=True),
+)
+@click.option(
+    "edges",
+    "-e",
+    help="edges KGX TSV file",
+    default="data/merged/edges.tsv",
+    type=click.Path(exists=True),
+)
+@click.option(
+    "output_dir",
+    "-o",
+    help="output directory",
+    default="data/holdouts/",
+    type=click.Path(),
+)
+@click.option(
+    "train_fraction",
+    "-t",
+    help="fraction of input graph to use in training graph [0.8]",
+    default=0.8,
+    type=float,
+)
+@click.option(
+    "validation", "-v", help="make validation set", is_flag=True, default=False
+)
+def holdouts(*args, **kwargs) -> None:
+    """Make holdouts for ML training
 
-#     Given a graph (from formatted node and edge TSVs), output positive edges and negative
-#     edges for use in machine learning.
-#     \f
-#     To generate positive edges: a set of test positive edges equal in number to
-#     [(1 - train_fraction) * number of edges in input graph] are randomly selected from
-#     the edges in the input graph that is not part of a minimal spanning tree, such that
-#     removing the edge does not create new components. These edges are emitting as
-#     positive test edges. (If -v == true, the test positive edges are divided equally to
-#     yield test and validation positive edges.) These edges are then removed from the
-#     edges of the input graph, and these are emitted as the training edges.
+    Given a graph (from formatted node and edge TSVs), output positive edges and negative
+    edges for use in machine learning.
+    \f
+    To generate positive edges: a set of test positive edges equal in number to
+    [(1 - train_fraction) * number of edges in input graph] are randomly selected from
+    the edges in the input graph that is not part of a minimal spanning tree, such that
+    removing the edge does not create new components. These edges are emitting as
+    positive test edges. (If -v == true, the test positive edges are divided equally to
+    yield test and validation positive edges.) These edges are then removed from the
+    edges of the input graph, and these are emitted as the training edges.
 
-#     Negative edges are selected by randomly selecting pairs of nodes that are not
-#     connected by an edge in the input graph. The number of negative edges emitted is
-#     equal to the number of positive edges emitted above.
+    Negative edges are selected by randomly selecting pairs of nodes that are not
+    connected by an edge in the input graph. The number of negative edges emitted is
+    equal to the number of positive edges emitted above.
 
-#     Outputs these files in [output_dir]:
-#         pos_train_edges.tsv - positive edges for training (this is the input graph with
-#                       test [and validation] positive edges removed)
-#         pos_test_edges.tsv - positive edges for testing
-#         pos_valid_edges.tsv (optional) - positive edges for validation
-#         neg_train.tsv - a set of edges not present in input graph for training
-#         neg_test.tsv - a set of edges not present in input graph for testing
-#         neg_valid.tsv (optional) - a set of edges not present in input graph for
-#                       validation
+    Outputs these files in [output_dir]:
+        pos_train_edges.tsv - positive edges for training (this is the input graph with
+                      test [and validation] positive edges removed)
+        pos_test_edges.tsv - positive edges for testing
+        pos_valid_edges.tsv (optional) - positive edges for validation
+        neg_train.tsv - a set of edges not present in input graph for training
+        neg_test.tsv - a set of edges not present in input graph for testing
+        neg_valid.tsv (optional) - a set of edges not present in input graph for
+                      validation
 
-#     Args:
-#         :param nodes:   nodes for input graph, in KGX TSV format [data/merged/nodes.tsv]
-#         :param edges:   edges for input graph, in KGX TSV format [data/merged/edges.tsv]
-#         :param output_dir:     directory to output edges and new graph [data/edges/]
-#         :param train_fraction: fraction of edges to emit as training [0.8]
-#         :param validation:     should we make validation edges? [False]
+    Args:
+        :param nodes:   nodes for input graph, in KGX TSV format [data/merged/nodes.tsv]
+        :param edges:   edges for input graph, in KGX TSV format [data/merged/edges.tsv]
+        :param output_dir:     directory to output edges and new graph [data/edges/]
+        :param train_fraction: fraction of edges to emit as training [0.8]
+        :param validation:     should we make validation edges? [False]
 
-#     """
-#     make_holdouts(*args, **kwargs)
+    """
+    make_holdouts(*args, **kwargs)
 
 
 if __name__ == "__main__":
