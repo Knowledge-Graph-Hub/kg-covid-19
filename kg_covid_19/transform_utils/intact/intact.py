@@ -176,7 +176,9 @@ class IntAct(Transform):
             if len(participants) not in [2, 3]:
                 return edges
 
-            experiment_ref = interaction.getElementsByTagName("experimentRef")[0].childNodes[0].data
+            experiment_ref = (
+                interaction.getElementsByTagName("experimentRef")[0].childNodes[0].data
+            )
         except (KeyError, IndexError, AttributeError) as e:
             logging.warning("Problem getting interactors from interaction: %s" % e)
 

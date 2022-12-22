@@ -207,10 +207,10 @@ class PharmGKB(Transform):
         """
         if not preferred_ids:
             preferred_ids = {
-            "ChEBI:CHEBI": "CHEBI",
-            "CHEMBL": "CHEMBL",
-            "DrugBank": "DRUGBANK",
-            "PubChem Compound:": "PUBCHEM",
+                "ChEBI:CHEBI": "CHEBI",
+                "CHEMBL": "CHEMBL",
+                "DrugBank": "DRUGBANK",
+                "PubChem Compound:": "PUBCHEM",
             }
 
         preferred_id = pharmgkb_prefix + ":" + pharmgkb_id
@@ -395,19 +395,23 @@ class PharmGKB(Transform):
 
 class CantFindPharmGKBKeyError(Exception):
     """Error for when a key is missing in parsed data."""
+
     pass
 
 
 class PharmKGBInvalidNodeTypeError(Exception):
     """Error for when a node type is invalid."""
+
     pass
 
 
 class PharmGKBFileError(Exception):
     """Error for when file is unreadable."""
+
     pass
 
 
 class PharmGKBInvalidEdgeError(Exception):
     """Error for when edge is invalid."""
+
     pass

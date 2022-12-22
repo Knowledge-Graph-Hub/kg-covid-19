@@ -99,7 +99,7 @@ class OntologyTransform(Transform):
             all_map_nodes = []
             for subject, object in node_mappings.items():
                 urn = "urn:uuid:" + str(uuid.uuid1())
-                new_relation = f"{urn}\t{subject}\tbiolink:exact_match\t{object}\tskos:exactMatch\tchebi.json.gz\n" # noqa: E501
+                new_relation = f"{urn}\t{subject}\tbiolink:exact_match\t{object}\tskos:exactMatch\tchebi.json.gz\n"  # noqa: E501
                 new_match_relations.append(new_relation)
                 object_iri = (
                     "https://drugcentral.org/drugcard/" + (object.split(":"))[1]
