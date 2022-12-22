@@ -28,7 +28,9 @@ CUSTOM_CMAP = {
 class ScibiteCordTransform(Transform):
     """Parse the SciBite annotations on CORD-19 dataset."""
 
-    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None):
+    def __init__(
+        self, input_dir: Optional[str] = None, output_dir: Optional[str] = None
+    ):
         """Initialize the transform."""
         source_name = "SciBite-CORD-19"
         super().__init__(source_name, input_dir, output_dir)

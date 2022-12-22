@@ -31,7 +31,9 @@ https://github.com/HUPO-PSI/miXML
 class IntAct(Transform):
     """Transform IntAct PPI data."""
 
-    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None) -> None:
+    def __init__(
+        self, input_dir: Optional[str] = None, output_dir: Optional[str] = None
+    ) -> None:
         """Initialize."""
         source_name = "intact"
         super().__init__(source_name, input_dir, output_dir)

@@ -15,7 +15,9 @@ TAXON_MAP = {
 class ChemblTransform(Transform):
     """Parse ChEMBL and transform into a property graph representation."""
 
-    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None):
+    def __init__(
+        self, input_dir: Optional[str] = None, output_dir: Optional[str] = None
+    ):
         """Initialize."""
         source_name = "ChEMBL"
         super().__init__(source_name, input_dir, output_dir)

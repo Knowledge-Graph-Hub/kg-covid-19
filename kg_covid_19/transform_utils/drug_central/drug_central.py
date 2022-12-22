@@ -26,7 +26,9 @@ And extracts Drug -> Protein interactions.
 class DrugCentralTransform(Transform):
     """Transform DrugCentral interaction data."""
 
-    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None) -> None:
+    def __init__(
+        self, input_dir: Optional[str] = None, output_dir: Optional[str] = None
+    ) -> None:
         """Initialize."""
         source_name = "drug_central"
         super().__init__(source_name, input_dir, output_dir)  # set some variables

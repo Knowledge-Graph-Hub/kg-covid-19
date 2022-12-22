@@ -25,7 +25,9 @@ GitHub Issue: https://github.com/Knowledge-Graph-Hub/kg-covid-19/issues/7
 class PharmGKB(Transform):
     """Class for PharmGKB transformation."""
 
-    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None):
+    def __init__(
+        self, input_dir: Optional[str] = None, output_dir: Optional[str] = None
+    ):
         """Initialize the transformation."""
         source_name = "pharmgkb"
         super().__init__(source_name, input_dir, output_dir)

@@ -10,7 +10,12 @@ class Transform:
     DEFAULT_INPUT_DIR = os.path.join("data", "raw")
     DEFAULT_OUTPUT_DIR = os.path.join("data", "transformed")
 
-    def __init__(self, source_name, input_dir: Optional[str] = None, output_dir: Optional[str] = None):
+    def __init__(
+        self,
+        source_name,
+        input_dir: Optional[str] = None,
+        output_dir: Optional[str] = None,
+    ):
         """Initialize."""
         # default columns, can be appended to or overwritten as necessary
         self.source_name = source_name

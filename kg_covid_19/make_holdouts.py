@@ -4,7 +4,7 @@ import logging
 import os
 import random
 import warnings
-from typing import Optional, List
+from typing import List, Optional
 
 import numpy as np  # type: ignore
 import pandas as pd  # type: ignore

@@ -1,7 +1,7 @@
 """Top-level functions for transforming data."""
 
 import logging
-from typing import Optional, List
+from typing import List, Optional
 
 from kg_covid_19.transform_utils.chembl.chembl_transform import ChemblTransform
 from kg_covid_19.transform_utils.drug_central.drug_central import \
@@ -38,7 +38,9 @@ DATA_SOURCES = {
 }
 
 
-def transform(input_dir: str, output_dir: str, sources: Optional[List[str]] = None) -> None:
+def transform(
+    input_dir: str, output_dir: str, sources: Optional[List[str]] = None
+) -> None:
     """Call scripts in kg_covid_19/transform/[source name]/ to transform data.
 
     KGX can ingest each directly, in either TSV or JSON format.

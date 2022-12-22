@@ -19,7 +19,9 @@ each gene -> annotation described in GPA.
 class SARSCoV2GeneAnnot(Transform):
     """Transform for SARS-CoV-2 gene annotations."""
 
-    def __init__(self, input_dir: Optional[str] = None, output_dir: Optional[str] = None):
+    def __init__(
+        self, input_dir: Optional[str] = None, output_dir: Optional[str] = None
+    ):
         """Initialize."""
         source_name = "sars_cov_2_gene_annot"
         super().__init__(source_name, input_dir, output_dir)
