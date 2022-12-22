@@ -17,26 +17,21 @@ from kg_covid_19.make_holdouts import (df_to_tsv, make_holdouts,
 class TestEdges(unittest.TestCase):
     """Tests for producing edge holdouts."""
 
-    @classmethod
-    def setUpClass(cls) -> None:
-        """Set up the class."""
-        cls.nodes_file = "tests/resources/holdouts/bigger_graph_nodes.tsv"
-        cls.edges_file = "tests/resources/holdouts/bigger_graph_edges.tsv"
-        cls.edges = tsv_to_df(cls.edges_file)
-        cls.nodes = tsv_to_df(cls.nodes_file)
+    def setUp(self) -> None:
+        """Set up."""
+        self.nodes_file = "tests/resources/holdouts/bigger_graph_nodes.tsv"
+        self.edges_file = "tests/resources/holdouts/bigger_graph_edges.tsv"
+        self.edges = tsv_to_df(self.edges_file)
+        self.nodes = tsv_to_df(self.nodes_file)
 
         # make negative edges for small graph
-        cls.ne = make_negative_edges(nodes_df=cls.nodes, edges_df=cls.edges)
+        self.ne = make_negative_edges(nodes_df=self.nodes, edges_df=self.edges)
 
         # make positive edges for small graph
-        cls.train_fraction = 0.8
-        (cls.train_edges, cls.test_edges) = make_positive_edges(
-            nodes_df=cls.nodes, edges_df=cls.edges, train_fraction=cls.train_fraction
+        self.train_fraction = 0.8
+        (self.train_edges, self.test_edges) = make_positive_edges(
+            nodes_df=self.nodes, edges_df=self.edges, train_fraction=self.train_fraction
         )
-
-    def setUp(self) -> None:
-        """Set up, but that's actually in setUpClass."""
-        pass
 
     def test_tsv_to_df(self):
         """Test conversion of tsv to dataframe."""

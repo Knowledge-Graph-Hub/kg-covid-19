@@ -8,7 +8,7 @@ from typing import List, Optional, Union
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import normalize_curies, write_node_edge_item
-from kg_covid_19.utils.transform_utils import (ItemInDictNotFound,
+from kg_covid_19.utils.transform_utils import (ItemInDictNotFoundError,
                                                get_item_by_priority,
                                                uniprot_make_name_to_id_mapping)
 

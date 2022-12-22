@@ -9,21 +9,20 @@ from kg_covid_19.transform_utils.chembl import ChemblTransform
 class TestChembl(TestCase):
     """Tests for the ChEMBL transform."""
 
-    @classmethod
-    def setUpClass(cls) -> None:
+    def setUp(self) -> None:
         """Set up the tests."""
-        cls.chembl = ChemblTransform()
-        cls.chembl_data_files = {
+        self.chembl = ChemblTransform()
+        self.chembl_data_files = {
             "molecules_data": "tests/resources/chembl/chembl_molecule_records.json",
             "assay_data": "tests/resources/chembl/chembl_assay_records.json",
             "document_data": "tests/resources/chembl/chembl_document_records.json",
             "activity_data": "tests/resources/chembl/chembl_activity_records.json",
         }
 
-        cls.chembl_activities_snippet_file = (
+        self.chembl_activities_snippet_file = (
             "tests/resources/chembl/chembl_activities.snippet.txt"
         )
-        cls.expected_ca_keys = [
+        self.expected_ca_keys = [
             "standard_units",
             "standard_type",
             "standard_relation",
@@ -42,10 +41,6 @@ class TestChembl(TestCase):
             "provided_by",
             "type",
         ]
-
-    def setUp(self) -> None:
-        """Set up the tests, but actually do that in setUpClass."""
-        pass
 
     def test_run(self) -> None:
         """Test the CHEMBL transform."""

@@ -9,7 +9,7 @@ from typing import Optional, TextIO
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import load_ids_from_map, normalize_curies
-from kg_covid_19.utils.transform_utils import (ItemInDictNotFound,
+from kg_covid_19.utils.transform_utils import (ItemInDictNotFoundError,
                                                data_to_dict,
                                                get_item_by_priority,
                                                parse_header, unzip_to_tempdir,

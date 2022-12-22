@@ -161,7 +161,7 @@ class IntAct(Transform):
         return parsed
 
     def interaction_to_edge(
-        self, interaction: object, nodes_dict: dict, exp_dict: dict
+        self, interaction: minidom.Element, nodes_dict: dict, exp_dict: dict
     ) -> list:
         """Parse an interaction to an edge."""
         edges: List[list] = []
@@ -230,7 +230,7 @@ class IntAct(Transform):
 
         return edges
 
-    def participant_experimental_role(self, participant: object) -> str:
+    def participant_experimental_role(self, participant: minidom.Element) -> str:
         """Parse an experimental role."""
         try:
             # xml why are you like this
@@ -244,7 +244,7 @@ class IntAct(Transform):
             return ""
 
     def participant_to_node(
-        self, participant: object, nodes_dict: dict
+        self, participant: minidom.Element, nodes_dict: dict
     ) -> Union[str, None]:
         """Parse an interation participant as a node."""
         try:
@@ -258,7 +258,7 @@ class IntAct(Transform):
         except (KeyError, IndexError, AttributeError):
             return None
 
-    def interactor_to_node(self, interactor) -> List[Union[int, list]]:
+    def interactor_to_node(self, interactor: minidom.Element) -> List[Union[int, list]]:
         """Parse an interactor as a list of nodes."""
         interactor_id = interactor.attributes["id"].value
 
@@ -323,7 +323,7 @@ class IntAct(Transform):
 
         return [interactor_id, [this_id, name, category, tax_id, self.source_name]]
 
-    def parse_experiment_info(self, xmldoc: object) -> Dict[int, str]:
+    def parse_experiment_info(self, xmldoc: minidom.Document) -> Dict[int, str]:
         """Extract info about experiment from miXML doc.
 
         :param self: IntAct instance

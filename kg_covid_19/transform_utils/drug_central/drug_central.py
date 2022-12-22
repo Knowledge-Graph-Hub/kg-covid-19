@@ -7,7 +7,7 @@ from collections import defaultdict
 from typing import Dict, List, Optional
 
 from kg_covid_19.transform_utils.transform import Transform
-from kg_covid_19.utils.transform_utils import (ItemInDictNotFound,
+from kg_covid_19.utils.transform_utils import (ItemInDictNotFoundError,
                                                data_to_dict,
                                                get_item_by_priority,
                                                parse_header,
@@ -85,7 +85,7 @@ class DrugCentralTransform(Transform):
                 try:
                     protein_dict = items_dict_to_protein_data_dict(items_dict)
 
-                except ItemInDictNotFound:
+                except ItemInDictNotFoundError:
                     # lines with no ACCESSION entry only contain drug info, no target
                     # info - not ingesting these
                     continue

@@ -6,7 +6,7 @@ from typing import Generator, List, Optional, TextIO
 
 from kg_covid_19.transform_utils.transform import Transform
 from kg_covid_19.utils import write_node_edge_item
-from kg_covid_19.utils.transform_utils import (ItemInDictNotFound,
+from kg_covid_19.utils.transform_utils import (ItemInDictNotFoundError,
                                                get_item_by_priority,
                                                guess_bl_category)
 
