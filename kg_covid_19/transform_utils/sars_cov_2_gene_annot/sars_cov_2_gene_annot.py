@@ -150,7 +150,7 @@ class SARSCoV2GeneAnnot(Transform):
                     item = item[0]
                 if key == "Interacting_taxon_ID":
                     item = ":".join([self.ncbi_taxon_prefix, item])
-            except (ItemInDictNotFound, IndexError):
+            except (ItemInDictNotFoundError, IndexError):
                 item = ""
             edge_data.append(item)
         return edge_data
@@ -162,7 +162,7 @@ class SARSCoV2GeneAnnot(Transform):
                 + ":"
                 + get_item_by_priority(rec, ["DB_Object_ID"])
             )
-        except ItemInDictNotFound:
+        except ItemInDictNotFoundError:
             logging.error("Can't make ID for record: %s", "\t".join(rec))
             this_id = ""
         return this_id
@@ -188,7 +188,7 @@ class SARSCoV2GeneAnnot(Transform):
                     )
             else:
                 full_name = ""
-        except (IndexError, ItemInDictNotFound):
+        except (IndexError, ItemInDictNotFoundError):
             full_name = ""
 
         try:
@@ -201,13 +201,13 @@ class SARSCoV2GeneAnnot(Transform):
                     )
             else:
                 name = ""
-        except (IndexError, ItemInDictNotFound):
+        except (IndexError, ItemInDictNotFoundError):
             full_name = ""
 
         category = self.protein_node_type
         try:
             synonym = get_item_by_priority(rec, ["DB_Object_Synonym"])
-        except (IndexError, ItemInDictNotFound):
+        except (IndexError, ItemInDictNotFoundError):
             synonym = ""
         taxon = get_item_by_priority(rec, ["Taxon"])
         taxon = ":".join([self.ncbi_taxon_prefix, taxon.split(":")[1]])
@@ -219,7 +219,7 @@ class SARSCoV2GeneAnnot(Transform):
             xrefs = get_item_by_priority(rec, ["DB_Xref"])
             if isinstance(xrefs, list):
                 xrefs = "|".join(xrefs)
-        except (ItemInDictNotFound):
+        except (ItemInDictNotFoundError):
             pass
 
         return [id, name, category, full_name, synonym, taxon, xrefs, self.source_name]
