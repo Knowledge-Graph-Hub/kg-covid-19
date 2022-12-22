@@ -11,7 +11,6 @@ packages = [{include = "kg_covid_19"}]
 python = "^3.8"
 compress-json = "^1.0.8"
 elasticsearch = "7.17.1"
-grape = "^0.1.29"
 kghub-downloader = "^0.3.3"
 kgx = "^1.7.2"
 multi-indexer = "^0.0.5"
