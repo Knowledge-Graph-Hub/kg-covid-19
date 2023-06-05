@@ -43,8 +43,8 @@
 
   # This is protein network data (incl. distinction: direct vs. interologs)
   # constrained to just human interactions.
-  url: https://stringdb-static.org/download/protein.links.full.v11.0/9606.protein.links.full.v12.0.txt.gz
-  local_name: 9606.protein.links.full.v11.0.txt.gz
+  url: https://stringdb-static.org/download/protein.links.full.v11.5/9606.protein.links.full.v11.5.txt.gz
+  local_name: 9606.protein.links.full.v11.5.txt.gz
 
 -
   # gene to ensembl IDs

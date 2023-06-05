@@ -141,7 +141,7 @@ class StringTransform(Transform):
         """
         if not data_file:
             data_file = os.path.join(
-                self.input_base_dir, "9606.protein.links.full.v11.0.txt.gz"
+                self.input_base_dir, "9606.protein.links.full.v11.5.txt.gz"
             )
         os.makedirs(self.output_dir, exist_ok=True)
         protein_node_type = "biolink:Protein"
