@@ -35,9 +35,6 @@
   # drug - target interactions from Drug Central
   url: https://unmtid-shinyapps.net/download/DrugCentral/2021_09_01/drug.target.interaction.tsv.gz
   local_name: drug.target.interaction.tsv.gz
--
-  url: http://juniper.health.unm.edu/tcrd/download/TCRDv6.12.4.tsv
-  local_name: tcrd.zip
 
 #
 # PPI from STRING DB
@@ -46,7 +43,7 @@
 
   # This is protein network data (incl. distinction: direct vs. interologs)
   # constrained to just human interactions.
-  url: https://stringdb-static.org/download/protein.links.full.v11.0/9606.protein.links.full.v11.0.txt.gz
+  url: https://stringdb-static.org/download/protein.links.full.v11.0/9606.protein.links.full.v12.0.txt.gz
   local_name: 9606.protein.links.full.v11.0.txt.gz
 
 -
@@ -81,7 +78,8 @@
 
 #
 # SciBite CORD-19 annotations v1.6
-#
+# As of June 2023 these are no longer available and must be retrieved from previous caches
+
 -
   url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/annotated-CORD-19/1.6/pdf_json_part_1.zip
   local_name: pdf_json_part_1.zip
