@@ -1,0 +1,19 @@
+---
+target:
+   ttd:
+      type: tsv
+      filename:
+         - data/transformed/ttd/nodes.tsv
+         - data/transformed/ttd/edges.tsv
+destination:
+   merged-kg-tsv:
+      type: tsv
+      filename: data/merged/ttd
+   merged-kg-nt:
+      type: nt
+      filename: data/merged/ttd.nt
+#   merged-kg-neo4j:
+#      type: neo4j
+#      uri: http://localhost:8484
+#      username: neo4j
+#      password: admin
