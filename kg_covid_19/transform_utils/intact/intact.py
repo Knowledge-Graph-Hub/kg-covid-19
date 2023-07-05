@@ -10,7 +10,8 @@ from typing import Dict, List, Optional, Union
 from xml.dom import minidom  # type: ignore
 
 from kg_covid_19.transform_utils.transform import Transform
-from kg_covid_19.utils.transform_utils import unzip_to_tempdir, write_node_edge_item
+from kg_covid_19.utils.transform_utils import (unzip_to_tempdir,
+                                               write_node_edge_item)
 
 """
 Ingest IntAct protein/protein interaction data
@@ -351,7 +352,11 @@ class IntAct(Transform):
             # interaction detection method
             try:
                 method = experiment.getElementsByTagName("interactionDetectionMethod")
-                label = method[0].getElementsByTagName("shortLabel")[0].firstChild.data  # type: ignore
+                label = (
+                    method[0]
+                    .getElementsByTagName("shortLabel")[0]
+                    .firstChild.data  # type: ignore
+                )
                 exp_dict[exp_id]["detection_method"] = label
             except (KeyError, IndexError, AttributeError):
                 pass
