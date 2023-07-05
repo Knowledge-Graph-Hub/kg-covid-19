@@ -99,7 +99,6 @@ class IntAct(Transform):
         os.makedirs(self.output_dir, exist_ok=True)
 
         with open(output_node_file, "w") as node, open(output_edge_file, "w") as edge:
-
             # write node.tsv header
             node.write("\t".join(self.node_header) + "\n")
             edge.write("\t".join(self.edge_header) + "\n")
@@ -170,7 +169,7 @@ class IntAct(Transform):
             interaction_type_str = (
                 interaction_type[0]
                 .getElementsByTagName("shortLabel")[0]
-                .firstChild._data
+                .firstChild._data  # type: ignore
             )
 
             participants = interaction.getElementsByTagName("participant")
@@ -353,7 +352,11 @@ class IntAct(Transform):
             # interaction detection method
             try:
                 method = experiment.getElementsByTagName("interactionDetectionMethod")
-                label = method[0].getElementsByTagName("shortLabel")[0].firstChild.data
+                label = (
+                    method[0]
+                    .getElementsByTagName("shortLabel")[0]
+                    .firstChild.data  # type: ignore
+                )
                 exp_dict[exp_id]["detection_method"] = label
             except (KeyError, IndexError, AttributeError):
                 pass
