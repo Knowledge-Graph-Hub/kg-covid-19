@@ -203,7 +203,8 @@ def _generate_negative_edges(
             warnings.warn(
                 "Couldn't generate %i negative edges - only %i edges left "
                 "after removing positives and reflexives"
-                % (edges_df.shape[0], negative_edges.shape[0])
+                % (edges_df.shape[0], negative_edges.shape[0]),
+                stacklevel=2
             )
             negative_edges = negative_edges.head(negative_edges.shape[0])
         else:
