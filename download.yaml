@@ -93,6 +93,7 @@
   local_name: pmc_json.zip
 
  # SciBite CORD-19 entity co-occurrences v1.2
+ # Also a dead link
 -
   url: https://media.githubusercontent.com/media/SciBiteLabs/CORD19/master/sentence-co-occurrence-CORD-19/1.2/cv19_scc_1_2.zip
   local_name: cv19_scc_1_2.zip
