@@ -17,7 +17,7 @@ from kg_covid_19.utils.transform_utils import (ItemInDictNotFoundError,
 Ingest drug - drug target interactions from Drug Central.
 
 Essentially just ingests and transforms this file:
-http://unmtid-shinyapps.net/download/drug.target.interaction.tsv.gz
+https://unmtid-shinyapps.net/download/DrugCentral/2021_09_01/drug.target.interaction.tsv.gz
 
 And extracts Drug -> Protein interactions.
 """
